@@ -1,0 +1,153 @@
+<div id="vehicles" class="page-layout carded fullwidth docs">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- HEADER -->
+    <div class="header accent"
+        fxLayout="column" fxLayoutAlign="center center"
+        fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+   <!-- APP TITLE -->
+   <div class="logo mb-24 mb-md-0"
+        fxLayout="row" fxLayoutAlign="start center">
+       <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+           shopping_basket
+       </mat-icon>
+       <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+           Products
+       </span>
+   </div>
+   <!-- / APP TITLE -->
+
+   <!-- SEARCH -->
+   <div class="search-wrapper mx-32 mx-md-0">
+       <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+           <mat-icon>search</mat-icon>
+           <input #filter placeholder="Search for a product">
+       </div>
+   </div>
+   <!-- / SEARCH -->
+
+   <!-- ADD BUTTON -->
+   <button mat-raised-button
+           [routerLink]="'/apps/e-commerce/products/new'"
+           class="add-product-button fuse-white mt-24 mt-md-0">
+       <span>ADD NEW PRODUCT</span>
+   </button>
+   <!-- / ADD BUTTON -->
+
+</div>
+<!-- / HEADER -->
+  
+    <!-- CONTENT -->
+     <div class="content p-0">
+        <div class="filter_section">
+            <div fxLayout = "row">
+                <div class="col-md-4">
+                    <mat-form-field >
+                        <mat-label>Select Item</mat-label>
+                        <mat-select [(value)]="selected">
+                            <!-- <mat-option>None</mat-option> -->
+                            <mat-option value="unit">Unit</mat-option>
+                            <mat-option value="Driver">Driver</mat-option>
+                            <mat-option value="SubFleet">SubFleet</mat-option>
+                            <mat-option value="Group">Group</mat-option>
+                            <mat-option value="Device">Device</mat-option>
+                            <mat-option value="Make">Make</mat-option>
+                            <mat-option value="Model">Model</mat-option>
+                            <mat-option value="VIN">VIN</mat-option>
+                            <mat-option value="Plate">Plate</mat-option>
+                            <mat-option value="Last_Report">Last Report</mat-option>
+                            <mat-option value="Location">Location</mat-option>
+                            <mat-option value="Status">Status</mat-option>
+                            <mat-option value="ServicePlan">Service Plan</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <input
+                    #search
+                    id="search"
+                    type="text"
+                    class="form-control"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="basic-addon1"
+                    />
+                </div>
+                <div>
+                    <label for="per-page">Per Page:</label>
+                      <select  id="per-page" (change)="onLimitChange($event.target.value)">
+                        <option
+                            *ngFor="let option of pageLimitOptions"
+                            [value]="option.value"
+                            [selected]="option.value == currentPageLimit"
+                        >
+                          {{ option.value }}
+                        </option>
+                      </select>
+                </div>
+            </div>
+        </div>
+        <ngx-datatable
+            class="bootstrap"
+            [columns] = "columns"
+            [rows]="VEHICLE"
+            [loadingIndicator]="loadingIndicator"
+            [columnMode]="'force'"
+            [headerHeight]="40"
+            [footerHeight]="40"
+            [rowHeight]="35"
+            [scrollbarH]="true"
+            [reorderable]="reorderable"
+            [selectionType]="'checkbox'"
+            [limit]="10">
+
+            <ngx-datatable-column [width]="48"
+                                  [canAutoResize]="false"
+                                  [sortable]="false">
+                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+                             let-selectFn="selectFn">
+                    <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+                </ng-template>
+
+                <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
+                             let-onCheckboxChangeFn="onCheckboxChangeFn">
+                    <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column  [width]="200" name="Unit" prop="unit"></ngx-datatable-column>
+
+            <ngx-datatable-column  name="Driver" prop="Driver" ></ngx-datatable-column>
+
+            <ngx-datatable-column  name="SubFleet" prop="SubFleet" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Group" prop="Group" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Device" prop="Device" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Make" prop="Make" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Model" prop="Model" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="VIN" prop="VIN"></ngx-datatable-column>
+
+            <ngx-datatable-column name="Plate" prop="Plate" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Last Report" prop="Last_Report" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Location" prop="Location" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Status" prop="Status" ></ngx-datatable-column>
+
+            <ngx-datatable-column name="Service Plan" prop="ServicePlan" ></ngx-datatable-column>
+
+        </ngx-datatable>
+
+    </div>
+
+</div>
+
