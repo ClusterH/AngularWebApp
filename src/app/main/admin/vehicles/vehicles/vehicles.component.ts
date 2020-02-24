@@ -4,10 +4,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import {fromEvent, Observable} from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { fuseAnimations } from '@fuse/animations';
 
 import {DataService} from './services/data.service';
+
 import {Vehicles} from './models/Vehicles';
 
 interface ITEM {
@@ -46,6 +49,8 @@ export class VehiclesComponent implements OnInit, AfterViewInit {
     {value: 50},
   ];
   public currentPageLimit: number = 10;
+
+  dialogRef: any;
   // items: ITEM[] = [
   //   {value: 'unit', viewValue: 'Unit'},
   //   {value: 'Driver', viewValue: 'Driver'},
@@ -61,10 +66,17 @@ export class VehiclesComponent implements OnInit, AfterViewInit {
   //   {value: 'Status', viewValue: 'Status'},
   //   {value: 'ServicePlan', viewValue: 'Service Plan'},
   // ]
+
+  // @param {MatDialog} _matDialog
+
  
+  
   constructor(
     private tableApiservice: DataService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private _matDialog: MatDialog,
+    // private product: EcommerceProductComponent
+
   ) {
       this.loadingIndicator = true;
       this.reorderable = true;
@@ -153,7 +165,7 @@ export class VehiclesComponent implements OnInit, AfterViewInit {
   public onLimitChange(limit: any): void {
     this.changePageLimit(limit);
     this.table.limit = this.currentPageLimit;
-    this.table.recalculate();
+    // this.table.recalculate();
     setTimeout(() => {
       if (this.table.bodyComponent.temp.length <= 0) {
         // TODO[Dmitry Teplov] find a better way.
@@ -166,21 +178,11 @@ export class VehiclesComponent implements OnInit, AfterViewInit {
 
   private changePageLimit(limit: any): void {
     this.currentPageLimit = parseInt(limit, 10);
+    this.tableApiservice.getTableNgxData().subscribe(Response => {
+      this.TableData = Response;
+      this.getTabledata();
+    });
+    console.log("change:", this.currentPageLimit);
   }
-
-  // findAll() {
-  //  this.httpClient.get('../../../../assets/data/vehicle/admin-vehicle.json').subscribe(
-  //     (data: any) => {
-  //       // cache our list
-  //       this.temp = data;
-
-  //       // push our inital complete list
-  //       this.VEHICLE = [...this.temp];
-  //     },
-  //     (err: HttpErrorResponse) => {
-  //       console.log (err.message);
-  //     }
-  //   );
-  // }
 }
 

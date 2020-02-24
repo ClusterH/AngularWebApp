@@ -44,14 +44,16 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Vehicles',
                 translate: 'NAV.VEHICLES',
                 type     : 'item',
-                url      : '/admin/vehicles'
+                url      : '/admin/vehicles/vehicles',
+                exactMatch: true
             },
             {
                 id       : 'operators',
                 title    : 'Operators',
                 translate: 'NAV.OPERATORS',
                 type     : 'item',
-                url      : 'pages/admin/operators'
+                url      : '/admin/operators'
+               
             },
             {
                 id       : 'routes',

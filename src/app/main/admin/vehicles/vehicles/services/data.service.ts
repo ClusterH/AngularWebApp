@@ -40,7 +40,6 @@ export class DataService {
   getTableNgxData(): Observable<any> {
     return this.http.get(this.loadTableNgxDataURL, httpOptions);
   }
-  
 }
 
 

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { TranslateModule } from '@ngx-translate/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import 'hammerjs';
 
 import { FuseModule } from '@fuse/fuse.module';
@@ -54,6 +55,8 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         HttpClientModule,
         RouterModule.forRoot(appRoutes),
+
+        NgbModule,
 
         TranslateModule.forRoot(),
         InMemoryWebApiModule.forRoot(FakeDbService, {
