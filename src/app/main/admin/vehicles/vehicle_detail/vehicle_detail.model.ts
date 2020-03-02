@@ -2,135 +2,42 @@ import { MatChipInputEvent } from '@angular/material/chips';
 
 import { FuseUtils } from '@fuse/utils';
 
-export class Product
+export class Vehicle
 {
     id: string;
     name: string;
-    handle: string;
-    description: string;
-    categories: string[];
-    tags: string[];
-    images: {
-        default: boolean,
-        id: string,
-        url: string,
-        type: string
-    }[];
-    priceTaxExcl: number;
-    priceTaxIncl: number;
-    taxRate: number;
-    comparedPrice: number;
-    quantity: number;
-    sku: string;
-    width: string;
-    height: string;
-    depth: string;
-    weight: string;
-    extraShippingFee: number;
-    active: boolean;
-
+    company: string;
+    group: string;
+    subgroup: string;
+    operator: string;
+    unittype: string;
+    serviceplan: string;
+    producttype: string;
+    make: string;
+    model: string;
+    isactive: string;
+    timezone: string;
+    
     /**
      * Constructor
      *
-     * @param product
+     * @param vehicle
      */
-    constructor(product?)
+    constructor(vehicle?)
     {
-        product = product || {};
-        this.id = product.id || FuseUtils.generateGUID();
-        this.name = product.name || '';
-        this.handle = product.handle || FuseUtils.handleize(this.name);
-        this.description = product.description || '';
-        this.categories = product.categories || [];
-        this.tags = product.tags || [];
-        this.images = product.images || [];
-        this.priceTaxExcl = product.priceTaxExcl || 0;
-        this.priceTaxIncl = product.priceTaxIncl || 0;
-        this.taxRate = product.taxRate || 0;
-        this.comparedPrice = product.comparedPrice || 0;
-        this.quantity = product.quantity || 0;
-        this.sku = product.sku || 0;
-        this.width = product.width || 0;
-        this.height = product.height || 0;
-        this.depth = product.depth || 0;
-        this.weight = product.weight || 0;
-        this.extraShippingFee = product.extraShippingFee || 0;
-        this.active = product.active || true;
-    }
-
-    /**
-     * Add category
-     *
-     * @param {MatChipInputEvent} event
-     */
-    addCategory(event: MatChipInputEvent): void
-    {
-        const input = event.input;
-        const value = event.value;
-
-        // Add category
-        if ( value )
-        {
-            this.categories.push(value);
-        }
-
-        // Reset the input value
-        if ( input )
-        {
-            input.value = '';
-        }
-    }
-
-    /**
-     * Remove category
-     *
-     * @param category
-     */
-    removeCategory(category): void
-    {
-        const index = this.categories.indexOf(category);
-
-        if ( index >= 0 )
-        {
-            this.categories.splice(index, 1);
-        }
-    }
-
-    /**
-     * Add tag
-     *
-     * @param {MatChipInputEvent} event
-     */
-    addTag(event: MatChipInputEvent): void
-    {
-        const input = event.input;
-        const value = event.value;
-
-        // Add tag
-        if ( value )
-        {
-            this.tags.push(value);
-        }
-
-        // Reset the input value
-        if ( input )
-        {
-            input.value = '';
-        }
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param tag
-     */
-    removeTag(tag): void
-    {
-        const index = this.tags.indexOf(tag);
-
-        if ( index >= 0 )
-        {
-            this.tags.splice(index, 1);
-        }
+        vehicle = vehicle || {};
+        this.id = vehicle.id || FuseUtils.generateGUID();
+        this.name = vehicle.name || '';
+        this.company = vehicle.company || '';
+        this.group = vehicle.group || '';
+        this.subgroup = vehicle.subgroup || '';
+        this.operator = vehicle.operator || '';
+        this.unittype = vehicle.unittype || '';
+        this.serviceplan = vehicle.serviceplan || '';
+        this.producttype = vehicle.producttype || '';
+        this.make = vehicle.make || '';
+        this.model = vehicle.model || '';
+        this.isactive = vehicle.isactive || '';
+        this.timezone = vehicle.timezone || '';
     }
 }

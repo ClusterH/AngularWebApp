@@ -22,18 +22,32 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { VehiclesComponent} from 'app/main/admin/vehicles/vehicles/vehicles.component';
+import { VehiclesService } from 'app/main/admin/vehicles/vehicles/vehicles.service';
 import { VehicleDetailComponent} from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.component';
 import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
+import { CourseDialogComponent } from 'app/main/admin/vehicles/dialog/dialog.component';
+import {StylePaginatorDirective} from 'app/main/admin/vehicles/vehicles/style-paginator.directive';
+
+
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
     {
         path     : 'vehicles',
-        component: VehiclesComponent 
+        component: VehiclesComponent,
+        resolve  : {
+            data : VehiclesService 
+        } 
     },
     {
         path     : 'vehicles/:id',
@@ -43,7 +57,7 @@ const routes: Routes = [
         } 
     },
     {
-        path     : 'vehicles/:id/:handle',
+        path     : 'vehicles/:id/:unit',
         component: VehicleDetailComponent,
         resolve  : {
             data: VehicleDetailService
@@ -60,6 +74,7 @@ const routes: Routes = [
 @NgModule({
     imports     : [
         FuseSharedModule,
+        FuseConfirmDialogModule,
         NgxDatatableModule,
         
         MatButtonModule,
@@ -78,6 +93,11 @@ const routes: Routes = [
         MatSnackBarModule,
         MatTableModule,
         MatTabsModule,
+        MatDialogModule,
+        MatProgressSpinnerModule,
+
+        TranslateModule,
+        HttpClientModule,
 
         NgbModule,
         CommonModule,
@@ -89,9 +109,11 @@ const routes: Routes = [
     declarations: [
         VehiclesComponent,
         VehicleDetailComponent,
+        CourseDialogComponent,
+        StylePaginatorDirective
     ],
     providers: [
-        VehicleDetailService
+        VehiclesService, VehicleDetailService 
     ]
 })
 export class VehiclesModule

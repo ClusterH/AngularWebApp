@@ -7,8 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class VehicleDetailService implements Resolve<any>
 {
     routeParams: any;
-    product: any;
-    onProductChanged: BehaviorSubject<any>;
+    vehicle: any;
+    onVehicleChanged: BehaviorSubject<any>;
 
     /**
      * Constructor
@@ -20,7 +20,7 @@ export class VehicleDetailService implements Resolve<any>
     )
     {
         // Set the defaults
-        this.onProductChanged = new BehaviorSubject({});
+        this.onVehicleChanged = new BehaviorSubject({});
     }
 
     /**
@@ -37,7 +37,7 @@ export class VehicleDetailService implements Resolve<any>
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getProduct()
+                this.getVehicle()
             ]).then(
                 () => {
                     resolve();
@@ -48,24 +48,24 @@ export class VehicleDetailService implements Resolve<any>
     }
 
     /**
-     * Get product
+     * Get vehicle
      *
      * @returns {Promise<any>}
      */
-    getProduct(): Promise<any>
+    getVehicle(): Promise<any>
     {
         return new Promise((resolve, reject) => {
             if ( this.routeParams.id === 'new' )
             {
-                this.onProductChanged.next(false);
+                this.onVehicleChanged.next(false);
                 resolve(false);
             }
             else
             {
-                this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
+                this._httpClient.get('api/admin-vehicles/' + this.routeParams.id)
                     .subscribe((response: any) => {
-                        this.product = response;
-                        this.onProductChanged.next(this.product);
+                        this.vehicle = response;
+                        this.onVehicleChanged.next(this.vehicle);
                         resolve(response);
                     }, reject);
             }
@@ -73,15 +73,15 @@ export class VehicleDetailService implements Resolve<any>
     }
 
     /**
-     * Save product
+     * Save vehicle
      *
-     * @param product
+     * @param vehicle
      * @returns {Promise<any>}
      */
-    saveProduct(product): Promise<any>
+    saveVehicle(vehicle): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.post('api/e-commerce-products/' + product.id, product)
+            this._httpClient.post('api/admin-vehicles/' + vehicle.id, vehicle)
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);
@@ -89,15 +89,15 @@ export class VehicleDetailService implements Resolve<any>
     }
 
     /**
-     * Add product
+     * Add vehicle
      *
-     * @param product
+     * @param vehicle
      * @returns {Promise<any>}
      */
-    addProduct(product): Promise<any>
+    addVehicle(vehicle): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.post('api/e-commerce-products/', product)
+            this._httpClient.post('api/admin-vehicles/', vehicle)
                 .subscribe((response: any) => {
                     resolve(response);
                 }, reject);

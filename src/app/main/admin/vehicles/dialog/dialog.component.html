@@ -1,0 +1,37 @@
+<div *ngIf="flag == 'duplicate'">
+    <h2 mat-dialog-title>{{'VEHICLES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'VEHICLES.DUPLICATE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'VEHICLES.CANCEL' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+
+
+<div *ngIf="flag == 'delete'">
+    <h2 mat-dialog-title>{{'VEHICLES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'VEHICLES.DELETE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'VEHICLES.CANCEL' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+

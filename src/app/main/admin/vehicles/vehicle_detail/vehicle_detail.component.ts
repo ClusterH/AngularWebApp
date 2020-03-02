@@ -7,9 +7,15 @@ import { takeUntil } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseUtils } from '@fuse/utils';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { Product } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.model';
+import { Vehicle } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.model';
 import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
+
+import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
+import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
+import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
 
 @Component({
     selector     : 'app-vehicle_detail',
@@ -20,9 +26,9 @@ import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/veh
 })
 export class VehicleDetailComponent implements OnInit, OnDestroy
 {
-    product: Product;
+    vehicle: Vehicle;
     pageType: string;
-    productForm: FormGroup;
+    vehicleForm: FormGroup;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -30,23 +36,27 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
     /**
      * Constructor
      *
-     * @param {VehicleDetailService} _ecommerceProductService
+     * @param {VehicleDetailService} _vehicleDetailService
      * @param {FormBuilder} _formBuilder
      * @param {Location} _location
      * @param {MatSnackBar} _matSnackBar
      */
     constructor(
-        private _ecommerceProductService: VehicleDetailService,
+        private _vehicleDetailService: VehicleDetailService,
         private _formBuilder: FormBuilder,
         private _location: Location,
-        private _matSnackBar: MatSnackBar
+        private _matSnackBar: MatSnackBar,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
         // Set the default
-        this.product = new Product();
+        this.vehicle = new Vehicle();
 
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        
+        //Load the translations
+        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -58,23 +68,23 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Subscribe to update product on changes
-        this._ecommerceProductService.onProductChanged
+        // Subscribe to update vehicle on changes
+        this._vehicleDetailService.onVehicleChanged
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(product => {
+            .subscribe(vehicle => {
 
-                if ( product )
+                if ( vehicle )
                 {
-                    this.product = new Product(product);
+                    this.vehicle = new Vehicle(vehicle);
                     this.pageType = 'edit';
                 }
                 else
                 {
                     this.pageType = 'new';
-                    this.product = new Product();
+                    this.vehicle = new Vehicle();
                 }
 
-                this.productForm = this.createProductForm();
+                this.vehicleForm = this.createVehicleForm();
             });
     }
 
@@ -93,51 +103,45 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Create product form
+     * Create vehicle form
      *
      * @returns {FormGroup}
      */
-    createProductForm(): FormGroup
+    createVehicleForm(): FormGroup
     {
         return this._formBuilder.group({
-            id              : [this.product.id],
-            name            : [this.product.name],
-            handle          : [this.product.handle],
-            description     : [this.product.description],
-            categories      : [this.product.categories],
-            tags            : [this.product.tags],
-            images          : [this.product.images],
-            priceTaxExcl    : [this.product.priceTaxExcl],
-            priceTaxIncl    : [this.product.priceTaxIncl],
-            taxRate         : [this.product.taxRate],
-            comparedPrice   : [this.product.comparedPrice],
-            quantity        : [this.product.quantity],
-            sku             : [this.product.sku],
-            width           : [this.product.width],
-            height          : [this.product.height],
-            depth           : [this.product.depth],
-            weight          : [this.product.weight],
-            extraShippingFee: [this.product.extraShippingFee],
-            active          : [this.product.active]
+            id          : [this.vehicle.id],
+            name        : [this.vehicle.name],
+            company      : [this.vehicle.company],
+            group       : [this.vehicle.group],
+            subgroup      : [this.vehicle.subgroup],
+            operator        : [this.vehicle.operator],
+            unittype       : [this.vehicle.unittype],
+            serviceplan         : [this.vehicle.serviceplan],
+            producttype       : [this.vehicle.producttype],
+            make : [this.vehicle.make],
+            model    : [this.vehicle.model],
+            isactive      : [this.vehicle.isactive],
+            timezone : [this.vehicle.timezone],
         });
     }
 
     /**
-     * Save product
+     * Save vehicle
      */
-    saveProduct(): void
+    saveVehicle(): void
     {
-        const data = this.productForm.getRawValue();
-        data.handle = FuseUtils.handleize(data.name);
+        const data = this.vehicleForm.getRawValue();
+        data.handle = FuseUtils.handleize(data.unit);
 
-        this._ecommerceProductService.saveProduct(data)
+        this._vehicleDetailService.saveVehicle(data)
             .then(() => {
 
                 // Trigger the subscription with new data
-                this._ecommerceProductService.onProductChanged.next(data);
+                this._vehicleDetailService.onVehicleChanged.next(data);
 
                 // Show the success message
-                this._matSnackBar.open('Product saved', 'OK', {
+                this._matSnackBar.open('Vehicle saved', 'OK', {
                     verticalPosition: 'top',
                     duration        : 2000
                 });
@@ -145,27 +149,27 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
     }
 
     /**
-     * Add product
+     * Add vehicle
      */
-    addProduct(): void
+    addVehicle(): void
     {
-        const data = this.productForm.getRawValue();
-        data.handle = FuseUtils.handleize(data.name);
+        const data = this.vehicleForm.getRawValue();
+        data.handle = FuseUtils.handleize(data.unit);
 
-        this._ecommerceProductService.addProduct(data)
+        this._vehicleDetailService.addVehicle(data)
             .then(() => {
 
                 // Trigger the subscription with new data
-                this._ecommerceProductService.onProductChanged.next(data);
+                this._vehicleDetailService.onVehicleChanged.next(data);
 
                 // Show the success message
-                this._matSnackBar.open('Product added', 'OK', {
+                this._matSnackBar.open('Vehicle added', 'OK', {
                     verticalPosition: 'top',
                     duration        : 2000
                 });
 
                 // Change the location with new one
-                this._location.go('apps/e-commerce/products/' + this.product.id + '/' + this.product.handle);
+                this._location.go('admin/vehicles/vehicles/' + this.vehicle.id + '/' + this.vehicle.name);
             });
     }
 }

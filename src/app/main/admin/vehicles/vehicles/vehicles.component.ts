@@ -1,188 +1,329 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { DatatableComponent } from '@swimlane/ngx-datatable';
-import {fromEvent, Observable} from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { FormControl, FormGroup } from '@angular/forms';
+import { DataSource, CollectionViewer } from '@angular/cdk/collections';
+import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
+import { FuseUtils } from '@fuse/utils';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import {DataService} from './services/data.service';
+import { VehiclesService } from 'app/main/admin/vehicles/vehicles/vehicles.service';
+import {CourseDialogComponent} from "../dialog/dialog.component";
 
-import {Vehicles} from './models/Vehicles';
+import { takeUntil } from 'rxjs/internal/operators';
 
-interface ITEM {
-  value: string;
-  viewValue: string;
-}
+import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
+import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
+import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
 
 @Component({
-  selector: 'app-vehicles',
-  templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.scss'],
-  animations   : fuseAnimations,
-
+    selector     : 'admin-vehicles',
+    templateUrl  : './vehicles.component.html',
+    styleUrls    : ['./vehicles.component.scss'],
+    animations   : fuseAnimations,
+    encapsulation: ViewEncapsulation.None
 })
+export class VehiclesComponent implements OnInit
+{
+    dataSource: FilesDataSource | null;
+    flag: string = '';
+    displayedColumns = ['id', 'name', 'isactive',  'company', 'group', 'subgroup', 'created','createdby', 'deletedwhen', 
+                        'deletedby', 'lastmodifieddate', 'lastmodifiedby'];
+                        // displayedColumns = ['name', 'accountid', 'operatorid', 'unittypeid', 'serviceplanid',
+                        // 'producttypeid', 'makeid', 'modelid', 'isactive', 'timezoneid', 
+                        // 'companyid', 'groupid', 'subgroupid', 'company', 'group', 
+                        // 'subgroup', 'unittypeid1', 'created','createdbyid', 'deletedwhen', 
+                        // 'deletedbyid', 'lastmodifieddate', 'lastmodifiedbyid'];
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-export class VehiclesComponent implements OnInit, AfterViewInit {
-  @ViewChild('search', { static: false }) search: any;
-  @ViewChild(DatatableComponent) public table: DatatableComponent;
+    @ViewChild(MatPaginator, {static: true})
+    paginator: MatPaginator;
 
-  name = 'Ngx Datatables Filter All Columns';
-  public temp: Array<object> = [];
-  public columns: Array<object>;
-  public VEHICLE: Array<object>;
+    @ViewChild(MatSort, {static: true})
+    sort: MatSort;
 
-  loadingIndicator: boolean;
-  reorderable: boolean;
-  TableData: any;
+    @ViewChild('filter', {static: true})
+    filter: ElementRef;
 
-  selected = 'unit';
-
-  public readonly pageLimitOptions = [
-    {value: 5},
-    {value: 10},
-    {value: 15},
-    {value: 20},
-    {value: 50},
-  ];
-  public currentPageLimit: number = 10;
-
-  dialogRef: any;
-  // items: ITEM[] = [
-  //   {value: 'unit', viewValue: 'Unit'},
-  //   {value: 'Driver', viewValue: 'Driver'},
-  //   {value: 'SubFleet', viewValue: 'SubFleet'},
-  //   {value: 'Group', viewValue: 'Group'},
-  //   {value: 'Device', viewValue: 'Device'},
-  //   {value: 'Make', viewValue: 'Make'},
-  //   {value: 'Model', viewValue: 'Model'},
-  //   {value: 'VIN', viewValue: 'VIN'},
-  //   {value: 'Plate', viewValue: 'Plate'},
-  //   {value: 'Last_Report', viewValue: 'Last Report'},
-  //   {value: 'Location', viewValue: 'Location'},
-  //   {value: 'Status', viewValue: 'Status'},
-  //   {value: 'ServicePlan', viewValue: 'Service Plan'},
-  // ]
-
-  // @param {MatDialog} _matDialog
-
- 
-  
-  constructor(
-    private tableApiservice: DataService,
-    private httpClient: HttpClient,
-    private _matDialog: MatDialog,
-    // private product: EcommerceProductComponent
-
-  ) {
-      this.loadingIndicator = true;
-      this.reorderable = true;
-
+    // Private
+    private _unsubscribeAll: Subject<any>;
+/**
+     * Constructor
+     *
+     * @param {MatDialog} _matDialog
+     */
+    constructor(
+        private _adminVehiclesService: VehiclesService,
+        public _matDialog: MatDialog,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService
+    )
+    {
+        // Set the private defaults
+        this._unsubscribeAll = new Subject();
+        //Load the translations
+        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
     }
 
-  ngOnInit() {
-    // Initial columns, can be used for data list which is will be filtered
-    // this.columns = [
-    //   { prop: 'unit' }, 
-    //   { prop: 'Driver', name: 'Driver' }, 
-    //   { prop: 'Subfleet', name: 'SubFleet' },
-    //   { prop: 'Group', name: 'Group' },
-    //   { prop: 'Device', name: 'Device' }, 
-    //   { prop: 'Make', name: 'Make' }, 
-    //   { prop: 'Model', name: 'Model' },
-    //   { prop: 'VIN', name: 'VIN' },
-    //   { prop: 'Plate', name: 'Plate' }, 
-    //   { prop: 'Last_report', name: 'Last Report' },
-    //   { prop: 'Location', name: 'Location' },
-    //   { prop: 'Status', name: 'Status' }, 
-    //   { prop: 'Serviceplan', name: 'ServicePlan' }
-    // ];
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
 
-    this.tableApiservice.getTableNgxData().subscribe(Response => {
-      this.TableData = Response;
-      this.getTabledata();
-    });
+    /**
+     * On init
+     */
+    ngOnInit(): void
+    {
+        this.dataSource = new FilesDataSource(this._adminVehiclesService, this.paginator, this.sort);
 
-  }
+        fromEvent(this.filter.nativeElement, 'keyup')
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                debounceTime(150),
+                distinctUntilChanged()
+            )
+            .subscribe(() => {
+                if ( !this.dataSource )
+                {
+                    return;
+                }
 
-  getTabledata() {
-    this.VEHICLE = this.TableData['Vehicles'];
-    this.temp = this.VEHICLE;
-    console.log(this.VEHICLE);
-  }
+                this.dataSource.filter = this.filter.nativeElement.value;
+            });
+    }
 
-  ngAfterViewInit(): void {
-    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    // Add 'implements AfterViewInit' to the class.
+    onRowClicked(vehicle) {
+        console.log('Row Clicked:', vehicle);
+    }
 
-    fromEvent(this.search.nativeElement, 'keydown')
-      .pipe(
-        debounceTime(550),
-        map(x => x['target']['value'])
-      )
-      .subscribe(value => {
-        this.updateFilter(value);
-      });
-  }
+    getPageData(event?:PageEvent) {
+        console.log("getPageData", this.paginator.page);
+    }
+     /**
+     * Delete Contact
+     */
+    deleteVehicle(vehicle): void
+    {
+        const dialogConfig = new MatDialogConfig();
+        this.flag = 'delete';
 
-  updateFilter(val: any) {
-    const value = val.toString().toLowerCase().trim();
-    // get the amount of columns in the table
-    const count = 13;
-    // get the key names of each column in the dataset
-    const keys = Object.keys(this.temp[0]);
-    console.log(keys);
-    // assign filtered matches to the active datatable
-    this.VEHICLE = this.temp.filter(item => {
-      // iterate through each row's column data
-      console.log("item", item);
-      for (let i = 0; i < count; i++) {
-        // check for a match
-        if (keys[i] === this.selected ) {
-          console.log(this.selected);
-          if (
-            (item[keys[i]] &&
-              item[keys[i]]
-                .toString()
-                .toLowerCase()
-                .indexOf(value) !== -1) ||
-            !value
-          ) {
-            // found match, return true to add to result set
-            return true;
-          }
-        }
-      }
-    });
+        dialogConfig.disableClose = true;
+        
+        dialogConfig.data = {
+            vehicle, flag: this.flag
+        };
 
-    // Whenever the filter changes, always go back to the first page
-    // this.table.offset = 0;
-  }
+        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
-  public onLimitChange(limit: any): void {
-    this.changePageLimit(limit);
-    this.table.limit = this.currentPageLimit;
-    // this.table.recalculate();
-    setTimeout(() => {
-      if (this.table.bodyComponent.temp.length <= 0) {
-        // TODO[Dmitry Teplov] find a better way.
-        // TODO[Dmitry Teplov] test with server-side paging.
-        this.table.offset = Math.floor((this.table.rowCount - 1) / this.table.limit);
-        // this.table.offset = 0;
-      }
-    });
-  }
+        dialogRef.afterClosed().subscribe(result => {
+            if ( result )
+            { 
+                console.log(result);
+            } else {
+                console.log("FAIL:", result);
+            }
+        });
+    }
 
-  private changePageLimit(limit: any): void {
-    this.currentPageLimit = parseInt(limit, 10);
-    this.tableApiservice.getTableNgxData().subscribe(Response => {
-      this.TableData = Response;
-      this.getTabledata();
-    });
-    console.log("change:", this.currentPageLimit);
-  }
+    duplicateVehicle(vehicle): void
+    {
+        const dialogConfig = new MatDialogConfig();
+        this.flag = 'duplicate';
+
+        dialogConfig.disableClose = true;
+        
+        dialogConfig.data = {
+            vehicle, flag: this.flag
+        };
+
+        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+
+        dialogRef.afterClosed().subscribe(result => {
+            if ( result )
+            { 
+                console.log(result);
+            } else {
+                console.log("FAIL:", result);
+            }
+        });
+    }
 }
 
+export class FilesDataSource extends DataSource<any>
+{
+    private _filterChange = new BehaviorSubject('');
+    private _filteredDataChange = new BehaviorSubject('');
+
+    /**
+     * Constructor
+     *
+     * @param {VehiclesService} _adminVehiclesService
+     * @param {MatPaginator} _matPaginator
+     * @param {MatSort} _matSort
+     */
+    constructor(
+        private _adminVehiclesService: VehiclesService,
+        private _matPaginator: MatPaginator,
+        private _matSort: MatSort
+    )
+    {
+        super();
+
+        this.filteredData = this._adminVehiclesService.vehicles;
+        console.log(this.filteredData);
+    }
+
+    /**
+     * Connect function called by the table to retrieve one stream containing the data to render.
+     *
+     * @returns {Observable<any[]>}
+     */
+    connect(): Observable<any[]>
+    {
+        const displayDataChanges = [
+            this._adminVehiclesService.onVehiclesChanged,
+            this._matPaginator.page,
+            this._filterChange,
+            this._matSort.sortChange
+        ];
+
+        return merge(...displayDataChanges)
+            .pipe(
+                map(() => {
+                    console.log("merge_map:");
+                        let data = this._adminVehiclesService.vehicles.slice();
+                        console.log("data1:", data);
+                        data = this.filterData(data);
+                        console.log("data2:", data);
+                        this.filteredData = [...data];
+
+                        data = this.sortData(data);
+
+                        // Grab the page's slice of data.
+                        const startIndex = this._matPaginator.pageIndex * this._matPaginator.pageSize;
+                        return data.splice(startIndex, this._matPaginator.pageSize);
+                    }
+                ));
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    // Filtered data
+    get filteredData(): any
+    {
+        return this._filteredDataChange.value;
+    }
+
+    set filteredData(value: any)
+    {
+        this._filteredDataChange.next(value);
+    }
+
+    // Filter
+    get filter(): string
+    {
+        return this._filterChange.value;
+    }
+
+    set filter(filter: string)
+    {
+        this._filterChange.next(filter);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Filter data
+     *
+     * @param data
+     * @returns {any}
+     */
+    filterData(data): any
+    {
+        if ( !this.filter )
+        {
+            return data;
+        }
+        return FuseUtils.filterArrayByString(data, this.filter);
+    }
+
+    /**
+     * Sort data
+     *
+     * @param data
+     * @returns {any[]}
+     */
+    sortData(data): any[]
+    {
+        if ( !this._matSort.active || this._matSort.direction === '' )
+        {
+            return data;
+        }
+
+        return data.sort((a, b) => {
+            let propertyA: number | string = '';
+            let propertyB: number | string = '';
+
+            switch ( this._matSort.active )
+            {
+                case 'name':
+                    [propertyA, propertyB] = [a.name, b.name];
+                    break;
+                case 'company':
+                    [propertyA, propertyB] = [a.company, b.company];
+                    break;
+                case 'group':
+                    [propertyA, propertyB] = [a.group, b.group];
+                    break;
+                case 'subgroup':
+                    [propertyA, propertyB] = [a.subgroup, b.subgroup];
+                    break;
+                case 'operator':
+                    [propertyA, propertyB] = [a.operator, b.operator];
+                    break;
+                case 'unittype':
+                    [propertyA, propertyB] = [a.unittype, b.unittype];
+                    break;
+                case 'serviceplan':
+                    [propertyA, propertyB] = [a.serviceplan, b.serviceplan];
+                    break;
+                case 'producttype':
+                    [propertyA, propertyB] = [a.producttype, b.producttype];
+                    break;
+                case 'make':
+                    [propertyA, propertyB] = [a.make, b.make];
+                    break;
+                case 'model':
+                    [propertyA, propertyB] = [a.model, b.model];
+                    break;
+                case 'isactive':
+                    [propertyA, propertyB] = [a.isactive, b.isactive];
+                    break;
+                case 'lastmodifiedby':
+                    [propertyA, propertyB] = [a.timezone, b.timezone];
+                    break;
+            }
+
+            const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+            const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+
+            return (valueA < valueB ? -1 : 1) * (this._matSort.direction === 'asc' ? 1 : -1);
+        });
+    }
+
+    /**
+     * Disconnect
+     */
+    disconnect(): void
+    {
+    }
+}
