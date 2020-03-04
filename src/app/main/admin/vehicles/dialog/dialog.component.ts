@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 // import {Course} from "../model/course";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import * as moment from 'moment';
-import { VehiclesService } from 'app/main/admin/vehicles/vehicles/vehicles.service';
+import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 
 
 @Component({
@@ -33,11 +33,11 @@ export class CourseDialogComponent implements OnInit {
 
 
     save() {
-        if(this.flag == "duplicate") {
-            this._adminVehiclesService.duplicateVehicle(this.vehicle);
-        } else if( this.flag == "delete") {
-            this._adminVehiclesService.deleteVehicle(this.vehicle);
-        }
+        // if(this.flag == "duplicate") {
+        //     this._adminVehiclesService.duplicateVehicle(this.vehicle);
+        // } else if( this.flag == "delete") {
+        //     this._adminVehiclesService.deleteVehicle(this.vehicle);
+        // }
 
         this.dialogRef.close();
     }

@@ -10,6 +10,9 @@ import {
     Input
   } from "@angular/core";
   import { MatPaginator } from '@angular/material/paginator';
+  import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
+  import { VehiclesComponent } from "app/main/admin/vehicles/vehicles/vehicles.component";
+
  
   @Directive({
     selector: "[style-paginator]"
@@ -28,11 +31,13 @@ import {
       this._showTotalPages = value % 2 == 0 ? value + 1 : value;
     }
     private _showTotalPages = 2;
-  
+
     constructor(
       @Host() @Self() @Optional() private matPag: MatPaginator,
       private vr: ViewContainerRef,
-      private ren: Renderer2
+      private ren: Renderer2,
+      private vehicleComponent: VehiclesComponent
+
     ) {
       //Sub to rerender buttons when next page and last page is used
       this.matPag.page.subscribe((v)=>{
@@ -156,6 +161,7 @@ import {
     private initPageRange(): void {
       this._rangeStart = this._currentPage - this._showTotalPages / 2;
       this._rangeEnd = this._currentPage + this._showTotalPages / 2;
+      // this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
       console.log("range_start", this.matPag.page);
       this.buildPageNumbers();
     }
@@ -164,8 +170,9 @@ import {
         console.log("switchPage:", i);
       this._currentPage = i;
       this.matPag.pageIndex = i;
-
+      this.vehicleComponent.actionPageIndexbutton(i);
       this.initPageRange();
+
     }
   
     public ngAfterViewInit() {

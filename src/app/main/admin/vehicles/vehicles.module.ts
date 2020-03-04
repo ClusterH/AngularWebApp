@@ -32,7 +32,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { VehiclesComponent} from 'app/main/admin/vehicles/vehicles/vehicles.component';
-import { VehiclesService } from 'app/main/admin/vehicles/vehicles/vehicles.service';
+import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { VehicleDetailComponent} from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.component';
 import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/vehicles/dialog/dialog.component';
@@ -45,9 +45,9 @@ const routes: Routes = [
     {
         path     : 'vehicles',
         component: VehiclesComponent,
-        resolve  : {
-            data : VehiclesService 
-        } 
+        // resolve  : {
+        //     data : VehiclesService 
+        // } 
     },
     {
         path     : 'vehicles/:id',
