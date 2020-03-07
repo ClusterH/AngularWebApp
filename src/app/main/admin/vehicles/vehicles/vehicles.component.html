@@ -23,12 +23,42 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">Select Field:</mat-label>
 
-            <!-- SEARCH -->
-            <div class="search-wrapper mx-32 mx-md-0">
-                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>search</mat-icon>
-                    <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE' | translate }}">
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">Name</mat-option>
+                            <mat-option value="company">Company</mat-option>
+                            <mat-option value="group">Group</mat-option>
+                            <mat-option value="subgroup">SubGroup</mat-option>
+                            <mat-option value="account">Account</mat-option>
+                            <mat-option value="operator">Operator</mat-option>
+                            <mat-option value="unittype">UnitType</mat-option>
+                            <mat-option value="serviceplan">ServicePlan</mat-option>
+                            <mat-option value="producttype">ProductType</mat-option>
+                            <mat-option value="make">Make</mat-option>
+                            <mat-option value="model">Model</mat-option>
+                            <mat-option value="isactive">IsActive</mat-option>
+                            <mat-option value="timezone">TimeZone</mat-option>
+                            <mat-option value="created">created</mat-option>
+                            <mat-option value="deletedwhen">DeletedWhen</mat-option>
+                            <mat-option value="lastmodifieddate">LastModifiedDate</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <!-- <button mat-fab class="accent search_btn" style="width: 80px; height: 30px;" (click)=selectedFilter()>
+                            <span>Search</span>
+                        </button> -->
+                    </div>
                 </div>
             </div>
             <!-- / SEARCH -->
@@ -44,202 +74,261 @@
 
         </div>
         <!-- / HEADER -->
+        <!-- <div class="loading-indicator">
+            <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
+        </div> -->
 
         <!-- CONTENT CARD -->
-            <div class="content-card" style="width: 100%; overflow: auto;">
+        <div class="content-card" style="width: 100%; overflow: auto;">
 
-                <mat-table class="vehicles-table font-size-10"
-                           #table [dataSource]="dataSource"
-                           matSort
-                           [@animateStagger]="{value:'50'}"
-                           fusePerfectScrollbar style="width: 150%;">
-    
-                    <!-- ID Column -->
-                    <ng-container matColumnDef="id" sticky>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle">
-                            <mat-icon
-                                class="active-icon s-16 edit_icon"
-                                matRipple
-                                [routerLink]="'/admin/vehicles/vehicles/'+vehicle.id+'/'+vehicle.handle">
-                                edit
-                            </mat-icon>
-                            <mat-icon  class="active-icon  s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
-                            <mat-icon  class="active-icon  s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- <ng-container *ngFor="displayedColumn of displayedColumns" matColumnDef="{{ displayedColumn }}">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle">
-                            <p class="text-truncate">{{vehicle[displayedColumn]}}</p>
-                        </mat-cell>
-                    </ng-container> -->
-    
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle">
-                            <p class="name text-truncate">{{vehicle.name}}</p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- Company Column -->
-                     <ng-container matColumnDef="company">
-                        <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'VEHICLES.COMPANY' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-md>
-                            <p class="company text-truncate">
-                                {{vehicle.company}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <!-- Group Column -->
-                    <ng-container matColumnDef="group">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.GROUP' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="group text-truncate">
-                                {{vehicle.group}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <!-- SubGroup Column -->
-                    <ng-container matColumnDef="subgroup">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.SUBGROUP' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="subgroup text-truncate">
-                                {{vehicle.subgroup}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                  
-                    <!-- Account Column -->
-                    <ng-container matColumnDef="account">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ACCOUNT' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="account text-truncate">
-                                {{vehicle.account}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                   
-                     <!-- UnitType Column -->
-                     <ng-container matColumnDef="unittype">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.UNITTYPE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="unittype text-truncate">
-                                {{vehicle.unittype}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <!-- ProductType Column -->
-                    <ng-container matColumnDef="producttype">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="producttype text-truncate">
-                                {{vehicle.producttype}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    
-                      <!-- Make Column -->
-                      <ng-container matColumnDef="make">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MAKE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="make text-truncate">
-                                {{vehicle.make}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- Model Column -->
-                     <ng-container matColumnDef="model">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MODEL' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="model text-truncate">
-                                {{vehicle.model}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- IsActive Column -->
-                     <ng-container matColumnDef="isactive">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ISACTIVE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="isactive text-truncate">
-                                {{vehicle.isactive}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- TimeZone Column -->
-                     <ng-container matColumnDef="timezone">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.TIMEZONE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="timezone text-truncate">
-                                {{vehicle.timezone}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                   
-                     <!-- Created Column -->
-                     <ng-container matColumnDef="created">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.CREATED' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="created text-truncate">
-                                {{vehicle.created}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- DeletedWhen Column -->
-                     <ng-container matColumnDef="deletedwhen">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.DELETEDWHEN' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="deletedwhen text-truncate">
-                                {{vehicle.deletedwhen}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                     <!-- LastModifiedDate Column -->
-                     <ng-container matColumnDef="lastmodifieddate" stickyEnd>
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                        <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
-                            <p class="lastmodifieddate text-truncate">
-                                {{vehicle.lastmodifieddate}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-    
-                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:false"></mat-header-row>
-    
-                    <mat-row  *matRowDef="let vehicle; columns: displayedColumns;"
-                             class="vehicle font-size-10"
-                             matRipple
-                             (click) = onRowClicked(vehicle)
-                            >
-                    </mat-row>
-    
-                </mat-table>
-    
+            <mat-table class="vehicles-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 190%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)">edit</mat-icon>
+                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicles/vehicle/'+vehicle.id+'/'+vehicle.name">edit</mat-icon> -->
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- <ng-container *ngFor="displayedColumn of displayedColumns" matColumnDef="{{ displayedColumn }}">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <p class="text-truncate">{{vehicle[displayedColumn]}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <p class="name text-truncate">{{vehicle.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'VEHICLES.COMPANY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-md>
+                        <p class="company text-truncate">
+                            {{vehicle.company}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Group Column -->
+                <ng-container matColumnDef="group">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="group text-truncate">
+                            {{vehicle.group}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SubGroup Column -->
+                <ng-container matColumnDef="subgroup">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.SUBGROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="subgroup text-truncate">
+                            {{vehicle.subgroup}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Account Column -->
+                <ng-container matColumnDef="account">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ACCOUNT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="account text-truncate">
+                            {{vehicle.account}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- Operator Column -->
+                 <ng-container matColumnDef="operator">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.OPERATOR' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="operator text-truncate">
+                            {{vehicle.operator}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- UnitType Column -->
+                <ng-container matColumnDef="unittype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.UNITTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="unittype text-truncate">
+                            {{vehicle.unittype}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ServicePlan Column -->
+                <ng-container matColumnDef="serviceplan">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.SERVICEPLAN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="serviceplan text-truncate">
+                            {{vehicle.serviceplan}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProductType Column -->
+                <ng-container matColumnDef="producttype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="producttype text-truncate">
+                            {{vehicle.producttype}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Make Column -->
+                <ng-container matColumnDef="make">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MAKE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="make text-truncate">
+                            {{vehicle.make}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Model Column -->
+                <ng-container matColumnDef="model">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MODEL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="model text-truncate">
+                            {{vehicle.model}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="isactive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ISACTIVE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="isactive text-truncate">
+                            {{vehicle.isactive}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- TimeZone Column -->
+                <ng-container matColumnDef="timezone">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.TIMEZONE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="timezone text-truncate">
+                            {{vehicle.timezone}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{vehicle.created}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- CreatedByName Column -->
+                 <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{vehicle.createdbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DeletedWhen Column -->
+                <ng-container matColumnDef="deletedwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="deletedwhen text-truncate">
+                            {{vehicle.deletedwhen}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deletedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="deletedbyname text-truncate">
+                            {{vehicle.deletedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="lastmodifieddate text-truncate">
+                            {{vehicle.lastmodifieddate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                        <p class="lastmodifiedbyname text-truncate">
+                            {{vehicle.lastmodifiedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let vehicle; columns: displayedColumns;"
+                            class="vehicle font-size-10"
+                            matRipple
+                        >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page:&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>of&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
             </div>
-                <mat-paginator #paginator
-                                style-paginator showFirstLastButtons
-                                [showTotalPages]="5"
-                                class="table_paginator"
-                                [length]="length"
-                                [pageIndex] = "pageIndex"
-                                [pageSize]="pageSize"
-                                [pageSizeOptions]="pageSizeOptions"
-                                (page) ="pageEvent = $event">
-                </mat-paginator>
-                <!-- [length]="dataSource.filteredData.length" -->
-                <!-- style-paginator showFirstLastButtons
-                [showTotalPages]="5" -->
-    
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+            <!-- [length]="dataSource.filteredData.length" -->
+            <!-- style-paginator showFirstLastButtons
+            [showTotalPages]="5" -->
+
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

@@ -17,22 +17,21 @@ export const locale = {
             "CREATED": "Created",
             "DELETEDWHEN": "DeletedWhen",
             "LASTMODIFIEDDATE": "LastModifiedDate",
-
-
-            "OPERATORID": "OperatorID",
-            "SERVICEPLANID": "ServicePlanID",
+            "OPERATOR": "Operator",
+            "SERVICEPLAN": "ServicePlan",
+           
+            "CREATEDBYNAME": "CreatedByName",
+            "CREATEDBY": "CreatedBY",
+            "DELETEDBYNAME": "DeletedByName",
+            "DELETEDBY": "DeletedBy",
+            "LASTMODIFIEDBYNAME": "LastModifiedByName",
+            "LASTMODIFIEDBY": "LastModifiedBy",
+            
             "COMPANYID": "CompanyID",
             "GROUPID": "GroupID",
             "SUBGROUPID": "SubGroupID",
             "UNITTYPEID1": "UnitTypeID1",
-            "CREATEDBYID": "CreatedBYID",
-            "CREATEDBY": "CreatedBY",
-            "DELETEDBYID": "DeletedByID",
-            "DELETEDBY": "DeletedBy",
-            "LASTMODIFIEDBYID": "LastModifiedByID",
-            "LASTMODIFIEDBY": "LastModifiedBy",
             
-
             "SEARCHFORVEHICLE": "Search for a Vehicle",
             "NEWVEHICLE": "New Vehicle",
             "VEHICLEDETAIL": "Vehicle Detail",

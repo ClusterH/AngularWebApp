@@ -55,18 +55,19 @@ export class VehicleDetailService implements Resolve<any>
     getVehicle(): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            if ( this.routeParams.id === 'new' )
+            console.log(this.routeParams);
+            if ( !this.routeParams )
             {
                 this.onVehicleChanged.next(false);
                 resolve(false);
             }
             else
             {
-                this._httpClient.get('api/admin-vehicles/' + this.routeParams.id)
+                this._httpClient.get('api/admin-vehicles/' + this.routeParams)
                     .subscribe((response: any) => {
                         this.vehicle = response;
                         this.onVehicleChanged.next(this.vehicle);
-                        resolve(response);
+                        resolve(this.routeParams);
                     }, reject);
             }
         });

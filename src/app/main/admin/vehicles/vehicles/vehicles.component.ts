@@ -1,11 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output,  Directive, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
+import * as $ from 'jquery';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+import { FormControl, FormGroup } from '@angular/forms';
 
 // import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseUtils } from '@fuse/utils';
@@ -23,6 +26,7 @@ import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
 import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector     : 'admin-vehicles',
@@ -43,14 +47,37 @@ export class VehiclesComponent implements OnInit
     // }
     pageIndex= 0;
     pageSize = 25;
-    length = 3072;
+    // length: number;
     pageSizeOptions: number[] = [5, 10, 25, 100];
+    selected = '';
+    filter_string: string = '';
+    index_number: number = 1;
 
     vehicle: any;
 
     flag: string = '';
-    displayedColumns = ['id', 'name', 'company', 'group', 'subgroup', 'account', 'unittype', 'producttype', 'make', 'model', 'isactive', 'timezone', 'created', 'deletedwhen', 
-                         'lastmodifieddate'];
+    displayedColumns = [
+        'id',
+        'name',
+        'company',
+        'group',
+        'subgroup',
+        'account',
+        'operator',
+        'unittype',
+        'serviceplan',
+        'producttype',
+        'make',
+        'model',
+        'isactive',
+        'timezone',
+        'created',
+        'createdbyname',
+        'deletedwhen',
+        'deletedbyname', 
+        'lastmodifieddate',
+        'lastmodifiedbyname'
+    ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -62,27 +89,23 @@ export class VehiclesComponent implements OnInit
 
     @ViewChild('filter', {static: true})
     filter: ElementRef;
-
-    // Private
-    private _unsubscribeAll: Subject<any>;
-/**
-     * Constructor
-     *
-     * @param {MatDialog} _matDialog
-     */
+    
     constructor(
         private _adminVehiclesService: VehiclesService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private renderer : Renderer2,
+        private elmRef: ElementRef
     )
     {
-        // Set the private defaults
-        this._unsubscribeAll = new Subject();
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
         this.pageIndex= 0;
         this.pageSize = 25;
+        this.selected = '';
+        this.filter_string = '';
+        // this.index_number = 1;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -91,49 +114,71 @@ export class VehiclesComponent implements OnInit
 
     ngAfterViewInit() {
         console.log("ngAfterViewInit:");
-        // this.dataSource.counter$
-        // .pipe(
-        //    tap((count) => {
-             
-        //    })
-        // )
-        // .subscribe();
+
+        var node = $("div.page_index");
+        $("div.page_index").remove();
+        $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
    
         // when paginator event is invoked, retrieve the related data
-        this.paginator.page
+        this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+        // this.paginator.page
+        merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, "id", "ASC", "Unit_TList"))
+           tap(() => this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
-        .subscribe( res => {
+        .subscribe( (res: any) => {
             console.log(res);
-            this.length = res.length;
+            // this.index_number = res.pageIndex + 1;
         });
-     }  
-    /**
-     * On init
-     */
+
+        const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
+        list_page[0].innerHTML = 'Page Size :';
+    }
+   
     ngOnInit(): void
     {
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles("PolarixUSA", 1, this.pageIndex, this.pageSize, "id", "ASC", "Unit_TList");
-
+        this.dataSource.loadVehicles("PolarixUSA", 1, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
     onRowClicked(vehicle) {
         console.log('Row Clicked:', vehicle);
     }
 
+    selectedFilter() {
+        console.log(this.selected, this.filter_string);
+        if (this.selected == '') {
+            alert("Please choose Field for filter!");
+        } else {
+            this.paginator.pageIndex = 0;
+            this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        }
+    }
+
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadVehicles("PolarixUSA", 1, pageIndex, this.paginator.pageSize, "id", "ASC", "Unit_TList");
+        this.dataSource.loadVehicles("PolarixUSA", 1, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+    }
+
+    filterEvent() {
+        this.selectedFilter();
+    }
+    navigatePageEvent() {
+        // console.log(this.index_number);
+        this.paginator.pageIndex = this.dataSource.page_index - 1;
+        this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+    }
+
+    editShowVehicleDetail(vehicle: any) {
+        this._adminVehiclesService.vehicle_detail = vehicle;
+        console.log(this._adminVehiclesService.vehicle_detail);
+
+        this.router.navigate(['vehicles', vehicle]);
     }
     
-   
-     /**
-     * Delete Contact
-     */
     deleteVehicle(vehicle): void
     {
         const dialogConfig = new MatDialogConfig();
@@ -180,168 +225,3 @@ export class VehiclesComponent implements OnInit
         });
     }
 }
-
-// export class FilesDataSource extends DataSource<any>
-// {
-//     private _filterChange = new BehaviorSubject('');
-//     private _filteredDataChange = new BehaviorSubject('');
-
-//     constructor(
-//         private _adminVehiclesService: VehiclesService,
-//         private _matPaginator: MatPaginator,
-//         private _matSort: MatSort
-//     )
-//     {
-//         super();
-
-//         this.filteredData = this._adminVehiclesService.vehicles;
-//         console.log(this.filteredData);
-//     }
-
-//     /**
-//      * Connect function called by the table to retrieve one stream containing the data to render.
-//      *
-//      * @returns {Observable<any[]>}
-//      */
-//     connect(): Observable<any[]>
-//     {
-//         const displayDataChanges = [
-//             this._adminVehiclesService.onVehiclesChanged,
-//             this._filterChange,
-//         ];
-
-//         return merge(...displayDataChanges)
-//             .pipe(
-//                 map(() => {
-//                     console.log("merge_map:");
-//                         let data = this._adminVehiclesService.vehicles.slice();
-//                         console.log("data1:", data);
-//                         data = this.filterData(data);
-//                         console.log("data2:", data);
-//                         this.filteredData = [...data];
-
-//                         data = this.sortData(data);
-
-//                         // Grab the page's slice of data.
-//                         const startIndex = this._matPaginator.pageIndex * this._matPaginator.pageSize;
-//                         return data.splice(startIndex, this._matPaginator.pageSize);
-//                     }
-//                 ));
-//     }
-
-//     // -----------------------------------------------------------------------------------------------------
-//     // @ Accessors
-//     // -----------------------------------------------------------------------------------------------------
-
-//     // Filtered data
-//     get filteredData(): any
-//     {
-//         return this._filteredDataChange.value;
-//     }
-
-//     set filteredData(value: any)
-//     {
-//         this._filteredDataChange.next(value);
-//     }
-
-//     // Filter
-//     get filter(): string
-//     {
-//         return this._filterChange.value;
-//     }
-
-//     set filter(filter: string)
-//     {
-//         this._filterChange.next(filter);
-//     }
-
-//     // -----------------------------------------------------------------------------------------------------
-//     // @ Public methods
-//     // -----------------------------------------------------------------------------------------------------
-
-//     /**
-//      * Filter data
-//      *
-//      * @param data
-//      * @returns {any}
-//      */
-//     filterData(data): any
-//     {
-//         if ( !this.filter )
-//         {
-//             return data;
-//         }
-//         return FuseUtils.filterArrayByString(data, this.filter);
-//     }
-
-//     /**
-//      * Sort data
-//      *
-//      * @param data
-//      * @returns {any[]}
-//      */
-//     sortData(data): any[]
-//     {
-//         if ( !this._matSort.active || this._matSort.direction === '' )
-//         {
-//             return data;
-//         }
-
-//         return data.sort((a, b) => {
-//             let propertyA: number | string = '';
-//             let propertyB: number | string = '';
-
-//             switch ( this._matSort.active )
-//             {
-//                 case 'name':
-//                     [propertyA, propertyB] = [a.name, b.name];
-//                     break;
-//                 case 'company':
-//                     [propertyA, propertyB] = [a.company, b.company];
-//                     break;
-//                 case 'group':
-//                     [propertyA, propertyB] = [a.group, b.group];
-//                     break;
-//                 case 'subgroup':
-//                     [propertyA, propertyB] = [a.subgroup, b.subgroup];
-//                     break;
-//                 case 'operator':
-//                     [propertyA, propertyB] = [a.operator, b.operator];
-//                     break;
-//                 case 'unittype':
-//                     [propertyA, propertyB] = [a.unittype, b.unittype];
-//                     break;
-//                 case 'serviceplan':
-//                     [propertyA, propertyB] = [a.serviceplan, b.serviceplan];
-//                     break;
-//                 case 'producttype':
-//                     [propertyA, propertyB] = [a.producttype, b.producttype];
-//                     break;
-//                 case 'make':
-//                     [propertyA, propertyB] = [a.make, b.make];
-//                     break;
-//                 case 'model':
-//                     [propertyA, propertyB] = [a.model, b.model];
-//                     break;
-//                 case 'isactive':
-//                     [propertyA, propertyB] = [a.isactive, b.isactive];
-//                     break;
-//                 case 'lastmodifiedby':
-//                     [propertyA, propertyB] = [a.timezone, b.timezone];
-//                     break;
-//             }
-
-//             const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-//             const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-
-//             return (valueA < valueB ? -1 : 1) * (this._matSort.direction === 'asc' ? 1 : -1);
-//         });
-//     }
-
-//     /**
-//      * Disconnect
-//      */
-//     disconnect(): void
-//     {
-//     }
-// }

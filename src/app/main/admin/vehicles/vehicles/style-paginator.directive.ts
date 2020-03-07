@@ -28,7 +28,9 @@ import {
   
     get showTotalPages(): number { return this._showTotalPages; }
     set showTotalPages(value: number) {
+      console.log(value);
       this._showTotalPages = value % 2 == 0 ? value + 1 : value;
+      console.log(this._showTotalPages);
     }
     private _showTotalPages = 2;
 
@@ -66,7 +68,7 @@ import {
   
       //initialize next page and last page buttons
       if (this._buttons.length == 0) {
-          console.log("VR: ", this.vr);
+          // console.log("VR: ", this.vr);
         let nodeArray = this.vr.element.nativeElement.childNodes[0].childNodes[0]
           .childNodes[2].childNodes;
         setTimeout(() => {
@@ -95,25 +97,28 @@ import {
       }
   
       let dots = false;
+      // console.log("Get Number: ",this.matPag.getNumberOfPages())
+      if(this.matPag.getNumberOfPages() > 0) {
   
-      for (let i = 0; i < this.matPag.getNumberOfPages(); i = i + 1) {
-        if (
-          (i < this._showTotalPages && this._currentPage < this._showTotalPages && i > this._rangeStart) ||
-          (i >= this._rangeStart && i <= this._rangeEnd)
-        ) {
-          this.ren.insertBefore(
-            actionContainer,
-            this.createButton(i, this.matPag.pageIndex),
-            nextPageNode
-          );
-        } else {
-          if (i > this._rangeEnd && !dots) {
+        for (let i = 0; i < this.matPag.getNumberOfPages(); i = i + 1) {
+          if (
+            (i < this._showTotalPages && this._currentPage < this._showTotalPages && i > this._rangeStart) ||
+            (i >= this._rangeStart && i <= this._rangeEnd)
+          ) {
             this.ren.insertBefore(
               actionContainer,
-              this.createButton(this._pageGapTxt, this.matPag.pageIndex),
+              this.createButton(i, this.matPag.pageIndex),
               nextPageNode
             );
-            dots = true;
+          } else {
+            if (i > this._rangeEnd && !dots) {
+              this.ren.insertBefore(
+                actionContainer,
+                this.createButton(this._pageGapTxt, this.matPag.pageIndex),
+                nextPageNode
+              );
+              dots = true;
+            }
           }
         }
       }
@@ -162,7 +167,7 @@ import {
       this._rangeStart = this._currentPage - this._showTotalPages / 2;
       this._rangeEnd = this._currentPage + this._showTotalPages / 2;
       // this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-      console.log("range_start", this.matPag.page);
+      // console.log("range_start", this.matPag.page);
       this.buildPageNumbers();
     }
   
@@ -175,8 +180,12 @@ import {
 
     }
   
+    // public ngAfterViewChecked() {
+    //     this.initPageRange();
+    // }
+
     public ngAfterViewInit() {
-        this.initPageRange();
-    }
+      this.initPageRange();
+  }
   }
   

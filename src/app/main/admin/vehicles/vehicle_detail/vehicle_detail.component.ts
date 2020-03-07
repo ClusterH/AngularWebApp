@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +12,8 @@ import { FuseUtils } from '@fuse/utils';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 import { Vehicle } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.model';
+import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
+
 import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
@@ -26,7 +30,7 @@ import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
 })
 export class VehicleDetailComponent implements OnInit, OnDestroy
 {
-    vehicle: Vehicle;
+    vehicle: any;
     pageType: string;
     vehicleForm: FormGroup;
 
@@ -42,6 +46,9 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
      * @param {MatSnackBar} _matSnackBar
      */
     constructor(
+        public router: ActivatedRoute,
+        private _adminVehiclesService: VehiclesService,
+
         private _vehicleDetailService: VehicleDetailService,
         private _formBuilder: FormBuilder,
         private _location: Location,
@@ -49,6 +56,19 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
         private _fuseTranslationLoaderService: FuseTranslationLoaderService
     )
     {
+        // this.vehicle = this._adminVehiclesService.vehicle_detail;
+        // console.log(this.vehicle);
+        // this.router.params.subscribe(params => {
+        //     console.log(params);
+        //     if (params) {
+        //         this.pageType = 'edit';
+        //         this.vehicle = params;
+        //         this.vehicleForm = this.createVehicleForm();
+        //     } else{
+        //         this.pageType ='new';
+
+        //     }
+        // });
         // Set the default
         this.vehicle = new Vehicle();
 
@@ -115,6 +135,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
             company      : [this.vehicle.company],
             group       : [this.vehicle.group],
             subgroup      : [this.vehicle.subgroup],
+            account : [this.vehicle.account],
             operator        : [this.vehicle.operator],
             unittype       : [this.vehicle.unittype],
             serviceplan         : [this.vehicle.serviceplan],
@@ -123,6 +144,13 @@ export class VehicleDetailComponent implements OnInit, OnDestroy
             model    : [this.vehicle.model],
             isactive      : [this.vehicle.isactive],
             timezone : [this.vehicle.timezone],
+            created : [this.vehicle.created],
+            createdbyname : [this.vehicle.createdbyname],
+            deletedwhen    : [this.vehicle.deletedwhen],
+            deletedbyname      : [this.vehicle.deletedbyname],
+            lastmodifieddate : [this.vehicle.lastmodifieddate],
+            lastmodifiedbyname : [this.vehicle.lastmodifiedbyname]
+
         });
     }
 

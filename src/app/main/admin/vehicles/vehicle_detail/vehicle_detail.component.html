@@ -11,7 +11,7 @@
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
 
             <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <!-- <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/vehicles/vehicles'">
                     <mat-icon>arrow_back</mat-icon>
@@ -29,10 +29,10 @@
                         <span>{{ 'VEHICLES.VEHICLEDETAIL' | translate }}</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- / APP TITLE -->
 
-            <button mat-raised-button
+            <!-- <button mat-raised-button
                     class="save-vehicle-button"
                     [disabled]="vehicleForm.invalid"
                     *ngIf="pageType ==='new'" (click)="addVehicle()">
@@ -44,7 +44,7 @@
                     [disabled]="vehicleForm.invalid || vehicleForm.pristine"
                     *ngIf="pageType ==='edit'" (click)="saveVehicle()">
                 <span>{{ 'VEHICLES.SAVE' | translate }}</span>
-            </button>
+            </button> -->
         </div>
         <!-- / HEADER -->
 
@@ -52,7 +52,7 @@
         <div class="content-card">
 
             <!-- CONTENT -->
-            <div class="content">
+            <!-- <div class="content">
 
                 <form name="vehicleForm" [formGroup]="vehicleForm" class="vehicle w-100-p" fxLayout="column" fxFlex>
 
@@ -61,9 +61,6 @@
                         <mat-tab label="{{ 'VEHICLES.FIRSTINFO' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar>
-
-                               
-
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'VEHICLES.NAME' | translate }}</mat-label>
                                     <input matInput placeholder="{{ 'VEHICLES.DRIVER' | translate }}"
@@ -174,7 +171,7 @@
 
                 </form>
 
-            </div>
+            </div> -->
             <!-- / CONTENT -->
 
         </div>

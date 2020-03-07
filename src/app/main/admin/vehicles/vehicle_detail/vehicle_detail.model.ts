@@ -9,6 +9,7 @@ export class Vehicle
     company: string;
     group: string;
     subgroup: string;
+    account: string;
     operator: string;
     unittype: string;
     serviceplan: string;
@@ -17,6 +18,12 @@ export class Vehicle
     model: string;
     isactive: string;
     timezone: string;
+    created: string;
+    createdbyname: string;
+    deletedwhen: string;
+    deletedbyname: string;
+    lastmodifieddate: string;
+    lastmodifiedbyname: string;
     
     /**
      * Constructor
@@ -31,6 +38,7 @@ export class Vehicle
         this.company = vehicle.company || '';
         this.group = vehicle.group || '';
         this.subgroup = vehicle.subgroup || '';
+        this.account = vehicle.account || '';
         this.operator = vehicle.operator || '';
         this.unittype = vehicle.unittype || '';
         this.serviceplan = vehicle.serviceplan || '';
@@ -39,5 +47,10 @@ export class Vehicle
         this.model = vehicle.model || '';
         this.isactive = vehicle.isactive || '';
         this.timezone = vehicle.timezone || '';
+        this.created = vehicle.created || '';
+        this.createdbyname = vehicle.createdbyname || '';
+        this.deletedwhen = vehicle.deletedbyname || '';
+        this.lastmodifieddate = vehicle.lastmodifieddate || '';
+        this.lastmodifiedbyname = vehicle.lastmodifiedbyname || '';
     }
 }

@@ -26,7 +26,7 @@ admin-vehicles {
 
                 .search-wrapper {
                     width: 100%;
-                    max-width: 480px;
+                    max-width: 320px;
                     border-radius: 28px;
                     overflow: hidden;
                     @include mat-elevation(1);
@@ -123,7 +123,7 @@ admin-vehicles {
         // }
 
         .mat-column-name {
-            flex: 0 1 9%;
+            flex: 0 1 7%;
         }
 
         // .mat-column-company {
@@ -162,19 +162,31 @@ admin-vehicles {
         // }
 
         .mat-column-timezone {
-            flex: 0 1 11%;
+            flex: 0 1 10%;
         }
 
         .mat-column-created {
-            flex: 0 1 10%;
+            flex: 0 1 8%;
         }
 
         .mat-column-deletedwhen {
-            flex: 0 1 10%;
+            flex: 0 1 8%;
         }
 
         .mat-column-lastmodifieddate {
-            flex: 0 1 10%;
+            flex: 0 1 8%;
+        }
+
+        .mat-column-createdbyname {
+            flex: 0 1 5%;
+        }
+
+        .mat-column-deletedbyname {
+            flex: 0 1 5%;
+        }
+
+        .mat-column-lastmodifiedbyname {
+            flex: 0 1 5%;
         }
 
         .quantity-indicator {
@@ -204,7 +216,8 @@ admin-vehicles {
         color: rgb(221, 221, 221) !important;
     }
     .mat-paginator-range-actions {
-        width: 700px;
+        // width: 700px;
+        margin-right: 10em !important;
     }
     .mat-mini-fab {
         width: 35px !important;
@@ -219,6 +232,10 @@ admin-vehicles {
         font-size: 14px !important;
         color: turquoise !important;
         background-color: rgba(64, 224, 208, .3) !important;
+    }
+    .mat-fab .mat-button-wrapper {
+        padding: 0px !important;
+        line-height: normal !important;
     }
     body.theme-default .mat-mini-fab {
         color: moccasin !important;
@@ -239,6 +256,56 @@ admin-vehicles {
     }
     .copy_icon {
         color: rgb(47, 170, 241);
+    }
+    .search_btn {
+        border-radius: 28px !important;
+        line-height: normal !important;
+
+    }
+
+    .mat-paginator {
+        .mat-paginator-container {
+            justify-content: flex-end;
+        }
+    
+        // override material paginator page switch
+        // .mat-paginator-range-label {
+        //     order: 3;
+        // }
+    
+        .mat-paginator-navigation-previous {
+            order: 1;
+        }
+        .mat-paginator-navigation-next {
+            order: 4;
+            // width: 50px !important;
+        }
+        .mat-paginator-navigation-last {
+            order: 5;
+        }
+        .page_index {
+            order: 2;
+            // display: flex;
+            // flex-direction: row;
+            // text-align: center;
+        }
+        .mat-form-field-infix {
+            width: 50px;
+            display: flex;
+            flex-direction: row;
+        }
+        .mat-input-element {
+            caret-color: rgba(47, 170, 241, 0.8);
+            color: rgb(47, 170, 241);
+        }
+        .index_input {
+            text-align: center;
+            margin-top: .45em !important;
+        }
+
+        mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
+            padding-bottom: 1.2em !important;
+        }
     }
     // .mat-select-trigger {
     //     body.theme-default .mat-select-value {

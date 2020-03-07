@@ -36,8 +36,7 @@ import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.servi
 import { VehicleDetailComponent} from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.component';
 import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/vehicles/dialog/dialog.component';
-import {StylePaginatorDirective} from 'app/main/admin/vehicles/vehicles/style-paginator.directive';
-
+import { StylePaginatorDirective } from 'app/main/admin/vehicles/vehicles/style-paginator.directive';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -45,10 +44,15 @@ const routes: Routes = [
     {
         path     : 'vehicles',
         component: VehiclesComponent,
-        // resolve  : {
-        //     data : VehiclesService 
-        // } 
+        // pathMatch: 'full'
     },
+    // {
+    //     path     : 'vehicle_detail',
+    //     component: VehicleDetailComponent,
+    //     resolve  : {
+    //         data: VehicleDetailService
+    //     } 
+    // },
     {
         path     : 'vehicles/:id',
         component: VehicleDetailComponent,
@@ -57,7 +61,7 @@ const routes: Routes = [
         } 
     },
     {
-        path     : 'vehicles/:id/:unit',
+        path     : 'vehicles/:id/:name',
         component: VehicleDetailComponent,
         resolve  : {
             data: VehicleDetailService
@@ -113,7 +117,7 @@ const routes: Routes = [
         StylePaginatorDirective
     ],
     providers: [
-        VehiclesService, VehicleDetailService 
+        VehiclesService, VehicleDetailService
     ]
 })
 export class VehiclesModule
