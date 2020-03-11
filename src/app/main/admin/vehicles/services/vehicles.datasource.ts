@@ -42,7 +42,7 @@ export class VehiclesDataSource extends DataSource<any>
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
-        this._adminVehiclesService.getVehicles(conncode, userid, pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
+        this._adminVehiclesService.getVehicles(conncode, userid, pageindex, pagesize, orderby,  orderdirection, filterItem, filterString, method)
         .pipe(
            catchError(() => of([])),
            finalize(() => this.loadingSubject.next(false))

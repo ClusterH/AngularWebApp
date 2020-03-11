@@ -45,7 +45,6 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.VEHICLES',
                 type     : 'item',
                 url      : '/admin/vehicles/vehicles',
-                exactMatch: true
             },
             {
                 id       : 'operators',

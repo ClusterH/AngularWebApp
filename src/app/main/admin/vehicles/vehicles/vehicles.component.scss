@@ -37,8 +37,8 @@ admin-vehicles {
 
                     .search {
                         width: 100%;
-                        height: 40px;
-                        line-height: 40px;
+                        height: 30px;
+                        line-height: 30px;
                         padding: 0 18px;
 
                         input {
@@ -79,8 +79,8 @@ admin-vehicles {
             height: 40px;
             min-height: 24px;
             font-weight: bold;
-            // background-color: rgb(230, 230, 230) !important;
-
+            // color: 
+            background-color: rgb(225, 245, 254) !important;
         }
 
         .vehicle {
@@ -217,7 +217,7 @@ admin-vehicles {
     }
     .mat-paginator-range-actions {
         // width: 700px;
-        margin-right: 10em !important;
+        margin-right: 3em !important;
     }
     .mat-mini-fab {
         width: 35px !important;
@@ -226,13 +226,13 @@ admin-vehicles {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    .mat-mini-fab[disabled] {
-        width: 35px !important;
-        height: 35px !important;
-        font-size: 14px !important;
-        color: turquoise !important;
-        background-color: rgba(64, 224, 208, .3) !important;
-    }
+    // .mat-mini-fab[disabled] {
+    //     width: 35px !important;
+    //     height: 35px !important;
+    //     font-size: 14px !important;
+    //     color: turquoise !important;
+    //     background-color: rgba(64, 224, 208, .3) !important;
+    // }
     .mat-fab .mat-button-wrapper {
         padding: 0px !important;
         line-height: normal !important;
@@ -241,11 +241,11 @@ admin-vehicles {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    .mat-select-value {
-        color: rgb(221, 221, 221) !important;
-        margin-left: 10px !important;
-        margin-right: 0px !important;
-    }
+    // .mat-select-value {
+    //     color: rgb(221, 221, 221) !important;
+    //     margin-left: 10px !important;
+    //     margin-right: 0px !important;
+    // }
     .edit_icon {
         color: green;
         margin-right: 3px;
@@ -272,25 +272,38 @@ admin-vehicles {
         // .mat-paginator-range-label {
         //     order: 3;
         // }
+
+        // button.mat-icon-button.mat-button-base[disabled] {
+        //     font-size: 14px !important;
+        //     color: rgba(5, 30, 44, 0.63) !important;
+        //     background-color: transparent !important;
+        // }
+        // button.mat-icon-button.mat-button-base {
+        //     font-size: 14px !important;
+        //     color: rgb(47, 170, 241) !important;
+        //     background-color: transparent !important;
+        // }
     
         .mat-paginator-navigation-previous {
             order: 1;
+            // color: rgb(47, 170, 241) !important;
+
         }
         .mat-paginator-navigation-next {
-            order: 4;
+            order: 3;
             // width: 50px !important;
         }
         .mat-paginator-navigation-last {
-            order: 5;
+            order: 4;
         }
         .page_index {
             order: 2;
-            // display: flex;
-            // flex-direction: row;
-            // text-align: center;
+        }
+        .mat-paginator-range-label {
+            order: 0;
         }
         .mat-form-field-infix {
-            width: 50px;
+            width: 45px;
             display: flex;
             flex-direction: row;
         }
@@ -300,12 +313,26 @@ admin-vehicles {
         }
         .index_input {
             text-align: center;
-            margin-top: .45em !important;
+            margin-top: .35em !important;
+        }
+        .mat-select-value, .mat-select-arrow{
+            color: rgb(47, 170, 241) !important;
+            margin-right: 0px !important;
+            // text-align: center;
+            justify-content: center !important;
+        }
+      
+        .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+            background: none;
         }
 
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
+        // body.theme-default .mat-icon-button {
+        //     color: #b2f5ef !important;
+        //     background: transparent !important;
+        // }
     }
     // .mat-select-trigger {
     //     body.theme-default .mat-select-value {

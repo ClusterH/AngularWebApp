@@ -11,7 +11,7 @@
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
 
             <!-- APP TITLE -->
-            <!-- <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/vehicles/vehicles'">
                     <mat-icon>arrow_back</mat-icon>
@@ -20,31 +20,31 @@
                 <div fxLayout="column" fxLayoutAlign="start start"
                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
-                        {{vehicle.unit}}
+                        {{vehicle.name}}
                     </div>
                     <div class="h2" *ngIf="pageType ==='new'">
-                        {{ 'VEHICLES.NEWVEHICLE' | translate }}
+                        New Vehicle
                     </div>
                     <div class="subtitle secondary-text">
-                        <span>{{ 'VEHICLES.VEHICLEDETAIL' | translate }}</span>
+                        <span>Vehicle Detail</span>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <!-- / APP TITLE -->
 
-            <!-- <button mat-raised-button
+            <button mat-raised-button
                     class="save-vehicle-button"
                     [disabled]="vehicleForm.invalid"
                     *ngIf="pageType ==='new'" (click)="addVehicle()">
-                <span>{{ 'VEHICLES.ADD' | translate }}</span>
+                <span>ADD</span>
             </button>
 
             <button mat-raised-button
                     class="save-vehicle-button"
                     [disabled]="vehicleForm.invalid || vehicleForm.pristine"
                     *ngIf="pageType ==='edit'" (click)="saveVehicle()">
-                <span>{{ 'VEHICLES.SAVE' | translate }}</span>
-            </button> -->
+                <span>SAVE</span>
+            </button>
         </div>
         <!-- / HEADER -->
 
@@ -52,126 +52,199 @@
         <div class="content-card">
 
             <!-- CONTENT -->
-            <!-- <div class="content">
-
+            <div class="content">
                 <form name="vehicleForm" [formGroup]="vehicleForm" class="vehicle w-100-p" fxLayout="column" fxFlex>
 
                     <mat-tab-group>
 
-                        <mat-tab label="{{ 'VEHICLES.FIRSTINFO' | translate }}">
-
-                            <div class="tab-content p-24" fusePerfectScrollbar>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.DRIVER' | translate }}"
-                                            name="Driver"
-                                            formControlName="Driver"
-                                            required>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.SUBFLEET' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.SUBFLEET' | translate }}"
-                                            name="SubFleet"
-                                            formControlName="SubFleet"
-                                            required>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-
-                                    <mat-label>{{ 'VEHICLES.GROUP' | translate }}</mat-label>
-
-                                    <input matInput placeholder="{{ 'VEHICLES.GROUP' | translate }}"
-                                            name="Group"
-                                            formControlName="Group"
-                                            required>
-
-                                </mat-form-field>
-                            </div>
-
-                        </mat-tab>
-
-                        <mat-tab label="{{ 'VEHICLES.SECONDINFO' | translate }}">
-
-                            <div class="tab-content p-24" fusePerfectScrollbar>
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.DEVICE' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.DEVICE' | translate }}"
-                                           name="Device"
-                                           formControlName="Device"
-                                          >
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.MAKE' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.MAKE' | translate }}"
-                                           name="Make"
-                                           formControlName="Make"
-                                          >
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.VIN' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.VIN' | translate }}"
-                                           name="VIN"
-                                           formControlName="VIN"
-                                           >
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.PLATE' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.PLATE' | translate }}"
-                                           name="Plate"
-                                           formControlName="Plate"
-                                          >
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.LASTREPORT' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.LASTREPORT' | translate }}"
-                                           name="Last_Report"
-                                           formControlName="Last_Report"
-                                          >
-                                </mat-form-field>
-
-                            </div>
-                        </mat-tab>
-
-                        <mat-tab label="{{ 'VEHICLES.THIRDINFO' | translate }}">
+                        <mat-tab label="Basic Info">
 
                             <div class="tab-content p-24" fusePerfectScrollbar>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.LOCATION' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.LOCATION' | translate }}"
-                                           name="Location"
-                                           formControlName="Location">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput placeholder="Name"
+                                           name="name"
+                                           formControlName="name"
+                                           required>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.STATUS' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.STATUS' | translate }}"
-                                           name="Status"
-                                           formControlName="Status"
-                                          >
+                                    <mat-label>Company</mat-label>
+                                    <input matInput placeholder="Company"
+                                           name="company"
+                                           formControlName="company"
+                                           required>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'VEHICLES.SERVICEPLAN' | translate }}</mat-label>
-                                    <input matInput placeholder="{{ 'VEHICLES.SERVICEPLAN' | translate }}"
-                                           name="ServicePlan"
-                                           formControlName="ServicePlan"
-                                          >
+                                    <mat-label>Group</mat-label>
+                                    <input matInput placeholder="Group"
+                                           name="group"
+                                           formControlName="group"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>SubGroup</mat-label>
+                                    <input matInput placeholder="SubGroup"
+                                           name="subgroup"
+                                           formControlName="subgroup"
+                                           required>
+                                </mat-form-field>
+                               
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Second Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Account</mat-label>
+                                    <input matInput placeholder="Account"
+                                           name="account"
+                                           formControlName="account"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Operator</mat-label>
+                                    <input matInput placeholder="Operator"
+                                           name="operator"
+                                           formControlName="operator"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Unit Type</mat-label>
+                                    <input matInput placeholder="Unit Type"
+                                           name="unittype"
+                                           formControlName="unittype"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Service Plan</mat-label>
+                                    <input matInput placeholder="Service Plan"
+                                           name="serviceplan"
+                                           formControlName="serviceplan"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Type</mat-label>
+                                    <input matInput placeholder="Product Type"
+                                           name="producttype"
+                                           formControlName="producttype"
+                                           required>
+                                </mat-form-field>
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Third Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Make</mat-label>
+                                    <input matInput placeholder="Make"
+                                           name="make"
+                                           formControlName="make">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Model</mat-label>
+                                    <input matInput placeholder="Model"
+                                           name="model"
+                                           formControlName="model"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>IsActive</mat-label>
+                                    <input matInput placeholder="IsActive"
+                                           name="isactive"
+                                           formControlName="isactive"
+                                           required>
                                 </mat-form-field>
 
                             </div>
 
                         </mat-tab>
+
+                        <mat-tab label="Audit">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>TimeZone</mat-label>
+                                    <input matInput placeholder="TimeZone"
+                                           name="timezone"
+                                           formControlName="timezone">
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Created</mat-label>
+                                        <input matInput placeholder="Created"
+                                               name="created"
+                                               formControlName="created">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>CreatedByName</mat-label>
+                                        <input matInput placeholder="CreatedByName"
+                                               name="createdbyname"
+                                               formControlName="createdbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Deleted When</mat-label>
+                                        <input matInput placeholder="Deleted When"
+                                               name="deletedwhen"
+                                               formControlName="deletedwhen">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Deleted By Name</mat-label>
+                                        <input matInput placeholder="Deleted By Name"
+                                               name="deletedbyname"
+                                               formControlName="deletedbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Last Modified Date</mat-label>
+                                        <input matInput placeholder="Last Modified Date"
+                                               name="lastmodifieddate"
+                                               formControlName="lastmodifieddate">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Last Modified By Name</mat-label>
+                                        <input matInput placeholder="Last Modified By Name"
+                                               name="lastmodifiedbyname"
+                                               formControlName="lastmodifiedbyname">
+                                    </mat-form-field>
+                                </div>
+
+
+                            </div>
+
+                        </mat-tab>
+
                     </mat-tab-group>
 
                 </form>
 
-            </div> -->
+                
+            </div>
             <!-- / CONTENT -->
 
         </div>
@@ -181,3 +254,4 @@
     <!-- / CENTER -->
 
 </div>
+

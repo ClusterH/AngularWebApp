@@ -34,45 +34,23 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 import { VehiclesComponent} from 'app/main/admin/vehicles/vehicles/vehicles.component';
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { VehicleDetailComponent} from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.component';
-import { VehicleDetailService } from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.service';
+import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/vehicles/dialog/dialog.component';
 import { StylePaginatorDirective } from 'app/main/admin/vehicles/vehicles/style-paginator.directive';
 
 import { HttpClientModule } from '@angular/common/http';
 
-const routes: Routes = [
+const routes = [
     {
         path     : 'vehicles',
         component: VehiclesComponent,
         // pathMatch: 'full'
     },
-    // {
-    //     path     : 'vehicle_detail',
-    //     component: VehicleDetailComponent,
-    //     resolve  : {
-    //         data: VehicleDetailService
-    //     } 
-    // },
     {
-        path     : 'vehicles/:id',
+        path     : 'vehicle_detail',
         component: VehicleDetailComponent,
-        resolve  : {
-            data: VehicleDetailService
-        } 
+        // pathMatch: 'full'
     },
-    {
-        path     : 'vehicles/:id/:name',
-        component: VehicleDetailComponent,
-        resolve  : {
-            data: VehicleDetailService
-        }
-    },
-    
-   
-    // {
-    //     path        : 'osm',
-    //     loadChildren: () => import('./osm/osm.module').then(m => m.OpenStreetMapModule)
-    // },
 ];
 
 @NgModule({
@@ -120,6 +98,4 @@ const routes: Routes = [
         VehiclesService, VehicleDetailService
     ]
 })
-export class VehiclesModule
-{
-}
+export class VehiclesModule{ }

@@ -65,7 +65,7 @@
 
             <!-- ADD BUTTON -->
             <button mat-fab
-                    [routerLink]="'/admin/vehicles/vehicles/new'"
+                    [routerLink]="'/admin/vehicles/vehicle_detail'"
                     class="accent  mt-24 mt-md-0">
                <mat-icon>add</mat-icon>
 
@@ -92,7 +92,8 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let vehicle">
                         <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)">edit</mat-icon>
-                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicles/vehicle/'+vehicle.id+'/'+vehicle.name">edit</mat-icon> -->
+                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicle_detail/'+vehicle.id+'/'+vehicle.name">edit</mat-icon> -->
+                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicle_detail'">edit</mat-icon> -->
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
                     </mat-cell>
@@ -297,8 +298,7 @@
 
                 <mat-row  *matRowDef="let vehicle; columns: displayedColumns;"
                             class="vehicle font-size-10"
-                            matRipple
-                        >
+                            matRipple >
                 </mat-row>
 
             </mat-table>
@@ -307,11 +307,11 @@
         <div>
             <div class="page_index">
                 <!-- <form> -->
-                <label>Page:&nbsp;</label>
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
                 <mat-form-field > 
                     <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
                 </mat-form-field>
-                <label>of&nbsp;{{dataSource.total_page}}</label>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
 
             </div>

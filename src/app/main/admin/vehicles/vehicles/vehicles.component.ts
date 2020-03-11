@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output,  Directive, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Input, Directive, Renderer2 } from '@angular/core';
+import { Router, NavigationExtras } from '@angular/router';
 import * as $ from 'jquery';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -38,16 +38,12 @@ import { Route } from '@angular/compiler/src/core';
 export class VehiclesComponent implements OnInit
 {
     dataSource: VehiclesDataSource;
+
     @Output()
     pageEvent: PageEvent;
-    // pageStyle = {
-    //     pageIndex: number,
-    //     pageSize: 25,
-    //     length: 100
-    // }
+   
     pageIndex= 0;
     pageSize = 25;
-    // length: number;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
@@ -173,10 +169,12 @@ export class VehiclesComponent implements OnInit
     }
 
     editShowVehicleDetail(vehicle: any) {
+        // let navigationExtras: NavigationExtras = vehicle;
         this._adminVehiclesService.vehicle_detail = vehicle;
         console.log(this._adminVehiclesService.vehicle_detail);
+        // console.log(navigationExtras);
 
-        this.router.navigate(['vehicles', vehicle]);
+        this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
     
     deleteVehicle(vehicle): void
