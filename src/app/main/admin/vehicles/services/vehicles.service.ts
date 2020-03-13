@@ -20,12 +20,6 @@ export class VehiclesService
     
     getVehicles(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
     {
-        // const obj = {
-        //     conncode: "PolarixUSA",
-        //     userid: "1",
-        //     method: "Units_Tlist"
-        // }
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
@@ -53,7 +47,7 @@ export class VehiclesService
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
-                .set(`${filterItem}`, `%${filterString}%`.toString())
+                .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
             console.log('params', params);
@@ -63,17 +57,6 @@ export class VehiclesService
                 params: params
             });
         }
-        
-
-   
-        // console.log(headers);
-        // console.log(conncode, pageindex, pagesize, userid, orderby, orderdirection, method);
-            
-        // return  this._httpClient.get('http://trackingxl.polarix.com/trackingxlapi.ashx?{conncode:"PolarixUSA",userid:"1",pageindex:"1",pagesize:"5",orderby:"Name",orderdirection:"ASC",method:"Unit_TList"}', {headers: headers})
-        // return  this._httpClient.get('http://trackingxl.polarix.com/trackingxlapi.ashx',{
-        //         headers: headers,   
-        //         params: params
-        //     });
     }
     
     /**

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -23,28 +24,44 @@ export class VehicleDetailService
         this.onProductChanged = new BehaviorSubject({});
     }
 
-    // resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
-    // {
-    //     this.routeParams = route.params;
+    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
+    {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        
+        if(name == '') {
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('method', method.toString());
+            
+            console.log('params', params);
 
-    //     return new Promise((resolve, reject) => {
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
+        } else {
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('name', `^${name}^`) 
+            .set('method', method.toString());
+            
+            console.log('params', params);
 
-    //         Promise.all([
-    //             this.getProduct()
-    //         ]).then(
-    //             () => {
-    //                 resolve();
-    //             },
-    //             reject
-    //         );
-    //     });
-    // }
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
+        }
+        
+    }
 
-    /**
-     * Get product
-     *
-     * @returns {Promise<any>}
-     */
     getProduct(): Promise<any>
     {
         return new Promise((resolve, reject) => {

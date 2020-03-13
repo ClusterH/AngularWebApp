@@ -82,6 +82,8 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/toolbar/toolbar.theme";
 
 @import "src/app/main/admin/vehicles/vehicles/vehicles.theme";
+@import "src/app/main/admin/vehicles/vehicle_detail/vehicle_detail.theme";
+
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -91,6 +93,8 @@ $typography: mat-typography-config(
     @include toolbar-theme($theme);
 
     @include admin-vehicles-theme($theme);
+    @include admin-vehicle-theme($theme);
+
 
 }
 

@@ -44,7 +44,7 @@ export class VehiclesComponent implements OnInit
    
     pageIndex= 0;
     pageSize = 25;
-    pageSizeOptions: number[] = [5, 10, 25, 100];
+    pageSizeOptions: number[] = [1, 5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
@@ -118,10 +118,12 @@ export class VehiclesComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
+        console.log(this.paginator.pageSize);
+
         // this.paginator.page
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
+           tap(() => this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -137,7 +139,8 @@ export class VehiclesComponent implements OnInit
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles("PolarixUSA", 1, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        // this.dataSource.paginator = this.paginator;
+        this.dataSource.loadVehicles("PolarixUSA", 2, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
     onRowClicked(vehicle) {
@@ -150,13 +153,13 @@ export class VehiclesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadVehicles("PolarixUSA", 1, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles("PolarixUSA", 2, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     filterEvent() {
@@ -165,7 +168,7 @@ export class VehiclesComponent implements OnInit
     navigatePageEvent() {
         // console.log(this.index_number);
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     editShowVehicleDetail(vehicle: any) {

@@ -53,14 +53,15 @@
 
             <!-- CONTENT -->
             <div class="content">
+                <!-- <input #filter placeholder="Filter" [(ngModel)] = "filter_string"  class="filter_company_input" > -->
+
                 <form name="vehicleForm" [formGroup]="vehicleForm" class="vehicle w-100-p" fxLayout="column" fxFlex>
 
                     <mat-tab-group>
 
                         <mat-tab label="Basic Info">
 
-                            <div class="tab-content p-24" fusePerfectScrollbar>
-
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Name</mat-label>
                                     <input matInput placeholder="Name"
@@ -68,22 +69,94 @@
                                            formControlName="name"
                                            required>
                                 </mat-form-field>
+                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" id="companyInput">
+                                        <mat-label>Company</mat-label>
+                                        <input matInput placeholder="Company"
+                                            (click)="showCompanyList()"
+                                            
+                                            name="company"
+                                            formControlName="company"
+                                            required>
+                                       
+                                    </mat-form-field>
+                                    <div >
+                                        <div  style="width: 100%; overflow: auto;">
+                                            <mat-table [dataSource]="dataSource"  class="vehicles-table font-size-10 mat-elevation-z8">
+                                                <ng-container matColumnDef="name">
+                                                    <td mat-cell *matCellDef="let element" (click)="getCompany(element)">{{element.name}}</td>
+                                                </ng-container>
+                                                <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                            </mat-table>
+                                        </div>
+                                        <div>
+                                            <mat-paginator
+                                                #paginator
+                                                class="table_paginator"
+                                                [length]="dataSource.totalLength"
+                                                [pageSize]="5"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </div>
+                                    </div>
 
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Company</mat-label>
-                                    <input matInput placeholder="Company"
-                                           name="company"
-                                           formControlName="company"
-                                           required>
-                                </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Group</mat-label>
+                                        <input matInput placeholder="Group"
+                                            name="group"
+                                            formControlName="group"
+                                            required>
+                                    </mat-form-field>
+                                </div> -->
+                                
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Company</mat-label>
+                                        <mat-select formControlName="companyName" >
+                                            <input matInput  name="filter_string" formControlName="filter_string" #filter placeholder="Filter"  class="filter_company_input"
+                                                (keyup) = "onKey($event)"
+                                                style=" border: 1px solid #b3b1b1 !important;
+                                                        border-radius: 5px !important;
+                                                        margin: 20px !important;
+                                                        width: 90% !important;
+                                                        height: 40px !important;" >
 
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>Group</mat-label>
-                                    <input matInput placeholder="Group"
-                                           name="group"
-                                           formControlName="group"
-                                           required>
-                                </mat-form-field>
+                                            <!-- <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search...'"
+                                                [noEntriesFoundLabel]="'Not found'" name="search"></ngx-mat-select-search> -->
+                                            <!-- <mat-option value="companyName">{{vehicle.company}}</mat-option> -->
+                                            <!-- <mat-option  style="width: 100%; height: auto; padding: 0px;"> -->
+                                                <div  style="width: 100%; overflow: auto;">
+                                                    <mat-table [dataSource]="dataSource"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                                        <ng-container matColumnDef="name">
+                                                            <td mat-cell *matCellDef="let element" (click)="getCompany(element)" style="border: 0px;">
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="element.name">{{element.name}}</mat-option>
+                                                            </td>
+                                                        </ng-container>
+                                                        <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    </mat-table>
+                                                </div>
+                                            <!-- </mat-option> -->
+                                           
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginator
+                                                class="table_paginator"
+                                                [length]="dataSource.totalLength"
+                                                [pageSize]="5"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Group</mat-label>
+                                        <input matInput placeholder="Group"
+                                            name="group"
+                                            formControlName="group"
+                                            required>
+                                    </mat-form-field>
+                                </div>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>SubGroup</mat-label>
@@ -234,7 +307,6 @@
                                     </mat-form-field>
                                 </div>
 
-
                             </div>
 
                         </mat-tab>
@@ -242,6 +314,12 @@
                     </mat-tab-group>
 
                 </form>
+
+                <!-- <div class="page_index">
+                    <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                        <input class="index_input"   (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                    <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                </div> -->
 
                 
             </div>

@@ -20,14 +20,19 @@ export class CourseDialogComponent implements OnInit {
         private fb: FormBuilder,
         private _adminVehiclesService: VehiclesService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {vehicle,flag} ) {
+        @Inject(MAT_DIALOG_DATA) {vehicle, flag} ) {
 
+        // this.vehicle = vehicle;
         this.vehicle = vehicle;
         this.flag = flag;
-        console.log(flag);
     }
 
     ngOnInit() {
+        // console.log(this.position);
+        // console.log( `${this.position.PosTop}px`);
+
+        // this.dialogRef.updatePosition({top: `${this.position.PosTop}px`, left: `${this.position.Posleft}px`});
+        // // this.dialogRef.updatePosition({top: '201.20000px', left: '24px'});
 
     }
 

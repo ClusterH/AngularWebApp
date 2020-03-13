@@ -26,6 +26,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
@@ -58,6 +59,7 @@ const routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxDatatableModule,
+        NgxMatSelectSearchModule,
         
         MatButtonModule,
         MatCheckboxModule,
