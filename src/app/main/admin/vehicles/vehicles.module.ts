@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -24,6 +23,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+
+import { NgSelectModule } from '@ng-select/ng-select';
+import { BlockUIModule } from 'ng-block-ui';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -58,7 +60,6 @@ const routes = [
     imports     : [
         FuseSharedModule,
         FuseConfirmDialogModule,
-        NgxDatatableModule,
         NgxMatSelectSearchModule,
         
         MatButtonModule,
@@ -82,6 +83,9 @@ const routes = [
 
         TranslateModule,
         HttpClientModule,
+
+        NgSelectModule,
+        BlockUIModule,
 
         NgbModule,
         CommonModule,
