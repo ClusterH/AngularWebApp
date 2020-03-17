@@ -7,7 +7,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class VehiclesService
 {
     vehicles: any[];
-    vehicle_detail: any;
 
     /**
      * Constructor

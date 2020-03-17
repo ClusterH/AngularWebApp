@@ -41,7 +41,7 @@ export class Vehicle
     constructor(vehicle?)
     {
         vehicle = vehicle || {};
-        this.id = vehicle.id || FuseUtils.generateGUID();
+        this.id = vehicle.id || 0;
         this.name = vehicle.name || '';
         this.companyid = vehicle.companyid || 0;
         this.company = vehicle.company || '';

@@ -21,6 +21,9 @@ export class VehicleDetailDataSource extends DataSource<any>
     totalLength: number;
     total_page: number;
     page_index: number;
+    flag: boolean =false;
+    selected_method: string;
+    selected_method_id: number;
     // private countSubject = new BehaviorSubject<number>(0);
     // public counter$ = this.countSubject.asObservable();
 
@@ -34,11 +37,58 @@ export class VehicleDetailDataSource extends DataSource<any>
         // private _matSort: MatSort
     ) {
         super();
+        this.flag = false;
     }
 
     loadCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
         console.log("loadVehicles:", conncode, userid,  pagesize, pageindex, name, method );
         this.loadingSubject.next(true);
+        if (this.vehicleDetailService.vehicle_detail == '') {
+            this.selected_method = '';
+        } else {
+            switch(method) {
+                case 'company_clist':
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.companyid
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.company
+                    break;
+                case 'account_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.account
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.accountid
+                    break;
+                case 'group_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.account
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.accountid
+                    break;
+                case 'operator_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.operator
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.operatorid
+                    break;
+                case 'unittype_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.unittype
+                    this.selected_method_id= this.vehicleDetailService.vehicle_detail.unittypeid
+                    break;
+                case 'serviceplan_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.serviceplan
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.serviceplanid
+                    break;
+                case 'producttype_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.producttype
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.producttypeid
+                    break;
+                case 'make_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.make
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.makeid
+                    break;
+                case 'model_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.model
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.modelid
+                    break;
+                case 'timezone_clist':
+                    this.selected_method = this.vehicleDetailService.vehicle_detail.timezone
+                    this.selected_method_id = this.vehicleDetailService.vehicle_detail.timezoneid
+                    break;
+            }
+        }
    
         // use pipe operator to chain functions with Observable type
         this.vehicleDetailService.getCompanies(conncode, userid, pageindex, pagesize, name, method)
@@ -48,9 +98,41 @@ export class VehicleDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
-           this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
+           console.log("method:", method, result);
+           if (pageindex == 0 && this.vehicleDetailService.vehicle_detail && this.selected_method && !this.flag) {
+               console.log("add started1");
+               for(let i = 0; i < result.TrackingXLAPI.DATA.length; i++) {
+                   if (this.selected_method == result.TrackingXLAPI.DATA[i].name) {
+                       this.flag = true;
+
+                       result.TrackingXLAPI.DATA.forEach(function(item, j){
+                           if(item.name == result.TrackingXLAPI.DATA[i].name ) {
+                                result.TrackingXLAPI.DATA.splice(j, 1);
+                                result.TrackingXLAPI.DATA.unshift(item);
+                           }
+                       })
+                   }
+               }
+
+               if (!this.flag ) {
+                    let temp = {id: this.selected_method_id, name: this.selected_method};
+                    let subResult = result.TrackingXLAPI.DATA.unshift(temp);
+                    console.log(subResult);
+                    this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
+                    console.log("add started2");
+
+                } else {
+                    this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
+                    console.log(result.TrackingXLAPI.DATA);
+                }
+           } else {
+            
+                this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
+                console.log(result.TrackingXLAPI.DATA);
+           }
+
            this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
+
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 

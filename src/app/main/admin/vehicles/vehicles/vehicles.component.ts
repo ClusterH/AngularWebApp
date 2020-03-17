@@ -17,6 +17,8 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
+import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
+
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
 
@@ -88,6 +90,7 @@ export class VehiclesComponent implements OnInit
     
     constructor(
         private _adminVehiclesService: VehiclesService,
+        private vehicleDetailService: VehicleDetailService,
         public _matDialog: MatDialog, private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private renderer : Renderer2,
@@ -171,11 +174,23 @@ export class VehiclesComponent implements OnInit
         this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
+    addNewVehicle() {
+        this.vehicleDetailService.vehicle_detail = '';
+        // sessionStorage.removeItem("vehicle_detail");
+        this.router.navigate(['admin/vehicles/vehicle_detail']);
+    }
+
     editShowVehicleDetail(vehicle: any) {
-        // let navigationExtras: NavigationExtras = vehicle;
-        this._adminVehiclesService.vehicle_detail = vehicle;
-        console.log(this._adminVehiclesService.vehicle_detail);
-        // console.log(navigationExtras);
+        this.vehicleDetailService.vehicle_detail = vehicle;
+        // sessionStorage.removeItem("vehicle_detail");
+
+        // sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        // // this.vehicle = JSON.parse(sessionStorage.getItem("vehicle_detail"))? JSON.parse(sessionStorage.getItem("vehicle_detail")) : '';
+        // // localStorage.setItem("vehicle_id", vehicle.id);
+        // // if (localStorage.getItem("vehicle_detail")) {
+        // //     localStorage.removeItem("vehicle_detail");
+        // // }
+        // // localStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
 
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }

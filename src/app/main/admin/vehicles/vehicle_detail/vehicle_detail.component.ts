@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
+
+import { Vehicle } from 'app/main/admin/vehicles/model/vehicle.model';
 
 import * as $ from 'jquery';
 
@@ -27,10 +29,14 @@ import { VehicleDetailDataSource } from "app/main/admin/vehicles/services/vehicl
 
 export class VehicleDetailComponent implements OnInit
 {
+  vehicle_detail: any;
   vehicle: any;
   pageType: string;
   // vehicleForm: FormGroup;
   selected_company = '';
+  company = '';
+
+  vehicleForm: FormGroup;
 
   flag: boolean = false;
 
@@ -70,6 +76,7 @@ export class VehicleDetailComponent implements OnInit
     paginatorModel: MatPaginator;
   @ViewChild('paginatorTimeZone', {read: MatPaginator, static: true})
     paginatorTimeZone: MatPaginator;
+  productForm: FormGroup;
 
   constructor(
     private vehiclesService: VehiclesService,
@@ -77,84 +84,37 @@ export class VehicleDetailComponent implements OnInit
     private _formBuilder: FormBuilder,
     public _matDialog: MatDialog,
   ) {
-      this.vehicle = this.vehiclesService.vehicle_detail;
-      this.vehiclesService.vehicle_detail = '';
-      console.log(this.vehicle, this.vehiclesService.vehicle_detail);
-
-      // this.selected_company = this.vehicle.company;
-      console.log(this.selected_company);
+    this.vehicle = this.vehicleDetailService.vehicle_detail;
+    // this.company = this.vehicle.company?  this.vehicle.company : '';
+      // this.vehicle = sessionStorage.getItem("vehicle_detail")? JSON.parse(sessionStorage.getItem("vehicle_detail")) : '';
+      if ( this.vehicle )
+      {
+        // this.vehicle = JSON.parse(sessionStorage.getItem("vehicle_detail"));
+        this.pageType = 'edit';
+      }
+      else
+      {
+        // this.vehicle = new Vehicle;
+        console.log(this.vehicle);
+        this.pageType = 'new';
+      }
       this.flag = false;
       this.filter_string = '';
-      this.setDefault();
-
-  }
-
-  vehicleForm = this._formBuilder.group({
-    name: [''],
-    company: [''],
-    group: [''],
-    account: [''],
-    operator: [''],
-    unittype: [''],
-    serviceplan: [''],
-    producttype: [''],
-    make: [''],
-    model: [''],
-    timezone: [''],
-
-    // filter_string: [this.filter_string],
-  });
-
-  onFormSubmit() {
-   console.log(this.vehicleForm);
-  }
-  setDefault() {
-    let vehicle_info = {
-      name: this.vehicle.name,
-      company: this.vehicle.company,
-      group: this.vehicle.group,
-      account: this.vehicle.account,
-      operator: this.vehicle.operator,
-      unittype: this.vehicle.unittype,
-      serviceplan: this.vehicle.serviceplan,
-      producttype: this.vehicle.producttype,
-      make: this.vehicle.make,
-      model: this.vehicle.model,
-      timezone: this.vehicle.timezone
-
-    };
-    console.log(vehicle_info);
-    this.vehicleForm.setValue(vehicle_info);
   }
 
   ngOnInit(): void {
-
-    if ( this.vehicle )
-    {
-      this.pageType = 'edit';
-    }
-    else
-    {
-      this.pageType = 'new';
-    }
-
-    // this.vehicleForm = this.createVehicleForm();
-    // this.setValues();
-
-    // this.selected_company = this.vehicle.company;
-
-
-    // this.vehicleForm.get('companyName').setValue(this.vehicle.company);
-    this.dataSourceCompany = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceGroup = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceAccount = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceOperator = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceUnitType = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceServicePlan = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceProductType = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceMake = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceModel = new VehicleDetailDataSource(this.vehicleDetailService);
-    this.dataSourceTimeZone = new VehicleDetailDataSource(this.vehicleDetailService);
+    console.log(this.vehicle);
+  
+    this.dataSourceCompany        = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceGroup          = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceAccount        = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceOperator       = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceUnitType       = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceServicePlan    = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceProductType    = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceMake           = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceModel          = new VehicleDetailDataSource(this.vehicleDetailService);
+    this.dataSourceTimeZone       = new VehicleDetailDataSource(this.vehicleDetailService);
 
     this.dataSourceCompany.loadCompanies("PolarixUSA", 2, 0, 10, this.filter_string, "company_clist");
     this.dataSourceGroup.loadCompanies("PolarixUSA", 2, 0, 10, this.filter_string, "group_clist");
@@ -166,14 +126,31 @@ export class VehicleDetailComponent implements OnInit
     this.dataSourceMake.loadCompanies("PolarixUSA", 2, 0, 10, this.filter_string, "make_clist");
     this.dataSourceModel.loadCompanies("PolarixUSA", 2, 0, 10, this.filter_string, "model_clist");
     this.dataSourceTimeZone.loadCompanies("PolarixUSA", 2, 0, 10, this.filter_string, "timezone_clist");
-    // console.log(this.dataSource);
-   
-    // const paginatorIntl = this.paginator._intl;
-    // paginatorIntl.nextPageLabel = '';
-    // paginatorIntl.previousPageLabel = '';
-    // paginatorIntl.itemsPerPageLabel = '';
-    // paginatorIntl.getRangeLabel = disibl;
-  }
+
+    this.vehicleForm = this._formBuilder.group({
+      name               : [null, Validators.required],
+      company            : [null, Validators.required],
+      group              : [null, Validators.required],
+      subgroup           : [null, Validators.required],
+      account            : [null, Validators.required],
+      operator           : [null, Validators.required],
+      unittype           : [null, Validators.required],
+      serviceplan        : [null, Validators.required],
+      producttype        : [null, Validators.required],
+      make               : [null, Validators.required],
+      model              : [null, Validators.required],
+      isactive           : [null, Validators.required],
+      timezone           : [null, Validators.required],
+      created            : [null, Validators.required],
+      createdbyname      : [null, Validators.required],
+      deletedwhen        : [null, Validators.required],
+      deletedbyname      : [null, Validators.required],
+      lastmodifieddate   : [null, Validators.required],
+      lastmodifiedbyname : [null, Validators.required],
+  });
+
+  this.setValues();
+}
 
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
@@ -184,7 +161,7 @@ export class VehicleDetailComponent implements OnInit
     merge(this.paginatorCompany.page)
     .pipe(
       tap(() => {
-        this.dataSourceCompany.loadCompanies("PolarixUSA", 2, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${this.method_string}_clist`)
+        this.dataSourceCompany.loadCompanies("PolarixUSA", 2, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, "company_clist")
       })
     )
     .subscribe( (res: any) => {
@@ -302,99 +279,66 @@ export class VehicleDetailComponent implements OnInit
     this.filter_string = event.target.value;
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
-      this.paginatorCompany.pageIndex = 0;
+        this.paginatorCompany.pageIndex = 0;
 
-      if (this.method_string == 'company') {
-          this.dataSourceCompany.loadCompanies("PolarixUSA", 2, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'group') {
-          this.dataSourceGroup.loadCompanies("PolarixUSA", 2, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'active') {
-          this.dataSourceAccount.loadCompanies("PolarixUSA", 2, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'operator') {
-          this.dataSourceOperator.loadCompanies("PolarixUSA", 2, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'unittype') {
-          this.dataSourceUnitType.loadCompanies("PolarixUSA", 2, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'serviceplan') {
-          this.dataSourceServicePlan.loadCompanies("PolarixUSA", 2, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'producttype') {
-          this.dataSourceProductType.loadCompanies("PolarixUSA", 2, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'make') {
-          this.dataSourceMake.loadCompanies("PolarixUSA", 2, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'model') {
-          this.dataSourceModel.loadCompanies("PolarixUSA", 2, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${this.method_string}_clist`)
-      } else if (this.method_string == 'timezone') {
-          this.dataSourceTimeZone.loadCompanies("PolarixUSA", 2, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${this.method_string}_clist`)
-      }
-      // this.dataSource.loadCompanies("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.filter_string, `${this.method_string}_clist`);
-    }
-    // else if(this.filter_string == '') {
-    //   this.dataSource.loadCompanies("PolarixUSA", 1, this.paginator.pageIndex, this.paginator.pageSize, this.filter_string, "company_clist");
-    // }
+        if (this.method_string == 'company') {
+            this.dataSourceCompany.loadCompanies("PolarixUSA", 2, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'group') {
+            this.dataSourceGroup.loadCompanies("PolarixUSA", 2, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'active') {
+            this.dataSourceAccount.loadCompanies("PolarixUSA", 2, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'operator') {
+            this.dataSourceOperator.loadCompanies("PolarixUSA", 2, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'unittype') {
+            this.dataSourceUnitType.loadCompanies("PolarixUSA", 2, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'serviceplan') {
+            this.dataSourceServicePlan.loadCompanies("PolarixUSA", 2, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'producttype') {
+            this.dataSourceProductType.loadCompanies("PolarixUSA", 2, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'make') {
+            this.dataSourceMake.loadCompanies("PolarixUSA", 2, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'model') {
+            this.dataSourceModel.loadCompanies("PolarixUSA", 2, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${this.method_string}_clist`)
+        } else if (this.method_string == 'timezone') {
+            this.dataSourceTimeZone.loadCompanies("PolarixUSA", 2, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${this.method_string}_clist`)
+        }
+    } 
     console.log(this.filter_string);
   }
 
-  // setValues() {
-  //   this.vehicleForm.setValue({
-  //     id                 : this.vehicle.id,
-  //     name               : this.vehicle.name,
-  //     company            : `${this.vehicle.company}`,
-  //     group              : this.vehicle.group,
-  //     subgroup           : this.vehicle.subgroup,
-  //     account            : this.vehicle.account,
-  //     operator           : this.vehicle.operator,
-  //     unittype           : this.vehicle.unittype,
-  //     serviceplan        : this.vehicle.serviceplan,
-  //     producttype        : this.vehicle.producttype,
-  //     make               : this.vehicle.make,
-  //     model              : this.vehicle.model,
-  //     isactive           : this.vehicle.isactive,
-  //     timezone           : this.vehicle.timezone,
-  //     created            : this.vehicle.created,
-  //     createdbyname      : this.vehicle.createdbyname,
-  //     deletedwhen        : this.vehicle.deletedwhen,
-  //     deletedbyname      : this.vehicle.deletedbyname,
-  //     lastmodifieddate   : this.vehicle.lastmodifieddate,
-  //     lastmodifiedbyname : this.vehicle.lastmodifiedbyname,
-  //     filter_string      : this.filter_string
-  //   })
-  // }
+  setValues() {
+      this.vehicleForm.get('name').setValue(this.vehicle.name);
+      this.vehicleForm.get('company').setValue(this.vehicle.companyid);
+      this.vehicleForm.get('group').setValue(this.vehicle.group);
+      this.vehicleForm.get('account').setValue(this.vehicle.account);
+      this.vehicleForm.get('operator').setValue(this.vehicle.operator);
+      this.vehicleForm.get('unittype').setValue(this.vehicle.unittype);
+      this.vehicleForm.get('serviceplan').setValue(this.vehicle.serviceplan);
+      this.vehicleForm.get('producttype').setValue(this.vehicle.producttype);
+      this.vehicleForm.get('make').setValue(this.vehicle.make);
+      this.vehicleForm.get('model').setValue(this.vehicle.model);
+      this.vehicleForm.get('timezone').setValue(this.vehicle.timezone);
+      this.vehicleForm.get('created').setValue(this.vehicle.created);
+      this.vehicleForm.get('createdbyname').setValue(this.vehicle.createdbyname);
+      this.vehicleForm.get('deletedwhen').setValue(this.vehicle.deletedwhen);
+      this.vehicleForm.get('deletedbyname').setValue(this.vehicle.deletedbyname);
+      this.vehicleForm.get('lastmodifieddate').setValue(this.vehicle.lastmodifieddate);
+      this.vehicleForm.get('lastmodifiedbyname').setValue(this.vehicle.lastmodifiedbyname);
+  }
+  getValues() {
+    this.vehicleForm.get('name')
+  }
 
-  // createVehicleForm(): FormGroup
-  // {
-  //   console.log(this.vehicle);
-  //     return this._formBuilder.group({
-  //         id                 : [this.vehicle.id],
-  //         name               : [this.vehicle.name],
-  //         company            : [this.vehicle.company],
-  //         group              : [this.vehicle.group],
-  //         subgroup           : [this.vehicle.subgroup],
-  //         account            : [this.vehicle.account],
-  //         operator           : [this.vehicle.operator],
-  //         unittype           : [this.vehicle.unittype],
-  //         serviceplan        : [this.vehicle.serviceplan],
-  //         producttype        : [this.vehicle.producttype],
-  //         make               : [this.vehicle.make],
-  //         model              : [this.vehicle.model],
-  //         isactive           : [this.vehicle.isactive],
-  //         timezone           : [this.vehicle.timezone],
-  //         created            : [this.vehicle.created],
-  //         createdbyname      : [this.vehicle.createdbyname],
-  //         deletedwhen        : [this.vehicle.deletedwhen],
-  //         deletedbyname      : [this.vehicle.deletedbyname],
-  //         lastmodifieddate   : [this.vehicle.lastmodifieddate],
-  //         lastmodifiedbyname : [this.vehicle.lastmodifiedbyname],
-  //         filter_string      : [this.filter_string]
-  //     });
-  // }
-
+  changeClient(data) {
+    console.log("Company:", data);
+  }
 
   saveVehicle(): void {
     console.log("saveVehicle");
+    this.getValues();
   }
 
   addVehicle(): void {
     console.log("addVehicle");
   }
-
-
 }

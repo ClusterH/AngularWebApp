@@ -1,66 +1,39 @@
-@import "src/@fuse/scss/fuse";
-// admin-vehicle-detail {
-// :host {
-#vehicle {
 
-    .header {
-
-        .subtitle {
-            margin: 6px 0 0 0;
-        }
+   .table_paginator {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        // background-color: rgb(255, 255, 255) !important;
+        height: 40px !important;
+        color: rgb(16, 20, 24) !important;
+        // box-shadow: 0px 0px 0px 1px rgb(42, 55, 59) !important;
     }
 
-    .content {
-
-        .mat-tab-group,
-        .mat-tab-body-wrapper,
-        .tab-content{
-            flex: 1 1 auto;
-            max-width: 100%;
-        }
-
-        .mat-tab-body-content {
-            display: flex;
-        }
-
-        .mat-tab-label {
-            height: 64px;
-        }
-
-        // Temporary prefix alignment fix
-        .mat-form-field-appearance-outline .mat-form-field-prefix,
-        .mat-form-field-appearance-outline .mat-form-field-suffix {
-            top: 0;
-        }
-
-        .filter_company_input{
-            border: 1px solid #b3b1b1 !important;
-            border-radius: 5px !important;
-            margin: 20px !important;
-            width: 90% !important;
-            height: 50px !important;
-        }
-
-        .mat-row.cdk-row.company_list.ng-tns-c371-48.ng-star-inserted{
-            height: 25px !important;
-        }
-        .mat-option.mat-selected.mat-active {
-            background: white !important;
-        }
-        .mat-option:hover:not(.mat-option-disabled) {
-            background: yellowgreen !important;
-        }
-        .mat-paginator.table_paginator.ng-tns-c233-51 {
-            background: yellowgreen !important;
-        }
-        .table_paginator {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            background-color: rgb(30, 33, 41) !important;
-            height: 40px !important;
-            color: rgb(221, 221, 221) !important;
-        }
+    // .mat-form-field-appearance-outline .mat-form-field-outline {
+    //     color: #999999 !important;
+    // }
+    .mat-form-field-label {
+            color: rgb(134, 132, 132) !important
     }
-}
-// }
+    .filter_company_input {
+        border: 1px solid #b3b1b1 !important;
+        border-radius: 5px !important;
+        margin: 20px !important;
+        width: 90% !important;
+        height: 40px !important;
+        padding-left: 10px !important;
+    }
+   
+    body.theme-default .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+        background: white !important;
+    }
+    mat-row:hover {
+        background-color: #b2f5ef !important;
+    }
+    // body.theme-default mat-row, body.theme-default mat-header-row, body.theme-default mat-footer-row, body.theme-default th.mat-header-cell, body.theme-default td.mat-cell, body.theme-default td.mat-footer-cell {
+    //     width: 10% !important;
+    // }
+   
+    body.theme-default .mat-input-element:disabled {
+        color: black !important
+    }
