@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { Vehicle } from 'app/main/admin/vehicles/model/vehicle.model';
+import { VehicleDetail } from 'app/main/admin/vehicles/model/vehicle.model';
 
 import * as $ from 'jquery';
 
@@ -30,13 +30,14 @@ import { VehicleDetailDataSource } from "app/main/admin/vehicles/services/vehicl
 export class VehicleDetailComponent implements OnInit
 {
   vehicle_detail: any;
-  vehicle: any;
+  public vehicle: any;
   pageType: string;
   // vehicleForm: FormGroup;
   selected_company = '';
   company = '';
 
   vehicleForm: FormGroup;
+  vehicleDetail: VehicleDetail = {};
 
   flag: boolean = false;
 
@@ -76,7 +77,6 @@ export class VehicleDetailComponent implements OnInit
     paginatorModel: MatPaginator;
   @ViewChild('paginatorTimeZone', {read: MatPaginator, static: true})
     paginatorTimeZone: MatPaginator;
-  productForm: FormGroup;
 
   constructor(
     private vehiclesService: VehiclesService,
@@ -309,15 +309,15 @@ export class VehicleDetailComponent implements OnInit
   setValues() {
       this.vehicleForm.get('name').setValue(this.vehicle.name);
       this.vehicleForm.get('company').setValue(this.vehicle.companyid);
-      this.vehicleForm.get('group').setValue(this.vehicle.group);
-      this.vehicleForm.get('account').setValue(this.vehicle.account);
-      this.vehicleForm.get('operator').setValue(this.vehicle.operator);
-      this.vehicleForm.get('unittype').setValue(this.vehicle.unittype);
-      this.vehicleForm.get('serviceplan').setValue(this.vehicle.serviceplan);
-      this.vehicleForm.get('producttype').setValue(this.vehicle.producttype);
-      this.vehicleForm.get('make').setValue(this.vehicle.make);
-      this.vehicleForm.get('model').setValue(this.vehicle.model);
-      this.vehicleForm.get('timezone').setValue(this.vehicle.timezone);
+      this.vehicleForm.get('group').setValue(this.vehicle.groupid);
+      this.vehicleForm.get('account').setValue(this.vehicle.accountid);
+      this.vehicleForm.get('operator').setValue(this.vehicle.operatorid);
+      this.vehicleForm.get('unittype').setValue(this.vehicle.unittypeid);
+      this.vehicleForm.get('serviceplan').setValue(this.vehicle.serviceplanid);
+      this.vehicleForm.get('producttype').setValue(this.vehicle.producttypeid);
+      this.vehicleForm.get('make').setValue(this.vehicle.makeid);
+      this.vehicleForm.get('model').setValue(this.vehicle.modelid);
+      this.vehicleForm.get('timezone').setValue(this.vehicle.timezoneid);
       this.vehicleForm.get('created').setValue(this.vehicle.created);
       this.vehicleForm.get('createdbyname').setValue(this.vehicle.createdbyname);
       this.vehicleForm.get('deletedwhen').setValue(this.vehicle.deletedwhen);
@@ -325,17 +325,42 @@ export class VehicleDetailComponent implements OnInit
       this.vehicleForm.get('lastmodifieddate').setValue(this.vehicle.lastmodifieddate);
       this.vehicleForm.get('lastmodifiedbyname').setValue(this.vehicle.lastmodifiedbyname);
   }
-  getValues() {
-    this.vehicleForm.get('name')
+  getValues(dateTime: any) {
+    this.vehicleDetail.name             = this.vehicleForm.get('name').value,
+    this.vehicleDetail.companyid        = this.vehicleForm.get('company').value;
+    this.vehicleDetail.groupid          = this.vehicleForm.get('group').value;
+    this.vehicleDetail.accountid        = this.vehicleForm.get('account').value;
+    this.vehicleDetail.operatorid       = this.vehicleForm.get('operator').value;
+    this.vehicleDetail.unittypeid       = this.vehicleForm.get('unittype').value;
+    this.vehicleDetail.serviceplanid    = this.vehicleForm.get('serviceplan').value;
+    this.vehicleDetail.producttypeid    = this.vehicleForm.get('producttype').value;
+    this.vehicleDetail.makeid           = this.vehicleForm.get('make').value;
+    this.vehicleDetail.modelid          = this.vehicleForm.get('model').value;
+    this.vehicleDetail.timezoneid       = this.vehicleForm.get('timezone').value;
+ 
+    this.vehicleDetail.id               = this.vehicle.id;
+    this.vehicleDetail.subgroup         = this.vehicle.subgroup;
+    this.vehicleDetail.isactive         = this.vehicle.isactive;
+    this.vehicleDetail.created          = this.vehicle.created;
+    this.vehicleDetail.createdby        = this.vehicle.createdby;
+    this.vehicleDetail.deletedwhen      = this.vehicle.deletedwhen;
+    this.vehicleDetail.deletedby        = this.vehicle.deletedby;
+    this.vehicleDetail.lastmodifieddate = dateTime;
+    this.vehicleDetail.lastmodifiedby   = 2;
   }
-
-  changeClient(data) {
-    console.log("Company:", data);
-  }
+ 
 
   saveVehicle(): void {
     console.log("saveVehicle");
-    this.getValues();
+    let today = new Date().toISOString();
+    this.getValues(today);
+    console.log(this.vehicleDetail);
+
+    this.vehicleDetailService.saveVehicleDetail("PolarixUSA", 2, this.vehicleDetail)
+    .subscribe((result: any) => {
+      console.log(result);
+    });
+    
   }
 
   addVehicle(): void {

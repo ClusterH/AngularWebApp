@@ -99,7 +99,7 @@
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
                                         <mat-label>Company</mat-label>
-                                        <mat-select  (click)="showCompanyList('company')" formControlName="company" (change)="changeClient($event.value)">
+                                        <mat-select  (click)="showCompanyList('company')" formControlName="company">
                                             <input matInput   #filter placeholder="Filter"  class="filter_company_input" (keyup) = "onKey($event)">
 
                                             <div  style="width: 100%; overflow: auto;">
@@ -135,7 +135,7 @@
                                                     <mat-table [dataSource]="dataSourceGroup"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                         <ng-container matColumnDef="name">
                                                             <td mat-cell *matCellDef="let group"  style="border: 0px;">
-                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.name">{{group.name}}</mat-option>
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
                                                             </td>
                                                         </ng-container>
                                                         <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -164,7 +164,7 @@
                                                 <mat-table [dataSource]="dataSourceAccount"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
                                                         <td mat-cell *matCellDef="let account"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="account.name">{{account.name}}</mat-option>
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="account.id">{{account.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -192,7 +192,7 @@
                                                     <mat-table [dataSource]="dataSourceOperator"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                         <ng-container matColumnDef="name">
                                                             <td mat-cell *matCellDef="let operator"  style="border: 0px;">
-                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.name">{{operator.name}}</mat-option>
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.id">{{operator.name}}</mat-option>
                                                             </td>
                                                         </ng-container>
                                                         <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -221,7 +221,7 @@
                                                 <mat-table [dataSource]="dataSourceUnitType"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
                                                         <td mat-cell *matCellDef="let unittype"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="unittype.name">{{unittype.name}}</mat-option>
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="unittype.id">{{unittype.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -249,7 +249,7 @@
                                                     <mat-table [dataSource]="dataSourceServicePlan"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                         <ng-container matColumnDef="name">
                                                             <td mat-cell *matCellDef="let serviceplan"  style="border: 0px;">
-                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="serviceplan.name">{{serviceplan.name}}</mat-option>
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="serviceplan.id">{{serviceplan.name}}</mat-option>
                                                             </td>
                                                         </ng-container>
                                                         <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -278,7 +278,7 @@
                                                 <mat-table [dataSource]="dataSourceProductType"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
                                                         <td mat-cell *matCellDef="let producttype"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="producttype.name">{{producttype.name}}</mat-option>
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="producttype.id">{{producttype.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -306,7 +306,7 @@
                                                     <mat-table [dataSource]="dataSourceMake"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                         <ng-container matColumnDef="name">
                                                             <td mat-cell *matCellDef="let make"  style="border: 0px;">
-                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="make.name">{{make.name}}</mat-option>
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="make.id">{{make.name}}</mat-option>
                                                             </td>
                                                         </ng-container>
                                                         <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -334,7 +334,7 @@
                                                     <mat-table [dataSource]="dataSourceModel"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                         <ng-container matColumnDef="name">
                                                             <td mat-cell *matCellDef="let model"  style="border: 0px;">
-                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="model.name">{{model.name}}</mat-option>
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="model.id">{{model.name}}</mat-option>
                                                             </td>
                                                         </ng-container>
                                                         <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -368,7 +368,7 @@
                                                 <mat-table [dataSource]="dataSourceTimeZone"  class="vehicles-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
                                                         <td mat-cell *matCellDef="let timezone"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="timezone.name">{{timezone.name}}</mat-option>
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="timezone.id">{{timezone.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>

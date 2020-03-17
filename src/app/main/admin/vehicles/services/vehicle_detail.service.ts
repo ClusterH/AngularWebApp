@@ -61,6 +61,77 @@ export class VehicleDetailService
         
     }
 
+    saveVehicleDetail(conncode: string, userid: number, vehicleDetail: any = {}): Observable<any> {
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const params_detail = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('id', vehicleDetail.id.toString())
+            .set('name', vehicleDetail.name.toString())
+            .set('companyid', vehicleDetail.companyid.toString())
+            .set('groupid', vehicleDetail.groupid.toString())
+            .set('subgroup', vehicleDetail.subgroup.toString())
+            .set('operatorid', vehicleDetail.operatorid.toString())
+            .set('accountid', vehicleDetail.accountid.toString())
+            .set('unittypeid', vehicleDetail.unittypeid.toString())
+            .set('serviceplanid', vehicleDetail.serviceplanid.toString())
+            .set('producttypeid', vehicleDetail.producttypeid.toString())
+            .set('makeid', vehicleDetail.makeid.toString())
+            .set('modelid', vehicleDetail.modelid.toString())
+            .set('isactive', vehicleDetail.isactive.toString())
+            .set('timezoneid', vehicleDetail.timezoneid.toString())
+            .set('created', vehicleDetail.created.toString())
+            .set('createdby', vehicleDetail.createdby.toString())
+            .set('deletedwhen', vehicleDetail.deletedwhen.toString())
+            .set('deletedby', vehicleDetail.deletedby.toString())
+            .set('lastmodifieddate', vehicleDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', vehicleDetail.lastmodifiedby.toString())
+            .set('method', 'unit_save');
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: header_detail,
+            params: params_detail
+        });
+        
+        // vehicleDetail["method"] = "unit_save";
+        // vehicleDetail["conncode"] = "PolarixUSA";
+        // vehicleDetail["userid"] = "2";
+        // vehicleDetail["isactive"] = "true";
+
+        // {
+        //     conncode: conncode.toString(),
+        //     userid: userid.toString(),
+        //     id: vehicleDetail.id.toString(),
+        //     name: vehicleDetail.name.toString(),
+        //     companyid: vehicleDetail.companyid.toString(),
+        //     'groupid': vehicleDetail.groupid.toString(),
+        //     'subgroup': vehicleDetail.subgroup.toString(),
+        //     'operatorid': vehicleDetail.operatorid.toString(),
+        //     'accountid': vehicleDetail.accountid.toString(),
+        //     'unittypeid': vehicleDetail.unittypeid.toString(),
+        //     'serviceplanid': vehicleDetail.serviceplanid.toString(),
+        //     'producttypeid': vehicleDetail.producttypeid.toString(),
+        //     'makeid': vehicleDetail.makeid.toString(),
+        //     'modelid': vehicleDetail.modelid.toString(),
+        //     'isactive': vehicleDetail.isactive.toString(),
+        //     'timezoneid': vehicleDetail.timezoneid.toString(),
+        //     'created': vehicleDetail.created.toString(),
+        //     'createdby': vehicleDetail.createdby.toString(),
+        //     'deletedwhen': vehicleDetail.deletedwhen.toString(),
+        //     'deletedby': vehicleDetail.deletedby.toString(),
+        //     'lastmodifieddate': vehicleDetail.lastmodifieddate.toString(),
+        //     'lastmodifiedby': vehicleDetail.lastmodifiedby.toString(),
+        //     'method': 'unit_save'
+        // }
+        // let objects = JSON.stringify(params_detail);
+        // console.log(objects);
+        // alert(objects);
+
+       
+    }
+
+
     // getProduct(): Promise<any>
     // {
     //     return new Promise((resolve, reject) => {
@@ -119,35 +190,7 @@ export class VehicleDetailService
     //     });
     // }
 
-    /**
-     * Save product
-     *
-     * @param product
-     * @returns {Promise<any>}
-     */
-    saveProduct(product): Promise<any>
-    {
-        return new Promise((resolve, reject) => {
-            this._httpClient.post('api/e-commerce-products/' + product.id, product)
-                .subscribe((response: any) => {
-                    resolve(response);
-                }, reject);
-        });
-    }
-
-    /**
-     * Add product
-     *
-     * @param product
-     * @returns {Promise<any>}
-     */
-    addProduct(product): Promise<any>
-    {
-        return new Promise((resolve, reject) => {
-            this._httpClient.post('api/e-commerce-products/', product)
-                .subscribe((response: any) => {
-                    resolve(response);
-                }, reject);
-        });
-    }
+   
+   
+   
 }
