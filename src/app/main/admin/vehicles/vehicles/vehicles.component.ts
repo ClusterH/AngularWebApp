@@ -1,17 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Input, Directive, Renderer2 } from '@angular/core';
-import { Router, NavigationExtras } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { FormControl, FormGroup } from '@angular/forms';
 
-// import { DataSource, CollectionViewer } from '@angular/cdk/collections';
-import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
-import { FuseUtils } from '@fuse/utils';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -19,9 +16,7 @@ import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.servi
 import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 
-
 import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { takeUntil } from 'rxjs/internal/operators';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
@@ -46,7 +41,7 @@ export class VehiclesComponent implements OnInit
    
     pageIndex= 0;
     pageSize = 25;
-    pageSizeOptions: number[] = [1, 5, 10, 25, 100];
+    pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
@@ -91,7 +86,8 @@ export class VehiclesComponent implements OnInit
     constructor(
         private _adminVehiclesService: VehiclesService,
         private vehicleDetailService: VehicleDetailService,
-        public _matDialog: MatDialog, private router: Router,
+        public _matDialog: MatDialog,
+        private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private renderer : Renderer2,
         private elmRef: ElementRef
@@ -123,14 +119,12 @@ export class VehiclesComponent implements OnInit
 
         console.log(this.paginator.pageSize);
 
-        // this.paginator.page
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
-            // this.index_number = res.pageIndex + 1;
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -142,7 +136,6 @@ export class VehiclesComponent implements OnInit
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        // this.dataSource.paginator = this.paginator;
         this.dataSource.loadVehicles("PolarixUSA", 2, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
@@ -169,28 +162,20 @@ export class VehiclesComponent implements OnInit
         this.selectedFilter();
     }
     navigatePageEvent() {
-        // console.log(this.index_number);
         this.paginator.pageIndex = this.dataSource.page_index - 1;
         this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     addNewVehicle() {
         this.vehicleDetailService.vehicle_detail = '';
-        // sessionStorage.removeItem("vehicle_detail");
+        sessionStorage.removeItem("vehicle_detail");
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
 
     editShowVehicleDetail(vehicle: any) {
         this.vehicleDetailService.vehicle_detail = vehicle;
-        // sessionStorage.removeItem("vehicle_detail");
 
-        // sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
-        // // this.vehicle = JSON.parse(sessionStorage.getItem("vehicle_detail"))? JSON.parse(sessionStorage.getItem("vehicle_detail")) : '';
-        // // localStorage.setItem("vehicle_id", vehicle.id);
-        // // if (localStorage.getItem("vehicle_detail")) {
-        // //     localStorage.removeItem("vehicle_detail");
-        // // }
-        // // localStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
 
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }

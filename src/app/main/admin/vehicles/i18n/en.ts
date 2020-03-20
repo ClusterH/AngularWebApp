@@ -3,11 +3,20 @@ export const locale = {
     data: {
         VEHICLES: {
             "VEHICLES": "Vehicles",
+            "SEARCHFORVEHICLE": "Search for a Vehicle",
+            "NEWVEHICLE": "New Vehicle",
+            "VEHICLEDETAIL": "Vehicle Detail",
+            "SELECTFIELD": "Select Field",
+            "SAVE": "SAVE",
+            "ADD": "ADD",
+
             "NAME": "Name",
             "COMPANY": "Company",
             "GROUP": "Group",
             "SUBGROUP": "SubGroup",
             "ACCOUNT": "Account",
+            "OPERATOR": "Operator",
+            "SERVICEPLAN": "ServicePlan",
             "UNITTYPE": "UnitType",
             "PRODUCTTYPE": "ProductType",
             "MAKE": "Make",
@@ -15,39 +24,40 @@ export const locale = {
             "ISACTIVE": "IsActive",
             "TIMEZONE": "TimeZone",
             "CREATED": "Created",
-            "DELETEDWHEN": "DeletedWhen",
-            "LASTMODIFIEDDATE": "LastModifiedDate",
-            "OPERATOR": "Operator",
-            "SERVICEPLAN": "ServicePlan",
-           
             "CREATEDBYNAME": "CreatedByName",
-            "CREATEDBY": "CreatedBY",
+            "DELETEDWHEN": "DeletedWhen",
             "DELETEDBYNAME": "DeletedByName",
-            "DELETEDBY": "DeletedBy",
+            "LASTMODIFIEDDATE": "LastModifiedDate",
             "LASTMODIFIEDBYNAME": "LastModifiedByName",
-            "LASTMODIFIEDBY": "LastModifiedBy",
-            
-            "COMPANYID": "CompanyID",
-            "GROUPID": "GroupID",
-            "SUBGROUPID": "SubGroupID",
-            "UNITTYPEID1": "UnitTypeID1",
-            
-            "SEARCHFORVEHICLE": "Search for a Vehicle",
-            "NEWVEHICLE": "New Vehicle",
-            "VEHICLEDETAIL": "Vehicle Detail",
-            "SAVE": "SAVE",
-            "ADD": "ADD",
-            "FIRSTINFO": "First Info",
-            "SECONDINFO": "Second Info",
-            "THIRDINFO": "Third Info",
-            "ITEMS_PER_PAGE": "Page Size",
-            "NEXT_PAGE": "Next Page",
-            "PREVIOUS_PAGE": "Prev Page",
+
+            "GENERAL": "General",
+            "AUDIT": "Audit",
+
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
             "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
+            "GOBACK_CONFIRM_MESSAGE": "Are you sure you want to discard the changes?",
             "DUPLICATE": "Duplicate",
             "DELETE": "Delete",
-            "CANCEL": "Cancel"
+            "NO": "No",
+            "YES": "Yes"
+            
+            // "COMPANYID": "CompanyID",
+            // "GROUPID": "GroupID",
+            // "SUBGROUPID": "SubGroupID",
+            // "UNITTYPEID1": "UnitTypeID1",
+
+            // "CREATEDBY": "CreatedBY",
+            // "DELETEDBY": "DeletedBy",
+            // "LASTMODIFIEDBY": "LastModifiedBy",
+            
+            
+            // "FIRSTINFO": "First Info",
+            // "SECONDINFO": "Second Info",
+            // "THIRDINFO": "Third Info",
+            // "ITEMS_PER_PAGE": "Page Size",
+            // "NEXT_PAGE": "Next Page",
+            // "PREVIOUS_PAGE": "Prev Page",
+            
         }
     }
 };

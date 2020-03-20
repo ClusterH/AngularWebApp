@@ -39,7 +39,6 @@ import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.servi
 import { VehicleDetailComponent} from 'app/main/admin/vehicles/vehicle_detail/vehicle_detail.component';
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/vehicles/dialog/dialog.component';
-import { StylePaginatorDirective } from 'app/main/admin/vehicles/vehicles/style-paginator.directive';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -98,7 +97,6 @@ const routes = [
         VehiclesComponent,
         VehicleDetailComponent,
         CourseDialogComponent,
-        StylePaginatorDirective
     ],
     providers: [
         VehiclesService, VehicleDetailService

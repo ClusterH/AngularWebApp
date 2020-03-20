@@ -26,27 +26,30 @@
             <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
-                    <mat-label style="min-width: max-content;">Select Field:</mat-label>
+                    <mat-label style="min-width: max-content;">{{'VEHICLES.SELECTFIELD' | translate}}:</mat-label>
 
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
-                            <mat-option value="name">Name</mat-option>
-                            <mat-option value="company">Company</mat-option>
-                            <mat-option value="group">Group</mat-option>
-                            <mat-option value="subgroup">SubGroup</mat-option>
-                            <mat-option value="account">Account</mat-option>
-                            <mat-option value="operator">Operator</mat-option>
-                            <mat-option value="unittype">UnitType</mat-option>
-                            <mat-option value="serviceplan">ServicePlan</mat-option>
-                            <mat-option value="producttype">ProductType</mat-option>
-                            <mat-option value="make">Make</mat-option>
-                            <mat-option value="model">Model</mat-option>
-                            <mat-option value="isactive">IsActive</mat-option>
-                            <mat-option value="timezone">TimeZone</mat-option>
-                            <mat-option value="created">created</mat-option>
-                            <mat-option value="deletedwhen">DeletedWhen</mat-option>
-                            <mat-option value="lastmodifieddate">LastModifiedDate</mat-option>
+                            <mat-option value="name">{{'VEHICLES.NAME' | translate}}</mat-option>
+                            <mat-option value="company">{{'VEHICLES.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'VEHICLES.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'VEHICLES.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="account">{{'VEHICLES.ACCOUNT' | translate}}</mat-option>
+                            <mat-option value="operator">{{'VEHICLES.OPERATOR' | translate}}</mat-option>
+                            <mat-option value="unittype">{{'VEHICLES.UNITTYPE' | translate}}</mat-option>
+                            <mat-option value="serviceplan">{{'VEHICLES.SERVICEPLAN' | translate}}</mat-option>
+                            <mat-option value="producttype">{{'VEHICLES.PRODUCTTYPE' | translate}}</mat-option>
+                            <mat-option value="make">{{'VEHICLES.MAKE' | translate}}</mat-option>
+                            <mat-option value="model">{{'VEHICLES.MODEL' | translate}}</mat-option>
+                            <mat-option value="isactive">{{'VEHICLES.ISACTIVE' | translate}}</mat-option>
+                            <mat-option value="timezone">{{'VEHICLES.TIMEZONE' | translate}}</mat-option>
+                            <mat-option value="created">{{'VEHICLES.CREATED' | translate}}</mat-option>
+                            <mat-option value="created">{{'VEHICLES.CREATEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'VEHICLES.DELETEDWHEN' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'VEHICLES.DELETEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'VEHICLES.LASTMODIFIEDDATE' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'VEHICLES.LASTMODIFIEDBYNAME' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -55,9 +58,6 @@
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
-                        <!-- <button mat-fab class="accent search_btn" style="width: 80px; height: 30px;" (click)=selectedFilter()>
-                            <span>Search</span>
-                        </button> -->
                     </div>
                 </div>
             </div>
@@ -74,9 +74,6 @@
 
         </div>
         <!-- / HEADER -->
-        <!-- <div class="loading-indicator">
-            <mat-spinner *ngIf="isLoadingResults" class></mat-spinner>
-        </div> -->
 
         <!-- CONTENT CARD -->
         <div class="content-card" style="width: 100%; overflow: auto;" >
@@ -85,26 +82,17 @@
                         #table [dataSource]="dataSource"
                         matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
                         [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 190%;">
+                        fusePerfectScrollbar style="width: 250%;">
 
                 <!-- ID Column -->
                 <ng-container matColumnDef="id" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let vehicle">
                         <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)">edit</mat-icon>
-                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicle_detail/'+vehicle.id+'/'+vehicle.name">edit</mat-icon> -->
-                        <!-- <mat-icon class="active-icon s-16 edit_icon"  matRipple [routerLink]="'/admin/vehicles/vehicle_detail'">edit</mat-icon> -->
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
                     </mat-cell>
                 </ng-container>
-
-                    <!-- <ng-container *ngFor="displayedColumn of displayedColumns" matColumnDef="{{ displayedColumn }}">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle">
-                        <p class="text-truncate">{{vehicle[displayedColumn]}}</p>
-                    </mat-cell>
-                </ng-container> -->
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
@@ -325,10 +313,7 @@
                             (page) ="pageEvent = $event">
             </mat-paginator>
         </div>
-            <!-- [length]="dataSource.filteredData.length" -->
-            <!-- style-paginator showFirstLastButtons
-            [showTotalPages]="5" -->
-
+           
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

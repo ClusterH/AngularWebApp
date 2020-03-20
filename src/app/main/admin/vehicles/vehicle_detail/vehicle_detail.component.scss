@@ -1,5 +1,5 @@
 
-   .table_paginator {
+   .table_paginator_detail {
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -22,6 +22,11 @@
         width: 90% !important;
         height: 40px !important;
         padding-left: 10px !important;
+        padding-right: 10px !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
    
     body.theme-default .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {

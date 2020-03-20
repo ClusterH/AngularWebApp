@@ -4,6 +4,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import {FormBuilder, Validators, FormGroup} from "@angular/forms";
 import * as moment from 'moment';
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
+import { Router } from '@angular/router';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+
+import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
+import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
+import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
+
 
 
 @Component({
@@ -18,9 +26,14 @@ export class CourseDialogComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private router: Router,
         private _adminVehiclesService: VehiclesService,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {vehicle, flag} ) {
+        @Inject(MAT_DIALOG_DATA) {vehicle, flag} 
+    ) {
+        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
         // this.vehicle = vehicle;
         this.vehicle = vehicle;
@@ -28,12 +41,6 @@ export class CourseDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        // console.log(this.position);
-        // console.log( `${this.position.PosTop}px`);
-
-        // this.dialogRef.updatePosition({top: `${this.position.PosTop}px`, left: `${this.position.Posleft}px`});
-        // // this.dialogRef.updatePosition({top: '201.20000px', left: '24px'});
-
     }
 
 
@@ -49,6 +56,12 @@ export class CourseDialogComponent implements OnInit {
 
     close() {
         this.dialogRef.close();
+    }
+
+    goback() {
+        this.dialogRef.close();
+
+        this.router.navigate(['admin/vehicles/vehicles']);
     }
 
 }
