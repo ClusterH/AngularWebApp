@@ -1,34 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
-import { SampleComponent } from './sample.component';
+import { MailConfirmComponent } from 'app/authentication/mail-confirm/mail-confirm.component';
 
 const routes = [
     {
-        path     : 'sample',
-        component: SampleComponent
+        path     : 'auth/mail-confirm',
+        component: MailConfirmComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        SampleComponent
+        MailConfirmComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
 
-        TranslateModule,
+        MatIconModule,
 
         FuseSharedModule
-    ],
-    exports     : [
-        SampleComponent
     ]
 })
-
-export class SampleModule
+export class MailConfirmModule
 {
 }

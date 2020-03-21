@@ -22,17 +22,10 @@ export class VehiclesDataSource extends DataSource<any>
     totalLength: number;
     total_page: number;
     page_index: number;
-    // private countSubject = new BehaviorSubject<number>(0);
-    // public counter$ = this.countSubject.asObservable();
-
 
     constructor(
         private _adminVehiclesService: VehiclesService,
-
-        // private _matPaginator: any,
-        // private pageIndex: number,
-        // private pageSize: number,
-        // private _matSort: MatSort
+      
     ) {
         super();
     }

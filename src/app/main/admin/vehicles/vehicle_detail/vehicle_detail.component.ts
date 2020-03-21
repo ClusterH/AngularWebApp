@@ -18,6 +18,7 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 import { VehicleDetailDataSource } from "app/main/admin/vehicles/services/vehicle_detail.datasource";
+import { AuthService } from 'app/authentication/services/authentication.service';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
@@ -37,8 +38,8 @@ export class VehicleDetailComponent implements OnInit
   vehicle_detail: any;
   public vehicle: any;
   pageType: string;
-  user_conncode: string;
-  user_id: number;
+  userConncode: string;
+  userID: number;
 
   vehicleModel_flag: boolean;
 
@@ -49,16 +50,16 @@ export class VehicleDetailComponent implements OnInit
 
   dataSource: VehicleDetailDataSource;
 
-  dataSourceCompany: VehicleDetailDataSource;
-  dataSourceGroup: VehicleDetailDataSource;
-  dataSourceAccount: VehicleDetailDataSource;
-  dataSourceOperator: VehicleDetailDataSource;
-  dataSourceUnitType: VehicleDetailDataSource;
+  dataSourceCompany:     VehicleDetailDataSource;
+  dataSourceGroup:       VehicleDetailDataSource;
+  dataSourceAccount:     VehicleDetailDataSource;
+  dataSourceOperator:    VehicleDetailDataSource;
+  dataSourceUnitType:    VehicleDetailDataSource;
   dataSourceServicePlan: VehicleDetailDataSource;
   dataSourceProductType: VehicleDetailDataSource;
-  dataSourceMake: VehicleDetailDataSource;
-  dataSourceModel: VehicleDetailDataSource;
-  dataSourceTimeZone: VehicleDetailDataSource;
+  dataSourceMake:        VehicleDetailDataSource;
+  dataSourceModel:       VehicleDetailDataSource;
+  dataSourceTimeZone:    VehicleDetailDataSource;
  
   filter_string: string = '';
   method_string: string = '';
@@ -85,9 +86,8 @@ export class VehicleDetailComponent implements OnInit
     paginatorTimeZone: MatPaginator;
 
   constructor(
-    // private vehiclesService: VehiclesService,
-
     public vehicleDetailService: VehicleDetailService,
+    private authService: AuthService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
     private _formBuilder: FormBuilder,
@@ -96,29 +96,28 @@ export class VehicleDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
-    // this.vehicle = this.vehicleDetailService.vehicle_detail;
     this.vehicle = sessionStorage.getItem("vehicle_detail")? JSON.parse(sessionStorage.getItem("vehicle_detail")) : '';
-    console.log(this.vehicle);
-      if ( this.vehicle != '' )
-      {
-        this.vehicleDetailService.current_makeID = this.vehicle.makeid;
-        this.vehicleModel_flag = true;
-        console.log("makeid: ", this.vehicleDetailService.current_makeID);
-        this.pageType = 'edit';
-      }
-      else
-      {
-        console.log(this.vehicle);
-        this.vehicleDetailService.current_makeID = 0;
-        this.vehicleModel_flag = false;
 
-        this.pageType = 'new';
-      }
+    this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+    this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-      this.user_conncode = "PolarixUSA";
-      this.user_id = 2;
+    if ( this.vehicle != '' )
+    {
+      this.vehicleDetailService.current_makeID = this.vehicle.makeid;
+      this.vehicleModel_flag = true;
+      console.log("makeid: ", this.vehicleDetailService.current_makeID);
+      this.pageType = 'edit';
+    }
+    else
+    {
+      console.log(this.vehicle);
+      this.vehicleDetailService.current_makeID = 0;
+      this.vehicleModel_flag = false;
 
-      this.filter_string = '';
+      this.pageType = 'new';
+    }
+
+    this.filter_string = '';
   }
 
   ngOnInit(): void {
@@ -135,18 +134,18 @@ export class VehicleDetailComponent implements OnInit
     this.dataSourceModel          = new VehicleDetailDataSource(this.vehicleDetailService);
     this.dataSourceTimeZone       = new VehicleDetailDataSource(this.vehicleDetailService);
 
-    this.dataSourceCompany      .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.company, "company_clist");
-    this.dataSourceGroup        .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.group, "group_clist");
-    this.dataSourceAccount      .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.account, "account_clist");
-    this.dataSourceOperator     .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.operator, "operator_clist");
-    this.dataSourceUnitType     .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.unittype, "unittype_clist");
-    this.dataSourceServicePlan  .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.serviceplan, "serviceplan_clist");
-    this.dataSourceProductType  .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, '', "producttype_clist");
-    this.dataSourceMake         .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.make, "make_clist");
+    this.dataSourceCompany      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.company, "company_clist");
+    this.dataSourceGroup        .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, "group_clist");
+    this.dataSourceAccount      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.account, "account_clist");
+    this.dataSourceOperator     .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.operator, "operator_clist");
+    this.dataSourceUnitType     .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.unittype, "unittype_clist");
+    this.dataSourceServicePlan  .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.serviceplan, "serviceplan_clist");
+    this.dataSourceProductType  .loadVehicleDetail(this.userConncode, this.userID, 0, 10, '', "producttype_clist");
+    this.dataSourceMake         .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.make, "make_clist");
     if(this.vehicleModel_flag) {
-      this.dataSourceModel      .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.model, "model_clist");
+      this.dataSourceModel      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.model, "model_clist");
     }
-    this.dataSourceTimeZone     .loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, this.vehicle.timezone, "timezone_clist");
+    this.dataSourceTimeZone     .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.timezone, "timezone_clist");
 
     this.vehicleForm = this._formBuilder.group({
       name               : [null, Validators.required],
@@ -287,25 +286,25 @@ export class VehicleDetailComponent implements OnInit
 
   loadVehicleDetail(method_string: string) {
     if (method_string == 'company') {
-      this.dataSourceCompany.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
+      this.dataSourceCompany.loadVehicleDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'group') {
-        this.dataSourceGroup.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceGroup.loadVehicleDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'active') {
-        this.dataSourceAccount.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceAccount.loadVehicleDetail(this.userConncode, this.userID, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'operator') {
-        this.dataSourceOperator.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceOperator.loadVehicleDetail(this.userConncode, this.userID, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'unittype') {
-        this.dataSourceUnitType.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceUnitType.loadVehicleDetail(this.userConncode, this.userID, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'serviceplan') {
-        this.dataSourceServicePlan.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceServicePlan.loadVehicleDetail(this.userConncode, this.userID, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'producttype') {
-        this.dataSourceProductType.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
+        this.dataSourceProductType.loadVehicleDetail(this.userConncode, this.userID, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
     } else if (method_string == 'make') {
-        this.dataSourceMake.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceMake.loadVehicleDetail(this.userConncode, this.userID, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'model') {
-        this.dataSourceModel.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'timezone') {
-        this.dataSourceTimeZone.loadVehicleDetail(this.user_conncode, this.user_id, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceTimeZone.loadVehicleDetail(this.userConncode, this.userID, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
     }
   }
 
@@ -392,9 +391,7 @@ export class VehicleDetailComponent implements OnInit
     this.filter_string = event.target.value;
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
-      // if (this.method_string == 'model' || this.method_string == 'make') {
-      //   this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value || 0;
-      // }
+     
       this.managePageIndex(this.method_string);
       this.loadVehicleDetail(this.method_string);
     }
@@ -451,13 +448,13 @@ export class VehicleDetailComponent implements OnInit
       this.vehicleDetail.created          = this.vehicle.created;
       this.vehicleDetail.createdby        = this.vehicle.createdby;
       this.vehicleDetail.lastmodifieddate = dateTime;
-      this.vehicleDetail.lastmodifiedby   = this.user_id;
+      this.vehicleDetail.lastmodifiedby   = this.userID;
     } else if ( mode == "add" ) {
       this.vehicleDetail.id               = 0;
       this.vehicleDetail.created          = dateTime;
-      this.vehicleDetail.createdby        = this.user_id;
+      this.vehicleDetail.createdby        = this.userID;
       this.vehicleDetail.lastmodifieddate = dateTime;
-      this.vehicleDetail.lastmodifiedby   = this.user_id;
+      this.vehicleDetail.lastmodifiedby   = this.userID;
     }
     
   }
@@ -484,7 +481,7 @@ export class VehicleDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.vehicleDetail);
 
-    this.vehicleDetailService.saveVehicleDetail(this.user_conncode, this.user_id, this.vehicleDetail)
+    this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
     .subscribe((result: any) => {
       console.log(result);
       if (result.responseCode == 200) {
@@ -500,7 +497,7 @@ export class VehicleDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.vehicleDetail);
 
-    this.vehicleDetailService.saveVehicleDetail(this.user_conncode, this.user_id, this.vehicleDetail)
+    this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
     .subscribe((result: any) => {
       console.log(result);
       if (result.responseCode == 200) {
@@ -539,7 +536,7 @@ export class VehicleDetailComponent implements OnInit
     console.log(event);
     this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
     this.vehicleModel_flag = true;
-    this.dataSourceModel.loadVehicleDetail(this.user_conncode, this.user_id, 0, 10, "", "model_clist");
+    this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
     // this.paginatorModel.pageIndex = 0;
 
   }
@@ -551,6 +548,6 @@ export class VehicleDetailComponent implements OnInit
    // navigatePageEvent() {
   //   // console.log(this.index_number);
   //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
-  //   // this.dataSource.loadCompanies(this.user_conncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "company_clist");
+  //   // this.dataSource.loadCompanies(this.userConncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "company_clist");
   // }
 }

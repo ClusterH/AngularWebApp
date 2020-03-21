@@ -15,6 +15,8 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
+import { AuthService } from 'app/authentication/services/authentication.service';
+
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
 import { takeUntil } from 'rxjs/internal/operators';
@@ -45,8 +47,11 @@ export class VehiclesComponent implements OnInit
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
+    currentUser: any;
 
     vehicle: any;
+    userConncode: string;
+    userID: number;
 
     flag: string = '';
     displayedColumns = [
@@ -86,13 +91,17 @@ export class VehiclesComponent implements OnInit
     constructor(
         private _adminVehiclesService: VehiclesService,
         private vehicleDetailService: VehicleDetailService,
+        private authService: AuthService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private renderer : Renderer2,
-        private elmRef: ElementRef
     )
     {
+        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        console.log(this.userConncode, this.userID);
+
+
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
@@ -100,7 +109,6 @@ export class VehiclesComponent implements OnInit
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
-        // this.index_number = 1;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -121,7 +129,7 @@ export class VehiclesComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
+           tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -136,7 +144,7 @@ export class VehiclesComponent implements OnInit
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles("PolarixUSA", 2, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
     onRowClicked(vehicle) {
@@ -149,13 +157,13 @@ export class VehiclesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadVehicles("PolarixUSA", 2, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     filterEvent() {
@@ -163,7 +171,7 @@ export class VehiclesComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     addNewVehicle() {

@@ -316,14 +316,25 @@ admin-vehicles {
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
-        // body.theme-default .mat-icon-button {
-        //     color: #b2f5ef !important;
-        //     background: transparent !important;
-        // }
+       
     }
-    // .mat-select-trigger {
-    //     body.theme-default .mat-select-value {
-    //         color: rgb(221, 221, 221) !important;
-    //     }
-    // }
+
+    .spinner_container {
+        position: absolute;
+        top: 50%;
+        left: 60%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    .spinner_overlay {
+        height:100vh;
+        width:100%;
+        z-index:    10;
+        top:        0; 
+        left:       0; 
+        position:   fixed;
+    }
+   
 }
