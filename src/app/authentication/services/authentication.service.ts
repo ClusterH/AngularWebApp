@@ -61,10 +61,10 @@ export class AuthService
     logOut() {
         // remove user from local storage and set current user to null
         console.log("logout");
-        if (!this.checked_RememberMe) {
-            console.log(this.checked_RememberMe);
+        // if (!this.checked_RememberMe) {
+        //     console.log(this.checked_RememberMe);
             localStorage.removeItem('user_info');
-        }
+        // }
 
         this.currentUserSubject.next(null);
         this.userInfo = null;

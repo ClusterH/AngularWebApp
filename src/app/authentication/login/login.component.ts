@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit
     loginForm: FormGroup;
     userEmail: string;
     userPassword: string;
-    checked_RememberMe: boolean = false;
+    userRemember: boolean;
 
     selectedLanguage: any;
     languages: any;
@@ -93,14 +93,18 @@ export class LoginComponent implements OnInit
 
     ngOnInit(): void
     {
-        
-
         this.loginForm = this._formBuilder.group({
             email   : ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
+            password: ['', Validators.required],
+            remember: null
         });
 
-       
+        if (localStorage.getItem('userInfo_email')) {
+            console.log(this.loginForm.get('email').setValue(JSON.parse(localStorage.getItem('userInfo_email'))))
+            this.loginForm.get('email').setValue(JSON.parse(localStorage.getItem('userInfo_email')));
+            this.loginForm.get('password').setValue(JSON.parse(localStorage.getItem('userInfo_pwd')));
+            this.loginForm.get('remember').setValue(true);
+        }
 
         this.selectedLanguage = _.find(this.languages, {id: this._translateService.currentLang});
     }
@@ -113,22 +117,32 @@ export class LoginComponent implements OnInit
 
         this.userEmail    = this.loginForm.get('email').value;
         this.userPassword = this.loginForm.get('password').value;
+        this.userRemember = this.loginForm.get('remember').value;
+
+        if (this.userRemember) {
+            console.log(this.userRemember);
+            localStorage.setItem('userInfo_email', JSON.stringify(this.userEmail));
+            localStorage.setItem('userInfo_pwd', JSON.stringify(this.userPassword));
+        } else {
+            console.log("Unchecked", this.userRemember);
+            if (localStorage.getItem('userInfo_email')) {
+                localStorage.removeItem('userInfo_email');
+                localStorage.removeItem('userInfo_pwd');
+                console.log("removed");
+            }
+        }
 
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(first())
             .subscribe((res: any) => {
                 console.log(res);
                 // localStorage.setItem('user_info', JSON.stringify(res));
-
-                this.authService.checked_RememberMe = this.checked_RememberMe;
-                console.log(this.checked_RememberMe);
-
+               
                 this.router.navigate(['/home/analytics']);
             },
             error => {
                 alert(error);
             });
-
     }
 
     setLanguage(lang): void
