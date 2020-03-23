@@ -66,7 +66,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Users',
                 translate: 'NAV.USERS',
                 type     : 'item',
-                url      : 'pages/admin/users'
+                url      : '/admin/users/users'
             },
             {
                 id       : 'users_profiles',

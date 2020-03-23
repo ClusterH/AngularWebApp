@@ -12,31 +12,31 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
-import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
-import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
+import { UsersService } from 'app/main/admin/users/services/users.service';
+import { UsersDataSource } from "app/main/admin/users/services/users.datasource";
+import { UserDetailService } from 'app/main/admin/users/services/user_detail.service';
 import { AuthService } from 'app/authentication/services/authentication.service';
 
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
 import { takeUntil } from 'rxjs/internal/operators';
 
-import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
-import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
-import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
+import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
+import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
+import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
+import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
 import { Route } from '@angular/compiler/src/core';
 
 @Component({
-    selector     : 'admin-vehicles',
-    templateUrl  : './vehicles.component.html',
-    styleUrls    : ['./vehicles.component.scss'],
+    selector     : 'admin-users',
+    templateUrl  : './users.component.html',
+    styleUrls    : ['./users.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class VehiclesComponent implements OnInit
+export class UsersComponent implements OnInit
 {
-    dataSource: VehiclesDataSource;
+    dataSource: UsersDataSource;
 
     @Output()
     pageEvent: PageEvent;
@@ -49,7 +49,7 @@ export class VehiclesComponent implements OnInit
     index_number: number = 1;
     currentUser: any;
 
-    vehicle: any;
+    user: any;
     userConncode: string;
     userID: number;
 
@@ -89,8 +89,8 @@ export class VehiclesComponent implements OnInit
     filter: ElementRef;
     
     constructor(
-        private _adminVehiclesService: VehiclesService,
-        private vehicleDetailService: VehicleDetailService,
+        private _adminUsersService: UsersService,
+        private userDetailService: UserDetailService,
         private authService: AuthService,
         public _matDialog: MatDialog,
         private router: Router,
@@ -103,7 +103,7 @@ export class VehiclesComponent implements OnInit
 
 
         //Load the translations
-        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
 
         this.pageIndex= 0;
         this.pageSize = 25;
@@ -116,7 +116,7 @@ export class VehiclesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        console.log("ngAfterViewInit:user");
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -130,7 +130,7 @@ export class VehiclesComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
+           tap(() => this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -144,12 +144,12 @@ export class VehiclesComponent implements OnInit
     {
         console.log(this.pageSize, this.pageIndex);
 
-        this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        this.dataSource = new UsersDataSource(this._adminUsersService);
+        this.dataSource.loadUsers(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
-    onRowClicked(vehicle) {
-        console.log('Row Clicked:', vehicle);
+    onRowClicked(user) {
+        console.log('Row Clicked:', user);
     }
 
     selectedFilter() {
@@ -158,13 +158,13 @@ export class VehiclesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadUsers(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     filterEvent() {
@@ -172,24 +172,24 @@ export class VehiclesComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
-    addNewVehicle() {
-        this.vehicleDetailService.vehicle_detail = '';
-        sessionStorage.removeItem("vehicle_detail");
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+    addNewUser() {
+        this.userDetailService.user_detail = '';
+        sessionStorage.removeItem("user_detail");
+        this.router.navigate(['admin/users/user_detail']);
     }
 
-    editShowVehicleDetail(vehicle: any) {
-        this.vehicleDetailService.vehicle_detail = vehicle;
+    editShowUserDetail(user: any) {
+        this.userDetailService.user_detail = user;
 
-        sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        sessionStorage.setItem("user_detail", JSON.stringify(user));
 
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+        this.router.navigate(['admin/users/user_detail']);
     }
     
-    deleteVehicle(vehicle): void
+    deleteUser(user): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
@@ -197,7 +197,7 @@ export class VehiclesComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            user, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
@@ -212,7 +212,7 @@ export class VehiclesComponent implements OnInit
         });
     }
 
-    duplicateVehicle(vehicle): void
+    duplicateUser(user): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -220,7 +220,7 @@ export class VehiclesComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            user, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);

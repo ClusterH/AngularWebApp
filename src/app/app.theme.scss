@@ -83,6 +83,8 @@ $typography: mat-typography-config(
 
 @import "src/app/main/admin/vehicles/vehicles/vehicles.theme";
 @import "src/app/main/admin/vehicles/vehicle_detail/vehicle_detail.theme";
+@import "src/app/main/admin/users/users/users.theme";
+@import "src/app/main/admin/users/user_detail/user_detail.theme";
 
 @import "src/app/authentication/login/login.theme";
 @import "src/app/authentication/register/register.theme";
@@ -101,7 +103,8 @@ $typography: mat-typography-config(
     //Admin
     @include admin-vehicles-theme($theme);
     @include admin-vehicle-theme($theme);
-
+    @include admin-users-theme($theme);
+    @include admin-user-theme($theme);
     //Authentication
     @include login-theme($theme);
     @include register-theme($theme);

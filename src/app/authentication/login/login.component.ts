@@ -120,11 +120,9 @@ export class LoginComponent implements OnInit
         this.userRemember = this.loginForm.get('remember').value;
 
         if (this.userRemember) {
-            console.log(this.userRemember);
             localStorage.setItem('userInfo_email', JSON.stringify(this.userEmail));
             localStorage.setItem('userInfo_pwd', JSON.stringify(this.userPassword));
         } else {
-            console.log("Unchecked", this.userRemember);
             if (localStorage.getItem('userInfo_email')) {
                 localStorage.removeItem('userInfo_email');
                 localStorage.removeItem('userInfo_pwd');
@@ -135,9 +133,6 @@ export class LoginComponent implements OnInit
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(first())
             .subscribe((res: any) => {
-                console.log(res);
-                // localStorage.setItem('user_info', JSON.stringify(res));
-               
                 this.router.navigate(['/home/analytics']);
             },
             error => {

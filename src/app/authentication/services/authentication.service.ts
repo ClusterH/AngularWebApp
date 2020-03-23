@@ -9,10 +9,7 @@ export class AuthService
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
 
-    public userConncode: string;
-    public userID: number;
-    userInfo: any;
-    public checked_RememberMe: boolean;
+    
     /**
      * Constructor
      *
@@ -24,11 +21,7 @@ export class AuthService
         this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('user_info')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
-
-    // public get currentUserValue(): any {
-    //     return this.currentUserSubject.value;
-    // }
-    
+        
     userLogin(email: string, password: string ):Observable<any>
     {
         let headers = new HttpHeaders();
@@ -49,10 +42,7 @@ export class AuthService
             if (user) {
                 localStorage.setItem('user_info', JSON.stringify(user));
             }
-            // this.userInfo = JSON.parse(localStorage.getItem('user_info'));
-            // this.userConncode = this.userInfo.TrackingXLAPI.DATA.conncode;
-            // this.userID = this.userInfo.TrackingXLAPI.DATA.id;
-
+            
             this.currentUserSubject.next(user);
             return user;
         }));
@@ -61,14 +51,10 @@ export class AuthService
     logOut() {
         // remove user from local storage and set current user to null
         console.log("logout");
-        // if (!this.checked_RememberMe) {
-        //     console.log(this.checked_RememberMe);
-            localStorage.removeItem('user_info');
-        // }
+       
+        localStorage.removeItem('user_info');
 
         this.currentUserSubject.next(null);
-        this.userInfo = null;
-        this.userConncode = null;
-        this.userID = null;
+        
     }
 }

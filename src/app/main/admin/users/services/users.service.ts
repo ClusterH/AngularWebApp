@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class VehiclesService
+export class UsersService
 {
-    vehicles: any[];
+    users: any[];
 
     /**
      * Constructor
@@ -16,7 +16,7 @@ export class VehiclesService
         private _httpClient: HttpClient,
     ) { }
     
-    getVehicles(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
+    getUsers(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
     {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
@@ -61,17 +61,17 @@ export class VehiclesService
      *
     //  * @param contact
      */
-    // deleteVehicle(vehicle): void
+    // deleteUser(user): void
     // {
-    //     const vehicleIndex = this.vehicles.indexOf(vehicle);
-    //     this.vehicles.splice(vehicleIndex, 1);
-    //     this.onVehiclesChanged.next(this.vehicles);
+    //     const userIndex = this.users.indexOf(user);
+    //     this.users.splice(userIndex, 1);
+    //     this.onUsersChanged.next(this.users);
     // }
 
-    // duplicateVehicle(vehicle): void
+    // duplicateUser(user): void
     // {
-    //     const vehicleIndex = this.vehicles.indexOf(vehicle);
-    //     this.vehicles.splice(vehicleIndex, 0, vehicle);
-    //     this.onVehiclesChanged.next(this.vehicles);
+    //     const userIndex = this.users.indexOf(user);
+    //     this.users.splice(userIndex, 0, user);
+    //     this.onUsersChanged.next(this.users);
     // }
 }

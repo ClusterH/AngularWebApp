@@ -8,6 +8,10 @@ const routes = [
         path        : 'vehicles',
         loadChildren: () => import('./vehicles/vehicles.module').then(m => m.VehiclesModule)
     },
+    {
+        path        : 'users',
+        loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
+    },
 ];
 
 @NgModule({
