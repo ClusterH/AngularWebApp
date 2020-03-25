@@ -71,7 +71,7 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
-                                        <mat-label>{{ 'USERS.COMPANY' | translate }}</mat-label>
+                                        <mat-label>{{ 'USERS.EMAIL' | translate }}</mat-label>
                                         <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
                                             <div class="filter_company_input" >
                                                 <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">

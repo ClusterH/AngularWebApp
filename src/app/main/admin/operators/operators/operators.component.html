@@ -1,0 +1,341 @@
+<div id="operators" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'OPERATORS.OPERATORS' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'OPERATORS.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'OPERATORS.NAME' | translate}}</mat-option>
+                            <mat-option value="email">{{'OPERATORS.EMAIL' | translate}}</mat-option>
+                            <mat-option value="password">{{'OPERATORS.PASSWORD' | translate}}</mat-option>
+                            <mat-option value="phonenumber">{{'OPERATORS.PHONENUMBER' | translate}}</mat-option>
+                            <mat-option value="operatortype">{{'OPERATORS.OPERATORTYPE' | translate}}</mat-option>
+                            <mat-option value="isactive">{{'OPERATORS.ISACTIVE' | translate}}</mat-option>
+                            <mat-option value="company">{{'OPERATORS.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'OPERATORS.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'OPERATORS.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="created">{{'OPERATORS.CREATED' | translate}}</mat-option>
+                            <mat-option value="createdbyname">{{'OPERATORS.CREATEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'OPERATORS.DELETEDWHEN' | translate}}</mat-option>
+                            <mat-option value="deletedbyname">{{'OPERATORS.DELETEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'OPERATORS.LASTMODIFIEDDATE' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'OPERATORS.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="birthdate">{{'OPERATORS.BIRTHDATE' | translate}}</mat-option>
+                            <mat-option value="hiredate">{{'OPERATORS.HIREDATE' | translate}}</mat-option>
+                            <mat-option value="physicaltestexpirydate">{{'OPERATORS.PHYSICALTESTEXPIRYDATE' | translate}}</mat-option>
+                            <mat-option value="licenseexpirationdate">{{'OPERATORS.LICENSEEXPIRATIONDATE' | translate}}</mat-option>
+                            <mat-option value="driverlicensenumber">{{'OPERATORS.DRIVERLICENSENUMBER' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'OPERATORS.SEARCHFOROPERATOR' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/admin/operators/operator_detail'"
+                    class="accent  mt-24 mt-md-0">
+               <mat-icon (click)="addNewOperator()">add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="operators-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 250%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let operator">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowOperatorDetail(operator)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteOperator(operator)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateOperator(operator)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator">
+                        <p class="name text-truncate">{{operator.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.EMAIL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
+                        <p class="email text-truncate">
+                            {{user.email}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Password Column -->
+                <ng-container matColumnDef="password">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'OPERATORS.PASSWORD' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-md>
+                        <p class="password text-truncate">
+                            {{user.password}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PhoneNumber Column -->
+                <ng-container matColumnDef="phonenumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.PHONENUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
+                        <p class="phonenumber text-truncate">
+                            {{user.phonenumber}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- OperatortType Column -->
+                <ng-container matColumnDef="operatortype">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'OPERATORS.OPERATORTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-md>
+                        <p class="operatortype text-truncate">
+                            {{user.operatortype}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="isactive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.ISACTIVE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="isactive text-truncate">
+                            {{operator.isactive}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'OPERATORS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-md>
+                        <p class="company text-truncate">
+                            {{operator.company}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Group Column -->
+                <ng-container matColumnDef="group">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="group text-truncate">
+                            {{operator.group}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SubGroup Column -->
+                <ng-container matColumnDef="subgroup">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.SUBGROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="subgroup text-truncate">
+                            {{operator.subgroup}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{operator.created}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- CreatedByName Column -->
+                 <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{operator.createdbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DeletedWhen Column -->
+                <ng-container matColumnDef="deletedwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="deletedwhen text-truncate">
+                            {{operator.deletedwhen}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deletedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="deletedbyname text-truncate">
+                            {{operator.deletedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="lastmodifieddate text-truncate">
+                            {{operator.lastmodifieddate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="lastmodifiedbyname text-truncate">
+                            {{operator.lastmodifiedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- BirthDate Column -->
+                <ng-container matColumnDef="birthdate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.BIRTHDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="birthdate text-truncate">
+                            {{operator.birthdate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HireDate Column -->
+                <ng-container matColumnDef="hiredate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.HIREDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="hiredate text-truncate">
+                            {{operator.hiredate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- physicaTestExpiryDate Column -->
+                <ng-container matColumnDef="physicaltestexpirydate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.PHYSICALTESTEXPIRYDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="physicaltestexpirydate text-truncate">
+                            {{operator.physicaltestexpirydate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LicenseExpirationDate Column -->
+                <ng-container matColumnDef="licenseexpirationdate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LICENSEEXPIRATIONDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="licenseexpirationdate text-truncate">
+                            {{operator.licenseexpirationdate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DiverLicenseNumber Column -->
+                <ng-container matColumnDef="driverlicensenumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DRIVERLICENSENUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                        <p class="driverlicensenumber text-truncate">
+                            {{operator.driverlicensenumber}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let operator; columns: displayedColumns;"
+                            class="operator font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

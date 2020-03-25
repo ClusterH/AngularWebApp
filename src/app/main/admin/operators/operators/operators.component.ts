@@ -12,31 +12,31 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { UsersService } from 'app/main/admin/users/services/users.service';
-import { UsersDataSource } from "app/main/admin/users/services/users.datasource";
-import { UserDetailService } from 'app/main/admin/users/services/user_detail.service';
+import { OperatorsService } from 'app/main/admin/operators/services/operators.service';
+import { OperatorsDataSource } from "app/main/admin/operators/services/operators.datasource";
+import { OperatorDetailService } from 'app/main/admin/operators/services/operator_detail.service';
 import { AuthService } from 'app/authentication/services/authentication.service';
 
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
 import { takeUntil } from 'rxjs/internal/operators';
 
-import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
-import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
-import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
-import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
+import { locale as operatorsEnglish } from 'app/main/admin/operators/i18n/en';
+import { locale as operatorsSpanish } from 'app/main/admin/operators/i18n/sp';
+import { locale as operatorsFrench } from 'app/main/admin/operators/i18n/fr';
+import { locale as operatorsPortuguese } from 'app/main/admin/operators/i18n/pt';
 import { Route } from '@angular/compiler/src/core';
 
 @Component({
-    selector     : 'admin-users',
-    templateUrl  : './users.component.html',
-    styleUrls    : ['./users.component.scss'],
+    selector     : 'admin-operators',
+    templateUrl  : './operators.component.html',
+    styleUrls    : ['./operators.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class UsersComponent implements OnInit
+export class OperatorsComponent implements OnInit
 {
-    dataSource: UsersDataSource;
+    dataSource: OperatorsDataSource;
 
     @Output()
     pageEvent: PageEvent;
@@ -49,7 +49,7 @@ export class UsersComponent implements OnInit
     index_number: number = 1;
     currentUser: any;
 
-    user: any;
+    operator: any;
     userConncode: string;
     userID: number;
 
@@ -59,12 +59,8 @@ export class UsersComponent implements OnInit
         'name',
         'email',
         'password',
-        'userprofile',
-        'timezone',
-        'lengthunit',
-        'fuelunit',
-        'weightunit',
-        'tempunit',
+        'phonenumber',
+        'operatortype',
         'isactive',
         'company',
         'group',
@@ -75,7 +71,11 @@ export class UsersComponent implements OnInit
         'deletedbyname', 
         'lastmodifieddate',
         'lastmodifiedbyname',
-        'language'
+        'birthdate',
+        'hiredate',
+        'physicaltestexpirydate',
+        'licenseexpirationdate',
+        'driverlicensenumber'
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -90,8 +90,8 @@ export class UsersComponent implements OnInit
     filter: ElementRef;
     
     constructor(
-        private _adminUsersService: UsersService,
-        private userDetailService: UserDetailService,
+        private _adminOperatorsService: OperatorsService,
+        private operatorDetailService: OperatorDetailService,
         private authService: AuthService,
         public _matDialog: MatDialog,
         private router: Router,
@@ -104,7 +104,7 @@ export class UsersComponent implements OnInit
 
 
         //Load the translations
-        this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(operatorsEnglish, operatorsSpanish, operatorsFrench, operatorsPortuguese);
 
         this.pageIndex= 0;
         this.pageSize = 25;
@@ -117,7 +117,7 @@ export class UsersComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:user");
+        console.log("ngAfterViewInit:");
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -131,7 +131,7 @@ export class UsersComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist"))
+           tap(() => this.dataSource.loadOperators(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -145,12 +145,12 @@ export class UsersComponent implements OnInit
     {
         console.log(this.pageSize, this.pageIndex);
 
-        this.dataSource = new UsersDataSource(this._adminUsersService);
-        this.dataSource.loadUsers(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "User_TList");
+        this.dataSource = new OperatorsDataSource(this._adminOperatorsService);
+        this.dataSource.loadOperators(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Operator_Tlist");
     }
 
-    onRowClicked(user) {
-        console.log('Row Clicked:', user);
+    onRowClicked(operator) {
+        console.log('Row Clicked:', operator);
     }
 
     selectedFilter() {
@@ -159,13 +159,13 @@ export class UsersComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
+            this.dataSource.loadOperators(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadUsers(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
+        this.dataSource.loadOperators(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist");
     }
 
     filterEvent() {
@@ -173,24 +173,24 @@ export class UsersComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
+        this.dataSource.loadOperators(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist");
     }
 
-    addNewUser() {
-        this.userDetailService.user_detail = '';
-        sessionStorage.removeItem("user_detail");
-        this.router.navigate(['admin/users/user_detail']);
+    addNewOperator() {
+        this.operatorDetailService.operator_detail = '';
+        sessionStorage.removeItem("operator_detail");
+        this.router.navigate(['admin/operators/operator_detail']);
     }
 
-    editShowUserDetail(user: any) {
-        this.userDetailService.user_detail = user;
+    editShowOperatorDetail(operator: any) {
+        this.operatorDetailService.operator_detail = operator;
 
-        sessionStorage.setItem("user_detail", JSON.stringify(user));
+        sessionStorage.setItem("operator_detail", JSON.stringify(operator));
 
-        this.router.navigate(['admin/users/user_detail']);
+        this.router.navigate(['admin/operators/operator_detail']);
     }
     
-    deleteUser(user): void
+    deleteOperator(operator): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
@@ -198,7 +198,7 @@ export class UsersComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            user, flag: this.flag
+            operator, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
@@ -213,7 +213,7 @@ export class UsersComponent implements OnInit
         });
     }
 
-    duplicateUser(user): void
+    duplicateOperator(operator): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -221,7 +221,7 @@ export class UsersComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            user, flag: this.flag
+            operator, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);

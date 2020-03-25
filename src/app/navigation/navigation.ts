@@ -51,7 +51,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Operators',
                 translate: 'NAV.OPERATORS',
                 type     : 'item',
-                url      : '/admin/operators'
+                url      : '/admin/operators/operators'
                
             },
             {
