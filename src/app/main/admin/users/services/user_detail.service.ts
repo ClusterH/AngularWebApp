@@ -9,7 +9,6 @@ export class UserDetailService
     user: any;
     public user_detail: any;
     public unit_clist_item: any = {};
-    public current_makeID: number;
 
     /**
      * Constructor
@@ -30,99 +29,63 @@ export class UserDetailService
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
         if(name == '') {
-            if(method == 'model_clist') {
-                console.log(this.current_makeID);
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('method', method.toString());
 
-                let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('makeid', this.current_makeID.toString())
-                .set('method', method.toString());
-    
-                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                    headers: headers,   
-                    params: params
-                });
-            } else {
-                let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('method', method.toString());
-
-                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                    headers: headers,   
-                    params: params
-                });
-            }
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
            
         } else {
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('name', `^${name}^`) 
+            .set('method', method.toString());
 
-            if(method == 'model_clist') {
-                console.log(this.current_makeID);
-
-                let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('makeid', this.current_makeID.toString())
-                .set('name', `^${name}^`) 
-                .set('method', method.toString());
-
-                console.log(params);
-    
-                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                    headers: headers,   
-                    params: params
-                });
-            } else {
-                let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('name', `^${name}^`) 
-                .set('method', method.toString());
-
-                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                    headers: headers,   
-                    params: params
-                });
-            }
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
         }
         
     }
 
     saveUserDetail(conncode: string, userid: number, userDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        console.log(userDetail);
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
             .set('id', userDetail.id.toString())
             .set('name', userDetail.name.toString())
+            .set('email', userDetail.email.toString())
+            .set('password', userDetail.password.toString())
+            .set('userprofileid', userDetail.userprofileid.toString())
+            .set('timezoneid', userDetail.timezoneid.toString())
+            .set('lengthunitid', userDetail.lengthunitid.toString())
+            .set('fuelunitid', userDetail.fuelunitid.toString())
+            .set('weightunitid', userDetail.weightunitid.toString())
+            .set('tempunitid', userDetail.tempunitid.toString())
+            .set('isactive', userDetail.isactive.toString())
             .set('companyid', userDetail.companyid.toString())
             .set('groupid', userDetail.groupid.toString())
             .set('subgroup', userDetail.subgroup.toString())
-            .set('operatorid', userDetail.operatorid.toString())
-            .set('accountid', userDetail.accountid.toString())
-            .set('unittypeid', userDetail.unittypeid.toString())
-            .set('serviceplanid', userDetail.serviceplanid.toString())
-            .set('producttypeid', userDetail.producttypeid.toString())
-            .set('makeid', userDetail.makeid.toString())
-            .set('modelid', userDetail.modelid.toString())
-            .set('isactive', userDetail.isactive.toString())
-            .set('timezoneid', userDetail.timezoneid.toString())
             .set('created', userDetail.created.toString())
             .set('createdby', userDetail.createdby.toString())
             .set('deletedwhen', userDetail.deletedwhen.toString())
             .set('deletedby', userDetail.deletedby.toString())
             .set('lastmodifieddate', userDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', userDetail.lastmodifiedby.toString())
+            .set('languageid', userDetail.languageid.toString())
             .set('method', 'unit_save');
         
             console.log(params_detail);

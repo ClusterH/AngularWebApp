@@ -2,35 +2,23 @@ export interface UserDetail
 {
     id?: number;
     name?: string;
-    companyid?: number;
-    // company: string;
-    groupid?: number;
-    // group: string;
-    subgroup?: number;
-    accountid?: number;
-    // account: string;
-    operatorid?: number;
-    // operator: string;
-    unittypeid?: number;
-    // unittype: string;
-    serviceplanid?: number;
-    // serviceplan: string;
-    producttypeid?: number;
-    // producttype: string;
-    makeid?: number;
-    // make: string;
-    modelid?: number;
-    // model: string;
-    isactive?: boolean;
+    email?: string;
+    password?: string;
+    userprofileid?: number;
     timezoneid?: number
-    // timezone: string;
+    lengthunitid?: number;
+    fuelunitid?: number;
+    weightunitid?: number;
+    tempunitid?: number;
+    isactive?: boolean;
+    companyid?: number;
+    groupid?: number;
+    subgroup?: number;
     created?: Date;
     createdby?: number;
-    // createdbyname: string;
     deletedwhen?: Date;
     deletedby?: number;
-    // deletedbyname: string;
     lastmodifieddate?: Date;
     lastmodifiedby?: number;
-    // lastmodifiedbyname: string
+    languageid?: number;
 }

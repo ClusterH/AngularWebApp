@@ -52,14 +52,12 @@ export class UserDetailComponent implements OnInit
 
   dataSourceCompany:     UserDetailDataSource;
   dataSourceGroup:       UserDetailDataSource;
-  dataSourceAccount:     UserDetailDataSource;
-  dataSourceOperator:    UserDetailDataSource;
-  dataSourceUnitType:    UserDetailDataSource;
-  dataSourceServicePlan: UserDetailDataSource;
-  dataSourceProductType: UserDetailDataSource;
-  dataSourceMake:        UserDetailDataSource;
-  dataSourceModel:       UserDetailDataSource;
   dataSourceTimeZone:    UserDetailDataSource;
+  dataSourceLengthUnit:  UserDetailDataSource;
+  dataSourceFuelUnit:    UserDetailDataSource;
+  dataSourceWeightUnit:  UserDetailDataSource;
+  dataSourceTempUnit:    UserDetailDataSource;
+  dataSourceLanguage:    UserDetailDataSource;
  
   filter_string: string = '';
   method_string: string = '';
@@ -68,26 +66,21 @@ export class UserDetailComponent implements OnInit
     paginatorCompany: MatPaginator;
   @ViewChild('paginatorGroup', {read: MatPaginator, static: true})
     paginatorGroup: MatPaginator;
-  @ViewChild('paginatorAccount', {read: MatPaginator, static: true})
-    paginatorAccount: MatPaginator;
-  @ViewChild('paginatorOperator', {read: MatPaginator, static: true})
-    paginatorOperator: MatPaginator;
-  @ViewChild('paginatorUnitType', {read: MatPaginator, static: true})
-    paginatorUnitType: MatPaginator;
-  @ViewChild('paginatorServicePlan', {read: MatPaginator, static: true})
-    paginatorServicePlan: MatPaginator;
-  @ViewChild('paginatorProductType', {read: MatPaginator, static: true})
-    paginatorProductType: MatPaginator;
-  @ViewChild('paginatorMake', {read: MatPaginator, static: true})
-    paginatorMake: MatPaginator;
-  @ViewChild('paginatorModel', {read: MatPaginator})
-    paginatorModel: MatPaginator;
   @ViewChild('paginatorTimeZone', {read: MatPaginator, static: true})
     paginatorTimeZone: MatPaginator;
-
+  @ViewChild('paginatorLengthUnit', {read: MatPaginator, static: true})
+    paginatorLengthUnit: MatPaginator;
+  @ViewChild('paginatorFuelUnit', {read: MatPaginator, static: true})
+    paginatorFuelUnit: MatPaginator;
+  @ViewChild('paginatorWeightUnit', {read: MatPaginator, static: true})
+    paginatorWeightUnit: MatPaginator;
+    @ViewChild('paginatorTempUnit', {read: MatPaginator, static: true})
+    paginatorTempUnit: MatPaginator;
+  @ViewChild('paginatorLanguage', {read: MatPaginator, static: true})
+    paginatorLanguage: MatPaginator;
+ 
   constructor(
     public userDetailService: UserDetailService,
-    private authService: AuthService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
     private _formBuilder: FormBuilder,
@@ -103,17 +96,10 @@ export class UserDetailComponent implements OnInit
 
     if ( this.user != '' )
     {
-      this.userDetailService.current_makeID = this.user.makeid;
-      this.userModel_flag = true;
-      console.log("makeid: ", this.userDetailService.current_makeID);
       this.pageType = 'edit';
     }
     else
     {
-      console.log(this.user);
-      this.userDetailService.current_makeID = 0;
-      this.userModel_flag = false;
-
       this.pageType = 'new';
     }
 
@@ -123,50 +109,44 @@ export class UserDetailComponent implements OnInit
   ngOnInit(): void {
     console.log(this.user);
   
-    this.dataSourceCompany        = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceGroup          = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceAccount        = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceOperator       = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceUnitType       = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceServicePlan    = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceProductType    = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceMake           = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceModel          = new UserDetailDataSource(this.userDetailService);
-    this.dataSourceTimeZone       = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceCompany    = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceGroup      = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceTimeZone   = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceLengthUnit = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceFuelUnit   = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceWeightUnit = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceTempUnit   = new UserDetailDataSource(this.userDetailService);
+    this.dataSourceLanguage   = new UserDetailDataSource(this.userDetailService);
 
-    this.dataSourceCompany      .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.company, "company_clist");
-    this.dataSourceGroup        .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.group, "group_clist");
-    this.dataSourceAccount      .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.account, "account_clist");
-    this.dataSourceOperator     .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.operator, "operator_clist");
-    this.dataSourceUnitType     .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.unittype, "unittype_clist");
-    this.dataSourceServicePlan  .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.serviceplan, "serviceplan_clist");
-    this.dataSourceProductType  .loadUserDetail(this.userConncode, this.userID, 0, 10, '', "producttype_clist");
-    this.dataSourceMake         .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.make, "make_clist");
-    if(this.userModel_flag) {
-      this.dataSourceModel      .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.model, "model_clist");
-    }
-    this.dataSourceTimeZone     .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.timezone, "timezone_clist");
+    this.dataSourceCompany   .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.company, "company_clist");
+    this.dataSourceGroup     .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.group, "group_clist");
+    this.dataSourceTimeZone  .loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.timezone, "timezone_clist");
+    this.dataSourceLengthUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "lengthunit_clist");
+    this.dataSourceFuelUnit  .loadUserDetail(this.userConncode, this.userID, 0, 10, '', "fuelunit_clist");
+    this.dataSourceWeightUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "weightunit_clist");
+    this.dataSourceTempUnit  .loadUserDetail(this.userConncode, this.userID, 0, 10, '', "tempunit_clist");
+    this.dataSourceLanguage  .loadUserDetail(this.userConncode, this.userID, 0, 10, '', "language_clist");
 
     this.userForm = this._formBuilder.group({
       name               : [null, Validators.required],
+      email              : [null, Validators.required],
+      password           : [null, Validators.required],
+      timezone           : [null, Validators.required],
+      lengthunit         : [null, Validators.required],
+      fuelunit           : [null, Validators.required],
+      weightunit         : [null, Validators.required],
+      tempunit           : [null, Validators.required],
+      isactive           : [null, Validators.required],
       company            : [null, Validators.required],
       group              : [null, Validators.required],
       subgroup           : [null, Validators.required],
-      account            : [null, Validators.required],
-      operator           : [null, Validators.required],
-      unittype           : [null, Validators.required],
-      serviceplan        : [null, Validators.required],
-      producttype        : [null, Validators.required],
-      make               : [null, Validators.required],
-      model              : [null, Validators.required],
-      isactive           : [null, Validators.required],
-      timezone           : [null, Validators.required],
       created            : [{value: '', disabled: true}, Validators.required],
       createdbyname      : [{value: '', disabled: true}, Validators.required],
       deletedwhen        : [{value: '', disabled: true}, Validators.required],
       deletedbyname      : [{value: '', disabled: true}, Validators.required],
       lastmodifieddate   : [{value: '', disabled: true}, Validators.required],
       lastmodifiedbyname : [{value: '', disabled: true}, Validators.required],
+      language           : [null, Validators.required],
       filterstring       : [null, Validators.required],
   });
 
@@ -196,82 +176,55 @@ export class UserDetailComponent implements OnInit
         console.log(res);
     });
 
-    merge(this.paginatorAccount.page)
+    merge(this.paginatorLengthUnit.page)
     .pipe(
       tap(() => {
-        this.loadUserDetail("account")
+        this.loadUserDetail("lengthunit")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorOperator.page)
+    merge(this.paginatorFuelUnit.page)
     .pipe(
       tap(() => {
-        this.loadUserDetail("operator")
+        this.loadUserDetail("fuelunit")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorUnitType.page)
+    merge(this.paginatorWeightUnit.page)
     .pipe(
       tap(() => {
-        this.loadUserDetail("unittype")
+        this.loadUserDetail("weightunit")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorServicePlan.page)
+    merge(this.paginatorTempUnit.page)
     .pipe(
       tap(() => {
-        this.loadUserDetail("serviceplan")
+        this.loadUserDetail("tempunit")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorProductType.page)
+    merge(this.paginatorLanguage.page)
     .pipe(
       tap(() => {
-        this.loadUserDetail("producttype")
+        this.loadUserDetail("language")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
-
-    merge(this.paginatorMake.page)
-    .pipe(
-      tap(() => {
-        this.loadUserDetail("make")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    if(this.userModel_flag) {
-      merge(this.paginatorModel.page)
-      .pipe(
-        tap(() => {
-          // this.userDetailService.current_makeID = this.userForm.get('make').value;
-
-          console.log("makeid: ", this.userDetailService.current_makeID);
-          this.paginatorModel.pageIndex = 0
-  
-          this.loadUserDetail('model')
-        })
-      )
-      .subscribe( (res: any) => {
-          console.log(res);
-      });
-    }
 
     merge(this.paginatorTimeZone.page)
     .pipe(
@@ -289,20 +242,16 @@ export class UserDetailComponent implements OnInit
       this.dataSourceCompany.loadUserDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'group') {
         this.dataSourceGroup.loadUserDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'active') {
-        this.dataSourceAccount.loadUserDetail(this.userConncode, this.userID, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'operator') {
-        this.dataSourceOperator.loadUserDetail(this.userConncode, this.userID, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'unittype') {
-        this.dataSourceUnitType.loadUserDetail(this.userConncode, this.userID, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'serviceplan') {
-        this.dataSourceServicePlan.loadUserDetail(this.userConncode, this.userID, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'producttype') {
-        this.dataSourceProductType.loadUserDetail(this.userConncode, this.userID, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
-    } else if (method_string == 'make') {
-        this.dataSourceMake.loadUserDetail(this.userConncode, this.userID, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'model') {
-        this.dataSourceModel.loadUserDetail(this.userConncode, this.userID, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
+    } else if (method_string == 'lengthunit') {
+        this.dataSourceLengthUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorLengthUnit.pageIndex, this.paginatorLengthUnit.pageSize, '', `${method_string}_clist`)
+    } else if (method_string == 'fuelunit') {
+        this.dataSourceFuelUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorFuelUnit.pageIndex, this.paginatorFuelUnit.pageSize, '', `${method_string}_clist`)
+    } else if (method_string == 'weightunit') {
+        this.dataSourceWeightUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorWeightUnit.pageIndex, this.paginatorWeightUnit.pageSize, '', `${method_string}_clist`)
+    } else if (method_string == 'tempunit') {
+        this.dataSourceTempUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorTempUnit.pageIndex, this.paginatorTempUnit.pageSize, '', `${method_string}_clist`)
+    } else if (method_string == 'language') {
+        this.dataSourceLanguage.loadUserDetail(this.userConncode, this.userID, this.paginatorLanguage.pageIndex, this.paginatorLanguage.pageSize, '', `${method_string}_clist`)
     } else if (method_string == 'timezone') {
         this.dataSourceTimeZone.loadUserDetail(this.userConncode, this.userID, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
     }
@@ -313,37 +262,29 @@ export class UserDetailComponent implements OnInit
       case 'company':
         this.paginatorCompany.pageIndex = 0;
       break;
-
-      case 'account':
-        this.paginatorAccount.pageIndex = 0;
-      break;
-
+     
       case 'group':
         this.paginatorGroup.pageIndex = 0;
       break;
 
-      case 'operator':
-        this.paginatorOperator.pageIndex = 0;
+      case 'lengthunit':
+        this.paginatorLengthUnit.pageIndex = 0;
       break;
 
-      case 'unittype':
-        this.paginatorUnitType.pageIndex = 0;
+      case 'fuelunit':
+        this.paginatorFuelUnit.pageIndex = 0;
       break;
 
-      case 'serviceplan':
-        this.paginatorServicePlan.pageIndex = 0;
+      case 'weightunit':
+        this.paginatorWeightUnit.pageIndex = 0;
       break;
 
-      case 'producttype':
-        this.paginatorProductType.pageIndex = 0;
+      case 'tempunit':
+        this.paginatorTempUnit.pageIndex = 0;
       break;
 
-      case 'make':
-        this.paginatorMake.pageIndex = 0;
-      break;
-
-      case 'model':
-        this.paginatorModel.pageIndex = 0;
+      case 'language':
+        this.paginatorLanguage.pageIndex = 0;
       break;
 
       case 'timezone':
@@ -355,20 +296,17 @@ export class UserDetailComponent implements OnInit
   showCompanyList(item: string) {
     let methodString = item;
     this.method_string = item.split('_')[0];
-    if (this.method_string == 'model' && !this.userModel_flag) {
-        alert("Please check first Make is selected!");
-    } else {
-      let selected_element_id = this.userForm.get(`${this.method_string}`).value;
+   
+    let selected_element_id = this.userForm.get(`${this.method_string}`).value;
 
-      console.log(methodString, this.userDetailService.unit_clist_item[methodString], selected_element_id );
+    console.log(methodString, this.userDetailService.unit_clist_item[methodString], selected_element_id );
 
-      let clist = this.userDetailService.unit_clist_item[methodString];
+    let clist = this.userDetailService.unit_clist_item[methodString];
 
-      for (let i = 0; i< clist.length; i++) {
-        if ( clist[i].id == selected_element_id ) {
-          this.userForm.get('filterstring').setValue(clist[i].name);
-          this.filter_string = clist[i].name;
-        }
+    for (let i = 0; i< clist.length; i++) {
+      if ( clist[i].id == selected_element_id ) {
+        this.userForm.get('filterstring').setValue(clist[i].name);
+        this.filter_string = clist[i].name;
       }
      
       this.managePageIndex(this.method_string);
@@ -380,9 +318,7 @@ export class UserDetailComponent implements OnInit
     console.log(this.filter_string);
     this.filter_string = '';
     this.userForm.get('filterstring').setValue(this.filter_string);
-
-    // if (this.method_string == 'model') {
-    // }
+   
     this.managePageIndex(this.method_string);
     this.loadUserDetail(this.method_string);
   }
@@ -403,13 +339,13 @@ export class UserDetailComponent implements OnInit
       this.userForm.get('name').setValue(this.user.name);
       this.userForm.get('company').setValue(this.user.companyid);
       this.userForm.get('group').setValue(this.user.groupid);
-      this.userForm.get('account').setValue(this.user.accountid);
-      this.userForm.get('operator').setValue(this.user.operatorid);
-      this.userForm.get('unittype').setValue(this.user.unittypeid);
-      this.userForm.get('serviceplan').setValue(this.user.serviceplanid);
-      this.userForm.get('producttype').setValue(this.user.producttypeid);
-      this.userForm.get('make').setValue(this.user.makeid);
-      this.userForm.get('model').setValue(this.user.modelid);
+      this.userForm.get('email').setValue(this.user.email);
+      this.userForm.get('password').setValue(this.user.password);
+      this.userForm.get('lengthunit').setValue(this.user.lengthunitid);
+      this.userForm.get('fuelunit').setValue(this.user.fuelunitid);
+      this.userForm.get('weightunit').setValue(this.user.weightunitid);
+      this.userForm.get('tempunit').setValue(this.user.tempunitid);
+      this.userForm.get('language').setValue(this.user.languageid);
       this.userForm.get('timezone').setValue(this.user.timezoneid);
 
       let created          = this.user? new Date(`${this.user.created}`) : '';
@@ -426,22 +362,23 @@ export class UserDetailComponent implements OnInit
   }
 
   getValues(dateTime: any, mode: string) {
-    this.userDetail.name             = this.userForm.get('name').value || '',
-    this.userDetail.companyid        = this.userForm.get('company').value || 0;
-    this.userDetail.groupid          = this.userForm.get('group').value || 0;
-    this.userDetail.accountid        = this.userForm.get('account').value || 0;
-    this.userDetail.operatorid       = this.userForm.get('operator').value || 0;
-    this.userDetail.unittypeid       = this.userForm.get('unittype').value || 0;
-    this.userDetail.serviceplanid    = this.userForm.get('serviceplan').value || 0;
-    this.userDetail.producttypeid    = this.userForm.get('producttype').value || 0;
-    this.userDetail.makeid           = this.userForm.get('make').value || 0;
-    this.userDetail.modelid          = this.userForm.get('model').value || 0;
-    this.userDetail.timezoneid       = this.userForm.get('timezone').value || 0;
+    this.userDetail.name          = this.userForm.get('name').value || '',
+    this.userDetail.email         = this.userForm.get('email').value || '';
+    this.userDetail.password      = this.userForm.get('password').value || '';
+    this.userDetail.timezoneid    = this.userForm.get('timezone').value || 0;
+    this.userDetail.lengthunitid  = this.userForm.get('lengthunit').value || 0;
+    this.userDetail.fuelunitid    = this.userForm.get('fuelunit').value || 0;
+    this.userDetail.weightunitid  = this.userForm.get('weightunit').value || 0;
+    this.userDetail.tempunitid    = this.userForm.get('tempunit').value || 0;
+    this.userDetail.companyid     = this.userForm.get('company').value || 0;
+    this.userDetail.groupid       = this.userForm.get('group').value || 0;
+    this.userDetail.languageid    = this.userForm.get('language').value || 0;
  
-    this.userDetail.subgroup         = this.user.subgroup || 0;
-    this.userDetail.isactive         = this.user.isactive || true;
-    this.userDetail.deletedwhen      = this.user.deletedwhen || '';
-    this.userDetail.deletedby        = this.user.deletedby || 0;
+    this.userDetail.userprofileid = this.user.userprofileid || 0;
+    this.userDetail.subgroup      = this.user.subgroup || 0;
+    this.userDetail.isactive      = this.user.isactive || true;
+    this.userDetail.deletedwhen   = this.user.deletedwhen || '';
+    this.userDetail.deletedby     = this.user.deletedby || 0;
 
     if( mode  == "save" ) {
       this.userDetail.id               = this.user.id;
@@ -532,22 +469,4 @@ export class UserDetailComponent implements OnInit
     });
 
   }
-  onMakeChange(event: any) {
-    console.log(event);
-    this.userDetailService.current_makeID = this.userForm.get('make').value;
-    this.userModel_flag = true;
-    this.dataSourceModel.loadUserDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
-    // this.paginatorModel.pageIndex = 0;
-
-  }
-
-  checkMakeIsSelected() {
-    alert("Please check first Make is selected!");
-  }
-
-   // navigatePageEvent() {
-  //   // console.log(this.index_number);
-  //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
-  //   // this.dataSource.loadCompanies(this.userConncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "company_clist");
-  // }
 }

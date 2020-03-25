@@ -49,7 +49,7 @@ export class UserDetailDataSource extends DataSource<any>
             console.log(result.TrackingXLAPI.DATA);
             this.userDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            console.log("unit_clist: ", this.userDetailService.unit_clist_item);
+            console.log(method, this.userDetailService.unit_clist_item);
             this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
 
             this.page_index = pageindex + 1;

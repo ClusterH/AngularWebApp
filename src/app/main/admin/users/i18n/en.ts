@@ -32,6 +32,7 @@ export const locale = {
             "LANGUAGE": "Language",
 
             "GENERAL": "General",
+            "REGIONALIZATION": "Regionalization",
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
@@ -41,24 +42,6 @@ export const locale = {
             "DELETE": "Delete",
             "NO": "No",
             "YES": "Yes"
-            
-            // "COMPANYID": "CompanyID",
-            // "GROUPID": "GroupID",
-            // "SUBGROUPID": "SubGroupID",
-            // "UNITTYPEID1": "UnitTypeID1",
-
-            // "CREATEDBY": "CreatedBY",
-            // "DELETEDBY": "DeletedBy",
-            // "LASTMODIFIEDBY": "LastModifiedBy",
-            
-            
-            // "FIRSTINFO": "First Info",
-            // "SECONDINFO": "Second Info",
-            // "THIRDINFO": "Third Info",
-            // "ITEMS_PER_PAGE": "Page Size",
-            // "NEXT_PAGE": "Next Page",
-            // "PREVIOUS_PAGE": "Prev Page",
-            
         }
     }
 };
