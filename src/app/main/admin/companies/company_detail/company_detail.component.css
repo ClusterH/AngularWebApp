@@ -1,0 +1,30 @@
+
+    .filter_company_input{
+            border: 1px solid #b3b1b1 !important;
+            border-radius: 5px !important;
+            margin: 20px !important;
+            width: 90% !important;
+            height: 50px !important;
+        }
+
+        .mat-row.cdk-row.company_list.ng-tns-c371-48.ng-star-inserted{
+            height: 25px !important;
+        }
+        .mat-option.mat-selected.mat-active {
+            background: white !important;
+        }
+        .mat-option:hover:not(.mat-option-disabled) {
+            background: yellowgreen !important;
+        }
+        .mat-paginator.table_paginator.ng-tns-c233-51 {
+            background: yellowgreen !important;
+        }
+        .table_paginator {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background-color: rgb(30, 33, 41) !important;
+            height: 40px !important;
+            color: rgb(221, 221, 221) !important;
+        }
+ 

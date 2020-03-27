@@ -1,0 +1,614 @@
+<div id="company_detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" >
+                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/companies/companies'"> -->
+                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{company.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'COMPANIES.NEWCOMPANY' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'COMPANIES.COMPANYDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-company-button"
+                    *ngIf="pageType ==='new'" (click)="addCompany()">
+                <span>{{ 'COMPANIES.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-company-button"
+                    *ngIf="pageType ==='edit'" (click)="saveCompany()">
+                <span>{{ 'COMPANIES.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form [formGroup]="companyForm" class="company w-100-p" fxLayout="column" fxFlex >
+
+                    <mat-tab-group>
+
+                        <mat-tab label="{{ 'COMPANIES.GENERAL' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{ 'COMPANIES.NAME' | translate }}</mat-label>
+                                    <input matInput placeholder="Name"
+                                           name="name"
+                                           formControlName="name"
+                                           required>
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
+                                        <mat-label>{{ 'COMPANIES.COMPANY' | translate }}</mat-label>
+                                        <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;" >
+                                                <mat-table [dataSource]="dataSourceCompany"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let company;"  style="border: 0px;">
+                                                            <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorCompany
+                                                class="table_paginator_detail"
+                                                [length]="dataSourceCompany.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                                sticky="true"
+                                            ></mat-paginator>
+                                          
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.GROUP' | translate }}</mat-label>
+                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceGroup"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorGroup
+                                                class="table_paginator"
+                                                [length]="dataSourceGroup.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.ACCOUNT' | translate }}</mat-label>
+                                        <mat-select formControlName="account"  (click)="showCompanyList('account_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceAccount"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let account"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="account.id">{{account.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorAccount
+                                                class="table_paginator"
+                                                [length]="dataSourceAccount.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                          
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.OPERATOR' | translate }}</mat-label>
+                                        <mat-select formControlName="operator"  (click)="showCompanyList('operator_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceOperator"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let operator"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.id">{{operator.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorOperator
+                                                class="table_paginator"
+                                                [length]="dataSourceOperator.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.UNITTYPE' | translate }}</mat-label>
+                                        <mat-select formControlName="unittype"  (click)="showCompanyList('unittype_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceUnitType"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let unittype"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="unittype.id">{{unittype.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorUnitType
+                                                class="table_paginator"
+                                                [length]="dataSourceUnitType.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                          
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.SERVICEPLAN' | translate }}</mat-label>
+                                        <mat-select formControlName="serviceplan"  (click)="showCompanyList('serviceplan_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceServicePlan"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let serviceplan"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="serviceplan.id">{{serviceplan.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorServicePlan
+                                                class="table_paginator"
+                                                [length]="dataSourceServicePlan.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                        <mat-label>{{ 'COMPANIES.PRODUCTTYPE' | translate }}</mat-label>
+                                        <mat-select formControlName="producttype"  (click)="showCompanyList('producttype_clist')">
+                                            <!-- <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div> -->
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceProductType"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let producttype"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="producttype.id">{{producttype.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorProductType
+                                                class="table_paginator"
+                                                [length]="dataSourceProductType.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                          
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                        <mat-label>{{ 'COMPANIES.MAKE' | translate }}</mat-label>
+                                        <mat-select formControlName="make"  (click)="showCompanyList('make_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceMake"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let make"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="make.id">{{make.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                            
+                                            <div  class="table_paginator">
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorMake
+                                                    [length]="dataSourceMake.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                ></mat-paginator>
+                                            </div>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                        <mat-label>{{ 'COMPANIES.MODEL' | translate }}</mat-label>
+                                        <mat-select formControlName="model"  (click)="showCompanyList('model_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceModel"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let model"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="model.id">{{model.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorModel
+                                                class="table_paginator"
+                                                [length]="dataSourceModel.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="{{ 'COMPANIES.AUDIT' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                    <mat-label>{{ 'COMPANIES.TIMEZONE' | translate }}</mat-label>
+                                    <mat-select formControlName="timezone"  (click)="showCompanyList('timezone_clist')" >
+                                        <div class="filter_company_input" >
+                                            <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                            <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                        </div>
+
+                                        <div  style="width: 100%; overflow: auto;">
+                                            <mat-table [dataSource]="dataSourceTimeZone"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                <ng-container matColumnDef="name">
+                                                    <td mat-cell *matCellDef="let timezone"  style="border: 0px;">
+                                                        <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="timezone.id">{{timezone.name}}</mat-option>
+                                                    </td>
+                                                </ng-container>
+                                                <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                            </mat-table>
+                                        </div>
+                                    
+                                        <mat-paginator style=" height: 40px;"
+                                            #paginatorTimeZone
+                                            class="table_paginator"
+                                            [length]="dataSourceTimeZone.totalLength"
+                                            [pageSize]="10"
+                                            [hidePageSize]="true"
+                                            showFirstLastButtons
+                                        ></mat-paginator>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.CREATED' | translate }}</mat-label>
+                                        <input matInput placeholder="Created"
+                                               name="created"
+                                                formControlName="created">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.CREATEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="CreatedByName"
+                                               name="createdbyname"
+                                               formControlName="createdbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.DELETEDWHEN' | translate }}</mat-label>
+                                        <input matInput placeholder="Deleted When"
+                                               name="deletedwhen"
+                                               formControlName="deletedwhen">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.DELETEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Deleted By Name"
+                                               name="deletedbyname"
+                                               formControlName="deletedbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified Date"
+                                               name="lastmodifieddate"
+                                               formControlName="lastmodifieddate">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified By Name"
+                                               name="lastmodifiedbyname"
+                                               formControlName="lastmodifiedbyname">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+
+                    <!-- [attr.disabled]="isDisabled == true ? true : null"  -->
+<!--  -->
+
+                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>SubGroup</mat-label>
+                                    <input matInput placeholder="SubGroup"
+                                           name="subgroup"
+                                           formControlName="subgroup"
+                                           required>
+                                </mat-form-field>
+                                -->
+
+<!-- 
+                      
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Account</mat-label>
+                                    <input matInput placeholder="Account"
+                                           name="account"
+                                           formControlName="account"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Operator</mat-label>
+                                    <input matInput placeholder="Operator"
+                                           name="operator"
+                                           formControlName="operator"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Unit Type</mat-label>
+                                    <input matInput placeholder="Unit Type"
+                                           name="unittype"
+                                           formControlName="unittype"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Service Plan</mat-label>
+                                    <input matInput placeholder="Service Plan"
+                                           name="serviceplan"
+                                           formControlName="serviceplan"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Product Type</mat-label>
+                                    <input matInput placeholder="Product Type"
+                                           name="producttype"
+                                           formControlName="producttype"
+                                           required>
+                                </mat-form-field>
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Third Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Make</mat-label>
+                                    <input matInput placeholder="Make"
+                                           name="make"
+                                           formControlName="make">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Model</mat-label>
+                                    <input matInput placeholder="Model"
+                                           name="model"
+                                           formControlName="model"
+                                           required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>IsActive</mat-label>
+                                    <input matInput placeholder="IsActive"
+                                           name="isactive"
+                                           formControlName="isactive"
+                                           required>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Audit">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>TimeZone</mat-label>
+                                    <input matInput placeholder="TimeZone"
+                                           name="timezone"
+                                           formControlName="timezone">
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Created</mat-label>
+                                        <input matInput placeholder="Created"
+                                               name="created"
+                                               formControlName="created">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>CreatedByName</mat-label>
+                                        <input matInput placeholder="CreatedByName"
+                                               name="createdbyname"
+                                               formControlName="createdbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Deleted When</mat-label>
+                                        <input matInput placeholder="Deleted When"
+                                               name="deletedwhen"
+                                               formControlName="deletedwhen">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Deleted By Name</mat-label>
+                                        <input matInput placeholder="Deleted By Name"
+                                               name="deletedbyname"
+                                               formControlName="deletedbyname">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Last Modified Date</mat-label>
+                                        <input matInput placeholder="Last Modified Date"
+                                               name="lastmodifieddate"
+                                               formControlName="lastmodifieddate">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>Last Modified By Name</mat-label>
+                                        <input matInput placeholder="Last Modified By Name"
+                                               name="lastmodifiedbyname"
+                                               formControlName="lastmodifiedbyname">
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                        </mat-tab> -->
+
+
+                </form>
+
+                <!-- <div class="page_index">
+                    <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                        <input class="index_input"   (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                    <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                </div> -->
+
+                
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+

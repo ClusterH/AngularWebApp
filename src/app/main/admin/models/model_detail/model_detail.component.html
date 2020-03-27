@@ -1,0 +1,181 @@
+<div id="model_detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" >
+                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/models/models'"> -->
+                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{model.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'MODELS.NEWMODEL' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'MODELS.MODELDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-model-button"
+                    *ngIf="pageType ==='new'" (click)="addModel()">
+                <span>{{ 'MODELS.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-model-button"
+                    *ngIf="pageType ==='edit'" (click)="saveModel()">
+                <span>{{ 'MODELS.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form [formGroup]="modelForm" class="model w-100-p" fxLayout="column" fxFlex >
+
+                    <mat-tab-group>
+
+                        <mat-tab label="{{ 'MODELS.GENERAL' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{ 'MODELS.NAME' | translate }}</mat-label>
+                                    <input matInput placeholder="Name"
+                                            name="name"
+                                            formControlName="name"
+                                            required>
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" >
+                                        <mat-label>{{ 'MODELS.MAKE' | translate }}</mat-label>
+                                        <mat-select formControlName="make"  (click)="showCompanyList('make_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceMake"  class="models-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let make"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="make.id">{{make.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                            
+                                            <div  class="table_paginator">
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorMake
+                                                    [length]="dataSourceMake.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                ></mat-paginator>
+                                            </div>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" >
+                                        <mat-label>{{ 'MODELS.TIRECONFIGURATION' | translate }}</mat-label>
+                                        <mat-select formControlName="tireconfiguration"  (click)="showCompanyList('tireconfiguration_clist')">
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceTireConfiguration"  class="models-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let tireconfiguration"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="tireconfiguration.id">{{tireconfiguration.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                            
+                                            <div  class="table_paginator">
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorTireConfiguration
+                                                    [length]="dataSourceTireConfiguration.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                ></mat-paginator>
+                                            </div>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
+                                    <legend>&nbsp;{{ 'MODELS.AUDIT' | translate }}&nbsp;</legend>
+
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'MODELS.CREATED' | translate }}</mat-label>
+                                            <input matInput placeholder="CreatedWhen"
+                                                   name="createdwhen"
+                                                    formControlName="createdwhen">
+                                        </mat-form-field>
+    
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'MODELS.CREATEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="CreatedByName"
+                                                   name="createdbyname"
+                                                   formControlName="createdbyname">
+                                        </mat-form-field>
+                                    </div>
+    
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'MODELS.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified Date"
+                                                   name="lastmodifieddate"
+                                                   formControlName="lastmodifieddate">
+                                        </mat-form-field>
+    
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'MODELS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified By Name"
+                                                   name="lastmodifiedbyname"
+                                                   formControlName="lastmodifiedbyname">
+                                        </mat-form-field>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+

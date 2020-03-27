@@ -1,36 +1,34 @@
 export const locale = {
     lang: 'sp',
     data: {
-        USERS: {
-            "USERS": "Vehículos",
-            "SEARCHFORUSER": "Buscar un vehículo",
-            "NEWUSER": "Vehículo nuevo",
-            "USERDETAIL": "Detalle del vehículo",
+        COMPANIES: {
+            "COMPANIES": "Compañias",
+            "SEARCHFORCOMPANY": "Buscar una Compañia",
+            "NEWCOMPANY": "Compañia nueva",
+            "COMPANYDETAIL": "Detalle de la compañia",
             "SELECTFIELD": "Seleccionar campo",
             "SAVE": "GUARDAR",
             "ADD": "AGREGAR",
             
             "NAME": "Nombre",
-            "EMAIL": "Correo electrónico",
-            "PASSWORD": "Contraseña",
-            "USERPROFILE": "Perfil de usuario",
-            "TIMEZONE": "Zona horaria",
-            "LENGTHUNIT": "Unidad de longitud",
-            "FUELUNIT": "Unidad de combustible",
-            "WEIGHTUNIT": "Unidad de peso",
-            "TEMPUNIT": "Unidad de temperatura",
-            "ISACTIVE": "Está activo",
             "COMPANY": "Empresa",
             "GROUP": "Grupo",
             "SUBGROUP": "Subgrupo",
+            "ACCOUNT": "cuenta",
+            "OPERATOR": "Operador",
+            "SERVICEPLAN": "Plan de servicio",
+            "UNITTYPE": "Tipo de unidad",
+            "PRODUCTTYPE": "Tipo de producto",
+            "MAKE": "Hacer",
+            "MODEL": "Modelo",
+            "ISACTIVE": "Está activo",
+            "TIMEZONE": "Zona horaria",
             "CREATED": "Creado",
             "CREATEDBYNAME": "Creado por nombre",
             "DELETEDWHEN": "Eliminado cuando",
             "DELETEDBYNAME": "Eliminado por nombre",
             "LASTMODIFIEDDATE": "Fecha de última modificación",
             "LASTMODIFIEDBYNAME": "Última modificación por nombre",
-            "LANGUAGE": "Language",
-            "UNIT": "Unidad",
 
             "GENERAL": "General",
             "AUDIT": "Auditoría",
@@ -40,8 +38,8 @@ export const locale = {
             "GOBACK_CONFIRM_MESSAGE": "¿Estás seguro de que quieres descartar los cambios?",
             "DUPLICATE": "Duplicado",
             "DELETE": "Eliminar",
-            "NO": "No",
-            "YES": "Si"
+            "CANCEL": "Cancelar",
+            "OK": "OK"
         }
     }
 };

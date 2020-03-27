@@ -101,14 +101,14 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Make',
                 translate: 'NAV.MAKE',
                 type     : 'item',
-                url      : 'pages/admin/make'
+                url      : '/admin/makes/makes'
             },
             {
                 id       : 'models',
                 title    : 'Models',
                 translate: 'NAV.MODELS',
                 type     : 'item',
-                url      : 'pages/admin/models'
+                url      : '/admin/models/models'
             },
             {
                 id       : 'icons',
@@ -250,7 +250,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Companies',
                 translate: 'NAV.COMPANIES',
                 type     : 'item',
-                url      : 'pages/admin/companies'
+                url      : '/admin/companies/companies'
             },
             {
                 id       : 'subfleets',

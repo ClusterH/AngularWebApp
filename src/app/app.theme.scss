@@ -87,6 +87,12 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/users/user_detail/user_detail.theme";
 @import "src/app/main/admin/operators/operators/operators.theme";
 @import "src/app/main/admin/operators/operator_detail/operator_detail.theme";
+@import "src/app/main/admin/makes/makes/makes.theme";
+@import "src/app/main/admin/makes/make_detail/make_detail.theme";
+@import "src/app/main/admin/models/models/models.theme";
+@import "src/app/main/admin/models/model_detail/model_detail.theme";
+@import "src/app/main/admin/companies/companies/companies.theme";
+@import "src/app/main/admin/companies/company_detail/company_detail.theme";
 
 @import "src/app/authentication/login/login.theme";
 @import "src/app/authentication/register/register.theme";
@@ -109,6 +115,15 @@ $typography: mat-typography-config(
     @include admin-user-theme($theme);
     @include admin-operators-theme($theme);
     @include admin-operator-theme($theme);
+    @include admin-makes-theme($theme);
+    @include admin-make-theme($theme);
+    @include admin-models-theme($theme);
+    @include admin-model-theme($theme);
+    @include admin-companies-theme($theme);
+    @include admin-company-theme($theme);
+
+
+
     //Authentication
     @include login-theme($theme);
     @include register-theme($theme);

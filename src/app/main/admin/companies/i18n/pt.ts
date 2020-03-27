@@ -1,36 +1,34 @@
 export const locale = {
     lang: 'pt',
     data: {
-        USERS: {
-            "USERS": "Veículos",
-            "SEARCHFORUSER": "Procure um veículo",
-            "NEWUSER": "Veículo novo",
-            "USERDETAIL": "Dado relativo ao veículo",
+        COMPANIES: {
+            "COMPANIES": "Veículos",
+            "SEARCHFORCOMPANY": "Procure um veículo",
+            "NEWCOMPANY": "Veículo novo",
+            "COMPANYDETAIL": "Dado relativo ao veículo",
             "SELECTFIELD": "Selecionar campo",
             "SAVE": "SALVAR",
             "ADD": "ADICIONAR",
             
             "NAME": "Nome",
-            "EMAIL": "E-mail",
-            "PASSWORD": "Senha",
-            "USERPROFILE": "Perfil do usuário",
-            "TIMEZONE": "Fuso horário",
-            "LENGTHUNIT": "Unidade de comprimento",
-            "FUELUNIT": "Unidade de combustível",
-            "WEIGHTUNIT": "Unidade de peso",
-            "TEMPUNIT": "Temp Unit",
+            "COMPANY": "Empresa",
+            "GROUP": "Grupo",
+            "SUBGROUP": "Subgrupo",
+            "ACCOUNT": "conta",
+            "OPERATOR": "Operador",
+            "SERVICEPLAN": "Plano de serviço",
+            "UNITTYPE": "Tipo de unidade",
+            "PRODUCTTYPE": "Tipo de produto",
+            "MAKE": "FAÇA",
+            "MODEL": "Modelo",
             "ISACTIVE": "Está ativo",
-            "COMPANY": "Empresa",
-            "GROUP": "Grupo",
-            "SUBGROUP": "Subgrupo",
+            "TIMEZONE": "Fuso horário",
             "CREATED": "Criado",
             "CREATEDBYNAME": "Criado por nome",
             "DELETEDWHEN": "Excluído quando",
             "DELETEDBYNAME": "Excluído pelo nome",
             "LASTMODIFIEDDATE": "Data da última modificação",
             "LASTMODIFIEDBYNAME": "Última alteração por nome",
-            "LANGUAGE": "Language",
-            "UNIT": "Unidade",
 
             "GENERAL": "Geral",
             "AUDIT": "Auditoria",
@@ -40,8 +38,8 @@ export const locale = {
             "GOBACK_CONFIRM_MESSAGE": "Tem certeza de que deseja descartar as alterações?",
             "DUPLICATE": "Duplicar",
             "DELETE": "Delete",
-            "NO": "Não",
-            "YES": "Sim"
+            "CANCEL": "Cancelar",
+            "OK": "OK"
         }
     }
 };

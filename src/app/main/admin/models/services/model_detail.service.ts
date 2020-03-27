@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class UserDetailService 
+export class ModelDetailService 
 {
     routeParams: any;
-    user: any;
-    public user_detail: any;
+    model: any;
+    public model_detail: any;
     public unit_clist_item: any = {};
+    public current_makeID: number;
 
     /**
      * Constructor
@@ -42,6 +43,7 @@ export class UserDetailService
             });
            
         } else {
+           
             let params = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
@@ -58,35 +60,23 @@ export class UserDetailService
         
     }
 
-    saveUserDetail(conncode: string, userid: number, userDetail: any = {}): Observable<any> {
+    saveModelDetail(conncode: string, userid: number, modelDetail: any = {}): Observable<any> {
+        console.log(modelDetail);
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        console.log(userDetail);
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
-            .set('id', userDetail.id.toString())
-            .set('name', userDetail.name.toString())
-            .set('email', userDetail.email.toString())
-            .set('password', userDetail.password.toString())
-            .set('userprofileid', userDetail.userprofileid.toString())
-            .set('timezoneid', userDetail.timezoneid.toString())
-            .set('lengthunitid', userDetail.lengthunitid.toString())
-            .set('fuelunitid', userDetail.fuelunitid.toString())
-            .set('weightunitid', userDetail.weightunitid.toString())
-            .set('tempunitid', userDetail.tempunitid.toString())
-            .set('isactive', userDetail.isactive.toString())
-            .set('companyid', userDetail.companyid.toString())
-            .set('groupid', userDetail.groupid.toString())
-            .set('subgroup', userDetail.subgroup.toString())
-            .set('created', userDetail.created.toString())
-            .set('createdby', userDetail.createdby.toString())
-            .set('deletedwhen', userDetail.deletedwhen.toString())
-            .set('deletedby', userDetail.deletedby.toString())
-            .set('lastmodifieddate', userDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', userDetail.lastmodifiedby.toString())
-            .set('languageid', userDetail.languageid.toString())
-            .set('method', 'user_save');
+            .set('id', modelDetail.id.toString())
+            .set('name', modelDetail.name.toString())
+            .set('makeid', modelDetail.makeid.toString())
+            .set('isactive', modelDetail.isactive.toString())
+            .set('createdwhen', modelDetail.createdwhen.toString())
+            .set('createdby', modelDetail.createdby.toString())
+            .set('lastmodifieddate', modelDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', modelDetail.lastmodifiedby.toString())
+            .set('tireconfigurationid', modelDetail.tireconfigurationid.toString())
+            .set('method', 'model_save');
         
             console.log(params_detail);
 

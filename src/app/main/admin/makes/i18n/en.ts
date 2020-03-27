@@ -1,39 +1,36 @@
 export const locale = {
     lang: 'en',
     data: {
-        USERS: {
-            "USERS": "Users",
-            "SEARCHFORUSER": "Search for a User",
-            "NEWUSER": "New User",
-            "USERDETAIL": "User Detail",
+        MAKES: {
+            "MAKES": "Makes",
+            "SEARCHFORMAKE": "Search for a Make",
+            "NEWMAKE": "New Make",
+            "MAKEDETAIL": "Make Detail",
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
 
             "NAME": "Name",
-            "EMAIL": "Email",               
-            "PASSWORD": "Password",
-            "USERPROFILE": "User Profile",
-            "TIMEZONE": "TimeZone",
-            "LENGTHUNIT": "Length",
-            "FUELUNIT": "Fuel",
-            "WEIGHTUNIT": "Weight",
-            "TEMPUNIT": "Temp",
-            "ISACTIVE": "IsActive",
             "COMPANY": "Company",
             "GROUP": "Group",
             "SUBGROUP": "SubGroup",
+            "ACCOUNT": "Account",
+            "OPERATOR": "Operator",
+            "SERVICEPLAN": "ServicePlan",
+            "UNITTYPE": "UnitType",
+            "PRODUCTTYPE": "ProductType",
+            "MAKE": "Make",
+            "MODEL": "Model",
+            "ISACTIVE": "IsActive",
+            "TIMEZONE": "TimeZone",
             "CREATED": "Created",
             "CREATEDBYNAME": "CreatedByName",
             "DELETEDWHEN": "DeletedWhen",
             "DELETEDBYNAME": "DeletedByName",
             "LASTMODIFIEDDATE": "LastModifiedDate",
             "LASTMODIFIEDBYNAME": "LastModifiedByName",
-            "LANGUAGE": "Language",
-            "UNIT": "Units",
 
             "GENERAL": "General",
-            "REGIONALIZATION": "Regionalization",
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
@@ -43,6 +40,9 @@ export const locale = {
             "DELETE": "Delete",
             "NO": "No",
             "YES": "Yes"
+            
+          
+            
         }
     }
 };
