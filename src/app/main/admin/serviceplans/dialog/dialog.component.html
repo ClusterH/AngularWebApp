@@ -1,0 +1,57 @@
+<div id="dialog_table">
+<div *ngIf="flag == 'duplicate'">
+    <h2 mat-dialog-title>{{'SERVICEPLANS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'SERVICEPLANS.DUPLICATE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'SERVICEPLANS.CANCEL' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+
+
+<div *ngIf="flag == 'delete'">
+    <h2 mat-dialog-title>{{'SERVICEPLANS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'SERVICEPLANS.DELETE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'SERVICEPLANS.CANCEL' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+
+<div *ngIf="flag == 'goback'">
+    <h2 mat-dialog-title>{{'SERVICEPLANS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
+                {{'SERVICEPLANS.YES' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()" fxFlex="30">
+                    {{'SERVICEPLANS.NO' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+</div>
+

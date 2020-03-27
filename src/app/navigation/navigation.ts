@@ -232,11 +232,11 @@ export const navigation: FuseNavigation[] = [
                 url      : 'pages/admin/system_configuration'
             },
             {
-                id       : 'service_plans',
+                id       : 'serviceplans',
                 title    : 'Service Plans',
                 translate: 'NAV.SERVICEPLANS',
                 type     : 'item',
-                url      : 'pages/admin/service_plans'
+                url      : '/admin/serviceplans/serviceplans'
             },
             {
                 id       : 'commands',

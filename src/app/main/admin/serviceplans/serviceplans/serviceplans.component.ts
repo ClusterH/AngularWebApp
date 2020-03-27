@@ -12,30 +12,30 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
-import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
-import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
+import { ServiceplansService } from 'app/main/admin/serviceplans/services/serviceplans.service';
+import { ServiceplansDataSource } from "app/main/admin/serviceplans/services/serviceplans.datasource";
+import { ServiceplanDetailService } from 'app/main/admin/serviceplans/services/serviceplan_detail.service';
 import { AuthService } from 'app/authentication/services/authentication.service';
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
 import { takeUntil } from 'rxjs/internal/operators';
 
-import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
-import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
-import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
+import { locale as serviceplansEnglish } from 'app/main/admin/serviceplans/i18n/en';
+import { locale as serviceplansSpanish } from 'app/main/admin/serviceplans/i18n/sp';
+import { locale as serviceplansFrench } from 'app/main/admin/serviceplans/i18n/fr';
+import { locale as serviceplansPortuguese } from 'app/main/admin/serviceplans/i18n/pt';
 import { Route } from '@angular/compiler/src/core';
 
 @Component({
-    selector     : 'admin-vehicles',
-    templateUrl  : './vehicles.component.html',
-    styleUrls    : ['./vehicles.component.scss'],
+    selector     : 'admin-serviceplans',
+    templateUrl  : './serviceplans.component.html',
+    styleUrls    : ['./serviceplans.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class VehiclesComponent implements OnInit
+export class ServiceplansComponent implements OnInit
 {
-    dataSource: VehiclesDataSource;
+    dataSource: ServiceplansDataSource;
 
     @Output()
     pageEvent: PageEvent;
@@ -48,7 +48,7 @@ export class VehiclesComponent implements OnInit
     index_number: number = 1;
     currentUser: any;
 
-    vehicle: any;
+    serviceplan: any;
     userConncode: string;
     userID: number;
 
@@ -56,24 +56,19 @@ export class VehiclesComponent implements OnInit
     displayedColumns = [
         'id',
         'name',
-        'company',
-        'group',
-        'subgroup',
-        'account',
-        'operator',
-        'unittype',
-        'serviceplan',
-        'producttype',
-        'make',
-        'model',
-        'isactive',
-        'timezone',
+        'carrierplan',
+        'eventtypes',
+        'daysinhistory',
+        'includeignition',
+        'locatecommand',
+        'distance',
         'created',
         'createdbyname',
         'deletedwhen',
         'deletedbyname', 
         'lastmodifieddate',
         'lastmodifiedbyname'
+        
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -88,9 +83,8 @@ export class VehiclesComponent implements OnInit
     filter: ElementRef;
     
     constructor(
-        private _adminVehiclesService: VehiclesService,
-        private vehicleDetailService: VehicleDetailService,
-        private authService: AuthService,
+        private _adminServiceplansService: ServiceplansService,
+        private serviceplanDetailService: ServiceplanDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -100,9 +94,8 @@ export class VehiclesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         console.log(this.userConncode, this.userID);
 
-
         //Load the translations
-        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
 
         this.pageIndex= 0;
         this.pageSize = 25;
@@ -129,7 +122,7 @@ export class VehiclesComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
+           tap(() => this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -143,12 +136,12 @@ export class VehiclesComponent implements OnInit
     {
         console.log(this.pageSize, this.pageIndex);
 
-        this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        this.dataSource = new ServiceplansDataSource(this._adminServiceplansService);
+        this.dataSource.loadServiceplans(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
-    onRowClicked(vehicle) {
-        console.log('Row Clicked:', vehicle);
+    onRowClicked(serviceplan) {
+        console.log('Row Clicked:', serviceplan);
     }
 
     selectedFilter() {
@@ -157,13 +150,13 @@ export class VehiclesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadServiceplans(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
     filterEvent() {
@@ -171,24 +164,24 @@ export class VehiclesComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
-    addNewVehicle() {
-        this.vehicleDetailService.vehicle_detail = '';
-        sessionStorage.removeItem("vehicle_detail");
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+    addNewServiceplan() {
+        this.serviceplanDetailService.serviceplan_detail = '';
+        sessionStorage.removeItem("serviceplan_detail");
+        this.router.navigate(['admin/serviceplans/serviceplan_detail']);
     }
 
-    editShowVehicleDetail(vehicle: any) {
-        this.vehicleDetailService.vehicle_detail = vehicle;
+    editShowServiceplanDetail(serviceplan: any) {
+        this.serviceplanDetailService.serviceplan_detail = serviceplan;
 
-        sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        sessionStorage.setItem("serviceplan_detail", JSON.stringify(serviceplan));
 
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+        this.router.navigate(['admin/serviceplans/serviceplan_detail']);
     }
     
-    deleteVehicle(vehicle): void
+    deleteServiceplan(serviceplan): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
@@ -196,7 +189,7 @@ export class VehiclesComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            serviceplan, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
@@ -211,7 +204,7 @@ export class VehiclesComponent implements OnInit
         });
     }
 
-    duplicateVehicle(vehicle): void
+    duplicateServiceplan(serviceplan): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -219,7 +212,7 @@ export class VehiclesComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            serviceplan, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);

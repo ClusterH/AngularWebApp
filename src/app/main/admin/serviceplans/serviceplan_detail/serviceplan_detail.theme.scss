@@ -1,9 +1,9 @@
-@mixin admin-companies-theme($theme) {
+@mixin admin-serviceplan-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    admin-companies {
+    admin-serviceplan-detail {
 
         .header {
 
