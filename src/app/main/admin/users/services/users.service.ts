@@ -56,22 +56,24 @@ export class UsersService
         }
     }
     
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteUser(user): void
-    // {
-    //     const userIndex = this.users.indexOf(user);
-    //     this.users.splice(userIndex, 1);
-    //     this.onUsersChanged.next(this.users);
-    // }
+    deleteUser(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateUser(user): void
-    // {
-    //     const userIndex = this.users.indexOf(user);
-    //     this.users.splice(userIndex, 0, user);
-    //     this.onUsersChanged.next(this.users);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "user_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
 }

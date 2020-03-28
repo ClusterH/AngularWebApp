@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
+import { MakesService } from 'app/main/admin/makes/services/makes.service';
 import { locale as makesEnglish } from 'app/main/admin/makes/i18n/en';
 import { locale as makesSpanish } from 'app/main/admin/makes/i18n/sp';
 import { locale as makesFrench } from 'app/main/admin/makes/i18n/fr';
@@ -21,7 +21,7 @@ export class CourseDialogComponent implements OnInit {
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
+        private makesService: MakesService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) {make, flag} 
     ) {
@@ -50,7 +50,12 @@ export class CourseDialogComponent implements OnInit {
     
             this.router.navigate(['admin/makes/make_detail']);
         } else if( this.flag == "delete") {
-            // this._adminMakesService.deleteMake(this.make);
+            this.makesService.deleteMake(this.make.id)
+            .subscribe((result: any) => {
+                if (result.responseCode == 200) {
+                    this.reloadComponent();
+                }
+            });
         }
 
         this.dialogRef.close();
@@ -65,6 +70,12 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("make_detail");
 
+        this.router.navigate(['admin/makes/makes']);
+    }
+
+    reloadComponent() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['admin/makes/makes']);
     }
 

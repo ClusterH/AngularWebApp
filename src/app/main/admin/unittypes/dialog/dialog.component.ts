@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { UnittypesService } from 'app/main/admin/unittypes/services/unittypes.service';
 
 import { locale as unittypesEnglish } from 'app/main/admin/unittypes/i18n/en';
 import { locale as unittypesSpanish } from 'app/main/admin/unittypes/i18n/sp';
@@ -21,7 +22,7 @@ export class CourseDialogComponent implements OnInit {
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
+        private unittypesService: UnittypesService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) {unittype, flag} 
     ) {
@@ -53,7 +54,12 @@ export class CourseDialogComponent implements OnInit {
     
             this.router.navigate(['admin/unittypes/unittype_detail']);
         } else if( this.flag == "delete") {
-            // this._adminUnittypesService.deleteUnittype(this.unittype);
+            this.unittypesService.deleteUnittype(this.unittype.id)
+            .subscribe((result: any) => {
+                if (result.responseCode == 200) {
+                    this.reloadComponent();
+                }
+            });
         }
 
         this.dialogRef.close();
@@ -68,6 +74,12 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("unittype_detail");
 
+        this.router.navigate(['admin/unittypes/unittypes']);
+    }
+
+    reloadComponent() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['admin/unittypes/unittypes']);
     }
 

@@ -56,22 +56,24 @@ export class OperatorsService
         }
     }
     
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteOperator(operator): void
-    // {
-    //     const operatorIndex = this.operators.indexOf(operator);
-    //     this.operators.splice(operatorIndex, 1);
-    //     this.onOperatorsChanged.next(this.operators);
-    // }
+    deleteOperator(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateOperator(operator): void
-    // {
-    //     const operatorIndex = this.operators.indexOf(operator);
-    //     this.operators.splice(operatorIndex, 0, operator);
-    //     this.onOperatorsChanged.next(this.operators);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "operator_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
 }

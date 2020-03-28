@@ -220,7 +220,7 @@ export class VehiclesComponent implements OnInit
             { 
                 console.log(result);
             } else {
-                console.log("FAIL:", result);
+
             }
         });
     }

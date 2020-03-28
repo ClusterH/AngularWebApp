@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
@@ -21,6 +22,7 @@ export class CourseDialogComponent implements OnInit {
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private vehiclesService: VehiclesService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) {vehicle, flag} 
@@ -52,10 +54,17 @@ export class CourseDialogComponent implements OnInit {
     
             this.router.navigate(['admin/vehicles/vehicle_detail']);
         } else if( this.flag == "delete") {
-            // this._adminVehiclesService.deleteVehicle(this.vehicle);
+           
+            this.vehiclesService.deleteVehicle(this.vehicle.id)
+            .subscribe((result: any) => {
+                if (result.responseCode == 200) {
+                    this.reloadComponent();
+                }
+            });
         }
 
         this.dialogRef.close();
+
     }
 
     close() {
@@ -67,6 +76,12 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("vehicle_detail");
 
+        this.router.navigate(['admin/vehicles/vehicles']);
+    }
+
+    reloadComponent() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['admin/vehicles/vehicles']);
     }
 

@@ -55,23 +55,27 @@ export class VehiclesService
             });
         }
     }
-    
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteVehicle(vehicle): void
-    // {
-    //     const vehicleIndex = this.vehicles.indexOf(vehicle);
-    //     this.vehicles.splice(vehicleIndex, 1);
-    //     this.onVehiclesChanged.next(this.vehicles);
-    // }
+   
+    deleteVehicle(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateVehicle(vehicle): void
-    // {
-    //     const vehicleIndex = this.vehicles.indexOf(vehicle);
-    //     this.vehicles.splice(vehicleIndex, 0, vehicle);
-    //     this.onVehiclesChanged.next(this.vehicles);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "unit_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
+
+    
 }

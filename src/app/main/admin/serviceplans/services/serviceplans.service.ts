@@ -56,22 +56,24 @@ export class ServiceplansService
         }
     }
     
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteServiceplan(serviceplan): void
-    // {
-    //     const serviceplanIndex = this.serviceplans.indexOf(serviceplan);
-    //     this.serviceplans.splice(serviceplanIndex, 1);
-    //     this.onServiceplansChanged.next(this.serviceplans);
-    // }
+    deleteServiceplan(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateServiceplan(serviceplan): void
-    // {
-    //     const serviceplanIndex = this.serviceplans.indexOf(serviceplan);
-    //     this.serviceplans.splice(serviceplanIndex, 0, serviceplan);
-    //     this.onServiceplansChanged.next(this.serviceplans);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "serviceplan_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
 }

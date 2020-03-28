@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
+import { ServiceplansService } from 'app/main/admin/serviceplans/services/serviceplans.service';
 import { locale as serviceplansEnglish } from 'app/main/admin/serviceplans/i18n/en';
 import { locale as serviceplansSpanish } from 'app/main/admin/serviceplans/i18n/sp';
 import { locale as serviceplansFrench } from 'app/main/admin/serviceplans/i18n/fr';
@@ -21,7 +21,7 @@ export class CourseDialogComponent implements OnInit {
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
+        private serviceplansService: ServiceplansService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) {serviceplan, flag} 
     ) {
@@ -52,7 +52,12 @@ export class CourseDialogComponent implements OnInit {
     
             this.router.navigate(['admin/serviceplans/serviceplan_detail']);
         } else if( this.flag == "delete") {
-            // this._adminServiceplansService.deleteServiceplan(this.serviceplan);
+            this.serviceplansService.deleteServiceplan(this.serviceplan.id)
+            .subscribe((result: any) => {
+                if (result.responseCode == 200) {
+                    this.reloadComponent();
+                }
+            });
         }
 
         this.dialogRef.close();
@@ -67,6 +72,12 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("serviceplan_detail");
 
+        this.router.navigate(['admin/serviceplans/serviceplans']);
+    }
+
+    reloadComponent() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['admin/serviceplans/serviceplans']);
     }
 

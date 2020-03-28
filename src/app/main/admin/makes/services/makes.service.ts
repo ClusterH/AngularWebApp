@@ -56,22 +56,24 @@ export class MakesService
         }
     }
     
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteMake(make): void
-    // {
-    //     const makeIndex = this.makes.indexOf(make);
-    //     this.makes.splice(makeIndex, 1);
-    //     this.onMakesChanged.next(this.makes);
-    // }
+    deleteMake(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateMake(make): void
-    // {
-    //     const makeIndex = this.makes.indexOf(make);
-    //     this.makes.splice(makeIndex, 0, make);
-    //     this.onMakesChanged.next(this.makes);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "make_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
 }

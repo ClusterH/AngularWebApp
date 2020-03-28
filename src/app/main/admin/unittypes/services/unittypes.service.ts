@@ -55,23 +55,25 @@ export class UnittypesService
             });
         }
     }
-    
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteUnittype(unittype): void
-    // {
-    //     const unittypeIndex = this.unittypes.indexOf(unittype);
-    //     this.unittypes.splice(unittypeIndex, 1);
-    //     this.onUnittypesChanged.next(this.unittypes);
-    // }
+    deleteUnittype(id: number): Observable<any>
+    {
+        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-    // duplicateUnittype(unittype): void
-    // {
-    //     const unittypeIndex = this.unittypes.indexOf(unittype);
-    //     this.unittypes.splice(unittypeIndex, 0, unittype);
-    //     this.onUnittypesChanged.next(this.unittypes);
-    // }
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', id.toString())
+                .set('method', "unittype_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
+
 }
