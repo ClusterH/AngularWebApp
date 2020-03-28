@@ -1,9 +1,5 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-// import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import * as moment from 'moment';
-import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -11,8 +7,6 @@ import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
 import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
-
-
 
 @Component({
     selector: 'vehicle-dialog',
@@ -25,9 +19,7 @@ export class CourseDialogComponent implements OnInit {
    flag: any;
 
     constructor(
-        private fb: FormBuilder,
         private router: Router,
-        private _adminVehiclesService: VehiclesService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
@@ -35,7 +27,6 @@ export class CourseDialogComponent implements OnInit {
     ) {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
-        // this.vehicle = vehicle;
         this.vehicle = vehicle;
         this.flag = flag;
     }
@@ -43,23 +34,38 @@ export class CourseDialogComponent implements OnInit {
     ngOnInit() {
     }
 
-
     save() {
-        // if(this.flag == "duplicate") {
-        //     this._adminVehiclesService.duplicateVehicle(this.vehicle);
-        // } else if( this.flag == "delete") {
-        //     this._adminVehiclesService.deleteVehicle(this.vehicle);
-        // }
+        if(this.flag == "duplicate") {
+        
+            this.vehicle.id = 0;
+            this.vehicle.name = '';
+            this.vehicle.created = '';
+            this.vehicle.createdbyname = '';
+            this.vehicle.deletedwhen = '';
+            this.vehicle.deletedbyname = '';
+            this.vehicle.lastmodifieddate = '';
+            this.vehicle.lastmodifiedbyname = '';
+    
+            localStorage.setItem("vehicle_detail", JSON.stringify(this.vehicle));
+    
+            console.log("localstorage:", JSON.parse(localStorage.getItem("vehicle_detail")));
+    
+            this.router.navigate(['admin/vehicles/vehicle_detail']);
+        } else if( this.flag == "delete") {
+            // this._adminVehiclesService.deleteVehicle(this.vehicle);
+        }
 
         this.dialogRef.close();
     }
 
     close() {
+        localStorage.removeItem("vehicle_detail");
         this.dialogRef.close();
     }
 
     goback() {
         this.dialogRef.close();
+        localStorage.removeItem("vehicle_detail");
 
         this.router.navigate(['admin/vehicles/vehicles']);
     }

@@ -95,11 +95,11 @@ export class CompanyDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
 
     // this.company = this.companyDetailService.company_detail;
-    this.company = sessionStorage.getItem("company_detail")? JSON.parse(sessionStorage.getItem("company_detail")) : '';
+    this.company = localStorage.getItem("company_detail")? JSON.parse(localStorage.getItem("company_detail")) : '';
     console.log(this.company);
       if ( this.company != '' )
       {
-        // this.company = JSON.parse(sessionStorage.getItem("company_detail"));
+        // this.company = JSON.parse(localStorage.getItem("company_detail"));
         this.pageType = 'edit';
       }
       else

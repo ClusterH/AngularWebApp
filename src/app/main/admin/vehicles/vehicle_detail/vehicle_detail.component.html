@@ -14,8 +14,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="mr-0 mr-sm-16" >
-                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/vehicles/vehicles'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
 
                 <div fxLayout="column" fxLayoutAlign="start start"
@@ -325,7 +324,6 @@
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
 
-                                            <!-- <div *ngIf="vehicleDetailService.current_makeID != 0; else none"> -->
                                             <div>
                                                 <div  style="width: 100%; overflow: auto;">
                                                     <mat-table [dataSource]="dataSourceModel"  class="vehicles-table font-size-10 mat-elevation-z8" >

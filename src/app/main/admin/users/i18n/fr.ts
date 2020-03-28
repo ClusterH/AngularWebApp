@@ -2,10 +2,10 @@ export const locale = {
     lang: 'fr',
     data: {
         USERS: {
-            "USERS": "Véhicules",
-            "SEARCHFORUSER": "Rechercher un véhicule",
-            "NEWUSER": "Nouveau véhicule",
-            "USERDETAIL": "Détail du véhicule",
+            "USERS": "Utilisateurs",
+            "SEARCHFORUSER": "Rechercher un utilisateur",
+            "NEWUSER": "Nouvel utilisateur",
+            "USERDETAIL": "Détails de l'utilisateur",
             "SELECTFIELD": "Sélectionner un champ",
             "SAVE": "SALVAR",
             "ADD": "ADICIONAR",

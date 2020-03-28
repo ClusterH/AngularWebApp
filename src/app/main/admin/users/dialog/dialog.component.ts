@@ -1,9 +1,5 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-// import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import * as moment from 'moment';
-import { UsersService } from 'app/main/admin/users/services/users.service';
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -11,8 +7,6 @@ import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
 import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
 import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
-
-
 
 @Component({
     selector: 'user-dialog',
@@ -25,9 +19,7 @@ export class CourseDialogComponent implements OnInit {
    flag: any;
 
     constructor(
-        private fb: FormBuilder,
         private router: Router,
-        private _adminUsersService: UsersService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
@@ -35,7 +27,6 @@ export class CourseDialogComponent implements OnInit {
     ) {
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
 
-        // this.user = user;
         this.user = user;
         this.flag = flag;
     }
@@ -43,23 +34,40 @@ export class CourseDialogComponent implements OnInit {
     ngOnInit() {
     }
 
-
     save() {
-        // if(this.flag == "duplicate") {
-        //     this._adminUsersService.duplicateUser(this.user);
-        // } else if( this.flag == "delete") {
-        //     this._adminUsersService.deleteUser(this.user);
-        // }
+        if(this.flag == "duplicate") {
+        
+            this.user.id = 0;
+            this.user.name = '';
+            this.user.email = '';
+            this.user.password = '';
+            this.user.created = '';
+            this.user.createdbyname = '';
+            this.user.deletedwhen = '';
+            this.user.deletedbyname = '';
+            this.user.lastmodifieddate = '';
+            this.user.lastmodifiedbyname = '';
+    
+            localStorage.setItem("user_detail", JSON.stringify(this.user));
+    
+            console.log("localstorage:", JSON.parse(localStorage.getItem("user_detail")));
+    
+            this.router.navigate(['admin/users/user_detail']);
+        } else if( this.flag == "delete") {
+            // this._adminUsersService.deleteUser(this.user);
+        }
 
         this.dialogRef.close();
     }
 
     close() {
+        localStorage.removeItem("user_detail");
         this.dialogRef.close();
     }
 
     goback() {
         this.dialogRef.close();
+        localStorage.removeItem("user_detail");
 
         this.router.navigate(['admin/users/users']);
     }

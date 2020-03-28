@@ -51,7 +51,7 @@ export class MakeDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(makesEnglish, makesSpanish, makesFrench, makesPortuguese);
 
-    this.make = sessionStorage.getItem("make_detail")? JSON.parse(sessionStorage.getItem("make_detail")) : '';
+    this.make = localStorage.getItem("make_detail")? JSON.parse(localStorage.getItem("make_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -87,14 +87,11 @@ export class MakeDetailComponent implements OnInit
   setValues() {
       this.makeForm.get('name').setValue(this.make.name);
 
-      let created          = this.make? new Date(`${this.make.createdwhen}`) : '';
-      // let deletedwhen      = this.make? new Date(`${this.make.deletedwhen}`) : '';
-      let lastmodifieddate = this.make? new Date(`${this.make.lastmodifieddate}`) : '';
+      let created          = this.make.createdwhen? new Date(`${this.make.createdwhen}`) : '';
+      let lastmodifieddate = this.make.lastmodifieddate? new Date(`${this.make.lastmodifieddate}`) : '';
 
       this.makeForm.get('created').setValue(this.dateFormat(created));
       this.makeForm.get('createdbyname').setValue(this.make.createdbyname);
-      // this.makeForm.get('deletedwhen').setValue(this.dateFormat(deletedwhen));
-      // this.makeForm.get('deletedbyname').setValue(this.make.deletedbyname);
       this.makeForm.get('lastmodifieddate').setValue(this.dateFormat(lastmodifieddate));
       this.makeForm.get('lastmodifiedbyname').setValue(this.make.lastmodifiedbyname);
   }

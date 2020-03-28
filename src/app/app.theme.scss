@@ -95,6 +95,8 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/companies/company_detail/company_detail.theme";
 @import "src/app/main/admin/serviceplans/serviceplans/serviceplans.theme";
 @import "src/app/main/admin/serviceplans/serviceplan_detail/serviceplan_detail.theme";
+@import "src/app/main/admin/unittypes/unittypes/unittypes.theme";
+@import "src/app/main/admin/unittypes/unittype_detail/unittype_detail.theme";
 
 @import "src/app/authentication/login/login.theme";
 @import "src/app/authentication/register/register.theme";
@@ -125,6 +127,8 @@ $typography: mat-typography-config(
     @include admin-company-theme($theme);
     @include admin-serviceplans-theme($theme);
     @include admin-serviceplan-theme($theme);
+    @include admin-unittypes-theme($theme);
+    @include admin-unittype-theme($theme);
 
 
 

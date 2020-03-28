@@ -163,14 +163,14 @@ export class MakesComponent implements OnInit
 
     addNewMake() {
         this.makeDetailService.make_detail = '';
-        sessionStorage.removeItem("make_detail");
+        localStorage.removeItem("make_detail");
         this.router.navigate(['admin/makes/make_detail']);
     }
 
     editShowMakeDetail(make: any) {
         this.makeDetailService.make_detail = make;
 
-        sessionStorage.setItem("make_detail", JSON.stringify(make));
+        localStorage.setItem("make_detail", JSON.stringify(make));
 
         this.router.navigate(['admin/makes/make_detail']);
     }

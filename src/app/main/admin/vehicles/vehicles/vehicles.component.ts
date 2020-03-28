@@ -5,8 +5,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { tap,} from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -15,16 +15,13 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
 import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
 import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector     : 'admin-vehicles',
@@ -90,7 +87,6 @@ export class VehiclesComponent implements OnInit
     constructor(
         private _adminVehiclesService: VehiclesService,
         private vehicleDetailService: VehicleDetailService,
-        private authService: AuthService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -98,8 +94,6 @@ export class VehiclesComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        console.log(this.userConncode, this.userID);
-
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
@@ -125,14 +119,11 @@ export class VehiclesComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
-
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -162,7 +153,6 @@ export class VehiclesComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
         this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
@@ -176,14 +166,13 @@ export class VehiclesComponent implements OnInit
 
     addNewVehicle() {
         this.vehicleDetailService.vehicle_detail = '';
-        sessionStorage.removeItem("vehicle_detail");
+        localStorage.removeItem("vehicle_detail");
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
 
     editShowVehicleDetail(vehicle: any) {
-        this.vehicleDetailService.vehicle_detail = vehicle;
 
-        sessionStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        localStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
 
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
@@ -211,8 +200,10 @@ export class VehiclesComponent implements OnInit
         });
     }
 
-    duplicateVehicle(vehicle): void
+    duplicateVehicle(vehicle: any): void
     {
+        console.log("first:", vehicle)
+        
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
 

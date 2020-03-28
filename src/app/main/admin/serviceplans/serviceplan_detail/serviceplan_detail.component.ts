@@ -65,7 +65,7 @@ export class ServiceplanDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
 
-    this.serviceplan = sessionStorage.getItem("serviceplan_detail")? JSON.parse(sessionStorage.getItem("serviceplan_detail")) : '';
+    this.serviceplan = localStorage.getItem("serviceplan_detail")? JSON.parse(localStorage.getItem("serviceplan_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -169,9 +169,9 @@ export class ServiceplanDetailComponent implements OnInit
       this.serviceplanForm.get('locatecommand').setValue(this.serviceplan.locatecommand);
       this.serviceplanForm.get('distance').setValue(this.serviceplan.distance);
 
-      let created          = this.serviceplan? new Date(`${this.serviceplan.created}`) : '';
-      let deletedwhen      = this.serviceplan? new Date(`${this.serviceplan.deletedwhen}`) : '';
-      let lastmodifieddate = this.serviceplan? new Date(`${this.serviceplan.lastmodifieddate}`) : '';
+      let created          = this.serviceplan.created? new Date(`${this.serviceplan.created}`) : '';
+      let deletedwhen      = this.serviceplan.deletedwhen? new Date(`${this.serviceplan.deletedwhen}`) : '';
+      let lastmodifieddate = this.serviceplan.lastmodifieddate? new Date(`${this.serviceplan.lastmodifieddate}`) : '';
 
       this.serviceplanForm.get('created').setValue(this.dateFormat(created));
       this.serviceplanForm.get('createdbyname').setValue(this.serviceplan.createdbyname);

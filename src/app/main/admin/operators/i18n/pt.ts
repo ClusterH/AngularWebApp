@@ -2,10 +2,10 @@ export const locale = {
     lang: 'pt',
     data: {
         OPERATORS: {
-            "OPERATORS": "Veículos",
-            "SEARCHFOROPERATOR": "Procure um veículo",
-            "NEWOPERATOR": "Veículo novo",
-            "OPERATORDETAIL": "Dado relativo ao veículo",
+            "OPERATORS": "Operadores",
+            "SEARCHFOROPERATOR": "Procurar um operador",
+            "NEWOPERATOR": "Novo operador",
+            "OPERATORDETAIL": "Detalhes do operador",
             "SELECTFIELD": "Selecionar campo",
             "SAVE": "SALVAR",
             "ADD": "ADICIONAR",

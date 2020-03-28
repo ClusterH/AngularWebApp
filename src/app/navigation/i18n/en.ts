@@ -19,7 +19,7 @@ export const locale = {
             "MAKE": "Make",
             "MODELS": "Models",
             "ICONS": "Icons",
-            "VEHICLETYPES": "Vehicle Types",
+            "UNITTYPES": "Unit Types",
             "SHIFTS": "Shifts",
             "POI": "POI",
             "POIS": "POIs",

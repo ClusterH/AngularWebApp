@@ -78,7 +78,7 @@ export class OperatorDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(operatorsEnglish, operatorsSpanish, operatorsFrench, operatorsPortuguese);
 
-    this.operator = sessionStorage.getItem("operator_detail")? JSON.parse(sessionStorage.getItem("operator_detail")) : '';
+    this.operator = localStorage.getItem("operator_detail")? JSON.parse(localStorage.getItem("operator_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -246,9 +246,9 @@ export class OperatorDetailComponent implements OnInit
       this.operatorForm.get('company').setValue(this.operator.companyid);
       this.operatorForm.get('group').setValue(this.operator.groupid);
 
-      let created                = this.operator? new Date(`${this.operator.created}`) : '';
-      let deletedwhen            = this.operator? new Date(`${this.operator.deletedwhen}`) : '';
-      let lastmodifieddate       = this.operator? new Date(`${this.operator.lastmodifieddate}`) : '';
+      let created                = this.operator.created? new Date(`${this.operator.created}`) : '';
+      let deletedwhen            = this.operator.deletedwhen? new Date(`${this.operator.deletedwhen}`) : '';
+      let lastmodifieddate       = this.operator.lastmodifieddate? new Date(`${this.operator.lastmodifieddate}`) : '';
       let birthdate              = this.operator? new Date(`${this.operator.birthdate}`) : new Date();
       let hiredate               = this.operator? new Date(`${this.operator.hiredate}`) : new Date();
       let physicaltestexpirydate = this.operator? new Date(`${this.operator.physicaltestexpirydate}`) : new Date();

@@ -178,14 +178,14 @@ export class OperatorsComponent implements OnInit
 
     addNewOperator() {
         this.operatorDetailService.operator_detail = '';
-        sessionStorage.removeItem("operator_detail");
+        localStorage.removeItem("operator_detail");
         this.router.navigate(['admin/operators/operator_detail']);
     }
 
     editShowOperatorDetail(operator: any) {
         this.operatorDetailService.operator_detail = operator;
 
-        sessionStorage.setItem("operator_detail", JSON.stringify(operator));
+        localStorage.setItem("operator_detail", JSON.stringify(operator));
 
         this.router.navigate(['admin/operators/operator_detail']);
     }

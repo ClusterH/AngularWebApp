@@ -1,16 +1,8 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
-// import { MatPaginator, PageEvent } from '@angular/material/paginator';
-// import { MatSort } from '@angular/material/sort';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import {catchError, finalize} from "rxjs/operators";
 
-// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service'
-import { VehiclesComponent } from "app/main/admin/vehicles/vehicles/vehicles.component";
-
-// import { FuseUtils } from '@fuse/utils';
-
 
 export class VehiclesDataSource extends DataSource<any>
 {
@@ -42,23 +34,17 @@ export class VehiclesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log("result", result);
-            console.log("page_size", pagesize);
            this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           console.log(this.total_page);
 
-           console.log(this.totalLength);
-        //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source", collectionViewer);
         return this.vehiclesSubject.asObservable();
     }
  

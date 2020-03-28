@@ -2,10 +2,10 @@ export const locale = {
     lang: 'sp',
     data: {
         OPERATORS: {
-            "OPERATORS": "Vehículos",
-            "SEARCHFOROPERATOR": "Buscar un vehículo",
-            "NEWOPERATOR": "Vehículo nuevo",
-            "OPERATORDETAIL": "Detalle del vehículo",
+            "OPERATORS": "Operadores",
+            "SEARCHFOROPERATOR": "Buscar un operador",
+            "NEWOPERATOR": "Nuevo operador",
+            "OPERATORDETAIL": "Detalle del operador",
             "SELECTFIELD": "Seleccionar campo",
             "SAVE": "GUARDAR",
             "ADD": "AGREGAR",

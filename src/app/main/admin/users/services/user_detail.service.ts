@@ -68,7 +68,7 @@ export class UserDetailService
             .set('id', userDetail.id.toString())
             .set('name', userDetail.name.toString())
             .set('email', userDetail.email.toString())
-            .set('password', userDetail.password.toString())
+            // .set('password', userDetail.password.toString())
             .set('userprofileid', userDetail.userprofileid.toString())
             .set('timezoneid', userDetail.timezoneid.toString())
             .set('lengthunitid', userDetail.lengthunitid.toString())

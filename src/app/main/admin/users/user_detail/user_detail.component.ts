@@ -89,7 +89,7 @@ export class UserDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
 
-    this.user = sessionStorage.getItem("user_detail")? JSON.parse(sessionStorage.getItem("user_detail")) : '';
+    this.user = localStorage.getItem("user_detail")? JSON.parse(localStorage.getItem("user_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -348,9 +348,9 @@ export class UserDetailComponent implements OnInit
       this.userForm.get('language').setValue(this.user.languageid);
       this.userForm.get('timezone').setValue(this.user.timezoneid);
 
-      let created          = this.user? new Date(`${this.user.created}`) : '';
-      let deletedwhen      = this.user? new Date(`${this.user.deletedwhen}`) : '';
-      let lastmodifieddate = this.user? new Date(`${this.user.lastmodifieddate}`) : '';
+      let created          = this.user.created? new Date(`${this.user.created}`) : '';
+      let deletedwhen      = this.user.deletedwhen? new Date(`${this.user.deletedwhen}`) : '';
+      let lastmodifieddate = this.user.lastmodifieddate? new Date(`${this.user.lastmodifieddate}`) : '';
 
       this.userForm.get('created').setValue(this.dateFormat(created));
       this.userForm.get('createdbyname').setValue(this.user.createdbyname);
@@ -393,7 +393,6 @@ export class UserDetailComponent implements OnInit
       this.userDetail.lastmodifieddate = dateTime;
       this.userDetail.lastmodifiedby   = this.userID;
     }
-    
   }
 
   dateFormat(date: any) {

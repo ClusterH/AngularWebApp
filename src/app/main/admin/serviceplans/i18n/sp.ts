@@ -2,10 +2,10 @@ export const locale = {
     lang: 'sp',
     data: {
         SERVICEPLANS: {
-            "SERVICEPLANS": "Vehículos",
-            "SEARCHFORSERVICEPLAN": "Buscar un vehículo",
-            "NEWSERVICEPLAN": "Vehículo nuevo",
-            "SERVICEPLANDETAIL": "Detalle del vehículo",
+            "SERVICEPLANS": "Plan de servicio",
+            "SEARCHFORSERVICEPLAN": "Buscar un plan de servicio",
+            "NEWSERVICEPLAN": "Nuevo plan de servicio",
+            "SERVICEPLANDETAIL": "Detalle del plan de servicio",
             "SELECTFIELD": "Seleccionar campo",
             "SAVE": "GUARDAR",
             "ADD": "AGREGAR",

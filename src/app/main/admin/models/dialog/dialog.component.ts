@@ -1,9 +1,5 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-// import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import * as moment from 'moment';
-import { ModelsService } from 'app/main/admin/models/services/models.service';
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -11,8 +7,6 @@ import { locale as modelsEnglish } from 'app/main/admin/models/i18n/en';
 import { locale as modelsSpanish } from 'app/main/admin/models/i18n/sp';
 import { locale as modelsFrench } from 'app/main/admin/models/i18n/fr';
 import { locale as modelsPortuguese } from 'app/main/admin/models/i18n/pt';
-
-
 
 @Component({
     selector: 'model-dialog',
@@ -25,9 +19,7 @@ export class CourseDialogComponent implements OnInit {
    flag: any;
 
     constructor(
-        private fb: FormBuilder,
         private router: Router,
-        private _adminModelsService: ModelsService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
@@ -35,7 +27,6 @@ export class CourseDialogComponent implements OnInit {
     ) {
         this._fuseTranslationLoaderService.loadTranslations(modelsEnglish, modelsSpanish, modelsFrench, modelsPortuguese);
 
-        // this.model = model;
         this.model = model;
         this.flag = flag;
     }
@@ -43,23 +34,36 @@ export class CourseDialogComponent implements OnInit {
     ngOnInit() {
     }
 
-
     save() {
-        // if(this.flag == "duplicate") {
-        //     this._adminModelsService.duplicateModel(this.model);
-        // } else if( this.flag == "delete") {
-        //     this._adminModelsService.deleteModel(this.model);
-        // }
+        if(this.flag == "duplicate") {
+        
+            this.model.id = 0;
+            this.model.name = '';
+            this.model.createdwhen = '';
+            this.model.createdbyname = '';
+            this.model.lastmodifieddate = '';
+            this.model.lastmodifiedbyname = '';
+    
+            localStorage.setItem("model_detail", JSON.stringify(this.model));
+    
+            console.log("localstorage:", JSON.parse(localStorage.getItem("model_detail")));
+    
+            this.router.navigate(['admin/models/model_detail']);
+        } else if( this.flag == "delete") {
+            // this._adminModelsService.deleteModel(this.model);
+        }
 
         this.dialogRef.close();
     }
 
     close() {
+        localStorage.removeItem("model_detail");
         this.dialogRef.close();
     }
 
     goback() {
         this.dialogRef.close();
+        localStorage.removeItem("model_detail");
 
         this.router.navigate(['admin/models/models']);
     }

@@ -8,9 +8,7 @@ import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
 import { VehicleDetail } from 'app/main/admin/vehicles/model/vehicle.model';
 import {CourseDialogComponent} from "../dialog/dialog.component";
 
-import * as $ from 'jquery';
-
-import { Subject, merge, Observable } from 'rxjs';
+import { merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
@@ -18,7 +16,6 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 import { VehicleDetailDataSource } from "app/main/admin/vehicles/services/vehicle_detail.datasource";
-import { AuthService } from 'app/authentication/services/authentication.service';
 
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
@@ -87,7 +84,6 @@ export class VehicleDetailComponent implements OnInit
 
   constructor(
     public vehicleDetailService: VehicleDetailService,
-    private authService: AuthService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
     private _formBuilder: FormBuilder,
@@ -96,15 +92,24 @@ export class VehicleDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
-    this.vehicle = sessionStorage.getItem("vehicle_detail")? JSON.parse(sessionStorage.getItem("vehicle_detail")) : '';
-
+    this.vehicle = localStorage.getItem("vehicle_detail")? JSON.parse(localStorage.getItem("vehicle_detail")) : '';
+    console.log(this.vehicle);
+    
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
     if ( this.vehicle != '' )
     {
-      this.vehicleDetailService.current_makeID = this.vehicle.makeid;
-      this.vehicleModel_flag = true;
+      console.log(this.vehicle.makeid);
+
+      if(this.vehicle.makeid != 0) {
+        console.log(this.vehicle.makeid);
+
+        this.vehicleDetailService.current_makeID = this.vehicle.makeid;
+        this.vehicleModel_flag = true;
+      } else {
+        this.vehicleDetailService.current_makeID = 0;
+      }
       console.log("makeid: ", this.vehicleDetailService.current_makeID);
       this.pageType = 'edit';
     }
@@ -260,9 +265,6 @@ export class VehicleDetailComponent implements OnInit
       merge(this.paginatorModel.page)
       .pipe(
         tap(() => {
-          // this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
-
-          console.log("makeid: ", this.vehicleDetailService.current_makeID);
           this.paginatorModel.pageIndex = 0
   
           this.loadVehicleDetail('model')
@@ -412,9 +414,9 @@ export class VehicleDetailComponent implements OnInit
       this.vehicleForm.get('model').setValue(this.vehicle.modelid);
       this.vehicleForm.get('timezone').setValue(this.vehicle.timezoneid);
 
-      let created          = this.vehicle? new Date(`${this.vehicle.created}`) : '';
-      let deletedwhen      = this.vehicle? new Date(`${this.vehicle.deletedwhen}`) : '';
-      let lastmodifieddate = this.vehicle? new Date(`${this.vehicle.lastmodifieddate}`) : '';
+      let created          = this.vehicle.created? new Date(`${this.vehicle.created}`) : '';
+      let deletedwhen      = this.vehicle.deletedwhen? new Date(`${this.vehicle.deletedwhen}`) : '';
+      let lastmodifieddate = this.vehicle.lastmodifieddate? new Date(`${this.vehicle.lastmodifieddate}`) : '';
 
       this.vehicleForm.get('created').setValue(this.dateFormat(created));
       this.vehicleForm.get('createdbyname').setValue(this.vehicle.createdbyname);
@@ -492,14 +494,11 @@ export class VehicleDetailComponent implements OnInit
   }
 
   addVehicle(): void {
-    console.log("addVehicle");
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.vehicleDetail);
 
     this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
     .subscribe((result: any) => {
-      console.log(result);
       if (result.responseCode == 200) {
         alert("Success!");
         this.router.navigate(['admin/vehicles/vehicles']);
@@ -537,17 +536,9 @@ export class VehicleDetailComponent implements OnInit
     this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
     this.vehicleModel_flag = true;
     this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
-    // this.paginatorModel.pageIndex = 0;
-
   }
 
   checkMakeIsSelected() {
     alert("Please check first Make is selected!");
   }
-
-   // navigatePageEvent() {
-  //   // console.log(this.index_number);
-  //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
-  //   // this.dataSource.loadCompanies(this.userConncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "company_clist");
-  // }
 }

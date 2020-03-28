@@ -167,14 +167,14 @@ export class ModelsComponent implements OnInit
 
     addNewModel() {
         this.modelDetailService.model_detail = '';
-        sessionStorage.removeItem("model_detail");
+        localStorage.removeItem("model_detail");
         this.router.navigate(['admin/models/model_detail']);
     }
 
     editShowModelDetail(model: any) {
         this.modelDetailService.model_detail = model;
 
-        sessionStorage.setItem("model_detail", JSON.stringify(model));
+        localStorage.setItem("model_detail", JSON.stringify(model));
 
         this.router.navigate(['admin/models/model_detail']);
     }

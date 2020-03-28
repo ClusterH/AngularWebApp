@@ -118,11 +118,11 @@ export const navigation: FuseNavigation[] = [
                 url      : 'pages/admin/icons'
             },
             {
-                id       : 'vehicle_types',
-                title    : 'Vehicle Types',
-                translate: 'NAV.VEHICLETYPES',
+                id       : 'unittypes',
+                title    : 'Unit Types',
+                translate: 'NAV.UNITTYPES',
                 type     : 'item',
-                url      : 'pages/admin/vehicle_types'
+                url      : '/admin/unittypes/unittypes'
             },
             {
                 id       : 'shifts',

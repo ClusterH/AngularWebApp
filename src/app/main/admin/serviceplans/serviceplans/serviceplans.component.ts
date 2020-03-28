@@ -169,14 +169,14 @@ export class ServiceplansComponent implements OnInit
 
     addNewServiceplan() {
         this.serviceplanDetailService.serviceplan_detail = '';
-        sessionStorage.removeItem("serviceplan_detail");
+        localStorage.removeItem("serviceplan_detail");
         this.router.navigate(['admin/serviceplans/serviceplan_detail']);
     }
 
     editShowServiceplanDetail(serviceplan: any) {
         this.serviceplanDetailService.serviceplan_detail = serviceplan;
 
-        sessionStorage.setItem("serviceplan_detail", JSON.stringify(serviceplan));
+        localStorage.setItem("serviceplan_detail", JSON.stringify(serviceplan));
 
         this.router.navigate(['admin/serviceplans/serviceplan_detail']);
     }

@@ -32,6 +32,10 @@ const routes = [
         path        : 'serviceplans',
         loadChildren: () => import('./serviceplans/serviceplans.module').then(m => m.ServiceplansModule)
     },
+    {
+        path        : 'unittypes',
+        loadChildren: () => import('./unittypes/unittypes.module').then(m => m.UnitTypesModule)
+    },
 
 
 ];

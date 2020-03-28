@@ -1,9 +1,5 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-// import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import * as moment from 'moment';
-import { ServiceplansService } from 'app/main/admin/serviceplans/services/serviceplans.service';
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -11,8 +7,6 @@ import { locale as serviceplansEnglish } from 'app/main/admin/serviceplans/i18n/
 import { locale as serviceplansSpanish } from 'app/main/admin/serviceplans/i18n/sp';
 import { locale as serviceplansFrench } from 'app/main/admin/serviceplans/i18n/fr';
 import { locale as serviceplansPortuguese } from 'app/main/admin/serviceplans/i18n/pt';
-
-
 
 @Component({
     selector: 'serviceplan-dialog',
@@ -25,9 +19,7 @@ export class CourseDialogComponent implements OnInit {
    flag: any;
 
     constructor(
-        private fb: FormBuilder,
         private router: Router,
-        private _adminServiceplansService: ServiceplansService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
@@ -35,7 +27,6 @@ export class CourseDialogComponent implements OnInit {
     ) {
         this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
 
-        // this.serviceplan = serviceplan;
         this.serviceplan = serviceplan;
         this.flag = flag;
     }
@@ -43,23 +34,38 @@ export class CourseDialogComponent implements OnInit {
     ngOnInit() {
     }
 
-
     save() {
-        // if(this.flag == "duplicate") {
-        //     this._adminServiceplansService.duplicateServiceplan(this.serviceplan);
-        // } else if( this.flag == "delete") {
-        //     this._adminServiceplansService.deleteServiceplan(this.serviceplan);
-        // }
+        if(this.flag == "duplicate") {
+        
+            this.serviceplan.id = 0;
+            this.serviceplan.name = '';
+            this.serviceplan.created = '';
+            this.serviceplan.createdbyname = '';
+            this.serviceplan.deletedwhen = '';
+            this.serviceplan.deletedbyname = '';
+            this.serviceplan.lastmodifieddate = '';
+            this.serviceplan.lastmodifiedbyname = '';
+    
+            localStorage.setItem("serviceplan_detail", JSON.stringify(this.serviceplan));
+    
+            console.log("localstorage:", JSON.parse(localStorage.getItem("serviceplan_detail")));
+    
+            this.router.navigate(['admin/serviceplans/serviceplan_detail']);
+        } else if( this.flag == "delete") {
+            // this._adminServiceplansService.deleteServiceplan(this.serviceplan);
+        }
 
         this.dialogRef.close();
     }
 
     close() {
+        localStorage.removeItem("serviceplan_detail");
         this.dialogRef.close();
     }
 
     goback() {
         this.dialogRef.close();
+        localStorage.removeItem("serviceplan_detail");
 
         this.router.navigate(['admin/serviceplans/serviceplans']);
     }

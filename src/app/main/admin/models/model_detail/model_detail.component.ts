@@ -67,7 +67,7 @@ export class ModelDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(modelsEnglish, modelsSpanish, modelsFrench, modelsPortuguese);
 
-    this.model = sessionStorage.getItem("model_detail")? JSON.parse(sessionStorage.getItem("model_detail")) : '';
+    this.model = localStorage.getItem("model_detail")? JSON.parse(localStorage.getItem("model_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -202,8 +202,8 @@ export class ModelDetailComponent implements OnInit
       this.modelForm.get('make').setValue(this.model.makeid);
       this.modelForm.get('tireconfiguration').setValue(this.model.tireconfigurationid);
 
-      let createdwhen      = this.model? new Date(`${this.model.createdwhen}`) : '';
-      let lastmodifieddate = this.model? new Date(`${this.model.lastmodifieddate}`) : '';
+      let createdwhen      = this.model.createdwhen? new Date(`${this.model.createdwhen}`) : '';
+      let lastmodifieddate = this.model.lastmodifieddate? new Date(`${this.model.lastmodifieddate}`) : '';
 
       this.modelForm.get('createdwhen').setValue(this.dateFormat(createdwhen));
       this.modelForm.get('createdbyname').setValue(this.model.createdbyname);

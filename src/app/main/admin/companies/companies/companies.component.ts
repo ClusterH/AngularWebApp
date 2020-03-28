@@ -168,14 +168,14 @@ export class CompaniesComponent implements OnInit
 
     addNewCompany() {
         this.companyDetailService.company_detail = '';
-        sessionStorage.removeItem("company_detail");
+        localStorage.removeItem("company_detail");
         this.router.navigate(['admin/companies/company_detail']);
     }
 
     editShowCompanyDetail(company: any) {
         this.companyDetailService.company_detail = company;
 
-        sessionStorage.setItem("company_detail", JSON.stringify(company));
+        localStorage.setItem("company_detail", JSON.stringify(company));
 
         this.router.navigate(['admin/companies/company_detail']);
     }

@@ -178,14 +178,14 @@ export class UsersComponent implements OnInit
 
     addNewUser() {
         this.userDetailService.user_detail = '';
-        sessionStorage.removeItem("user_detail");
+        localStorage.removeItem("user_detail");
         this.router.navigate(['admin/users/user_detail']);
     }
 
     editShowUserDetail(user: any) {
         this.userDetailService.user_detail = user;
 
-        sessionStorage.setItem("user_detail", JSON.stringify(user));
+        localStorage.setItem("user_detail", JSON.stringify(user));
 
         this.router.navigate(['admin/users/user_detail']);
     }
