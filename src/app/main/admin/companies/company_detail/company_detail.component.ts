@@ -46,41 +46,23 @@ export class CompanyDetailComponent implements OnInit
   displayedColumns: string[] = ['name'];
 
   dataSource: CompanyDetailDataSource;
-
-  dataSourceCompany: CompanyDetailDataSource;
-  dataSourceGroup: CompanyDetailDataSource;
   dataSourceAccount: CompanyDetailDataSource;
-  dataSourceOperator: CompanyDetailDataSource;
-  dataSourceUnitType: CompanyDetailDataSource;
-  dataSourceServicePlan: CompanyDetailDataSource;
-  dataSourceProductType: CompanyDetailDataSource;
-  dataSourceMake: CompanyDetailDataSource;
-  dataSourceModel: CompanyDetailDataSource;
-  dataSourceTimeZone: CompanyDetailDataSource;
+  dataSourceCompanyType: CompanyDetailDataSource;
+  dataSourceUserProfile: CompanyDetailDataSource;
+
  
   filter_string: string = '';
   method_string: string = '';
   
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
-  @ViewChild('paginatorGroup', {read: MatPaginator, static: true})
-    paginatorGroup: MatPaginator;
   @ViewChild('paginatorAccount', {read: MatPaginator, static: true})
     paginatorAccount: MatPaginator;
-  @ViewChild('paginatorOperator', {read: MatPaginator, static: true})
-    paginatorOperator: MatPaginator;
-  @ViewChild('paginatorUnitType', {read: MatPaginator, static: true})
-    paginatorUnitType: MatPaginator;
-  @ViewChild('paginatorServicePlan', {read: MatPaginator, static: true})
-    paginatorServicePlan: MatPaginator;
-  @ViewChild('paginatorProductType', {read: MatPaginator, static: true})
-    paginatorProductType: MatPaginator;
-  @ViewChild('paginatorMake', {read: MatPaginator, static: true})
-    paginatorMake: MatPaginator;
-  @ViewChild('paginatorModel', {read: MatPaginator, static: true})
-    paginatorModel: MatPaginator;
-  @ViewChild('paginatorTimeZone', {read: MatPaginator, static: true})
-    paginatorTimeZone: MatPaginator;
+  @ViewChild('paginatorCompanyType', {read: MatPaginator, static: true})
+    paginatorCompanyType: MatPaginator;
+    @ViewChild('paginatorUserProfile', {read: MatPaginator, static: true})
+    paginatorUserProfile: MatPaginator;
+
 
   constructor(
     // private companiesService: CompaniesService,
@@ -117,42 +99,35 @@ export class CompanyDetailComponent implements OnInit
   ngOnInit(): void {
     console.log(this.company);
   
-    this.dataSourceCompany        = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceGroup          = new CompanyDetailDataSource(this.companyDetailService);
     this.dataSourceAccount        = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceOperator       = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceUnitType       = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceServicePlan    = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceProductType    = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceMake           = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceModel          = new CompanyDetailDataSource(this.companyDetailService);
-    this.dataSourceTimeZone       = new CompanyDetailDataSource(this.companyDetailService);
+    this.dataSourceCompanyType       = new CompanyDetailDataSource(this.companyDetailService);
+    this.dataSourceUserProfile       = new CompanyDetailDataSource(this.companyDetailService);
 
-    this.dataSourceCompany      .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.company, "company_clist");
-    this.dataSourceGroup        .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.group, "group_clist");
-    this.dataSourceAccount      .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.account, "account_clist");
-    this.dataSourceOperator     .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.operator, "operator_clist");
-    this.dataSourceUnitType     .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.unittype, "unittype_clist");
-    this.dataSourceServicePlan  .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.serviceplan, "serviceplan_clist");
-    this.dataSourceProductType  .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.producttype, "producttype_clist");
-    this.dataSourceMake         .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.make, "make_clist");
-    this.dataSourceModel        .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.model, "model_clist");
-    this.dataSourceTimeZone     .loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.timezone, "timezone_clist");
-
+    this.dataSourceAccount.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.account, "account_clist");
+    this.dataSourceCompanyType.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.companytype, "companytype_clist");
+    this.dataSourceUserProfile.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.userprofile, "userprofile_clist");
+    
     this.companyForm = this._formBuilder.group({
       name               : [null, Validators.required],
-      company            : [null, Validators.required],
-      group              : [null, Validators.required],
-      subgroup           : [null, Validators.required],
       account            : [null, Validators.required],
-      operator           : [null, Validators.required],
-      unittype           : [null, Validators.required],
-      serviceplan        : [null, Validators.required],
-      producttype        : [null, Validators.required],
-      make               : [null, Validators.required],
-      model              : [null, Validators.required],
+      address            : [null, Validators.required],
+      country            : [null, Validators.required],
+      contactname        : [null, Validators.required],
+      phone              : [null, Validators.required],
+      email              : [null, Validators.required],
+      comments           : [null, Validators.required],
+      orgno              : [null, Validators.required],
+      companytype        : [null, Validators.required],
       isactive           : [null, Validators.required],
-      timezone           : [null, Validators.required],
+      webstartlat        : [null, Validators.required],
+      webstartlong       : [null, Validators.required],
+      userprofile        : [null, Validators.required],
+      hasprivatelabel    : [null, Validators.required],
+      emailserver        : [null, Validators.required],
+      emailsender        : [null, Validators.required],
+      emailuser          : [null, Validators.required],
+      emailpassword      : [null, Validators.required],
+      billingnote        : [null, Validators.required],
       created            : [null, Validators.required],
       createdbyname      : [null, Validators.required],
       deletedwhen        : [null, Validators.required],
@@ -167,27 +142,7 @@ export class CompanyDetailComponent implements OnInit
 
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
-    
-    merge(this.paginatorCompany.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("company")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    merge(this.paginatorGroup.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("group")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
+        
     merge(this.paginatorAccount.page)
     .pipe(
       tap(() => {
@@ -198,142 +153,51 @@ export class CompanyDetailComponent implements OnInit
         console.log(res);
     });
 
-    merge(this.paginatorOperator.page)
+    merge(this.paginatorCompanyType.page)
     .pipe(
       tap(() => {
-        this.loadCompanyDetail("operator")
+        this.loadCompanyDetail("companytype")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorUnitType.page)
+    merge(this.paginatorUserProfile.page)
     .pipe(
       tap(() => {
-        this.loadCompanyDetail("unittype")
+        this.loadCompanyDetail("userprofile")
       })
     )
     .subscribe( (res: any) => {
         console.log(res);
     });
 
-    merge(this.paginatorServicePlan.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("serviceplan")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    merge(this.paginatorProductType.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("producttype")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    merge(this.paginatorMake.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("make")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    merge(this.paginatorModel.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("model")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
-
-    merge(this.paginatorTimeZone.page)
-    .pipe(
-      tap(() => {
-        this.loadCompanyDetail("timezone")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
   }
 
   loadCompanyDetail(method_string: string) {
-    if (method_string == 'company') {
-      this.dataSourceCompany.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'group') {
-        this.dataSourceGroup.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'active') {
+    if (method_string == 'account') {
         this.dataSourceAccount.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'operator') {
-        this.dataSourceOperator.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'unittype') {
-        this.dataSourceUnitType.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'serviceplan') {
-        this.dataSourceServicePlan.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'producttype') {
-        this.dataSourceProductType.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
-    } else if (method_string == 'make') {
-        this.dataSourceMake.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'model') {
-        this.dataSourceModel.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
-    } else if (method_string == 'timezone') {
-        this.dataSourceTimeZone.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
+    } else if (method_string == 'companytype') {
+        this.dataSourceCompanyType.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorCompanyType.pageIndex, this.paginatorCompanyType.pageSize, this.filter_string, `${method_string}_clist`)
+    } else if (method_string == 'userprofile') {
+        this.dataSourceUserProfile.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorUserProfile.pageIndex, this.paginatorUserProfile.pageSize, this.filter_string, `${method_string}_clist`)
     }
   }
 
   managePageIndex(method_string: string) {
     switch(method_string) {
-      case 'company':
-        this.paginatorCompany.pageIndex = 0;
-      break;
-
       case 'account':
         this.paginatorAccount.pageIndex = 0;
       break;
 
-      case 'group':
-        this.paginatorGroup.pageIndex = 0;
+      case 'companytype':
+        this.paginatorCompanyType.pageIndex = 0;
       break;
 
-      case 'operator':
-        this.paginatorOperator.pageIndex = 0;
-      break;
-
-      case 'unittype':
-        this.paginatorUnitType.pageIndex = 0;
-      break;
-
-      case 'serviceplan':
-        this.paginatorServicePlan.pageIndex = 0;
-      break;
-
-      case 'producttype':
-        this.paginatorProductType.pageIndex = 0;
-      break;
-
-      case 'make':
-        this.paginatorMake.pageIndex = 0;
-      break;
-
-      case 'model':
-        this.paginatorModel.pageIndex = 0;
-      break;
-
-      case 'timezone':
-        this.paginatorTimeZone.pageIndex = 0;
-      break;
+      case 'userprofile':
+        this.paginatorUserProfile.pageIndex = 0;
+      break;     
     }
   }
 
@@ -342,9 +206,9 @@ export class CompanyDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.companyForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.companyDetailService.unit_clist_item[methodString], selected_element_id );
+    console.log(methodString, this.companyDetailService.company_clist_item[methodString], selected_element_id );
 
-    let clist = this.companyDetailService.unit_clist_item[methodString];
+    let clist = this.companyDetailService.company_clist_item[methodString];
 
     for (let i = 0; i< clist.length; i++) {
       if ( clist[i].id == selected_element_id ) {
@@ -379,16 +243,10 @@ export class CompanyDetailComponent implements OnInit
 
   setValues() {
       this.companyForm.get('name').setValue(this.company.name);
-      this.companyForm.get('company').setValue(this.company.companyid);
-      this.companyForm.get('group').setValue(this.company.groupid);
+      this.companyForm.get('orgno').setValue(this.company.orgno);
       this.companyForm.get('account').setValue(this.company.accountid);
-      this.companyForm.get('operator').setValue(this.company.operatorid);
-      this.companyForm.get('unittype').setValue(this.company.unittypeid);
-      this.companyForm.get('serviceplan').setValue(this.company.serviceplanid);
-      this.companyForm.get('producttype').setValue(this.company.producttypeid);
-      this.companyForm.get('make').setValue(this.company.makeid);
-      this.companyForm.get('model').setValue(this.company.modelid);
-      this.companyForm.get('timezone').setValue(this.company.timezoneid);
+      this.companyForm.get('companytype').setValue(this.company.companytypeid);
+      this.companyForm.get('userprofile').setValue(this.company.userprofileid);
 
       let created          = this.company? new Date(`${this.company.created}`) : '';
       let deletedwhen      = this.company? new Date(`${this.company.deletedwhen}`) : '';
@@ -404,19 +262,12 @@ export class CompanyDetailComponent implements OnInit
   }
 
   getValues(dateTime: any, mode: string) {
-    this.companyDetail.name             = this.companyForm.get('name').value || '',
-    this.companyDetail.companyid        = this.companyForm.get('company').value || 0;
-    this.companyDetail.groupid          = this.companyForm.get('group').value || 0;
-    this.companyDetail.accountid        = this.companyForm.get('account').value || 0;
-    this.companyDetail.operatorid       = this.companyForm.get('operator').value || 0;
-    this.companyDetail.unittypeid       = this.companyForm.get('unittype').value || 0;
-    this.companyDetail.serviceplanid    = this.companyForm.get('serviceplan').value || 0;
-    this.companyDetail.producttypeid    = this.companyForm.get('producttype').value || 0;
-    this.companyDetail.makeid           = this.companyForm.get('make').value || 0;
-    this.companyDetail.modelid          = this.companyForm.get('model').value || 0;
-    this.companyDetail.timezoneid       = this.companyForm.get('timezone').value || 0;
+    this.companyDetail.name                 = this.companyForm.get('name').value || '',
+    this.companyDetail.orgno                = this.companyForm.get('orgno').value || '',
+    this.companyDetail.accountid            = this.companyForm.get('account').value || 0;
+    this.companyDetail.companytypeid        = this.companyForm.get('companytype').value || 0;
+    this.companyDetail.userprofileid        = this.companyForm.get('userprofile').value || 0;
  
-    this.companyDetail.subgroup         = this.company.subgroup || 0;
     this.companyDetail.isactive         = this.company.isactive || true;
     this.companyDetail.deletedwhen      = this.company.deletedwhen || '';
     this.companyDetail.deletedby        = this.company.deletedby || 0;

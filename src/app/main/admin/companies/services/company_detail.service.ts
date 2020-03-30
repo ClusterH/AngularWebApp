@@ -10,7 +10,7 @@ export class CompanyDetailService
     routeParams: any;
     company: any;
     public company_detail: any;
-    public unit_clist_item: any = {};
+    public company_clist_item: any = {};
 
     /**
      * Constructor
@@ -70,25 +70,18 @@ export class CompanyDetailService
             .set('userid', userid.toString())
             .set('id', companyDetail.id.toString())
             .set('name', companyDetail.name.toString())
-            .set('companyid', companyDetail.companyid.toString())
-            .set('groupid', companyDetail.groupid.toString())
-            .set('subgroup', companyDetail.subgroup.toString())
-            .set('operatorid', companyDetail.operatorid.toString())
+            .set('orgno', companyDetail.orgno.toString())
             .set('accountid', companyDetail.accountid.toString())
-            .set('unittypeid', companyDetail.unittypeid.toString())
-            .set('serviceplanid', companyDetail.serviceplanid.toString())
-            .set('producttypeid', companyDetail.producttypeid.toString())
-            .set('makeid', companyDetail.makeid.toString())
-            .set('modelid', companyDetail.modelid.toString())
+            .set('companytypeid', companyDetail.companytypeid.toString())
+            .set('defaultuserprofileid', companyDetail.defaultuserprofileid.toString())          
             .set('isactive', companyDetail.isactive.toString())
-            .set('timezoneid', companyDetail.timezoneid.toString())
             .set('created', companyDetail.created.toString())
             .set('createdby', companyDetail.createdby.toString())
             .set('deletedwhen', companyDetail.deletedwhen.toString())
             .set('deletedby', companyDetail.deletedby.toString())
             .set('lastmodifieddate', companyDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', companyDetail.lastmodifiedby.toString())
-            .set('method', 'unit_save');
+            .set('method', 'company_save');
         
             console.log(params_detail);
 

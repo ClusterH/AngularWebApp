@@ -118,79 +118,7 @@ admin-vehicles {
             align-items: center;
         }
 
-        // .mat-column-id {
-        //     flex: 0 1 4%;
-        // }
-
-        .mat-column-name {
-            flex: 0 1 7%;
-        }
-        .mat-column-company {
-            flex: 0 1 7%;
-        }
-
-        // .mat-column-company {
-        //     flex: 0 1 8%;
-        // }
-
-        // // .mat-column-group {
-        // //     flex: 0 1 8%;
-        // // }
-
-        // .mat-column-subgroup {
-        //     flex: 0 1 5%;
-        // }
         
-        // .mat-column-account {
-        //     flex: 0 1 5%;
-        // }
-        
-        // .mat-column-unittype {
-        //     flex: 0 1 5%;
-        // }
-        
-        // .mat-column-producttype {
-        //     flex: 0 1 5%;
-        // }
-
-        // .mat-column-make {
-        //     flex: 0 1 6%;
-        // }
-        // .mat-column-model {
-        //     flex: 0 1 6%;
-        // }
-        
-        // .mat-column-isactive {
-        //     flex: 0 1 4%;
-        // }
-
-        .mat-column-timezone {
-            flex: 0 1 10%;
-        }
-
-        .mat-column-created {
-            flex: 0 1 8%;
-        }
-
-        .mat-column-deletedwhen {
-            flex: 0 1 8%;
-        }
-
-        .mat-column-lastmodifieddate {
-            flex: 0 1 8%;
-        }
-
-        .mat-column-createdbyname {
-            flex: 0 1 5%;
-        }
-
-        .mat-column-deletedbyname {
-            flex: 0 1 5%;
-        }
-
-        .mat-column-lastmodifiedbyname {
-            flex: 0 1 5%;
-        }
 
         .quantity-indicator {
             display: inline-block;
@@ -229,13 +157,7 @@ admin-vehicles {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    // .mat-mini-fab[disabled] {
-    //     width: 35px !important;
-    //     height: 35px !important;
-    //     font-size: 14px !important;
-    //     color: turquoise !important;
-    //     background-color: rgba(64, 224, 208, .3) !important;
-    // }
+    
     .mat-fab .mat-button-wrapper {
         padding: 0px !important;
         line-height: normal !important;
@@ -244,11 +166,7 @@ admin-vehicles {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    // .mat-select-value {
-    //     color: rgb(221, 221, 221) !important;
-    //     margin-left: 10px !important;
-    //     margin-right: 0px !important;
-    // }
+   
     .edit_icon {
         color: green;
         margin-right: 3px;

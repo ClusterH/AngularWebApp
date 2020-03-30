@@ -70,69 +70,6 @@
 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
-                                        <mat-label>{{ 'COMPANIES.COMPANY' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                            </div>
-
-                                            <div  style="width: 100%; overflow: auto;" >
-                                                <mat-table [dataSource]="dataSourceCompany"  class="companies-table font-size-10 mat-elevation-z8" >
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let company;"  style="border: 0px;">
-                                                            <mat-option  [value]="company.id">{{company.name}}</mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                                </mat-table>
-                                            </div>
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorCompany
-                                                class="table_paginator_detail"
-                                                [length]="dataSourceCompany.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                                sticky="true"
-                                            ></mat-paginator>
-                                          
-                                        </mat-select>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'COMPANIES.GROUP' | translate }}</mat-label>
-                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                            </div>
-
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceGroup"  class="companies-table font-size-10 mat-elevation-z8" >
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                                </mat-table>
-                                            </div>
-                                        
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorGroup
-                                                class="table_paginator"
-                                                [length]="dataSourceGroup.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                            ></mat-paginator>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.ACCOUNT' | translate }}</mat-label>
                                         <mat-select formControlName="account"  (click)="showCompanyList('account_clist')">
@@ -164,19 +101,20 @@
                                         </mat-select>
                                     </mat-form-field>
 
+
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'COMPANIES.OPERATOR' | translate }}</mat-label>
-                                        <mat-select formControlName="operator"  (click)="showCompanyList('operator_clist')">
+                                        <mat-label>{{ 'COMPANIES.COMPANYTYPE' | translate }}</mat-label>
+                                        <mat-select formControlName="companytype"  (click)="showCompanyList('companytype_clist')">
                                             <div class="filter_company_input" >
                                                 <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-                                            
+
                                             <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceOperator"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                <mat-table [dataSource]="dataSourceCompanyType"  class="companies-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let operator"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.id">{{operator.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let companytype"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="companytype.id">{{companytype.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -184,9 +122,9 @@
                                             </div>
                                         
                                             <mat-paginator style=" height: 40px;"
-                                                #paginatorOperator
+                                                #paginatorCompanyType
                                                 class="table_paginator"
-                                                [length]="dataSourceOperator.totalLength"
+                                                [length]="dataSourceCompanyType.totalLength"
                                                 [pageSize]="10"
                                                 [hidePageSize]="true"
                                                 showFirstLastButtons
@@ -196,6 +134,46 @@
                                 </div>
 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.ORGNO' | translate }}</mat-label>
+                                        <input matInput placeholder="orgno"
+                                               name="orgno"
+                                                formControlName="orgno">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.USERPROFILE' | translate }}</mat-label>
+                                        <mat-select formControlName="userprofile"  (click)="showCompanyList('userprofile_clist')">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceUserProfile"  class="companies-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let userprofile"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="userprofile.id">{{userprofile.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorUserProfile
+                                                class="table_paginator"
+                                                [length]="dataSourceUserProfile.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>                                    
+                                </div>
+
+                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.UNITTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="unittype"  (click)="showCompanyList('unittype_clist')">
@@ -256,16 +234,12 @@
                                             ></mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
-                                </div>
+                                </div> -->
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
                                         <mat-label>{{ 'COMPANIES.PRODUCTTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="producttype"  (click)="showCompanyList('producttype_clist')">
-                                            <!-- <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                            </div> -->
                                             
                                             <div  style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceProductType"  class="companies-table font-size-10 mat-elevation-z8" >
@@ -350,7 +324,7 @@
                                             ></mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
-                                </div>
+                                </div> -->
                             </div>
                         </mat-tab>
 
@@ -358,36 +332,6 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
-                                    <mat-label>{{ 'COMPANIES.TIMEZONE' | translate }}</mat-label>
-                                    <mat-select formControlName="timezone"  (click)="showCompanyList('timezone_clist')" >
-                                        <div class="filter_company_input" >
-                                            <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
-                                            <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                        </div>
-
-                                        <div  style="width: 100%; overflow: auto;">
-                                            <mat-table [dataSource]="dataSourceTimeZone"  class="companies-table font-size-10 mat-elevation-z8" >
-                                                <ng-container matColumnDef="name">
-                                                    <td mat-cell *matCellDef="let timezone"  style="border: 0px;">
-                                                        <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="timezone.id">{{timezone.name}}</mat-option>
-                                                    </td>
-                                                </ng-container>
-                                                <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                            </mat-table>
-                                        </div>
-                                    
-                                        <mat-paginator style=" height: 40px;"
-                                            #paginatorTimeZone
-                                            class="table_paginator"
-                                            [length]="dataSourceTimeZone.totalLength"
-                                            [pageSize]="10"
-                                            [hidePageSize]="true"
-                                            showFirstLastButtons
-                                        ></mat-paginator>
-                                    </mat-select>
-                                </mat-form-field>
-
                                 <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.CREATED' | translate }}</mat-label>

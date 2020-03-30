@@ -37,6 +37,21 @@ const routes = [
         loadChildren: () => import('./unittypes/unittypes.module').then(m => m.UnitTypesModule)
     },
 
+    {
+        path        : 'poi/pois',
+        loadChildren: () => import('./poi/pois/pois.module').then(m => m.PoisModule)
+    },
+
+    {
+        path        : 'poi/poigroups',
+        loadChildren: () => import('./poi/poigroups/poigroups.module').then(m => m.PoigroupsModule)
+    },
+
+    {
+        path        : 'accounts',
+        loadChildren: () => import('./accounts/accounts.module').then(m => m.AccountsModule)
+    },
+
 
 ];
 

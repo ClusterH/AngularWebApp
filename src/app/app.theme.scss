@@ -97,6 +97,13 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/serviceplans/serviceplan_detail/serviceplan_detail.theme";
 @import "src/app/main/admin/unittypes/unittypes/unittypes.theme";
 @import "src/app/main/admin/unittypes/unittype_detail/unittype_detail.theme";
+@import "src/app/main/admin/poi/pois//pois/pois.theme";
+@import "src/app/main/admin/poi/pois/poi_detail/poi_detail.theme";
+@import "src/app/main/admin/poi/poigroups//poigroups/poigroups.theme";
+@import "src/app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.theme";
+@import "src/app/main/admin/accounts/accounts/accounts.theme";
+@import "src/app/main/admin/accounts/account_detail/account_detail.theme";
+
 
 @import "src/app/authentication/login/login.theme";
 @import "src/app/authentication/register/register.theme";
@@ -129,7 +136,12 @@ $typography: mat-typography-config(
     @include admin-serviceplan-theme($theme);
     @include admin-unittypes-theme($theme);
     @include admin-unittype-theme($theme);
-
+    @include admin-pois-theme($theme);
+    @include admin-poi-theme($theme);
+    @include admin-poigroups-theme($theme);
+    @include admin-poigroup-theme($theme);
+    @include admin-accounts-theme($theme);
+    @include admin-account-theme($theme);
 
 
     //Authentication

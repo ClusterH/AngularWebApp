@@ -47,9 +47,9 @@ export class CompanyDetailDataSource extends DataSource<any>
        
                 this.companiesSubject.next(result.TrackingXLAPI.DATA);
                 console.log(result.TrackingXLAPI.DATA);
-            this.companyDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA;
+            this.companyDetailService.company_clist_item[`${method}`] = result.TrackingXLAPI.DATA;
           
-            console.log("unit_clist: ", this.companyDetailService.unit_clist_item);
+            console.log("company_clist_item: ", this.companyDetailService.company_clist_item);
             this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
 
             this.page_index = pageindex + 1;

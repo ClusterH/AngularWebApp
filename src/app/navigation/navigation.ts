@@ -142,14 +142,14 @@ export const navigation: FuseNavigation[] = [
                         title    : 'POIs',
                         translate: 'NAV.POIS',
                         type     : 'item',
-                        url      : 'pages/admin/poi/pois'
+                        url      : '/admin/poi/pois/pois'
                     },
                     {
-                        id       : 'poi_groups',
+                        id       : 'poigroups',
                         title    : 'Groups',
                         translate: 'NAV.GROUPS',
                         type     : 'item',
-                        url      : 'pages/admin/poi/poi_groups'
+                        url      : '/admin/poi/poigroups/poigroups'
                     },
                 ]
             },
@@ -222,7 +222,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Accounts',
                 translate: 'NAV.ACCOUNTS',
                 type     : 'item',
-                url      : 'pages/admin/accounts'
+                url      : '/admin/accounts/accounts'
             },
             {
                 id       : 'system_configuration',
