@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class OperatorDetailService 
+export class SimcardDetailService 
 {
     routeParams: any;
-    operator: any;
-    public operator_detail: any;
+    simcard: any;
+    public simcard_detail: any;
     public unit_clist_item: any = {};
     public current_makeID: number;
 
@@ -58,36 +58,24 @@ export class OperatorDetailService
         }
     }
 
-    saveOperatorDetail(conncode: string, userid: number, operatorDetail: any = {}): Observable<any> {
+    saveSimcardDetail(conncode: string, userid: number, simcardDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
-            .set('id', operatorDetail.id.toString())
-            .set('name', operatorDetail.name.toString())
-            .set('email', operatorDetail.email.toString())
-            .set('password', operatorDetail.password.toString())
-            .set('phonenumber', operatorDetail.phonenumber.toString())
-            .set('operatortypeid', operatorDetail.operatortypeid.toString())
-            .set('isactive', operatorDetail.isactive.toString())
-            .set('companyid', operatorDetail.companyid.toString())
-            .set('groupid', operatorDetail.groupid.toString())
-            .set('subgroup', operatorDetail.subgroup.toString())
-            .set('created', operatorDetail.created.toString())
-            .set('createdby', operatorDetail.createdby.toString())
-            .set('deletedwhen', operatorDetail.deletedwhen.toString())
-            .set('deletedby', operatorDetail.deletedby.toString())
-            .set('lastmodifieddate', operatorDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', operatorDetail.lastmodifiedby.toString())
-            // .set('filephoto', operatorDetail.filephoto)
-            .set('birthdate', operatorDetail.birthdate.toString())
-            .set('sin', operatorDetail.sin.toString())
-            .set('hiredate', operatorDetail.hiredate.toString())
-            .set('physicaltestexpirydate', operatorDetail.physicaltestexpirydate.toString())
-            .set('licenseexpirationdate', operatorDetail.licenseexpirationdate.toString())
-            .set('driverlicensenumber', operatorDetail.driverlicensenumber.toString())
-            .set('method', 'operator_save');
+            .set('id', simcardDetail.id.toString())
+            .set('name', simcardDetail.name.toString())
+            .set('phonenumber', simcardDetail.phonenumber.toString())
+            .set('carrierid', simcardDetail.carrierid.toString())
+            .set('isactive', simcardDetail.isactive.toString())
+            .set('created', simcardDetail.created.toString())
+            .set('createdby', simcardDetail.createdby.toString())
+            .set('deletedwhen', simcardDetail.deletedwhen.toString())
+            .set('deletedby', simcardDetail.deletedby.toString())
+            .set('lastmodifieddate', simcardDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', simcardDetail.lastmodifiedby.toString())
+            .set('method', 'simcard_save');
         
             console.log(params_detail);
 

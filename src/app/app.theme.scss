@@ -103,6 +103,13 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.theme";
 @import "src/app/main/admin/accounts/accounts/accounts.theme";
 @import "src/app/main/admin/accounts/account_detail/account_detail.theme";
+@import "src/app/main/admin/carriers/carriers/carriers.theme";
+@import "src/app/main/admin/carriers/carrier_detail/carrier_detail.theme";
+@import "src/app/main/admin/simcards/simcards/simcards.theme";
+@import "src/app/main/admin/simcards/simcard_detail/simcard_detail.theme";
+@import "src/app/main/admin/groups/groups/groups.theme";
+@import "src/app/main/admin/groups/group_detail/group_detail.theme";
+
 
 
 @import "src/app/authentication/login/login.theme";
@@ -142,6 +149,13 @@ $typography: mat-typography-config(
     @include admin-poigroup-theme($theme);
     @include admin-accounts-theme($theme);
     @include admin-account-theme($theme);
+    @include admin-carriers-theme($theme);
+    @include admin-carrier-theme($theme);
+    @include admin-simcards-theme($theme);
+    @include admin-simcard-theme($theme);
+    @include admin-groups-theme($theme);
+    @include admin-group-theme($theme);
+
 
 
     //Authentication

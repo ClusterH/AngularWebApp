@@ -28,7 +28,7 @@ export const locale = {
             "ASSETS": "Actif",
             "DEVICES": "Appareils",
             "SIMS": "SIMs",
-            "CARRIES": "Carries",
+            "CARRIERS": "Transporteurs",
             "ACCOUNTS": "Comptes",
             "SYSTEMCONFIGURATION": "Configuration du système",
             "SERVICEPLANS": "Service Plans",

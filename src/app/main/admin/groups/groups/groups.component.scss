@@ -1,8 +1,8 @@
 @import "src/@fuse/scss/fuse";
 
-admin-operators {
+admin-groups {
 
-    #operators {
+    #groups {
 
         .top-bg {
             height: 120px !important;
@@ -68,7 +68,7 @@ admin-operators {
         // width: 200% !important;
         overflow: hidden;
     }
-    .operators-table {
+    .groups-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
         // overflow: auto;
@@ -83,7 +83,7 @@ admin-operators {
             background-color: rgb(225, 245, 254) !important;
         }
 
-        .operator {
+        .group {
             position: relative;
             cursor: pointer;
             height: 32px;
@@ -111,6 +111,8 @@ admin-operators {
         .mat-cell, .mat-footer-cell {
             font-size: 11px !important;
         }
+
+      
 
         .quantity-indicator {
             display: inline-block;
@@ -158,7 +160,7 @@ admin-operators {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    
+   
     .edit_icon {
         color: green;
         margin-right: 3px;

@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class OperatorDetailService 
+export class GroupDetailService 
 {
     routeParams: any;
-    operator: any;
-    public operator_detail: any;
+    group: any;
+    public group_detail: any;
     public unit_clist_item: any = {};
     public current_makeID: number;
 
@@ -43,6 +43,7 @@ export class OperatorDetailService
             });
            
         } else {
+
             let params = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
@@ -58,36 +59,28 @@ export class OperatorDetailService
         }
     }
 
-    saveOperatorDetail(conncode: string, userid: number, operatorDetail: any = {}): Observable<any> {
+    saveGroupDetail(conncode: string, userid: number, groupDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
-            .set('id', operatorDetail.id.toString())
-            .set('name', operatorDetail.name.toString())
-            .set('email', operatorDetail.email.toString())
-            .set('password', operatorDetail.password.toString())
-            .set('phonenumber', operatorDetail.phonenumber.toString())
-            .set('operatortypeid', operatorDetail.operatortypeid.toString())
-            .set('isactive', operatorDetail.isactive.toString())
-            .set('companyid', operatorDetail.companyid.toString())
-            .set('groupid', operatorDetail.groupid.toString())
-            .set('subgroup', operatorDetail.subgroup.toString())
-            .set('created', operatorDetail.created.toString())
-            .set('createdby', operatorDetail.createdby.toString())
-            .set('deletedwhen', operatorDetail.deletedwhen.toString())
-            .set('deletedby', operatorDetail.deletedby.toString())
-            .set('lastmodifieddate', operatorDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', operatorDetail.lastmodifiedby.toString())
-            // .set('filephoto', operatorDetail.filephoto)
-            .set('birthdate', operatorDetail.birthdate.toString())
-            .set('sin', operatorDetail.sin.toString())
-            .set('hiredate', operatorDetail.hiredate.toString())
-            .set('physicaltestexpirydate', operatorDetail.physicaltestexpirydate.toString())
-            .set('licenseexpirationdate', operatorDetail.licenseexpirationdate.toString())
-            .set('driverlicensenumber', operatorDetail.driverlicensenumber.toString())
-            .set('method', 'operator_save');
+            .set('id', groupDetail.id.toString())
+            .set('name', groupDetail.name.toString())
+            .set('email', groupDetail.email.toString())
+            .set('contactname', groupDetail.contactname.toString())
+            .set('contactphone', groupDetail.contactphone.toString())
+            .set('address', groupDetail.address.toString())
+            .set('isactive', groupDetail.isactive.toString())
+            .set('companyid', groupDetail.companyid.toString())
+            .set('accountid', groupDetail.accountid.toString())
+            .set('created', groupDetail.created.toString())
+            .set('createdby', groupDetail.createdby.toString())
+            .set('deletedwhen', groupDetail.deletedwhen.toString())
+            .set('deletedby', groupDetail.deletedby.toString())
+            .set('lastmodifieddate', groupDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', groupDetail.lastmodifiedby.toString())
+            .set('method', 'group_save');
         
             console.log(params_detail);
 

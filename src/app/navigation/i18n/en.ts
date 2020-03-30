@@ -30,7 +30,7 @@ export const locale = {
             "ASSETS": "Assets",
             "DEVICES": "Devices",
             "SIMS": "SIMs",
-            "CARRIES": "Carries",
+            "CARRIERS": "Carriers",
             "ACCOUNTS": "Accounts",
             "SYSTEMCONFIGURATION": "System Configuration",
             "SERVICEPLANS": "Service Plans",

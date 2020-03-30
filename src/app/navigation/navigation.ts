@@ -204,18 +204,18 @@ export const navigation: FuseNavigation[] = [
                 url      : 'pages/admin/devices'
             },
             {
-                id       : 'sims',
+                id       : 'simcards',
                 title    : 'SIMs',
                 translate: 'NAV.SIMS',
                 type     : 'item',
-                url      : 'pages/admin/sims'
+                url      : '/admin/simcards/simcards'
             },
             {
-                id       : 'carries',
-                title    : 'Carries',
-                translate: 'NAV.CARRIES',
+                id       : 'carriers',
+                title    : 'Carriers',
+                translate: 'NAV.CARRIERS',
                 type     : 'item',
-                url      : 'pages/admin/carries'
+                url      : '/admin/carriers/carriers'
             },
             {
                 id       : 'accounts',
@@ -264,7 +264,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Groups',
                 translate: 'NAV.GROUPS',
                 type     : 'item',
-                url      : 'pages/admin/groups'
+                url      : '/admin/groups/groups'
             },
             {
                 id       : 'insurance_companies',

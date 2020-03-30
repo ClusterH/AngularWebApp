@@ -1,0 +1,265 @@
+<div id="groups" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'GROUPS.GROUPS' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'GROUPS.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'GROUPS.NAME' | translate}}</mat-option>
+                            <mat-option value="email">{{'GROUPS.EMAIL' | translate}}</mat-option>
+                            <mat-option value="contactname">{{'GROUPS.CONTACTNAME' | translate}}</mat-option>
+                            <mat-option value="contactphone">{{'GROUPS.CONTACTPHONE' | translate}}</mat-option>
+                            <mat-option value="address">{{'GROUPS.ADDRESS' | translate}}</mat-option>
+                            <mat-option value="isactive">{{'GROUPS.ISACTIVE' | translate}}</mat-option>
+                            <mat-option value="company">{{'GROUPS.COMPANY' | translate}}</mat-option>
+                            <mat-option value="account">{{'GROUPS.ACCOUNT' | translate}}</mat-option>
+                            <mat-option value="created">{{'GROUPS.CREATED' | translate}}</mat-option>
+                            <mat-option value="createdbyname">{{'GROUPS.CREATEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'GROUPS.DELETEDWHEN' | translate}}</mat-option>
+                            <mat-option value="deletedbyname">{{'GROUPS.DELETEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'GROUPS.LASTMODIFIEDDATE' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'GROUPS.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'GROUPS.SEARCHFORGROUP' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/admin/groups/group_detail'"
+                    class="accent  mt-24 mt-md-0">
+               <mat-icon (click)="addNewGroup()">add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="groups-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 150%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let group">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowGroupDetail(group)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteGroup(group)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateGroup(group)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group">
+                        <p class="name text-truncate">{{group.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.EMAIL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="email text-truncate">
+                            {{group.email}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ContactName Column -->
+                <ng-container matColumnDef="contactname">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'GROUPS.CONTACTNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-md>
+                        <p class="contactname text-truncate">
+                            {{group.contactname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ContactPhone Column -->
+                <ng-container matColumnDef="contactphone">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CONTACTPHONE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="contactphone text-truncate">
+                            {{group.contactphone}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Address Column -->
+                <ng-container matColumnDef="address">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'GROUPS.ADDRESS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-md>
+                        <p class="address text-truncate">
+                            {{group.address}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'GROUPS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-md>
+                        <p class="company text-truncate">
+                            {{group.company}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Account Column -->
+                <ng-container matColumnDef="account">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.ACCOUNT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="account text-truncate">
+                            {{group.account}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{group.created}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- CreatedByName Column -->
+                 <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{group.createdbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DeletedWhen Column -->
+                <ng-container matColumnDef="deletedwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="deletedwhen text-truncate">
+                            {{group.deletedwhen}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deletedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="deletedbyname text-truncate">
+                            {{group.deletedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="lastmodifieddate text-truncate">
+                            {{group.lastmodifieddate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                        <p class="lastmodifiedbyname text-truncate">
+                            {{group.lastmodifiedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let group; columns: displayedColumns;"
+                            class="group font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

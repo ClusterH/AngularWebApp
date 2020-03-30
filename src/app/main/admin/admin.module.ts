@@ -52,6 +52,21 @@ const routes = [
         loadChildren: () => import('./accounts/accounts.module').then(m => m.AccountsModule)
     },
 
+    {
+        path        : 'carriers',
+        loadChildren: () => import('./carriers/carriers.module').then(m => m.CarriersModule)
+    },
+
+    {
+        path        : 'simcards',
+        loadChildren: () => import('./simcards/simcards.module').then(m => m.SimcardsModule)
+    },
+
+    {
+        path        : 'groups',
+        loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+    },
+
 
 ];
 
