@@ -33,13 +33,7 @@
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'MODELS.NAME' | translate}}</mat-option>
                             <mat-option value="make">{{'MODELS.MAKE' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'MODELS.ISACTIVE' | translate}}</mat-option>
-                            <mat-option value="createdwhen">{{'MODELS.CREATED' | translate}}</mat-option>
-                            <mat-option value="createdbyname">{{'MODELS.CREATEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="deletedwhen">{{'MODELS.DELETEDWHEN' | translate}}</mat-option>
-                            <mat-option value="deletedbyname">{{'MODELS.DELETEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'MODELS.LASTMODIFIEDDATE' | translate}}</mat-option>
-                            <mat-option value="lastmodifiedbyname">{{'MODELS.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="isactive">{{'MODELS.TIRECONFIGURATION' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -108,16 +102,6 @@
                     <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
                         <p class="make text-truncate">
                             {{model.make}}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- IsActive Column -->
-                <ng-container matColumnDef="isactive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.ISACTIVE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
-                        <p class="isactive text-truncate">
-                            {{model.isactive}}
                         </p>
                     </mat-cell>
                 </ng-container>

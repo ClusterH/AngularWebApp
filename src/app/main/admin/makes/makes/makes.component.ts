@@ -57,7 +57,6 @@ export class MakesComponent implements OnInit
     displayedColumns = [
         'id',
         'name',
-        'isactive',
         'createdwhen',
         'createdbyname',
         'lastmodifieddate',

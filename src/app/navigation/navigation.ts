@@ -139,6 +139,13 @@ export const navigation: FuseNavigation[] = [
                         type     : 'item',
                         url      : '/admin/poi/poigroups/poigroups'
                     },
+                    {
+                        id       : 'contacts',
+                        title    : 'Contacts',
+                        translate: 'NAV.GROUPS',
+                        type     : 'item',
+                        url      : '/admin/poi/contacts/contacts'
+                    },
                 ]
             },
             {

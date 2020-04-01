@@ -58,7 +58,6 @@ export class ModelsComponent implements OnInit
         'id',
         'name',
         'make',
-        'isactive',
         'createdwhen',
         'createdbyname',
         'deletedwhen',

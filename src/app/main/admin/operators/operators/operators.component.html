@@ -36,16 +36,9 @@
                             <mat-option value="password">{{'OPERATORS.PASSWORD' | translate}}</mat-option>
                             <mat-option value="phonenumber">{{'OPERATORS.PHONENUMBER' | translate}}</mat-option>
                             <mat-option value="operatortype">{{'OPERATORS.OPERATORTYPE' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'OPERATORS.ISACTIVE' | translate}}</mat-option>
                             <mat-option value="company">{{'OPERATORS.COMPANY' | translate}}</mat-option>
                             <mat-option value="group">{{'OPERATORS.GROUP' | translate}}</mat-option>
                             <mat-option value="subgroup">{{'OPERATORS.SUBGROUP' | translate}}</mat-option>
-                            <mat-option value="created">{{'OPERATORS.CREATED' | translate}}</mat-option>
-                            <mat-option value="createdbyname">{{'OPERATORS.CREATEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="deletedwhen">{{'OPERATORS.DELETEDWHEN' | translate}}</mat-option>
-                            <mat-option value="deletedbyname">{{'OPERATORS.DELETEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'OPERATORS.LASTMODIFIEDDATE' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'OPERATORS.LASTMODIFIEDBYNAME' | translate}}</mat-option>
                             <mat-option value="birthdate">{{'OPERATORS.BIRTHDATE' | translate}}</mat-option>
                             <mat-option value="hiredate">{{'OPERATORS.HIREDATE' | translate}}</mat-option>
                             <mat-option value="physicaltestexpirydate">{{'OPERATORS.PHYSICALTESTEXPIRYDATE' | translate}}</mat-option>
@@ -149,16 +142,6 @@
                     <mat-cell *matCellDef="let user" fxHide fxShow.gt-md>
                         <p class="operatortype text-truncate">
                             {{user.operatortype}}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- IsActive Column -->
-                <ng-container matColumnDef="isactive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.ISACTIVE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
-                        <p class="isactive text-truncate">
-                            {{operator.isactive}}
                         </p>
                     </mat-cell>
                 </ng-container>

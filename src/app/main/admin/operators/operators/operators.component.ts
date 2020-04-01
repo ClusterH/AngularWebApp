@@ -61,7 +61,6 @@ export class OperatorsComponent implements OnInit
         'password',
         'phonenumber',
         'operatortype',
-        'isactive',
         'company',
         'group',
         'subgroup',

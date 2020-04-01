@@ -38,6 +38,11 @@ const routes = [
         path        : 'poi/poigroups',
         loadChildren: () => import('./poi/poigroups/poigroups.module').then(m => m.PoigroupsModule)
     },
+
+    {
+        path        : 'poi/contacts',
+        loadChildren: () => import('./poi/contacts/contacts.module').then(m => m.ContactsModule)
+    },
    
     {
         path        : 'groups',
