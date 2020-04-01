@@ -2,14 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { POIListService } from 'app/main/admin/poi/poigroups/services/poilist.service';
+import { ContactsService } from 'app/main/admin/poi/poigroups/poigroup_detail/contacts.service';
 
 @Component({
-    selector   : 'poi-main-sidebar',
+    selector   : 'contacts-main-sidebar',
     templateUrl: './main.component.html',
     styleUrls  : ['./main.component.scss']
 })
-export class POIMainSidebarComponent implements OnInit, OnDestroy
+export class ContactsMainSidebarComponent implements OnInit, OnDestroy
 {
     user: any;
     filterBy: string;
@@ -23,7 +23,7 @@ export class POIMainSidebarComponent implements OnInit, OnDestroy
      * @param {ContactsService} _contactsService
      */
     constructor(
-        private _contactsService: POIListService
+        private _contactsService: ContactsService
     )
     {
         // Set the private defaults

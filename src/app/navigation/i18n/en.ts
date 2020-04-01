@@ -13,13 +13,11 @@ export const locale = {
             "ROUTES": "Routes",
             "USERS": "Users",
             "USERSPROFILES": "Users Profiles",
-            "PROVILEGES": "Provileges",
             "MONITORINGGROUPS": "Monitoring Groups",
             "SCHEDULES": "Schedules",
             "MAKE": "Make",
             "MODELS": "Models",
             "ICONS": "Icons",
-            "UNITTYPES": "Unit Types",
             "SHIFTS": "Shifts",
             "POI": "POI",
             "POIS": "POIs",
@@ -28,13 +26,7 @@ export const locale = {
             "CARGOS": "Cargos",
             "PERSONS": "Persons",
             "ASSETS": "Assets",
-            "DEVICES": "Devices",
-            "SIMS": "SIMs",
-            "CARRIERS": "Carriers",
-            "ACCOUNTS": "Accounts",
-            "SYSTEMCONFIGURATION": "System Configuration",
-            "SERVICEPLANS": "Service Plans",
-            "COMMANDS": "Commands",
+           
             "COMPANIES": "Companies",
             "SUBFLEETS": "SubFleets",
             "GROUPS": "Groups",
@@ -66,7 +58,19 @@ export const locale = {
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'
-            }
+            },
+
+            "SYSTEM": "System",
+            "PRIVILEGES": "Privileges",
+            "UNITTYPES": "Unit Types",
+            "DEVICES": "Devices",
+            "SIMS": "SIMs",
+            "CARRIERS": "Carriers",
+            "ACCOUNTS": "Accounts",
+            "SYSTEMCONFIGURATION": "System Configuration",
+            "SERVICEPLANS": "Service Plans",
+            "COMMANDS": "Commands",
+            "CONNECTIONS": "Connections",
         }
     }
 };

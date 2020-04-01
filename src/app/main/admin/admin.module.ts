@@ -28,14 +28,6 @@ const routes = [
         path        : 'companies',
         loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule)
     },
-    {
-        path        : 'serviceplans',
-        loadChildren: () => import('./serviceplans/serviceplans.module').then(m => m.ServiceplansModule)
-    },
-    {
-        path        : 'unittypes',
-        loadChildren: () => import('./unittypes/unittypes.module').then(m => m.UnitTypesModule)
-    },
 
     {
         path        : 'poi/pois',
@@ -46,34 +38,11 @@ const routes = [
         path        : 'poi/poigroups',
         loadChildren: () => import('./poi/poigroups/poigroups.module').then(m => m.PoigroupsModule)
     },
-
-    {
-        path        : 'accounts',
-        loadChildren: () => import('./accounts/accounts.module').then(m => m.AccountsModule)
-    },
-
-    {
-        path        : 'carriers',
-        loadChildren: () => import('./carriers/carriers.module').then(m => m.CarriersModule)
-    },
-
-    {
-        path        : 'simcards',
-        loadChildren: () => import('./simcards/simcards.module').then(m => m.SimcardsModule)
-    },
-
+   
     {
         path        : 'groups',
         loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
     },
-
-    {
-        path        : 'devices',
-        loadChildren: () => import('./devices/devices.module').then(m => m.DevicesModule)
-    },
-
-
-
 ];
 
 @NgModule({

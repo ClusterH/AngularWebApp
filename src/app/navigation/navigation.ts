@@ -75,13 +75,7 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 url      : 'pages/admin/users_profiles'
             },
-            {
-                id       : 'privileges',
-                title    : 'Privileges',
-                translate: 'NAV.PROVILEGES',
-                type     : 'item',
-                url      : 'pages/admin/privileges'
-            },
+            
             {
                 id       : 'monitoring_groups',
                 title    : 'Monitoring Groups',
@@ -117,13 +111,7 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 url      : 'pages/admin/icons'
             },
-            {
-                id       : 'unittypes',
-                title    : 'Unit Types',
-                translate: 'NAV.UNITTYPES',
-                type     : 'item',
-                url      : '/admin/unittypes/unittypes'
-            },
+            
             {
                 id       : 'shifts',
                 title    : 'Shifts',
@@ -196,55 +184,7 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 url      : 'pages/admin/assets'
             },
-            {
-                id       : 'devices',
-                title    : 'Devices',
-                translate: 'NAV.DEVICES',
-                type     : 'item',
-                url      : '/admin/devices/devices'
-            },
-            {
-                id       : 'simcards',
-                title    : 'SIMs',
-                translate: 'NAV.SIMS',
-                type     : 'item',
-                url      : '/admin/simcards/simcards'
-            },
-            {
-                id       : 'carriers',
-                title    : 'Carriers',
-                translate: 'NAV.CARRIERS',
-                type     : 'item',
-                url      : '/admin/carriers/carriers'
-            },
-            {
-                id       : 'accounts',
-                title    : 'Accounts',
-                translate: 'NAV.ACCOUNTS',
-                type     : 'item',
-                url      : '/admin/accounts/accounts'
-            },
-            {
-                id       : 'system_configuration',
-                title    : 'System Configuration',
-                translate: 'NAV.SYSTEMCONFIGURATION',
-                type     : 'item',
-                url      : 'pages/admin/system_configuration'
-            },
-            {
-                id       : 'serviceplans',
-                title    : 'Service Plans',
-                translate: 'NAV.SERVICEPLANS',
-                type     : 'item',
-                url      : '/admin/serviceplans/serviceplans'
-            },
-            {
-                id       : 'commands',
-                title    : 'Commands',
-                translate: 'NAV.COMMANDS',
-                type     : 'item',
-                url      : 'pages/admin/commands'
-            },
+            
             {
                 id       : 'companies',
                 title    : 'Companies',
@@ -438,6 +378,93 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.USERSETTING',
                 type     : 'item',
                 url      : 'pages/setting/user_setting'
+            },
+        ]
+    },
+
+    {
+        id       : 'system',
+        title    : 'System',
+        translate: 'NAV.SYSTEM',
+        type     : 'collapsable',
+        icon     : 'personal_video',
+        children : [
+            {
+                id       : 'privileges',
+                title    : 'Privileges',
+                translate: 'NAV.PRIVILEGES',
+                type     : 'item',
+                url      : '/system/privileges/privileges'
+            },
+            {
+                id       : 'unittypes',
+                title    : 'Unit Types',
+                translate: 'NAV.UNITTYPES',
+                type     : 'item',
+                url      : '/system/unittypes/unittypes'
+            },
+
+            {
+                id       : 'devices',
+                title    : 'Devices',
+                translate: 'NAV.DEVICES',
+                type     : 'item',
+                url      : '/system/devices/devices'
+            },
+
+            {
+                id       : 'simcards',
+                title    : 'SIMs',
+                translate: 'NAV.SIMS',
+                type     : 'item',
+                url      : '/system/simcards/simcards'
+            },
+            
+            {
+                id       : 'carriers',
+                title    : 'Carriers',
+                translate: 'NAV.CARRIERS',
+                type     : 'item',
+                url      : '/system/carriers/carriers'
+            },
+            
+            {
+                id       : 'accounts',
+                title    : 'Accounts',
+                translate: 'NAV.ACCOUNTS',
+                type     : 'item',
+                url      : '/system/accounts/accounts'
+            },
+            
+            {
+                id       : 'system_configuration',
+                title    : 'System Configuration',
+                translate: 'NAV.SYSTEMCONFIGURATION',
+                type     : 'item',
+                url      : '/system/systemconfiguration/systemconfiguration'
+            },
+             
+            {
+                id       : 'serviceplans',
+                title    : 'Service Plans',
+                translate: 'NAV.SERVICEPLANS',
+                type     : 'item',
+                url      : '/system/serviceplans/serviceplans'
+            },
+            
+            {
+                id       : 'commands',
+                title    : 'Commands',
+                translate: 'NAV.COMMANDS',
+                type     : 'item',
+                url      : 'system/commands/commands'
+            },
+            {
+                id       : 'connections',
+                title    : 'Connections',
+                translate: 'NAV.CONNECTIONS',
+                type     : 'item',
+                url      : 'system/connections/connections'
             },
         ]
     },

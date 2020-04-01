@@ -44,10 +44,10 @@ const appRoutes: Routes = [
         path        : 'admin',
         loadChildren: () => import('./main/admin/admin.module').then(m => m.AdminModule)
     },
-    // {
-    //     path        : 'ui',
-    //     loadChildren: () => import('./main/ui/ui.module').then(m => m.UIModule)
-    // },
+    {
+        path        : 'system',
+        loadChildren: () => import('./main/system/system.module').then(m => m.SystemModule)
+    },
     // {
     //     path        : 'documentation',
     //     loadChildren: () => import('./main/documentation/documentation.module').then(m => m.DocumentationModule)

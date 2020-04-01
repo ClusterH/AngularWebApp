@@ -5,14 +5,14 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 
-import { POIListService } from 'app/main/admin/poi/poigroups/services/poilist.service';
+import { ContactsService } from 'app/main/admin/poi/poigroups/poigroup_detail/contacts.service';
 
 @Component({
     selector   : 'selected-bar',
     templateUrl: './selected-bar.component.html',
     styleUrls  : ['./selected-bar.component.scss']
 })
-export class POISelectedBarComponent implements OnInit, OnDestroy
+export class ContactsSelectedBarComponent implements OnInit, OnDestroy
 {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     hasSelectedContacts: boolean;
@@ -29,7 +29,7 @@ export class POISelectedBarComponent implements OnInit, OnDestroy
      * @param {MatDialog} _matDialog
      */
     constructor(
-        private _contactsService: POIListService,
+        private _contactsService: ContactsService,
         public _matDialog: MatDialog
     )
     {

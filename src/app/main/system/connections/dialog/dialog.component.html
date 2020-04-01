@@ -1,0 +1,57 @@
+<div id="dialog_table">
+<div *ngIf="flag == 'duplicate'">
+    <h2 mat-dialog-title>{{'CONNECTIONS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'CONNECTIONS.DUPLICATE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'CONNECTIONS.NO' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+
+
+<div *ngIf="flag == 'delete'">
+    <h2 mat-dialog-title>{{'CONNECTIONS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'CONNECTIONS.DELETE' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()">
+                    {{'CONNECTIONS.NO' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+
+<div *ngIf="flag == 'goback'">
+    <h2 mat-dialog-title>{{'CONNECTIONS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+
+    <mat-dialog-actions>
+        <div class="confirm_buttons">
+            <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
+                {{'CONNECTIONS.YES' | translate}}
+            </button>
+        
+            <button class="mat-raised-button"
+                    (click)="close()" fxFlex="30">
+                    {{'CONNECTIONS.NO' | translate}}
+            </button>
+        </div>
+
+    </mat-dialog-actions>
+</div>
+</div>
+

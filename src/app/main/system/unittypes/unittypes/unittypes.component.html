@@ -1,0 +1,209 @@
+<div id="unittypes" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'UNITTYPES.UNITTYPES' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'UNITTYPES.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'UNITTYPES.NAME' | translate}}</mat-option>
+                            <mat-option value="producttype">{{'UNITTYPES.PRODUCTTYPE' | translate}}</mat-option>
+                            <mat-option value="created">{{'UNITTYPES.CREATED' | translate}}</mat-option>
+                            <mat-option value="created">{{'UNITTYPES.CREATEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'UNITTYPES.DELETEDWHEN' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'UNITTYPES.DELETEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'UNITTYPES.LASTMODIFIEDDATE' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'UNITTYPES.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'UNITTYPES.SEARCHFORUNITTYPE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/system/unittypes/unittype_detail'"
+                    class="accent  mt-24 mt-md-0">
+               <mat-icon (click)="addNewUnittype()">add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="unittypes-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 150%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let unittype">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowUnittypeDetail(unittype)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteUnittype(unittype)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateUnittype(unittype)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'UNITTYPES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype">
+                        <p class="name text-truncate">{{unittype.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProductType Column -->
+                <ng-container matColumnDef="producttype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.PRODUCTTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="producttype text-truncate">
+                            {{unittype.producttype}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{unittype.created}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- CreatedByName Column -->
+                 <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{unittype.createdbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DeletedWhen Column -->
+                <ng-container matColumnDef="deletedwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="deletedwhen text-truncate">
+                            {{unittype.deletedwhen}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deletedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="deletedbyname text-truncate">
+                            {{unittype.deletedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="lastmodifieddate text-truncate">
+                            {{unittype.lastmodifieddate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'UNITTYPES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let unittype" fxHide fxShow.gt-xs>
+                        <p class="lastmodifiedbyname text-truncate">
+                            {{unittype.lastmodifiedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let unittype; columns: displayedColumns;"
+                            class="unittype font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

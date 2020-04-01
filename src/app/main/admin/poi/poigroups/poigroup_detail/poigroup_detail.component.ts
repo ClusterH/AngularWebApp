@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
 
 import { PoigroupDetail } from 'app/main/admin/poi/poigroups/model/poigroup.model';
-import {CourseDialogComponent} from "../dialog/dialog.component";
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 import { merge, Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -17,7 +17,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
 import { PoigroupDetailDataSource } from "app/main/admin/poi/poigroups/services/poigroup_detail.datasource";
-import { POIListService } from 'app/main/admin/poi/poigroups/services/poilist.service';
+import { ContactsService } from 'app/main/admin/poi/poigroups/poigroup_detail/contacts.service';
+import { ContactsContactFormDialogComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/contact-form/contact-form.component';
 
 import { locale as poigroupsEnglish } from 'app/main/admin/poi/poigroups/i18n/en';
 import { locale as poigroupsSpanish } from 'app/main/admin/poi/poigroups/i18n/sp';
@@ -57,23 +58,24 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
   filter_string: string = '';
   method_string: string = '';
 
+  dialogRef: any;
   hasSelectedContacts: boolean;
-  private _unsubscribeAll: Subject<any>;
-  
+  searchInput: FormControl;
+
+   // Private
+   private _unsubscribeAll: Subject<any>;
+
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
   
   constructor(
     public poigroupDetailService: PoigroupDetailService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
+    private _fuseSidebarService: FuseSidebarService,
     private _formBuilder: FormBuilder,
     public _matDialog: MatDialog,
     private router: Router,
-
-    private _poiListService: POIListService,
-    private _fuseSidebarService: FuseSidebarService,
-
+    private _contactsService: ContactsService,
   ) {
     this._fuseTranslationLoaderService.loadTranslations(poigroupsEnglish, poigroupsSpanish, poigroupsFrench, poigroupsPortuguese);
 
@@ -95,6 +97,9 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
     }
 
     this.filter_string = '';
+
+     // Set the defaults
+     this.searchInput = new FormControl('');
 
      // Set the private defaults
      this._unsubscribeAll = new Subject();
@@ -118,36 +123,33 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
       lastmodifieddate   : [{value: '', disabled: true}, Validators.required],
       lastmodifiedbyname : [{value: '', disabled: true}, Validators.required],
       filterstring       : [null, Validators.required],
-  });
-
-  this.setValues();
-
-  this._poiListService.onSelectedContactsChanged
-    .pipe(takeUntil(this._unsubscribeAll))
-    .subscribe(selectedContacts => {
-        this.hasSelectedContacts = selectedContacts.length > 0;
     });
+
+    this.setValues();
+
+    this._contactsService.onSelectedContactsChanged
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(selectedContacts => {
+          this.hasSelectedContacts = selectedContacts.length > 0;
+      });
+
+    this.searchInput.valueChanges
+      .pipe(
+          takeUntil(this._unsubscribeAll),
+          debounceTime(300),
+          distinctUntilChanged()
+      )
+      .subscribe(searchText => {
+          this._contactsService.onSearchTextChanged.next(searchText);
+      });
   }
 
-/**
-   * On destroy
-   */
   ngOnDestroy(): void
-  {
-      // Unsubscribe from all subscriptions
-      this._unsubscribeAll.next();
-      this._unsubscribeAll.complete();
-  }
-
-   /**
-     * Toggle the sidebar
-     *
-     * @param name
-     */
-  toggleSidebar(name): void
-  {
-      this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
+    {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
 
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
@@ -328,5 +330,10 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
     });
 
   }
+
+  toggleSidebar(name): void
+    {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
  
 }

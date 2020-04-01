@@ -81,6 +81,7 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/chat-panel/chat-panel.theme";
 @import "src/app/layout/components/toolbar/toolbar.theme";
 
+//Admin
 @import "src/app/main/admin/vehicles/vehicles/vehicles.theme";
 @import "src/app/main/admin/vehicles/vehicle_detail/vehicle_detail.theme";
 @import "src/app/main/admin/users/users/users.theme";
@@ -93,27 +94,30 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/models/model_detail/model_detail.theme";
 @import "src/app/main/admin/companies/companies/companies.theme";
 @import "src/app/main/admin/companies/company_detail/company_detail.theme";
-@import "src/app/main/admin/serviceplans/serviceplans/serviceplans.theme";
-@import "src/app/main/admin/serviceplans/serviceplan_detail/serviceplan_detail.theme";
-@import "src/app/main/admin/unittypes/unittypes/unittypes.theme";
-@import "src/app/main/admin/unittypes/unittype_detail/unittype_detail.theme";
 @import "src/app/main/admin/poi/pois//pois/pois.theme";
 @import "src/app/main/admin/poi/pois/poi_detail/poi_detail.theme";
 @import "src/app/main/admin/poi/poigroups//poigroups/poigroups.theme";
 @import "src/app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.theme";
-@import "src/app/main/admin/accounts/accounts/accounts.theme";
-@import "src/app/main/admin/accounts/account_detail/account_detail.theme";
-@import "src/app/main/admin/carriers/carriers/carriers.theme";
-@import "src/app/main/admin/carriers/carrier_detail/carrier_detail.theme";
-@import "src/app/main/admin/simcards/simcards/simcards.theme";
-@import "src/app/main/admin/simcards/simcard_detail/simcard_detail.theme";
 @import "src/app/main/admin/groups/groups/groups.theme";
 @import "src/app/main/admin/groups/group_detail/group_detail.theme";
-@import "src/app/main/admin/devices/devices/devices.theme";
-@import "src/app/main/admin/devices/device_detail/device_detail.theme";
 
+//System
+@import "src/app/main/system/serviceplans/serviceplans/serviceplans.theme";
+@import "src/app/main/system/serviceplans/serviceplan_detail/serviceplan_detail.theme";
+@import "src/app/main/system/unittypes/unittypes/unittypes.theme";
+@import "src/app/main/system/unittypes/unittype_detail/unittype_detail.theme";
+@import "src/app/main/system/accounts/accounts/accounts.theme";
+@import "src/app/main/system/accounts/account_detail/account_detail.theme";
+@import "src/app/main/system/carriers/carriers/carriers.theme";
+@import "src/app/main/system/carriers/carrier_detail/carrier_detail.theme";
+@import "src/app/main/system/simcards/simcards/simcards.theme";
+@import "src/app/main/system/simcards/simcard_detail/simcard_detail.theme";
+@import "src/app/main/system/devices/devices/devices.theme";
+@import "src/app/main/system/devices/device_detail/device_detail.theme";
+@import "src/app/main/system/connections/connections/connections.theme";
+@import "src/app/main/system/connections/connection_detail/connection_detail.theme";
 
-
+//Authentication
 @import "src/app/authentication/login/login.theme";
 @import "src/app/authentication/register/register.theme";
 @import "src/app/authentication/reset-password/reset-password.theme";
@@ -141,24 +145,28 @@ $typography: mat-typography-config(
     @include admin-model-theme($theme);
     @include admin-companies-theme($theme);
     @include admin-company-theme($theme);
-    @include admin-serviceplans-theme($theme);
-    @include admin-serviceplan-theme($theme);
-    @include admin-unittypes-theme($theme);
-    @include admin-unittype-theme($theme);
     @include admin-pois-theme($theme);
     @include admin-poi-theme($theme);
     @include admin-poigroups-theme($theme);
     @include admin-poigroup-theme($theme);
-    @include admin-accounts-theme($theme);
-    @include admin-account-theme($theme);
-    @include admin-carriers-theme($theme);
-    @include admin-carrier-theme($theme);
-    @include admin-simcards-theme($theme);
-    @include admin-simcard-theme($theme);
     @include admin-groups-theme($theme);
     @include admin-group-theme($theme);
-    @include admin-devices-theme($theme);
-    @include admin-device-theme($theme);
+
+    //System
+    @include system-serviceplans-theme($theme);
+    @include system-serviceplan-theme($theme);
+    @include system-unittypes-theme($theme);
+    @include system-unittype-theme($theme);
+    @include system-accounts-theme($theme);
+    @include system-account-theme($theme);
+    @include system-carriers-theme($theme);
+    @include system-carrier-theme($theme);
+    @include system-simcards-theme($theme);
+    @include system-simcard-theme($theme);
+    @include system-devices-theme($theme);
+    @include system-device-theme($theme);
+    @include system-connections-theme($theme);
+    @include system-connections-theme($theme);
 
 
 

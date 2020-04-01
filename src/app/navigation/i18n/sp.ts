@@ -13,26 +13,17 @@ export const locale = {
             "ROUTES": "Rutas",
             "USERS": "Usuarios",
             "USERSPROFILES": "Perfiles de usuarios",
-            "PROVILEGES": "Provileges",
             "MONITORINGGROUPS": "Grupos de monitoreo",
             "SCHEDULES": "Horarios",
             "MAKE": "Hacer",
             "MODELS": "Modelos",
             "ICONS": "Iconos",
-            "VEHICLETYPES": "Tipos de vehículos",
             "SHIFTS": "Turnos",
             "POI": "POI",
             "GEOFENCES": "Geofences",
             "CARGOS": "Cargos",
             "PERSONS": "Personas",
             "ASSETS": "Activos",
-            "DEVICES": "Dispositivos",
-            "SIMS": "SIMs",
-            "CARRIERS": "Transportistas",
-            "ACCOUNTS": "Cuentas",
-            "SYSTEMCONFIGURATION": "Configuración del sistema",
-            "SERVICEPLANS": "Planes de servicio",
-            "COMMANDS": "Comandos",
             "COMPANIES": "Empresas",
             "SUBFLEETS": "SubFleets",
             "GROUPS": "Grupos",
@@ -65,7 +56,19 @@ export const locale = {
             'SAMPLE'        : {
                 'TITLE': 'Sample',
                 'BADGE': '25'
-            }
+            },
+
+            "SYSTEM": "Sistema",
+            "PRIVILEGES": "Privilegios",
+            "UNITTYPES": "Tipos de unidad",
+            "DEVICES": "Dispositivos",
+            "SIMS": "SIMs",
+            "CARRIERS": "Transportistas",
+            "ACCOUNTS": "Cuentas",
+            "SYSTEMCONFIGURATION": "Configuración del sistema",
+            "SERVICEPLANS": "Planes de servicio",
+            "COMMANDS": "Comandos",
+            "CONNECTIONS": "Conexiones",
         }
     }
 };
