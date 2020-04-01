@@ -1,30 +1,31 @@
 export const locale = {
     lang: 'pt',
     data: {
-        GROUPS: {
-            "GROUPS": "Grupos",
-            "SEARCHFORGROUP": "Procurar um Grupos",
-            "NEWGROUP": "Novo Grupos",
-            "GROUPDETAIL": "Detalhes do Grupos",
-            "SELECTFIELD": "Selecionar campo",
-            "SAVE": "SALVAR",
-            "ADD": "ADICIONAR",
+        DEVICES: {
+            "DEVICES": "Dispositivos",
+            "SEARCHFORDEVICE": "Procurar um dispositivo",
+            "NEWDEVICE": "Novo dispositivo",
+            "DEVICEDETAIL": "Detalhes do dispositivo",
+            "SELECTFIELD": "Selecionar campo",
+            "SALVAR": "SALVAR",
+            "ADICIONAR": "ADICIONAR",
             
-            "NAME": "Nome",
-            "EMAIL": "E-mail",
-            "CONTACTNAME": "Nome do contato",
-            "CONTACTPHONE": "Telefone de contato",
-            "ADDRESS": "Endereço",
-            "ISACTIVE": "Está ativo",
-            "COMPANY": "Empresa",
-            "ACCOUNT": "Conta",
+            "NAME": "Nome",
+            "SIMCARD": "Simcard",
+            "DEVICETYPE": "Tipo de dispositivo",
+            "CONNIN": "ConnIn",
+            "CONNOUT": "ConnOut",
+            "CONNSMS": "ConnSMS",
+            "IMEI": "IMEI",
+            "SERIALNUMBER": "Número de série",
+            "ACTIVATIONCODE": "Código de Ativação",
             "CREATED": "Criado",
             "CREATEDBYNAME": "Criado por nome",
             "DELETEDWHEN": "Excluído quando",
             "DELETEDBYNAME": "Excluído pelo nome",
             "LASTMODIFIEDDATE": "Data da última modificação",
             "LASTMODIFIEDBYNAME": "Última alteração por nome",
-           
+
             "GENERAL": "Geral",
             "AUDIT": "Auditoria",
            

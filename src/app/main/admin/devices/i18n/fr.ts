@@ -1,30 +1,31 @@
 export const locale = {
     lang: 'fr',
     data: {
-        GROUPS: {
-            "GROUPS": "Groupes",
-            "SEARCHFORGROUP": "Rechercher un Groupes",
-            "NEWGROUP": "New Group",
-            "GROUPDETAIL": "Détails de l'opérateur",
-            "SELECTFIELD": "Sélectionner un champ",
-            "SAVE": "SALVAR",
-            "ADD": "ADICIONAR",
-            
-            "NAME": "Name",
-            "EMAIL": "Email",
-            "CONTACTNAME": "ContactName",
-            "CONTACTPHONE": "ContactPhone",
-            "ADDRESS": "Type d'opérateur",
-            "ISACTIVE": "Est actif",
-            "COMPANY": "Entreprise",
-            "ACCOUNT": "Groupe",
+        DEVICES: {
+            "DEVICES": "Appareils",
+            "SEARCHFORDEVICE": "Rechercher un appareil",
+            "NEWDEVICE": "Nouveau périphérique",
+            "DEVICEDETAIL": "Détails du périphérique",
+            "SELECTFIELD": "Sélectionner un champ",
+            "ENREGISTRER": "ENREGISTRER",
+            "ADD": "ADD",
+
+            "NAME": "nom",
+            "SIMCARD": "Simcard",
+            "DEVICETYPE": "Type de périphérique",
+            "CONNIN": "ConnIn",
+            "CONNOUT": "ConnOut",
+            "CONNSMS": "ConnSMS",
+            "IMEI": "IMEI",
+            "SERIALNUMBER": "Numéro de série",
+            "ACTIVATIONCODE": "Code d'activation",
             "CREATED": "Créé",
             "CREATEDBYNAME": "Créé par nom",
             "DELETEDWHEN": "Supprimé quand",
             "DELETEDBYNAME": "Supprimé par son nom",
             "LASTMODIFIEDDATE": "Date de dernière modification",
             "LASTMODIFIEDBYNAME": "Dernière modification par nom",
-           
+
             "GENERAL": "General",
             "AUDIT": "Audit",
            

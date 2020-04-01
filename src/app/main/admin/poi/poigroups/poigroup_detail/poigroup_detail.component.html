@@ -59,15 +59,15 @@
                         <mat-tab label="{{ 'POIGROUPS.GENERAL' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'POIGROUPS.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="Name"
-                                           name="name"
-                                           formControlName="name"
-                                           required>
-                                </mat-form-field>
 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'POIGROUPS.NAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Name"
+                                               name="name"
+                                               formControlName="name"
+                                               required>
+                                    </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
                                         <mat-label>{{ 'POIGROUPS.COMPANY' | translate }}</mat-label>
@@ -99,36 +99,6 @@
                                           
                                         </mat-select>
                                     </mat-form-field>
-
-                                    <!-- <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'POIGROUPS.GROUP' | translate }}</mat-label>
-                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                            </div>
-
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceGroup"  class="poigroups-table font-size-10 mat-elevation-z8" >
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                                </mat-table>
-                                            </div>
-                                        
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorGroup
-                                                class="table_paginator"
-                                                [length]="dataSourceGroup.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                            ></mat-paginator>
-                                        </mat-select>
-                                    </mat-form-field> -->
                                 </div>
 
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
@@ -183,6 +153,36 @@
                                 </fieldset>
                             </div>
                         </mat-tab>
+
+                        <mat-tab label=POIs>
+                            <div class="poi_list">
+
+                                <!-- SIDEBAR -->
+                                <fuse-sidebar class="sidebar" name="contacts-main-sidebar" position="left" lockedOpen="gt-sm">
+
+                                    <!-- SIDEBAR CONTENT -->
+                                    <div class="content" fusePerfectScrollbar>
+                                        <poi-main-sidebar [@animate]="{value:'*'}"></poi-main-sidebar>
+                                    </div>
+                                    <!-- / SIDEBAR CONTENT -->
+
+                                </fuse-sidebar>
+                                <!-- / SIDEBAR -->
+
+                                <!-- CENTER -->
+                                <div class="center p-24 pb-56 pr-sm-92" fusePerfectScrollbar>
+
+                                    <!-- CONTENT -->
+                                    <div class="content">
+                                        <poi-list></poi-list>
+                                    </div>
+                                    <!-- / CONTENT -->
+
+                                </div>
+                                <!-- / CENTER -->
+                            </div>
+                        </mat-tab>
+
                     </mat-tab-group>
                 </form>
             </div>

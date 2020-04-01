@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class UnittypeDetailService 
+export class DeviceDetailService 
 {
     routeParams: any;
-    unittype: any;
-    public unittype_detail: any;
+    device: any;
+    public device_detail: any;
     public unit_clist_item: any = {};
     public current_makeID: number;
 
@@ -41,7 +41,7 @@ export class UnittypeDetailService
                 headers: headers,   
                 params: params
             });
-           
+        
         } else {
             let params = new HttpParams()
             .set('conncode', conncode.toString())
@@ -56,26 +56,31 @@ export class UnittypeDetailService
                 params: params
             });
         }
-        
     }
 
-    saveUnittypeDetail(conncode: string, userid: number, unittypeDetail: any = {}): Observable<any> {
+    saveDeviceDetail(conncode: string, userid: number, deviceDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
-            .set('id', unittypeDetail.id.toString())
-            .set('name', unittypeDetail.name.toString())
-            .set('producttypeid', unittypeDetail.producttypeid.toString())
-            .set('isactive', unittypeDetail.isactive.toString())
-            .set('created', unittypeDetail.created.toString())
-            .set('createdby', unittypeDetail.createdby.toString())
-            .set('deletedwhen', unittypeDetail.deletedwhen.toString())
-            .set('deletedby', unittypeDetail.deletedby.toString())
-            .set('lastmodifieddate', unittypeDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', unittypeDetail.lastmodifiedby.toString())
-            .set('method', 'unittype_save');
+            .set('id', deviceDetail.id.toString())
+            .set('name', deviceDetail.name.toString())
+            .set('simcardid', deviceDetail.simcardid.toString())
+            .set('devicetypeid', deviceDetail.devicetypeid.toString())
+            .set('conninid', deviceDetail.conninid.toString())
+            .set('connoutid', deviceDetail.connoutid.toString())
+            .set('connsmsid', deviceDetail.connsmsid.toString())
+            .set('imei', deviceDetail.imeiid.toString())
+            .set('serialnumber', deviceDetail.serialnumber.toString())
+            .set('activationcode', deviceDetail.activationcode.toString())
+            .set('created', deviceDetail.created.toString())
+            .set('createdby', deviceDetail.createdby.toString())
+            .set('deletedwhen', deviceDetail.deletedwhen.toString())
+            .set('deletedby', deviceDetail.deletedby.toString())
+            .set('lastmodifieddate', deviceDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', deviceDetail.lastmodifiedby.toString())
+            .set('method', 'device_save');
         
             console.log(params_detail);
 

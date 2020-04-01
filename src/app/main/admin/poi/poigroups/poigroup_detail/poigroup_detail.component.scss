@@ -8,10 +8,7 @@
         color: rgb(16, 20, 24) !important;
         // box-shadow: 0px 0px 0px 1px rgb(42, 55, 59) !important;
     }
-
-    // .mat-form-field-appearance-outline .mat-form-field-outline {
-    //     color: #999999 !important;
-    // }
+    
     .mat-form-field-label {
             color: rgb(134, 132, 132) !important
     }
@@ -35,10 +32,19 @@
     mat-row:hover {
         background-color: #b2f5ef !important;
     }
-    // body.theme-default mat-row, body.theme-default mat-header-row, body.theme-default mat-footer-row, body.theme-default th.mat-header-cell, body.theme-default td.mat-cell, body.theme-default td.mat-footer-cell {
-    //     width: 10% !important;
-    // }
+   
    
     body.theme-default .mat-input-element:disabled {
         color: black !important
+    }
+
+    .poi_list {
+        overflow: hidden;
+
+        .sidebar {
+
+            &:not(.locked-open) {
+                background: white;
+            }
+        }
     }

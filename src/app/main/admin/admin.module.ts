@@ -67,6 +67,12 @@ const routes = [
         loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
     },
 
+    {
+        path        : 'devices',
+        loadChildren: () => import('./devices/devices.module').then(m => m.DevicesModule)
+    },
+
+
 
 ];
 

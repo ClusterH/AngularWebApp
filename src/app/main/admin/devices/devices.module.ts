@@ -23,8 +23,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatMenuModule } from '@angular/material/menu';
-
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BlockUIModule } from 'ng-block-ui';
@@ -34,29 +32,25 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
+import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { PoigroupsComponent} from 'app/main/admin/poi/poigroups/poigroups/poigroups.component';
-import { PoigroupsService } from 'app/main/admin/poi/poigroups/services/poigroups.service';
-import { PoigroupDetailComponent} from 'app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.component';
-import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
-import { POIListComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/poi-list/poi-list.component';
-import { POIListService } from 'app/main/admin/poi/poigroups/services/poilist.service';
-import { POISelectedBarComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/selected-bar/selected-bar.component';
-import { POIMainSidebarComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/sidebars/main/main.component';
-import { CourseDialogComponent } from 'app/main/admin/poi/poigroups/dialog/dialog.component';
+import { DevicesComponent} from 'app/main/admin/devices/devices/devices.component';
+import { DevicesService } from 'app/main/admin/devices/services/devices.service';
+import { DeviceDetailComponent} from 'app/main/admin/devices/device_detail/device_detail.component';
+import { DeviceDetailService } from 'app/main/admin/devices/services/device_detail.service';
+import { CourseDialogComponent } from 'app/main/admin/devices/dialog/dialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
 const routes = [
     {
-        path     : 'poigroups',
-        component: PoigroupsComponent,
+        path     : 'devices',
+        component: DevicesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'poigroup_detail',
-        component: PoigroupDetailComponent,
+        path     : 'device_detail',
+        component: DeviceDetailComponent,
         // pathMatch: 'full'
     },
 ];
@@ -65,8 +59,6 @@ const routes = [
     imports     : [
         FuseSharedModule,
         FuseConfirmDialogModule,
-        FuseSidebarModule,
-
         NgxMatSelectSearchModule,
         
         MatButtonModule,
@@ -87,7 +79,6 @@ const routes = [
         MatTabsModule,
         MatDialogModule,
         MatProgressSpinnerModule,
-        MatMenuModule,
 
         TranslateModule,
         HttpClientModule,
@@ -103,15 +94,12 @@ const routes = [
         RouterModule.forChild(routes),
     ],
     declarations: [
-        PoigroupsComponent,
-        PoigroupDetailComponent,
-        POIListComponent,
-        POISelectedBarComponent,
-        POIMainSidebarComponent,
+        DevicesComponent,
+        DeviceDetailComponent,
         CourseDialogComponent,
     ],
     providers: [
-        PoigroupsService, PoigroupDetailService, POIListService
+        DevicesService, DeviceDetailService
     ]
 })
-export class PoigroupsModule{ }
+export class DevicesModule{ }

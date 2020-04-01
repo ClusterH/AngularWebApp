@@ -201,7 +201,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Devices',
                 translate: 'NAV.DEVICES',
                 type     : 'item',
-                url      : 'pages/admin/devices'
+                url      : '/admin/devices/devices'
             },
             {
                 id       : 'simcards',

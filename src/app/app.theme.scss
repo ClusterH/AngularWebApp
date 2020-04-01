@@ -109,6 +109,8 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/simcards/simcard_detail/simcard_detail.theme";
 @import "src/app/main/admin/groups/groups/groups.theme";
 @import "src/app/main/admin/groups/group_detail/group_detail.theme";
+@import "src/app/main/admin/devices/devices/devices.theme";
+@import "src/app/main/admin/devices/device_detail/device_detail.theme";
 
 
 
@@ -155,6 +157,8 @@ $typography: mat-typography-config(
     @include admin-simcard-theme($theme);
     @include admin-groups-theme($theme);
     @include admin-group-theme($theme);
+    @include admin-devices-theme($theme);
+    @include admin-device-theme($theme);
 
 
 

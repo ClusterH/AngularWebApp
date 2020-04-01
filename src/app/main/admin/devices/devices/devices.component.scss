@@ -1,8 +1,8 @@
 @import "src/@fuse/scss/fuse";
 
-admin-serviceplans {
+admin-devices {
 
-    #serviceplans {
+    #devices {
 
         .top-bg {
             height: 120px !important;
@@ -68,7 +68,7 @@ admin-serviceplans {
         // width: 200% !important;
         overflow: hidden;
     }
-    .serviceplans-table {
+    .devices-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
         // overflow: auto;
@@ -83,7 +83,7 @@ admin-serviceplans {
             background-color: rgb(225, 245, 254) !important;
         }
 
-        .serviceplan {
+        .device {
             position: relative;
             cursor: pointer;
             height: 32px;
@@ -117,6 +117,8 @@ admin-serviceplans {
             display: flex;
             align-items: center;
         }
+
+        
 
         .quantity-indicator {
             display: inline-block;
