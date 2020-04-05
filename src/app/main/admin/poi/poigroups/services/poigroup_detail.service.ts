@@ -9,7 +9,9 @@ export class PoigroupDetailService
     poigroup: any;
     public poigroup_detail: any;
     public unit_clist_item: any = {};
-    public current_makeID: number;
+    public current_poiGroupID: number;
+    public current_pagePOIs: any = [];
+    public selectedPOIs: any = [];
 
     /**
      * Constructor
@@ -30,32 +32,68 @@ export class PoigroupDetailService
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
         if(name == '') {
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
+            if (method == "GetGroupIncludedPOIs" || method == "GetGroupExcludedPOIs") {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('poigroupid', this.current_poiGroupID.toString())
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
-                params: params
-            });
+
+                console.log(params);
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
+            
            
         } else {
+            if (method == "GetGroupIncludedPOIs" || method == "GetGroupExcludedPOIs") {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('poigroupid', this.current_poiGroupID.toString())
+                .set('method', method.toString());
 
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
+                console.log(params);
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
-                params: params
-            });
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                }); 
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`) 
+                .set('method', method.toString());
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
         }
         
     }

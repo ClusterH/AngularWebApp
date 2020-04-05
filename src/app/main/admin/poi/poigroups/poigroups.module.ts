@@ -24,6 +24,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
 
 
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -34,18 +35,14 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
+import { FuseConfirmDialogModule } from '@fuse/components';
+import { FuseHighlightModule } from '@fuse/components';
 
 import { PoigroupsComponent} from 'app/main/admin/poi/poigroups/poigroups/poigroups.component';
 import { PoigroupsService } from 'app/main/admin/poi/poigroups/services/poigroups.service';
 import { PoigroupDetailComponent} from 'app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.component';
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
-import { ContactsContactListComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/contact-list/contact-list.component';
-import { ContactsSelectedBarComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/selected-bar/selected-bar.component';
-import { ContactsMainSidebarComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/sidebars/main/main.component';
-import { ContactsContactFormDialogComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/contact-form/contact-form.component';
 import { CourseDialogComponent } from 'app/main/admin/poi/poigroups/dialog/dialog.component';
-import { ContactsService } from 'app/main/admin/poi/poigroups/poigroup_detail/contacts.service';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -58,10 +55,6 @@ const routes = [
     {
         path     : 'poigroup_detail',
         component: PoigroupDetailComponent,
-        resolve : {
-            contacts: ContactsService
-        }
-        // pathMatch: 'full'
     },
 ];
 
@@ -69,7 +62,7 @@ const routes = [
     imports     : [
         FuseSharedModule,
         FuseConfirmDialogModule,
-        FuseSidebarModule,
+        FuseHighlightModule,
 
         NgxMatSelectSearchModule,
         
@@ -92,6 +85,7 @@ const routes = [
         MatDialogModule,
         MatProgressSpinnerModule,
         MatMenuModule,
+        MatListModule,
 
         TranslateModule,
         HttpClientModule,
@@ -109,14 +103,10 @@ const routes = [
     declarations: [
         PoigroupsComponent,
         PoigroupDetailComponent,
-        ContactsContactListComponent,
-        ContactsSelectedBarComponent,
-        ContactsMainSidebarComponent,
-        ContactsContactFormDialogComponent,
         CourseDialogComponent,
     ],
     providers: [
-        PoigroupsService, PoigroupDetailService, ContactsService
+        PoigroupsService, PoigroupDetailService
     ]
 })
 export class PoigroupsModule{ }

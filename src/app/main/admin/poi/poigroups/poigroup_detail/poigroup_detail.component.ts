@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-
+import { MatSelectionListChange } from '@angular/material/list'
 import { PoigroupDetail } from 'app/main/admin/poi/poigroups/model/poigroup.model';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
@@ -13,12 +13,9 @@ import { tap, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operato
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
 import { PoigroupDetailDataSource } from "app/main/admin/poi/poigroups/services/poigroup_detail.datasource";
-import { ContactsService } from 'app/main/admin/poi/poigroups/poigroup_detail/contacts.service';
-import { ContactsContactFormDialogComponent } from 'app/main/admin/poi/poigroups/poigroup_detail/contact-form/contact-form.component';
 
 import { locale as poigroupsEnglish } from 'app/main/admin/poi/poigroups/i18n/en';
 import { locale as poigroupsSpanish } from 'app/main/admin/poi/poigroups/i18n/sp';
@@ -33,7 +30,7 @@ import { locale as poigroupsPortuguese } from 'app/main/admin/poi/poigroups/i18n
   animations   : fuseAnimations
 })
 
-export class PoigroupDetailComponent implements OnInit, OnDestroy
+export class PoigroupDetailComponent implements OnInit
 {
   poigroup_detail: any;
   public poigroup: any;
@@ -51,31 +48,32 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
   dataSource: PoigroupDetailDataSource;
 
   dataSourceCompany:     PoigroupDetailDataSource;
-  dataSourceGroup:       PoigroupDetailDataSource;
-  dataSourcePoint:     PoigroupDetailDataSource;
-  dataSourcePointType:    PoigroupDetailDataSource;
+  dataSourceIncluded:    PoigroupDetailDataSource;
+  dataSourceExcluded:    PoigroupDetailDataSource;
  
   filter_string: string = '';
   method_string: string = '';
 
   dialogRef: any;
-  hasSelectedContacts: boolean;
   searchInput: FormControl;
-
-   // Private
-   private _unsubscribeAll: Subject<any>;
+  selectedExcludedPOIs: string[];
+  selectedIncludedPOIs: string[];
+  selectedOptions: string[];
+  currentPagePOIs: string[];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
+  @ViewChild('paginatorIncluded', {read: MatPaginator, static: true})
+    paginatorIncluded: MatPaginator;
+  @ViewChild('paginatorExcluded', {read: MatPaginator, static: true})
+    paginatorExcluded: MatPaginator;
   
   constructor(
     public poigroupDetailService: PoigroupDetailService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    private _fuseSidebarService: FuseSidebarService,
     private _formBuilder: FormBuilder,
     public _matDialog: MatDialog,
     private router: Router,
-    private _contactsService: ContactsService,
   ) {
     this._fuseTranslationLoaderService.loadTranslations(poigroupsEnglish, poigroupsSpanish, poigroupsFrench, poigroupsPortuguese);
 
@@ -87,33 +85,42 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
 
     if ( this.poigroup != '' )
     {
+      console.log(this.poigroup.id);
+
+      this.poigroupDetailService.current_poiGroupID = this.poigroup.id;
+      console.log("groupid: ", this.poigroupDetailService.current_poiGroupID);
       this.pageType = 'edit';
     }
     else
     {
+      this.poigroupDetailService.current_poiGroupID = 0;
+
       console.log(this.poigroup);
 
       this.pageType = 'new';
     }
 
     this.filter_string = '';
-
-     // Set the defaults
-     this.searchInput = new FormControl('');
-
-     // Set the private defaults
-     this._unsubscribeAll = new Subject();
+    this.currentPagePOIs = [];
+    this.selectedExcludedPOIs = [];
+    
   }
 
   ngOnInit(): void {
   
-    this.dataSourceCompany   = new PoigroupDetailDataSource(this.poigroupDetailService);
+    this.dataSourceCompany = new PoigroupDetailDataSource(this.poigroupDetailService);
+    this.dataSourceIncluded = new PoigroupDetailDataSource(this.poigroupDetailService);
+    this.dataSourceExcluded = new PoigroupDetailDataSource(this.poigroupDetailService);
    
-    this.dataSourceCompany  .loadPoigroupDetail(this.userConncode, this.userID, 0, 10, this.poigroup.company, "company_clist");
+    this.dataSourceCompany.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, this.poigroup.company, "company_clist");
+    this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
+    this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
   
     this.poigroupForm = this._formBuilder.group({
       name               : [null, Validators.required],
       company            : [null, Validators.required],
+      excludedPOIs       : [null, Validators.required],
+      includedPOIs       : [null, Validators.required],
      
       isactive           : [null, Validators.required],
       created            : [{value: '', disabled: true}, Validators.required],
@@ -126,31 +133,8 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
     });
 
     this.setValues();
-
-    this._contactsService.onSelectedContactsChanged
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(selectedContacts => {
-          this.hasSelectedContacts = selectedContacts.length > 0;
-      });
-
-    this.searchInput.valueChanges
-      .pipe(
-          takeUntil(this._unsubscribeAll),
-          debounceTime(300),
-          distinctUntilChanged()
-      )
-      .subscribe(searchText => {
-          this._contactsService.onSearchTextChanged.next(searchText);
-      });
   }
-
-  ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
+ 
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
     
@@ -163,18 +147,57 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
     .subscribe( (res: any) => {
         console.log(res);
     });
+
+    merge(this.paginatorIncluded.page)
+    .pipe(
+      tap(() => {
+        this.loadPoigroupDetail("included")
+      })
+    )
+    .subscribe( (res: any) => {
+        console.log(res);
+    });
+
+    merge(this.paginatorExcluded.page)
+    .pipe(
+      tap(() => {
+        this.loadPoigroupDetail("excluded")
+      })
+    )
+    .subscribe( (res: any) => {
+        console.log(res);
+        this.setCheckMark();
+
+    });
+
+
   }
 
   loadPoigroupDetail(method_string: string) {
+    console.log(method_string);
     if (method_string == 'company') {
       this.dataSourceCompany.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
-    } 
+    } else if (method_string == 'included') {
+      this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.filter_string, "GetGroupIncludedPOIs")
+    } else if (method_string == 'excluded') {
+      // console.log(this.currentPagePOIs);
+      this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.filter_string, "GetGroupExcludedPOIs")
+      
+    }
   }
 
   managePageIndex(method_string: string) {
     switch(method_string) {
       case 'company':
         this.paginatorCompany.pageIndex = 0;
+      break;
+
+      case 'included':
+        this.paginatorIncluded.pageIndex = 0;
+      break;
+
+      case 'excluded':
+        this.paginatorExcluded.pageIndex = 0;
       break;
     }
   }
@@ -220,9 +243,24 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
     console.log(this.filter_string);
   }
 
+  onExcludedFilter(event: any) {
+    this.method_string = 'excluded';
+    this.filter_string = event.target.value;
+
+    if(this.filter_string.length >= 3 || this.filter_string == '') {
+     
+      this.managePageIndex(this.method_string);
+      this.loadPoigroupDetail(this.method_string);
+    }
+
+    console.log(this.filter_string);
+  }
+
   setValues() {
       this.poigroupForm.get('name').setValue(this.poigroup.name);
       this.poigroupForm.get('company').setValue(this.poigroup.companyid);
+      this.poigroupForm.get('excludedPOIs').setValue('');
+      this.poigroupForm.get('includedPOIs').setValue('');
 
       let created          = this.poigroup.created? new Date(`${this.poigroup.created}`) : '';
       let deletedwhen      = this.poigroup.deletedwhen? new Date(`${this.poigroup.deletedwhen}`) : '';
@@ -331,9 +369,40 @@ export class PoigroupDetailComponent implements OnInit, OnDestroy
 
   }
 
-  toggleSidebar(name): void
-    {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
+  deletePOIs() {
+    // this.selectedExcludedPOIs = this.poigroupForm.get('excludedPOIs').value ;
+
+    // console.log("deletePOI:", this.selectedExcludedPOIs);
+  }
+
+  onNgModelChange(event: any) {
+    console.log('on ng model change', event);
+    this.selectedExcludedPOIs = event;
+  }
+
+  clickExcluded(id) {
+    console.log(id);
+    let checkedID = this.selectedExcludedPOIs.indexOf(`${id}`)
+    if( checkedID !==  -1) {
+      this.selectedExcludedPOIs.splice(checkedID, 1);
+      console.log(checkedID, this.selectedExcludedPOIs);
+    } else {
+      this.selectedExcludedPOIs.push(`${id}`);
+      console.log(checkedID, this.selectedExcludedPOIs);
     }
- 
+
+    this.poigroupDetailService.selectedPOIs = this.selectedExcludedPOIs;
+    console.log("selected POIs:",  this.poigroupDetailService.selectedPOIs);
+    // this.selectedExcludedPOIs = this.poigroupForm.get('excludedPOIs').value ;
+    // console.log("deletePOI:", this.selectedExcludedPOIs);
+
+  }
+
+  setCheckMark() {
+    // let string = this.selectedExcludedPOIs.filter(value => -1 !== this.poigroupDetailService.current_pagePOIs.indexOf(value));
+    // console.log("Filtered:",string, "selected:", this.poigroupDetailService.selectedPOIs);
+    console.log("setcheck:", this.poigroupDetailService.current_pagePOIs);
+    this.poigroupForm.get("excludedPOIs").setValue(this.poigroupDetailService.current_pagePOIs);
+
+  }
 }

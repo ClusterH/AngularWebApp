@@ -40,11 +40,6 @@ const routes = [
     },
 
     {
-        path        : 'poi/contacts',
-        loadChildren: () => import('./poi/contacts/contacts.module').then(m => m.ContactsModule)
-    },
-   
-    {
         path        : 'groups',
         loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
     },

@@ -4,7 +4,8 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import {catchError, finalize} from "rxjs/operators";
 
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service'
-import { PoigroupsComponent } from "app/main/admin/poi/poigroups/poigroups/poigroups.component";
+// import { PoigroupsComponent } from "app/main/admin/poi/poigroups/poigroups/poigroups.component";
+import { PoigroupDetailComponent } from "app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.component";
 
 export class PoigroupDetailDataSource extends DataSource<any>
 {
@@ -20,9 +21,11 @@ export class PoigroupDetailDataSource extends DataSource<any>
     flag: boolean =false;
     selected_method: string;
     selected_method_id: number;
+    poigroupDetailComponent: PoigroupDetailComponent;
 
     constructor(
         private poigroupDetailService: PoigroupDetailService,
+        // private poigroupDetailComponent: PoigroupDetailComponent
     ) {
         super();
         this.flag = false;
@@ -44,9 +47,23 @@ export class PoigroupDetailDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
            console.log("method:", method, result);
-       
+           
             this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
             console.log(result.TrackingXLAPI.DATA);
+
+            if (method != "company_clist") {
+                this.poigroupDetailService.current_pagePOIs = [];
+
+                for (let i = 0; i < result.TrackingXLAPI.DATA.length; i ++) {
+                    if (this.poigroupDetailService.selectedPOIs.indexOf(result.TrackingXLAPI.DATA[i].id) !== -1) {
+                        this.poigroupDetailService.current_pagePOIs.push(result.TrackingXLAPI.DATA[i].id);
+                    }
+                    // this.poigroupDetailService.current_pagePOIs.push(result.TrackingXLAPI.DATA[i].id);
+                    // this.poigroupDetailService.selectedPOIs.filter(value => -1 !== this.poigroupDetailService.current_pagePOIs.indexOf(value));
+                };
+                console.log("currentFilter_pagePOIs: ", this.poigroupDetailService.current_pagePOIs);
+            }
+            
             this.poigroupDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
             console.log("unit_clist: ", this.poigroupDetailService.unit_clist_item);
@@ -58,6 +75,8 @@ export class PoigroupDetailDataSource extends DataSource<any>
             console.log(this.totalLength);   
           }
         );
+
+        return true;
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
