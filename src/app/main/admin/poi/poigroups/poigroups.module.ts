@@ -35,7 +35,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseConfirmDialogModule } from '@fuse/components';
+import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseHighlightModule } from '@fuse/components';
 
 import { PoigroupsComponent} from 'app/main/admin/poi/poigroups/poigroups/poigroups.component';
@@ -63,6 +63,7 @@ const routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseHighlightModule,
+        FuseSidebarModule,
 
         NgxMatSelectSearchModule,
         

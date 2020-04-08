@@ -40,6 +40,16 @@ const routes = [
     },
 
     {
+        path        : 'geofences/zones',
+        loadChildren: () => import('./geofences/zones/zones.module').then(m => m.ZonesModule)
+    },
+
+    {
+        path        : 'geofences/zonegroups',
+        loadChildren: () => import('./geofences/zonegroups/zonegroups.module').then(m => m.ZonegroupsModule)
+    },
+   
+    {
         path        : 'groups',
         loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
     },

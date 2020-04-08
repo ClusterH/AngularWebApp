@@ -48,10 +48,10 @@ const appRoutes: Routes = [
         path        : 'system',
         loadChildren: () => import('./main/system/system.module').then(m => m.SystemModule)
     },
-    // {
-    //     path        : 'documentation',
-    //     loadChildren: () => import('./main/documentation/documentation.module').then(m => m.DocumentationModule)
-    // },
+    {
+        path        : 'report',
+        loadChildren: () => import('./main/report/report.module').then(m => m.ReportModule)
+    },
     {
         path      : '**',
         redirectTo: 'login'

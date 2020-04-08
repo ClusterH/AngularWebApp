@@ -81,6 +81,13 @@ $typography: mat-typography-config(
 @import "src/app/layout/components/chat-panel/chat-panel.theme";
 @import "src/app/layout/components/toolbar/toolbar.theme";
 
+//Authentication
+@import "src/app/authentication/login/login.theme";
+@import "src/app/authentication/register/register.theme";
+@import "src/app/authentication/reset-password/reset-password.theme";
+@import "src/app/authentication/forgot-password/forgot-password.theme";
+@import "src/app/authentication/mail-confirm/mail-confirm.theme";
+
 //Admin
 @import "src/app/main/admin/vehicles/vehicles/vehicles.theme";
 @import "src/app/main/admin/vehicles/vehicle_detail/vehicle_detail.theme";
@@ -94,12 +101,21 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/models/model_detail/model_detail.theme";
 @import "src/app/main/admin/companies/companies/companies.theme";
 @import "src/app/main/admin/companies/company_detail/company_detail.theme";
-@import "src/app/main/admin/poi/pois//pois/pois.theme";
+@import "src/app/main/admin/poi/pois/pois/pois.theme";
 @import "src/app/main/admin/poi/pois/poi_detail/poi_detail.theme";
-@import "src/app/main/admin/poi/poigroups//poigroups/poigroups.theme";
+@import "src/app/main/admin/poi/poigroups/poigroups/poigroups.theme";
 @import "src/app/main/admin/poi/poigroups/poigroup_detail/poigroup_detail.theme";
+@import "src/app/main/admin/geofences/zones/zones/zones.theme";
+@import "src/app/main/admin/geofences/zones/zone_detail/zone_detail.theme";
+@import "src/app/main/admin/geofences/zonegroups/zonegroups/zonegroups.theme";
+@import "src/app/main/admin/geofences/zonegroups/zonegroup_detail/zonegroup_detail.theme";
 @import "src/app/main/admin/groups/groups/groups.theme";
 @import "src/app/main/admin/groups/group_detail/group_detail.theme";
+
+//Report
+@import "src/app/main/report/administrative/administrative.theme";
+@import "src/app/main/report/locationhistory/locationhistory.theme";
+
 
 //System
 @import "src/app/main/system/serviceplans/serviceplans/serviceplans.theme";
@@ -117,12 +133,6 @@ $typography: mat-typography-config(
 @import "src/app/main/system/connections/connections/connections.theme";
 @import "src/app/main/system/connections/connection_detail/connection_detail.theme";
 
-//Authentication
-@import "src/app/authentication/login/login.theme";
-@import "src/app/authentication/register/register.theme";
-@import "src/app/authentication/reset-password/reset-password.theme";
-@import "src/app/authentication/forgot-password/forgot-password.theme";
-@import "src/app/authentication/mail-confirm/mail-confirm.theme";
 
 
 // Define a mixin for easier access
@@ -131,6 +141,13 @@ $typography: mat-typography-config(
     // Layout components
     @include chat-panel-theme($theme);
     @include toolbar-theme($theme);
+
+     //Authentication
+     @include login-theme($theme);
+     @include register-theme($theme);
+     @include reset-password-theme($theme);
+     @include forgot-password-theme($theme);
+     @include mail-confirm-theme($theme);
 
     //Admin
     @include admin-vehicles-theme($theme);
@@ -149,8 +166,16 @@ $typography: mat-typography-config(
     @include admin-poi-theme($theme);
     @include admin-poigroups-theme($theme);
     @include admin-poigroup-theme($theme);
+    @include admin-zones-theme($theme);
+    @include admin-zone-theme($theme);
+    @include admin-zonegroups-theme($theme);
+    @include admin-zonegroup-theme($theme);
     @include admin-groups-theme($theme);
     @include admin-group-theme($theme);
+
+    //Report
+    @include report-administrative-theme($theme);
+    @include report-locationhistory-theme($theme);
 
     //System
     @include system-serviceplans-theme($theme);
@@ -166,18 +191,7 @@ $typography: mat-typography-config(
     @include system-devices-theme($theme);
     @include system-device-theme($theme);
     @include system-connections-theme($theme);
-    @include system-connections-theme($theme);
-
-
-
-    //Authentication
-    @include login-theme($theme);
-    @include register-theme($theme);
-    @include reset-password-theme($theme);
-    @include forgot-password-theme($theme);
-    @include mail-confirm-theme($theme);
-
-
+    @include system-connection-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

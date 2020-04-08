@@ -32,7 +32,7 @@ export const locale = {
             "EVENTS": "Événements",
 
             "REPORTS": "Rapports",
-            "ADMINISTRATIVE": "Administrative",
+            "ADMINISTRATIVE": "Administratif",
             "LOCATIONHISTORY": "Historique des positions",
             "LOGISTICS": "Logistique",
             "FUEL": "Fuel",

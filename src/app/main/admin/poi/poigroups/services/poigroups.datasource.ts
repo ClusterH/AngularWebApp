@@ -34,13 +34,17 @@ export class PoigroupsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+            console.log(result);
+            this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
+
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
           }
         );
+
+
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>

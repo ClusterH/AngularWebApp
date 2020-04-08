@@ -32,7 +32,6 @@ export class PoigroupDetailDataSource extends DataSource<any>
     }
 
     loadPoigroupDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadPoigroups:", conncode, userid,  pagesize, pageindex, name, method );
         if (!name) {
             name = '';
         }
@@ -46,42 +45,20 @@ export class PoigroupDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
            
+            console.log(method, result);
+
             this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
-
-            if (method != "company_clist") {
-                this.poigroupDetailService.current_pagePOIs = [];
-
-                for (let i = 0; i < result.TrackingXLAPI.DATA.length; i ++) {
-                    if (this.poigroupDetailService.selectedPOIs.indexOf(result.TrackingXLAPI.DATA[i].id) !== -1) {
-                        this.poigroupDetailService.current_pagePOIs.push(result.TrackingXLAPI.DATA[i].id);
-                    }
-                    // this.poigroupDetailService.current_pagePOIs.push(result.TrackingXLAPI.DATA[i].id);
-                    // this.poigroupDetailService.selectedPOIs.filter(value => -1 !== this.poigroupDetailService.current_pagePOIs.indexOf(value));
-                };
-                console.log("currentFilter_pagePOIs: ", this.poigroupDetailService.current_pagePOIs);
-            }
-            
             this.poigroupDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-          
-            console.log("unit_clist: ", this.poigroupDetailService.unit_clist_item);
-            this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
-
+            // this.totalLength = result.TrackingXLAPI.DATA1?  result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0 : 0;
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
             this.page_index = pageindex + 1;
-            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-
-            console.log(this.totalLength);   
           }
         );
-
-        return true;
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source");
         return this.poigroupsSubject.asObservable();
     }
  

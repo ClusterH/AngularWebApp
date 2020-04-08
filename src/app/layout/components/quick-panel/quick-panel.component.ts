@@ -23,7 +23,8 @@ export class QuickPanelComponent
         this.settings = {
             notify: true,
             cloud : false,
-            retro : true
+            retro : true,
+            showVehicles: true
         };
     }
 }

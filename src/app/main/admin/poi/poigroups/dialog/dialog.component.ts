@@ -73,10 +73,10 @@ export class CourseDialogComponent implements OnInit {
     }
 
     goback() {
-        this.dialogRef.close();
         localStorage.removeItem("poigroup_detail");
 
         this.router.navigate(['admin/poi/poigroups/poigroups']);
+        this.dialogRef.close();
     }
 
     reloadComponent() {

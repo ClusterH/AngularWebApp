@@ -1,0 +1,136 @@
+<div id="administrative" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'ADMINISTRATIVE.ADMINISTRATIVE' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <!-- <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-label style="min-width: max-content;">{{'VEHICLES.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'VEHICLES.NAME' | translate}}</mat-option>
+                            <mat-option value="company">{{'VEHICLES.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'VEHICLES.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'VEHICLES.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="account">{{'VEHICLES.ACCOUNT' | translate}}</mat-option>
+                            <mat-option value="operator">{{'VEHICLES.OPERATOR' | translate}}</mat-option>
+                            <mat-option value="unittype">{{'VEHICLES.UNITTYPE' | translate}}</mat-option>
+                            <mat-option value="serviceplan">{{'VEHICLES.SERVICEPLAN' | translate}}</mat-option>
+                            <mat-option value="producttype">{{'VEHICLES.PRODUCTTYPE' | translate}}</mat-option>
+                            <mat-option value="make">{{'VEHICLES.MAKE' | translate}}</mat-option>
+                            <mat-option value="model">{{'VEHICLES.MODEL' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- ADD BUTTON -->
+            <!-- <button mat-fab
+                    [routerLink]="'/admin/vehicles/vehicle_detail'"
+                    class="accent  mt-24 mt-md-0">
+               <mat-icon (click)="addNewVehicle()">add</mat-icon>
+
+            </button> -->
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <!-- <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div> -->
+
+            <!-- <mat-table class="vehicles-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 250%;">
+
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <p class="name text-truncate">{{vehicle.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let vehicle; columns: displayedColumns;"
+                            class="vehicle font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table> -->
+
+        </div>
+        <!-- <div>
+            <div class="page_index">
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div> -->
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

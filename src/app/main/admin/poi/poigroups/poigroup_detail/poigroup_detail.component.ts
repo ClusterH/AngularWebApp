@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -13,6 +14,7 @@ import { tap, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operato
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
 import { PoigroupDetailDataSource } from "app/main/admin/poi/poigroups/services/poigroup_detail.datasource";
@@ -32,7 +34,6 @@ import { locale as poigroupsPortuguese } from 'app/main/admin/poi/poigroups/i18n
 
 export class PoigroupDetailComponent implements OnInit
 {
-  poigroup_detail: any;
   public poigroup: any;
   pageType: string;
   userConncode: string;
@@ -44,6 +45,7 @@ export class PoigroupDetailComponent implements OnInit
   poigroupDetail: PoigroupDetail = {};
 
   displayedColumns: string[] = ['name'];
+  POIsColumns: string[] = ['id','name'];
 
   dataSource: PoigroupDetailDataSource;
 
@@ -54,12 +56,12 @@ export class PoigroupDetailComponent implements OnInit
   filter_string: string = '';
   method_string: string = '';
 
+  currentTab: number;
+
   dialogRef: any;
-  searchInput: FormControl;
-  selectedExcludedPOIs: string[];
-  selectedIncludedPOIs: string[];
-  selectedOptions: string[];
-  currentPagePOIs: string[];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  filterBy: boolean;                                                                                                                                                                                               
+  includedSelection = new SelectionModel<Element>(true, []);
+  excludedSelection = new SelectionModel<Element>(true, []);
 
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
@@ -71,6 +73,7 @@ export class PoigroupDetailComponent implements OnInit
   constructor(
     public poigroupDetailService: PoigroupDetailService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    private _fuseSidebarService: FuseSidebarService,
     private _formBuilder: FormBuilder,
     public _matDialog: MatDialog,
     private router: Router,
@@ -85,25 +88,18 @@ export class PoigroupDetailComponent implements OnInit
 
     if ( this.poigroup != '' )
     {
-      console.log(this.poigroup.id);
 
       this.poigroupDetailService.current_poiGroupID = this.poigroup.id;
-      console.log("groupid: ", this.poigroupDetailService.current_poiGroupID);
       this.pageType = 'edit';
     }
     else
     {
       this.poigroupDetailService.current_poiGroupID = 0;
-
-      console.log(this.poigroup);
-
       this.pageType = 'new';
     }
 
     this.filter_string = '';
-    this.currentPagePOIs = [];
-    this.selectedExcludedPOIs = [];
-    
+    this.filterBy = true;
   }
 
   ngOnInit(): void {
@@ -111,14 +107,18 @@ export class PoigroupDetailComponent implements OnInit
     this.dataSourceCompany = new PoigroupDetailDataSource(this.poigroupDetailService);
     this.dataSourceIncluded = new PoigroupDetailDataSource(this.poigroupDetailService);
     this.dataSourceExcluded = new PoigroupDetailDataSource(this.poigroupDetailService);
-   
-    this.dataSourceCompany.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, this.poigroup.company, "company_clist");
-    this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
-    this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
+    
+    if (this.pageType == 'new') {
+      this.dataSourceCompany.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "company_clist");
+    } else if (this.pageType == 'edit') {
+      this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
+      this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
+    }
   
     this.poigroupForm = this._formBuilder.group({
       name               : [null, Validators.required],
       company            : [null, Validators.required],
+      companyInput       : [{value: '', disabled: true}],
       excludedPOIs       : [null, Validators.required],
       includedPOIs       : [null, Validators.required],
      
@@ -137,16 +137,17 @@ export class PoigroupDetailComponent implements OnInit
  
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
-    
-    merge(this.paginatorCompany.page)
-    .pipe(
-      tap(() => {
-        this.loadPoigroupDetail("company")
-      })
-    )
-    .subscribe( (res: any) => {
-        console.log(res);
-    });
+    if (this,this.pageType == 'new') {
+      merge(this.paginatorCompany.page)
+      .pipe(
+        tap(() => {
+          this.loadPoigroupDetail("company")
+        })
+      )
+      .subscribe( (res: any) => {
+          console.log(res);
+      });
+    }
 
     merge(this.paginatorIncluded.page)
     .pipe(
@@ -161,28 +162,24 @@ export class PoigroupDetailComponent implements OnInit
     merge(this.paginatorExcluded.page)
     .pipe(
       tap(() => {
-        this.loadPoigroupDetail("excluded")
+        this.loadPoigroupDetail("excluded");
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
-        this.setCheckMark();
-
-    });
-
+      console.log(res);
+    })
 
   }
 
   loadPoigroupDetail(method_string: string) {
-    console.log(method_string);
     if (method_string == 'company') {
       this.dataSourceCompany.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'included') {
       this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.filter_string, "GetGroupIncludedPOIs")
+      console.log(this.includedSelection.selected);
     } else if (method_string == 'excluded') {
-      // console.log(this.currentPagePOIs);
-      this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.filter_string, "GetGroupExcludedPOIs")
-      
+      this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.filter_string, "GetGroupExcludedPOIs");
+      console.log(this.excludedSelection.selected);
     }
   }
 
@@ -243,6 +240,21 @@ export class PoigroupDetailComponent implements OnInit
     console.log(this.filter_string);
   }
 
+  onIncludedFilter(event: any) {
+    this.method_string = 'included';
+    this.filter_string = event.target.value;
+
+    console.log(this.filter_string, this.method_string)
+
+    if(this.filter_string.length >= 3 || this.filter_string == '') {
+     
+      this.managePageIndex(this.method_string);
+      this.loadPoigroupDetail(this.method_string);
+    }
+
+    console.log(this.filter_string);
+  }
+
   onExcludedFilter(event: any) {
     this.method_string = 'excluded';
     this.filter_string = event.target.value;
@@ -259,6 +271,7 @@ export class PoigroupDetailComponent implements OnInit
   setValues() {
       this.poigroupForm.get('name').setValue(this.poigroup.name);
       this.poigroupForm.get('company').setValue(this.poigroup.companyid);
+      this.poigroupForm.get('companyInput').setValue(this.poigroup.company);
       this.poigroupForm.get('excludedPOIs').setValue('');
       this.poigroupForm.get('includedPOIs').setValue('');
 
@@ -343,6 +356,103 @@ export class PoigroupDetailComponent implements OnInit
     });
   }
 
+  addPOIs() {
+    if (this.pageType == 'new' && !this.poigroup.id) {
+      let today = new Date().toISOString();
+      this.getValues(today, "add");
+
+      this.poigroupDetailService.savePoigroupDetail(this.userConncode, this.userID, this.poigroupDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if (result.responseCode == 100) {
+          console.log(result.TrackingXLAPI.DATA[0].id);
+
+          let addData = [];
+          for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
+            addData[i] = {
+              poigroupid: Number(result.TrackingXLAPI.DATA[0].id),
+              poiid: Number(this.excludedSelection.selected[i])
+            }
+          }
+          
+          console.log(addData);
+          this.poigroupDetailService.addPoiToGroup(this.userConncode, this.userID, addData)
+          .subscribe((res: any) => {
+            if (res.TrackingXLAPI.DATA) {
+              console.log(res);
+              alert("POIGroup added successfully!")
+              this.router.navigate(['admin/poi/poigroups/poigroups']);
+            }
+          });
+        }
+      });
+    } else {
+      console.log(this.excludedSelection.selected, this.poigroup.id);
+      let addData = [];
+      for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
+        addData[i] = {
+          poigroupid: Number(this.poigroup.id),
+          poiid: Number(this.excludedSelection.selected[i])
+        }
+      }
+      
+      console.log(addData);
+      this.poigroupDetailService.addPoiToGroup(this.userConncode, this.userID, addData)
+      .subscribe((res: any) => {
+        if (res.TrackingXLAPI.DATA) {
+          console.log(res);
+          alert("POIs added successfully!");
+          this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
+          this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
+        }
+      });
+    }
+  }
+
+  deletePOIs() {
+    console.log(this.includedSelection.selected, this.poigroup.id);
+    let deleteData = [];
+    for (let i = 0; i < this.includedSelection.selected.length; i ++ ){
+      deleteData[i] = {
+        poigroupid: Number(this.poigroup.id),
+        poiid: Number(this.includedSelection.selected[i])
+      }
+    }
+    
+    console.log(deleteData);
+    this.poigroupDetailService.deletePoiToGroup(this.userConncode, this.userID, deleteData)
+    .subscribe((res: any) => {
+      if (res.TrackingXLAPI.DATA) {
+        alert("POIs deleted successfully!");
+        this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
+        this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
+      }
+    });
+  }
+
+  getNewGroupPOIs(index: number) {
+    if (index == 1) {
+      this.filter_string = '';
+      this.poigroupForm.get('filterstring').setValue(this.filter_string);
+    }
+
+    if (index == 1 && this.pageType == 'new') {
+      this.filterBy = false;
+      this.poigroupDetailService.current_CompanyID = this.poigroupForm.get('company').value || 0;
+      
+      if (this.poigroupDetailService.current_CompanyID == 0) {
+        alert("Please choose company one first!");
+        this.reloadComponent();
+
+      } else {
+        console.log(this.poigroupDetailService.current_CompanyID);
+
+        this.dataSourceIncluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedPOIs");
+        this.dataSourceExcluded.loadPoigroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedPOIs");
+      }
+    }
+  }
+
   goBackUnit() {
     const dialogConfig = new MatDialogConfig();
     let flag = 'goback';
@@ -358,51 +468,23 @@ export class PoigroupDetailComponent implements OnInit
     const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-        if ( result )
-        { 
-            console.log(result);
-
-        } else {
-            console.log("FAIL:", result);
-        }
+        
     });
 
   }
-
-  deletePOIs() {
-    // this.selectedExcludedPOIs = this.poigroupForm.get('excludedPOIs').value ;
-
-    // console.log("deletePOI:", this.selectedExcludedPOIs);
+ 
+  changeFilter(filter) {
+    this.filterBy = filter == 'included'? true : false;
   }
 
-  onNgModelChange(event: any) {
-    console.log('on ng model change', event);
-    this.selectedExcludedPOIs = event;
+  toggleSidebar(): void
+  {
+    this._fuseSidebarService.getSidebar('my-left-sidebar').toggleOpen();
   }
 
-  clickExcluded(id) {
-    console.log(id);
-    let checkedID = this.selectedExcludedPOIs.indexOf(`${id}`)
-    if( checkedID !==  -1) {
-      this.selectedExcludedPOIs.splice(checkedID, 1);
-      console.log(checkedID, this.selectedExcludedPOIs);
-    } else {
-      this.selectedExcludedPOIs.push(`${id}`);
-      console.log(checkedID, this.selectedExcludedPOIs);
-    }
-
-    this.poigroupDetailService.selectedPOIs = this.selectedExcludedPOIs;
-    console.log("selected POIs:",  this.poigroupDetailService.selectedPOIs);
-    // this.selectedExcludedPOIs = this.poigroupForm.get('excludedPOIs').value ;
-    // console.log("deletePOI:", this.selectedExcludedPOIs);
-
-  }
-
-  setCheckMark() {
-    // let string = this.selectedExcludedPOIs.filter(value => -1 !== this.poigroupDetailService.current_pagePOIs.indexOf(value));
-    // console.log("Filtered:",string, "selected:", this.poigroupDetailService.selectedPOIs);
-    console.log("setcheck:", this.poigroupDetailService.current_pagePOIs);
-    this.poigroupForm.get("excludedPOIs").setValue(this.poigroupDetailService.current_pagePOIs);
-
-  }
+  reloadComponent() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['admin/poi/poigroups/poigroup_detail']);
+}
 }

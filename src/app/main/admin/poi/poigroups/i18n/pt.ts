@@ -37,7 +37,10 @@ export const locale = {
             "DUPLICATE": "Duplicar",
             "DELETE": "Delete",
             "NO": "Não",
-            "YES": "Sim"
+            "YES": "Sim",
+
+            "INCLUDEDPOIS": "PDIs Incluídos",
+            "EXCLUDEDPOIS": "PDIs Excluídos",
         }
     }
 };

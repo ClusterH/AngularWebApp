@@ -1,0 +1,114 @@
+<div id="countdown" class="page-layout simple fullwidth docs">
+    <mat-toolbar>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple>
+            <mat-button-toggle value="showVehicles" #showVehicles (change)="onShowValChange($event.value)" matTooltip="Show/Hide Vehicles" >
+                <mat-icon class="blue-600-fg">directions_car</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="showPOIs" (change)="onShowValChange($event.value)" matTooltip="Show/Hide Points">
+                <mat-icon class="blue-600-fg">place</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="showZones" #showZones (change)="onShowValChange($event.value)" matTooltip="Show/Hide Geofences">
+                <mat-icon class="blue-600-fg">center_focus_strong</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="showRoutes" #showRoutes (change)="onShowValChange($event.value)" matTooltip="Show/Hide Routes">
+                <mat-icon class="blue-600-fg">gesture</mat-icon>
+            </mat-button-toggle>
+
+
+        </mat-button-toggle-group>
+    </mat-toolbar>
+    <!-- HEADER -->
+    <!-- <div class="header accent p-24 h-160" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+         fxLayoutAlign.gt-xs="space-between center">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Google Map</span> -->
+    <!-- <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">3rd Party Components</span> -->
+    <!-- </div>
+            <div class="h2 mt-16">Google Maps</div>
+        </div>
+
+        <a mat-raised-button class="reference-button mt-16 mt-sm-0"
+           href="https://angular-maps.com"
+           target="_blank">
+            <mat-icon class="mr-8">link</mat-icon>
+            <span>Reference</span>
+        </a>
+    </div> -->
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-0">
+        <!-- <p>
+            <code>agm-map</code> is a angular component library for Google Maps.
+        </p>
+
+        <div class="section-title">Sample</div> -->
+        <!-- <p fxLayout="row" fxLayoutAlign="start start"> -->
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="false"
+            (mapClick)="mapClicked($event)">
+            <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
+            <agm-marker-cluster [minimumClusterSize]="minClusterSize" 
+                imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+
+                <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.label, i)"
+                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable" [visible]="m.Visible"
+                    (dragEnd)="markerDragEnd(m, $event)">
+
+                    <agm-info-window>
+                        <strong>{{m.label}}</strong>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-marker-cluster>
+
+            <agm-polyline *ngFor="let rte of routes"  [strokeColor]="blue"  >          
+                <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
+                </agm-polyline-point>      
+            </agm-polyline>
+
+            <agm-polygon *ngFor='let zone of zones' [fillColor]="red" [fillOpacity]="0.01" [strokeColor]="red"
+                [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
+            </agm-polygon>
+
+            <!-- <agm-polyline *ngFor="let point of polyline;let i = index;"  [strokeColor]="point.speed < 50 ? '#2196f3': 'red'">
+                <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude">
+                </agm-polyline-point>
+                <ng-container *ngIf="polyline[i+1]">
+                  <agm-polyline-point [latitude]="polyline[i+1].latitude" [longitude]="polyline[i+1].longitude">
+                  </agm-polyline-point>
+                </ng-container>
+            </agm-polyline> -->
+
+            <!-- <agm-drawing-manager (polygonComplete)="polygonCreated($event)"
+                [drawingControl]="managerOptions.drawingControl"
+                [drawingControlOptions]="managerOptions.drawingControlOptions"
+                [polygonOptions]='managerOptions.polygonOptions' [drawingMode]='managerOptions.drawingMode'>
+            </agm-drawing-manager> -->
+
+
+
+        </agm-map>
+        <!-- </p> -->
+
+        <!-- <div class="section-title">Usage</div>
+        <p class="py-8">
+            <fuse-highlight lang="html">
+                <textarea #source>
+                    <agm-map [latitude]="lat" [longitude]="lng">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    </agm-map>
+                </textarea>
+            </fuse-highlight>
+        </p> 
+        <div class="section-title">Inputs</div>
+        <p class="py-8">
+            Checkout the component api docs for detail:
+            <a href="https://angular-maps.com/api-docs/agm-core/components/AgmMap.html" target="_blank">AgmMap Api</a>
+        </p>  -->
+
+    </div>
+
+</div>

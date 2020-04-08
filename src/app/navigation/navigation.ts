@@ -152,14 +152,14 @@ export const navigation: FuseNavigation[] = [
                         title    : 'Zones',
                         translate: 'NAV.ZONES',
                         type     : 'item',
-                        url      : 'pages/admin/geofences/zones'
+                        url      : '/admin/geofences/zones/zones'
                     },
                     {
                         id       : 'geofences_groups',
                         title    : 'Groups',
                         translate: 'NAV.GROUPS',
                         type     : 'item',
-                        url      : 'pages/admin/geofences/groups'
+                        url      : '/admin/geofences/zonegroups/zonegroups'
                     },
                 ]
             },
@@ -231,7 +231,7 @@ export const navigation: FuseNavigation[] = [
     },
 
     {
-        id       : 'reports',
+        id       : 'report',
         title    : 'Reports',
         translate: 'NAV.REPORTS',
         type     : 'collapsable',
@@ -242,14 +242,14 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Administrative',
                 translate: 'NAV.ADMINISTRATIVE',
                 type     : 'item',
-                url      : 'pages/reports/administrative'
+                url      : '/report/administrative'
             },
             {
-                id       : 'location_history',
+                id       : 'locationhistory',
                 title    : 'Location History',
                 translate: 'NAV.LOCATIONHISTORY',
                 type     : 'item',
-                url      : 'pages/reports/location_history'
+                url      : '/report/locationhistory'
             },
             {
                 id       : 'reports_logistics',

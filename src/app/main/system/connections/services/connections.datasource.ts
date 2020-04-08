@@ -45,7 +45,7 @@ export class ConnectionsDataSource extends DataSource<any>
             console.log("result", result);
             console.log("page_size", pagesize);
            this.connectionsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
+           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
            console.log(this.total_page);

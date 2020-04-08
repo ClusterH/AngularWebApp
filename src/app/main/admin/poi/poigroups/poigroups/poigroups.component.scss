@@ -181,7 +181,12 @@ admin-poigroups {
         line-height: normal !important;
 
     }
-
+   
+    // .mat-column-name{
+    //     flex-grow: 1 !important;
+    //     flex-shrink: 1 !important;
+    //     flex-basis: 0% !important;
+    // }
     .mat-paginator {
         .mat-paginator-container {
             justify-content: flex-end;

@@ -50,7 +50,7 @@ export class ModelDetailDataSource extends DataSource<any>
             this.modelDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
             console.log("unit_clist: ", this.modelDetailService.unit_clist_item);
-            this.totalLength = Number(result.TrackingXLAPI.DATA1.Total);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);

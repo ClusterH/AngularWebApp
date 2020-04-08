@@ -54,11 +54,11 @@
 
                 <form [formGroup]="poigroupForm" class="poigroup w-100-p" fxLayout="column" fxFlex >
 
-                    <mat-tab-group>
+                    <mat-tab-group (selectedIndexChange)="getNewGroupPOIs($event)" >
 
                         <mat-tab label="{{ 'POIGROUPS.GENERAL' | translate }}">
 
-                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                            <div class="tab-content p-20" fusePerfectScrollbar fxLayout="column">
 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
@@ -69,7 +69,7 @@
                                                required>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list" *ngIf="pageType == 'new'">
                                         <mat-label>{{ 'POIGROUPS.COMPANY' | translate }}</mat-label>
                                         <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
                                             <div class="filter_company_input" >
@@ -98,6 +98,13 @@
                                             ></mat-paginator>
                                           
                                         </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" *ngIf="pageType == 'edit'" >
+                                        <mat-label>{{ 'POIGROUPS.COMPANY' | translate }}</mat-label>
+                                        <input matInput placeholder="Company"
+                                               name="companyInput"
+                                               formControlName="companyInput">
                                     </mat-form-field>
                                 </div>
 
@@ -154,100 +161,129 @@
                             </div>
                         </mat-tab>
 
-                        <mat-tab label=POIs>
-                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-tab label=POIs #tab>
+                        <!-- <mat-tab label=POIs #tab [disabled]='!(poigroupDetail.companyid > 0)'> -->
+                            <div class="tab-content p-24 pb-8"  fxLayout="column">
+                                <div fxLayout="row" fxLayoutAlign="space-between" style="margin: 30px; margin-top: 20px;">
+                                    <div class="content pl-30" fxFlex="20">
+                                        <div class="card">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
-                                        
-                                    <div class="excludedPOI" fxFlex="48">
-                                        <div class="excluded-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div class="p-16 pb-10" fxLayout="row" fxLayoutAlign="space-between">
-                                                <div class="h3 font-weight-500" fxFlex="48">Excluded POIs</div>
+                                            <div class="content py-20" >
+                                                <div class="nav material2">
+                                    
+                                                    <div class="nav-item pb-8" aria-label="Included POIs" (click)="changeFilter('included')">
+                                                        <a class="nav-link" matRipple [ngClass]="{'active accent':filterBy === true}">
+                                                            <div class="title">{{ 'POIGROUPS.INCLUDEDPOIS' | translate }}</div>
+                                                        </a>
+                                                    </div>
+                                    
+                                                    <div class="nav-item" aria-label="Excluded POIs" (click)="changeFilter('excluded')">
+                                                        <a class="nav-link" matRipple [ngClass]="{'active accent':filterBy === false}">
+                                                            <div class="title">{{ 'POIGROUPS.EXCLUDEDPOIS' | translate }}</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                       
+                                    <div class="includedPOI" fxFlex="80" class="mr-32 ml-32" [ngStyle]="{'display':filterBy ? 'block' : 'none' }" >
+                                        <div class="included-card pb-20 pt-20" style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                                            <div  fxLayout="row" fxLayoutAlign="space-between">
+                                                <div class="filter_company_input" fxFlex="70">
+                                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onIncludedFilter($event)">
+                                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                </div>
+
                                                 <button mat-raised-button
-                                                        class="save-poigroup-button"
-                                                        (click)="deletePOIs()">
-                                                    <span>Delete</span>
+                                                        class="save-poigroup-button accent"
+                                                        (click)="deletePOIs()"
+                                                        fxFlex="20"
+                                                        style="margin: 20px; color: antiquewhite;">
+                                                    <span>{{ 'POIGROUPS.DELETE' | translate }}</span>
                                                 </button>
                                             </div>
                     
-                                            <div class="card-divider w-40-p" style="height: 2px; background: #039be5; margin-left: 10px;"></div>
+                                            <div class="POIGroup_table" style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceIncluded" fusePerfectScrollbar>
+                                                    <ng-container matColumnDef="id">
+                                                        <mat-cell *matCellDef="let includedpoi" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                                (change)="$event ? includedSelection.toggle(includedpoi.id) : null"
+                                                                [checked]="includedSelection.isSelected(includedpoi.id)">
+                                                            </mat-checkbox>
+                                                        </mat-cell>
+                                                    </ng-container>
 
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                    <ng-container matColumnDef="name">
+                                                        <mat-cell *matCellDef="let includedpoi" class="p-0">
+                                                            <p class="included text-truncate">{{includedpoi.name}}</p>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                                    <mat-row  *matRowDef="let included; columns: POIsColumns;" matRipple style="border-bottom-width: 0px;">
+                                                    </mat-row>
+                                                </mat-table>
                                             </div>
 
-                                            <mat-selection-list class="pt-0 pb-16" #list formControlName="excludedPOIs">
-                                                <div style="width: 100%; overflow: auto;">
-                                                    <mat-table [dataSource]="dataSourceExcluded" fusePerfectScrollbar >
-                                                    
-                                                        <ng-container matColumnDef="name">
-                                                            <mat-cell *matCellDef="let excludedpoi" class="p-0">
-                                                                <mat-list-option checkboxPosition="before" style="font-size: 12px;"  (click)="clickExcluded(excludedpoi.id)" [value]="excludedpoi.id">{{excludedpoi.name}}</mat-list-option>
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                        <mat-row  *matRowDef="let excluded; columns: displayedColumns;" matRipple style="border-bottom-width: 0px;">
-                                                        </mat-row>
-                                                    </mat-table>
-                                                </div>
-
-                                                <mat-paginator 
-                                                    #paginatorExcluded
-                                                    showFirstLastButtons
-                                                    class="table_paginator_detail"
-                                                    [length]="dataSourceExcluded.totalLength"
-                                                    [pageSize]="10"
-                                                    [hidePageSize]="true"
-                                                ></mat-paginator>
-                                            </mat-selection-list>
+                                            <mat-paginator 
+                                                #paginatorIncluded
+                                                showFirstLastButtons
+                                                class="table_paginator_detail"
+                                                [length]="dataSourceIncluded.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                            ></mat-paginator>
                                         </div>
                                     </div>
 
-                                    <div class="includedPOI" fxFlex="48">
-                                        <div class="included-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div class="p-16 pb-10" fxLayout="row" fxLayoutAlign="space-between">
-                                                <div class="h3 font-weight-500" fxFlex="48">Included POIs</div>
+                                    <div class="excludedPOI" fxFlex="80" class="mr-32 ml-32" [ngStyle]="{'display':!filterBy? 'block' : 'none' }">
+                                        <div class="excluded-card pb-20 pt-20" style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                                            <div  fxLayout="row" fxLayoutAlign="space-between">
+                                                <div class="filter_company_input" fxFlex="70">
+                                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
+                                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                </div>
+
                                                 <button mat-raised-button
-                                                        class="save-poigroup-button"
-                                                        (click)="deletePOIs()">
-                                                    <span>ADD</span>
+                                                        class="save-poigroup-button accent"
+                                                        (click)="addPOIs()"
+                                                        fxFlex="20"
+                                                        style="margin: 20px; color: antiquewhite;">
+                                                    <span>{{ 'POIGROUPS.ADD' | translate }}</span>
                                                 </button>
                                             </div>
                     
-                                            <div class="card-divider w-40-p" style="height: 2px; background: #039be5; margin-left: 10px;"></div>
+                                            <div class="POIGroup_table" style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceExcluded" fusePerfectScrollbar >
+                                                    <ng-container matColumnDef="id">
+                                                        <mat-cell *matCellDef="let excludedpoi" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                                (change)="$event ? excludedSelection.toggle(excludedpoi.id) : null"
+                                                                [checked]="excludedSelection.isSelected(excludedpoi.id)">
+                                                            </mat-checkbox>
+                                                        </mat-cell>
+                                                    </ng-container>
 
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                    <ng-container matColumnDef="name">
+                                                        <mat-cell *matCellDef="let excludedpoi" class="p-0">
+                                                            <p class="excluded text-truncate">{{excludedpoi.name}}</p>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                                    <mat-row  *matRowDef="let excluded; columns: POIsColumns;" matRipple style="border-bottom-width: 0px;">
+                                                    </mat-row>
+                                                </mat-table>
                                             </div>
 
-                                            <mat-selection-list class="pt-0 pb-16" #list formControlName="includedPOIs">
-                                                <div style="width: 100%; overflow: auto;">
-                                                    <mat-table [dataSource]="dataSourceIncluded" fusePerfectScrollbar >
-                                                    
-                                                        <ng-container matColumnDef="name">
-                                                            <mat-cell *matCellDef="let excludedpoi" class="p-0">
-                                                                <mat-list-option checkboxPosition="before" style="font-size: 12px;" (selectionChange)="handleSelectionChange($event.option)" [value]="excludedpoi.id">{{excludedpoi.name}}</mat-list-option>
-                                                            </mat-cell>
-                                                        </ng-container>
-                                                        <mat-row  *matRowDef="let excluded; columns: displayedColumns;" matRipple style="border-bottom-width: 0px;">
-                                                        </mat-row>
-                                                    </mat-table>
-                                                </div>
-
-                                                <mat-paginator 
-                                                    #paginatorIncluded
-                                                    showFirstLastButtons
-                                                    class="table_paginator_detail"
-                                                    [length]="dataSourceIncluded.totalLength"
-                                                    [pageSize]="10"
-                                                    [hidePageSize]="true"
-                                                ></mat-paginator>
-                                            </mat-selection-list>
+                                            <mat-paginator 
+                                                #paginatorExcluded
+                                                showFirstLastButtons
+                                                class="table_paginator_detail"
+                                                [length]="dataSourceExcluded.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                            ></mat-paginator>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </mat-tab>

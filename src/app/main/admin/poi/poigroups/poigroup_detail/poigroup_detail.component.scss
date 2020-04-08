@@ -27,15 +27,53 @@
         align-items: center;
     }
    
-    body.theme-default .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+    .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
         background: white !important;
     }
     mat-row:hover {
-        background-color: #b2f5ef !important;
+        background-color: rgba(3, 154, 229, 0.24) !important;
     }
    
-    body.theme-default .mat-input-element:disabled {
+     .mat-input-element:disabled {
         color: black !important
     }
+   
+    .card {
+        display: flex;
+        flex-direction: column;
+        flex: 0 1 auto;
+        padding: 0;
+        border-radius: 8px;
+
+        @include media-breakpoint(gt-sm) {
+            @include mat-elevation(1);
+        }
+
+        > .header {
+            flex: 0 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        > .content {
+            flex: 0 1 auto;
+        }
+    }
+
+    .nav .nav-item .navlink {
+        color: #b2f5ef !important
+    }
+
+    .POIGroup_table {
+        height: 30vh !important;
+    }
+
+    @media screen and (min-height: 890px){
+        .POIGroup_table {
+            height: 45vh !important;
+        }
+    }
+
+
+    // }
 
     

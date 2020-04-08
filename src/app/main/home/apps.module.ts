@@ -10,11 +10,11 @@ const routes = [
     },
     {
         path        : 'google',
-        loadChildren: () => import('./google/google-maps.module').then(m => m.GoogleMapsModule)
+        loadChildren: () => import('./maps/google/google-maps.module').then(m => m.GoogleMapsModule)
     },
     {
         path        : 'osm',
-        loadChildren: () => import('./osm/osm.module').then(m => m.OpenStreetMapModule)
+        loadChildren: () => import('./maps/osm/osm.module').then(m => m.OpenStreetMapModule)
     },
    
 ];
