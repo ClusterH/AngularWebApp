@@ -3,9 +3,11 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class LocationHistoryService
+export class ReportService
 {
-    locationhistory: any[];
+    // report: any[];
+    report_cList: any[];
+
 
     /**
      * Constructor
@@ -16,7 +18,7 @@ export class LocationHistoryService
         private _httpClient: HttpClient,
     ) { }
     
-    getReports(conncode: string, userid: number, pageindex: number, pagesize: number, categoryid: number, filterString: string, method: string): Observable<any>
+    getReports(conncode: string, userid: number, pageindex: number, pagesize: number, categoryid: any, filterString: string, method: string): Observable<any>
     {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));

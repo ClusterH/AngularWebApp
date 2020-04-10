@@ -242,14 +242,14 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Administrative',
                 translate: 'NAV.ADMINISTRATIVE',
                 type     : 'item',
-                url      : '/report/administrative'
+                url      : '/report/reportcomponent/1_Administrative'
             },
             {
                 id       : 'locationhistory',
                 title    : 'Location History',
                 translate: 'NAV.LOCATIONHISTORY',
                 type     : 'item',
-                url      : '/report/locationhistory'
+                url      : '/report/reportcomponent/2_LocationHistory'
             },
             {
                 id       : 'reports_logistics',
@@ -270,7 +270,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Events',
                 translate: 'NAV.EVENTS',
                 type     : 'item',
-                url      : 'pages/reports/events'
+                url      : '/report/reportcomponent/5_Event'
             },
             {
                 id       : 'driver_behavior',

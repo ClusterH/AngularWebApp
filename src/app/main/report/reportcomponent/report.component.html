@@ -1,4 +1,4 @@
-<div id="locationhistory" class="page-layout simple fullwidth" fxLayout="column">
+<div id="report" class="page-layout simple fullwidth" fxLayout="column">
 
    <!-- HEADER -->
    <div class="header accent p-20 h-120" fxLayout="row" fxLayoutAlign="start center">
@@ -6,9 +6,10 @@
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="secondary-text s-18">receipt</mat-icon>
                 <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">{{ 'LOCATIONHISTORY.LOCATIONHISTORY' | translate }}</span>
+                <span class="secondary-text">Report</span>
+                <!-- <div class="secondary-text h2">Report</div> -->
             </div>
-            <div class="h1 mt-16">Report</div>
+            <div class="h1 mt-16">{{ currentCategoryName }}</div>
         </div>
     </div>
     <!-- / HEADER -->
@@ -17,10 +18,10 @@
     <div class="content p-24">  
 
         <div class="vertical-stepper-wrapper">
-            <mat-vertical-stepper class="mat-elevation-z4" [linear]="true">
-                <mat-step [stepControl]="verticalStepperStep1">
+            <mat-vertical-stepper class="mat-elevation-z4" [linear]="true" #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)">
+                <mat-step [stepControl]="reportStep">
 
-                    <form fxLayout="column" [formGroup]="verticalStepperStep1">
+                    <form fxLayout="column" [formGroup]="reportStep">
 
                         <ng-template matStepLabel>Select Report</ng-template>
 
@@ -28,7 +29,7 @@
 
                             <div  fxLayout="row" fxLayoutAlign="center" >
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onReportFilter($event)">
+                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'report')">
                                     <mat-icon (click)="clearFilter()">clear</mat-icon>
                                 </div>
                             </div>
@@ -38,8 +39,8 @@
                                     <ng-container matColumnDef="id">
                                         <mat-cell *matCellDef="let report" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
-                                                (change)="$event ? reportSelection.toggle(report.apimethod) : null"
-                                                [checked]="reportSelection.isSelected(report.apimethod)"
+                                                (change)="$event ? reportSelection.toggle(report.id) : null"
+                                                [checked]="reportSelection.isSelected(report.id)"
                                                 formControlName="report" required
                                                 >
                                             </mat-checkbox>
@@ -77,17 +78,17 @@
 
                 </mat-step>
                 
-                <mat-step [stepControl]="verticalStepperStep1" *ngIf="loadingSubjectCompany  | async" >
+                <mat-step *ngIf="loadingSubjectCompany | async" >
 
-                    <form fxLayout="column" [formGroup]="verticalStepperStep2">
+                    <form fxLayout="column" [formGroup]="companyStep">
 
                         <ng-template matStepLabel>Company</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;" >
 
                             <div  fxLayout="row" fxLayoutAlign="center" >
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onReportFilter($event)">
+                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'company')">
                                     <mat-icon (click)="clearFilter()">clear</mat-icon>
                                 </div>
                             </div>
@@ -99,7 +100,7 @@
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="$event ? companySelection.toggle(company) : null"
                                                 [checked]="companySelection.isSelected(company)"
-                                                formControlName="company" required
+                                                required
                                                 >
                                             </mat-checkbox>
                                         </mat-cell>
@@ -123,15 +124,9 @@
                                 [length]="dataSourceCompany.totalLength"
                                 [pageSize]="5"
                                 [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorCompany)"
                             ></mat-paginator>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex="100">
-                                <mat-label>Address</mat-label>
-                                <textarea matInput formControlName="address" required>
-                                    1600 Amphitheatre Pkwy
-                                </textarea>
-                                <mat-error>Address is required!</mat-error>
-                            </mat-form-field> -->
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="center center">
@@ -147,21 +142,54 @@
 
                 </mat-step>
 
-                <mat-step [stepControl]="verticalStepperStep1" *ngIf="loadingSubjectGroup  | async">
+                <mat-step *ngIf="loadingSubjectGroup  | async">
 
-                    <form fxLayout="column" [formGroup]="verticalStepperStep2">
+                    <form fxLayout="column" [formGroup]="groupStep">
 
                         <ng-template matStepLabel>Group</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <mat-form-field appearance="outline" fxFlex="100">
-                                <mat-label>Address</mat-label>
-                                <textarea matInput formControlName="address" required>
-                                    1600 Amphitheatre Pkwy
-                                </textarea>
-                                <mat-error>Address is required!</mat-error>
-                            </mat-form-field>
+                            <div  fxLayout="row" fxLayoutAlign="center" >
+                                <div class="filter_company_input">
+                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'group')">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="report_table ml-12" style="width: 80%; overflow: auto;">
+                                <mat-table [dataSource]="dataSourceGroup" fusePerfectScrollbar>
+                                    <ng-container matColumnDef="id">
+                                        <mat-cell *matCellDef="let group" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? groupSelection.toggle(group) : null"
+                                                [checked]="groupSelection.isSelected(group)"
+                                                required
+                                                >
+                                            </mat-checkbox>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="name">
+                                        <mat-cell *matCellDef="let group" class="p-0">
+                                            <p class="report text-truncate">{{group.name}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-row  *matRowDef="let group; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    </mat-row>
+
+                                </mat-table>
+                            </div>
+
+                            <mat-paginator 
+                                #paginatorGroup
+                                showFirstLastButtons
+                                class="table_paginator_detail"
+                                [length]="dataSourceGroup.totalLength"
+                                [pageSize]="5"
+                                [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorGroup)"
+                            ></mat-paginator>
 
                         </div>
 
@@ -178,9 +206,9 @@
 
                 </mat-step>
 
-                <mat-step [stepControl]="verticalStepperStep1" >
+                <mat-step [stepControl]="outputStep" >
 
-                    <form fxLayout="column" [formGroup]="verticalStepperStep3">
+                    <form fxLayout="column" [formGroup]="outputStep">
 
                         <ng-template matStepLabel>OutPut Format</ng-template>
 

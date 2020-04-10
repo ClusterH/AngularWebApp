@@ -113,8 +113,7 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/groups/group_detail/group_detail.theme";
 
 //Report
-@import "src/app/main/report/administrative/administrative.theme";
-@import "src/app/main/report/locationhistory/locationhistory.theme";
+@import "src/app/main/report/reportcomponent/report.theme";
 
 
 //System
@@ -174,8 +173,7 @@ $typography: mat-typography-config(
     @include admin-group-theme($theme);
 
     //Report
-    @include report-administrative-theme($theme);
-    @include report-locationhistory-theme($theme);
+    @include report-reportcomponent-theme($theme);
 
     //System
     @include system-serviceplans-theme($theme);

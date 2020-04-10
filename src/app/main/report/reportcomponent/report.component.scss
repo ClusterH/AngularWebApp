@@ -1,8 +1,8 @@
 @import "src/@fuse/scss/fuse";
 
-report-locationhistory {
+report-reportcomponent {
 
-    #locationhistory {
+    #report {
         .content {
 
             form {
@@ -65,10 +65,5 @@ report-locationhistory {
          .mat-input-element:disabled {
             color: black !important
         }
-       
-        
     }
-
-   
-   
 }
