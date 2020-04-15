@@ -46,7 +46,9 @@ export class CompaniesComponent implements OnInit
     filter_string: string = '';
     index_number: number = 1;
 
-    company: any;
+    company: any;   
+    userConncode: string;
+    userID: number;
 
     flag: string = '';
     displayedColumns = [
@@ -96,6 +98,10 @@ export class CompaniesComponent implements OnInit
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
 
+        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        console.log(this.userConncode, this.userID);
+
         this.pageIndex= 0;
         this.pageSize = 25;
         this.selected = '';
@@ -121,7 +127,7 @@ export class CompaniesComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadCompanies("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList"))
+           tap(() => this.dataSource.loadCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -136,7 +142,7 @@ export class CompaniesComponent implements OnInit
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new CompaniesDataSource(this._adminCompaniesService);
-        this.dataSource.loadCompanies("PolarixUSA", 2, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
+        this.dataSource.loadCompanies(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
     }
 
     onRowClicked(company) {
@@ -149,13 +155,13 @@ export class CompaniesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadCompanies("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
+            this.dataSource.loadCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadCompanies("PolarixUSA", 2, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
+        this.dataSource.loadCompanies(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
     }
 
     filterEvent() {
@@ -163,7 +169,7 @@ export class CompaniesComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadCompanies("PolarixUSA", 2, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
+        this.dataSource.loadCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
     }
 
     addNewCompany() {

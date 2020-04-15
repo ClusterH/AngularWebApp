@@ -26,6 +26,20 @@ export const locale = {
 
             "GENERAL": "General",
             "AUDIT": "Audit",
+            "NOTIFICATIONS": "Notifications",
+            
+            "EMAIL_SERVER": "Serveur de messagerie",
+            "EMAIL_SENDER": "Expéditeur de l'e-mail",
+            "EMAIL_USER": "Nom d'utilisateur",
+            "EMAIL_PASSWORD": "Mot de passe",
+                        
+            "ADDRESS" : "Address",
+            "COUNTRY" : "Country",
+            "CONTACT_NAME" : "Contact Name",
+            "PHONE" : "Phonenumber",
+            "EMAIL" : "Email",
+            "COMMENTS" : "Comments",
+            "HASPRIVATELABEL" : "Private Label",
            
             "DUPLICATE_CONFIRM_MESSAGE": "Voulez-vous dupliquer?",
             "DELETE_CONFIRM_MESSAGE": "Voulez-vous vraiment supprimer?",

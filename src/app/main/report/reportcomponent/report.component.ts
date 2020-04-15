@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectionModel, CollectionViewer } from '@angular/cdk/collections';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { MatPaginator } from '@angular/material/paginator';
-// import { MatStepper } from '@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
@@ -37,7 +37,6 @@ export class ReportComponent implements OnInit, OnDestroy
     currentCategory: any;
     currentCategoryID: number;
     currentCategoryName: string;
-    reportForm: FormGroup;
 
     // Vertical Stepper
     reportStep: FormGroup;
@@ -53,35 +52,35 @@ export class ReportComponent implements OnInit, OnDestroy
     timeStep: FormGroup;
     outputStep: FormGroup;
 
-     // Private
-     private _unsubscribeAll: Subject<any>;
+    // Private
+    private _unsubscribeAll: Subject<any>;
 
-     public loadingSubjectCompany  = new BehaviorSubject<boolean>(false);
-     public loadingSubjectGroup    = new BehaviorSubject<boolean>(false);
-     public loadingSubjectUnit     = new BehaviorSubject<boolean>(false);
-     public loadingSubjectDriver   = new BehaviorSubject<boolean>(false);
-     public loadingSubjectDate     = new BehaviorSubject<boolean>(false);
-     public loadingSubjectEvent    = new BehaviorSubject<boolean>(false);
-     public loadingSubjectSpeed    = new BehaviorSubject<boolean>(false);
-     public loadingSubjectDistance = new BehaviorSubject<boolean>(false);
-     public loadingSubjectTemp     = new BehaviorSubject<boolean>(false);
-     public loadingSubjectTime     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectCompany     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectGroup       = new BehaviorSubject<boolean>(false);
+    public loadingSubjectUnit        = new BehaviorSubject<boolean>(false);
+    public loadingSubjectDriver      = new BehaviorSubject<boolean>(false);
+    public loadingSubjectDate        = new BehaviorSubject<boolean>(false);
+    public loadingSubjectDateRange   = new BehaviorSubject<boolean>(false);
+    public loadingSubjectEvent       = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMaxSpeed    = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMinSpeed    = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMaxDistance = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMinDistance = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMaxTemp     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMinTemp     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMaxTime     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectMinTime     = new BehaviorSubject<boolean>(false);
+
+    private loadingReport = new BehaviorSubject <any>([]);
+
+    dataSource: ReportDataSource;
     
-     private loadingReport = new BehaviorSubject <any>([]);
-    
-
-     dataSourceReport: ReportDataSource;
-     dataSourceCompany: ReportDataSource;
-     dataSourceGroup: ReportDataSource;
-     dataSourceUnit: ReportDataSource;
-     dataSourceDriver: ReportDataSource;
-     dataSourceEvent: ReportDataSource;
-
-    // private paginatorCompany: MatPaginator;
-
-    // @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
-    //     this.paginatorCompany = mp;
-    // }
+    dataSourceReport: ReportDataSource;
+    dataSourceCompany: ReportDataSource;
+    dataSourceGroup: ReportDataSource;
+    dataSourceUnit: ReportDataSource;
+    dataSourceDriver: ReportDataSource;
+    dataSourceEvent: ReportDataSource;
    
     filter_string: string = '';
     method_string: string = 'report';
@@ -95,13 +94,20 @@ export class ReportComponent implements OnInit, OnDestroy
     ];
 
     selectedIndex: number = 0;
+    selectedRange: string = '';
+    showRangePicker: boolean = false;
 
     reportSelection = new SelectionModel<Element>(false, []);
+    companywholeSelection = new SelectionModel<Element>(false, []);
     companySelection = new SelectionModel<Element>(false, []);
     groupSelection = new SelectionModel<Element>(false, []);
     unitSelection = new SelectionModel<Element>(false, []);
     driverSelection = new SelectionModel<Element>(false, []);
     eventSelection = new SelectionModel<Element>(false, []);
+
+    isWholeCompany: boolean = false;
+    isWholeGroup: boolean = false;
+    editable: boolean = true;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -118,13 +124,13 @@ export class ReportComponent implements OnInit, OnDestroy
     @ViewChild('paginatorEvent', {read: MatPaginator})
         paginatorEvent: MatPaginator;
     
-    // @ViewChild('stepper') private myStepper: MatStepper;
+    @ViewChild('stepper') private myStepper: MatStepper;
     constructor(
         private reportService: ReportService,
         public _matDialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
-
+        private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     )
     {
@@ -138,7 +144,16 @@ export class ReportComponent implements OnInit, OnDestroy
         this._unsubscribeAll = new Subject();
 
         this.filter_string = '';
+        this.isWholeCompany = false;
+        this.editable = true;
+
     }
+
+    // reloadComponent(param: any) {
+    //     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    //     this.router.onSameUrlNavigation = 'reload';
+    //     this.router.navigate([`/report/reportcomponent/${param}`]);
+    // }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -148,6 +163,7 @@ export class ReportComponent implements OnInit, OnDestroy
     {
         this.activatedRoute.params.subscribe(routeParams => {
             console.log(routeParams);
+            // this.reloadComponent(routeParams.id);
             this.currentCategory = routeParams.id;
             this.currentCategoryID = this.currentCategory.split('_')[0];
             this.currentCategoryName = this.currentCategory.split('_')[1];
@@ -160,13 +176,9 @@ export class ReportComponent implements OnInit, OnDestroy
             this.dataSourceUnit    = new ReportDataSource(this.reportService);
             this.dataSourceDriver  = new ReportDataSource(this.reportService);
             this.dataSourceEvent   = new ReportDataSource(this.reportService);
-            // setTimeout(() => {
-            this.dataSourceReport .loadReport(this.userConncode, this.userID, 0, 5, this.currentCategoryID, '', "report_clist");
-            this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, '', "company_clist");
-            this.dataSourceGroup  .loadReport(this.userConncode, this.userID, 0, 5, 0, '', "group_clist");
-            this.dataSourceUnit   .loadReport(this.userConncode, this.userID, 0, 5, 0, '', "unit_clist");
-            this.dataSourceDriver .loadReport(this.userConncode, this.userID, 0, 5, 0, '', "driver_clist");
-            this.dataSourceEvent  .loadReport(this.userConncode, this.userID, 0, 5, 0, '', "event_clist");
+            setTimeout(() => {
+                this.dataSourceReport .loadReport(this.userConncode, this.userID, 0, 5, this.currentCategoryID, '', "report_clist");
+            });
 
             // Vertical Stepper form stepper
             this.reportStep = this._formBuilder.group({
@@ -176,10 +188,13 @@ export class ReportComponent implements OnInit, OnDestroy
 
             this.companyStep = this._formBuilder.group({
                 filterstring : [null],
+                // company: [null, Validators.required],
+                wholeCompany: null
             });
 
             this.groupStep = this._formBuilder.group({
                 filterstring : [null],
+                wholeGroup: null
             });
 
             this.unitStep = this._formBuilder.group({
@@ -190,13 +205,45 @@ export class ReportComponent implements OnInit, OnDestroy
                 filterstring : [null],
             });
 
+            this.dateStep = this._formBuilder.group({
+                selectDate : [null],
+                starttime: [null],
+                start: [null],
+                end: [null],
+                endtime: [null]
+            });
+
             this.eventStep = this._formBuilder.group({
                 filterstring : [null],
+            });
+
+            this.speedStep = this._formBuilder.group({
+                minspeed : [null],
+                maxspeed : [null],
+            });
+
+            this.distanceStep = this._formBuilder.group({
+                mindistance : [null],
+                maxdistance : [null],
+            });
+
+            this.tempStep = this._formBuilder.group({
+                mintemp : [null],
+                maxtemp : [null],
+            });
+
+            this.timeStep = this._formBuilder.group({
+                mintime : [null],
+                maxtime : [null],
             });
 
             this.outputStep = this._formBuilder.group({
                 address : [null, Validators.required],
             });
+        
+            this.dateStep.get('selectDate').setValue('today');
+            this.dateStep.get('starttime').setValue('00:00');
+            this.dateStep.get('endtime').setValue('23:59');
 
             this.companySelection.isSelected = this.isCheckedRow.bind(this);
             this.groupSelection.isSelected = this.isCheckedRow.bind(this);
@@ -204,6 +251,88 @@ export class ReportComponent implements OnInit, OnDestroy
             this.driverSelection.isSelected = this.isCheckedRow.bind(this);
             this.eventSelection.isSelected = this.isCheckedRow.bind(this);
         });
+    }
+
+    selectWholeCompany() {
+        this.isWholeCompany = this.companyStep.get('wholeCompany').value;
+        console.log(this.isWholeCompany);
+
+        if (this.isWholeCompany) {
+            this.loadingSubjectGroup.next(false);
+            this.loadingSubjectUnit.next(false);
+        } else {
+           
+            // this.dataSourceUnit = new ReportDataSource(this.reportService);
+
+            // setTimeout(() => {
+            //     this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, 0, '', 'group_clist');
+            //     this.dataSourceUnit.loadReport(this.userConncode, this.userID, 0, 5, 0, '', 'unit_clist');
+            // });
+
+            this.loadingSubjectGroup.next(true);
+            this.loadingSubjectUnit.next(true);
+        }
+    }
+
+    selectWholeGroup() {
+        this.isWholeGroup = this.groupStep.get('wholeGroup').value;
+        console.log(this.isWholeGroup);
+
+        if (this.isWholeGroup) {
+            this.loadingSubjectUnit.next(false);
+        } else {
+            // this.dataSourceUnit = new ReportDataSource(this.reportService);
+
+            // setTimeout(() => {
+            //     this.dataSourceUnit.loadReport(this.userConncode, this.userID, 0, 5, 0, '', 'unit_clist');
+            // });
+
+            this.loadingSubjectUnit.next(true);
+        }
+    }
+
+    checkOneCompany() {
+
+        if (this.companySelection.selected.length == 0) {
+            alert("Please choose one company");
+        } else {
+            if (!this.isWholeCompany) {
+                this.dataSourceGroup = new ReportDataSource(this.reportService);
+                console.log(this.companySelection.selected[0].id);
+                this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, this.companySelection.selected[0].id, '', 'group_clist' )
+                this.myStepper.selected.completed = true; 
+            }
+           
+            this.myStepper.next();
+        }
+    }
+
+    checkOneGroup() {
+
+        if (this.groupSelection.selected.length == 0) {
+            alert("Please choose one group");
+        } else {
+            if(!this.isWholeGroup) {
+                this.dataSourceUnit = new ReportDataSource(this.reportService);
+                console.log(this.groupSelection.selected[0].id);
+                this.dataSourceUnit.loadGroup(this.userConncode, this.userID, 0, 5, this.groupSelection.selected[0].id, '', 'unit_clist' )
+                this.myStepper.selected.completed = true;
+            }
+            
+            this.myStepper.next();
+        }
+    }
+
+    checkDateTime() {
+        let fromDate = this.dateStep.get('start');
+        let endDate = this.dateStep.get('end');
+        console.log(fromDate, endDate);
+
+        if(this.loadingSubjectDateRange.getValue() && (fromDate.value == null || endDate.value == null) ) {
+            alert("Please choose Date correctly");
+        } else{
+            this.myStepper.next();
+        }
     }
 
     isCheckedRow(row: any): boolean {
@@ -260,9 +389,9 @@ export class ReportComponent implements OnInit, OnDestroy
         } else if (method_string == 'company') {
             this.dataSourceCompany.loadReport(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'group') {
-            this.dataSourceGroup.loadReport(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceGroup.loadGroup(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'unit') {
-            this.dataSourceUnit.loadReport(this.userConncode, this.userID, this.paginatorUnit.pageIndex, this.paginatorUnit.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceUnit.loadGroup(this.userConncode, this.userID, this.paginatorUnit.pageIndex, this.paginatorUnit.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'driver') {
             this.dataSourceDriver.loadReport(this.userConncode, this.userID, this.paginatorDriver.pageIndex, this.paginatorDriver.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'event') {
@@ -313,13 +442,37 @@ export class ReportComponent implements OnInit, OnDestroy
         console.log(this.filter_string);
     }
 
-    clearFilter() {
+    clearFilter(method: string) {
         console.log(this.filter_string);
         this.filter_string = '';
-        this.reportForm.get('filterstring').setValue(this.filter_string);
+        switch(method) {
+            case 'report':
+                this.reportStep.get('filterstring').setValue(this.filter_string);
+            break;
+
+            case 'company':
+                this.companyStep.get('filterstring').setValue(this.filter_string);
+            break;
+
+            case 'group':
+                this.groupStep.get('filterstring').setValue(this.filter_string);
+            break;
+
+            case 'unit':
+                this.unitStep.get('filterstring').setValue(this.filter_string);
+            break;
+
+            case 'driver':
+                this.driverStep.get('filterstring').setValue(this.filter_string);
+            break;
+
+            case 'event':
+                this.eventStep.get('filterstring').setValue(this.filter_string);
+            break;
+        }
        
-        this.managePageIndex(this.method_string);
-        this.loadReport(this.method_string);
+        this.managePageIndex(method);
+        this.loadReport(method);
     }
 
     getReportParams() {
@@ -328,12 +481,10 @@ export class ReportComponent implements OnInit, OnDestroy
             this.initBehaviorSubjects();
         } else {
             console.log(this.reportSelection.selected[0], this.reportService.report_cList);
-            // this.initBehaviorSubjects();
 
             let selectedReportid = Number(this.reportSelection.selected[0]);
             let selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
             console.log(selectedReport);
-            // let apimethod = this.reportSelection.selected[0];
 
             this.reportService.getReportParams(this.userConncode, this.userID, selectedReportid, selectedReport.apimethod)
             .subscribe((res: any) => {
@@ -346,7 +497,10 @@ export class ReportComponent implements OnInit, OnDestroy
             this.loadingReport.subscribe(params => {
                 if (params == 'companyid') {
                     this.loadingSubjectCompany.next(true);
+                    this.dataSourceCompany = new ReportDataSource(this.reportService);
+                    this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, this.filter_string, 'company_clist')
                     console.log('loadingsubjectCompany: ', this.loadingSubjectCompany.value);
+
                 } else if (params == 'groupids') {
                     this.loadingSubjectGroup.next(true);
 
@@ -356,20 +510,36 @@ export class ReportComponent implements OnInit, OnDestroy
                 } else if (params == 'driverids') {
                     this.loadingSubjectDriver.next(true);
 
+                } else if (params == 'datefrom' || params == 'dateto') {
+                    this.loadingSubjectDate.next(true);
+
                 } else if (params == 'eventids') {
                     this.loadingSubjectEvent.next(true);
                     
-                } else if (params == 'maxspeed' || params == 'minspeed') {
-                    this.loadingSubjectSpeed.next(true);
+                } else if (params == 'maxspeed') {
+                    this.loadingSubjectMaxSpeed.next(true);
 
-                } else if (params == 'maxdistance' || params == 'mindistance') {
-                    this.loadingSubjectDistance.next(true);
+                } else if (params == 'minspeed') {
+                    this.loadingSubjectMinSpeed.next(true);
 
-                } else if (params == 'maxtemp' || params == 'mintemp') {
-                    this.loadingSubjectTemp.next(true);
+                } else if (params == 'maxdistance') {
+                    this.loadingSubjectMaxDistance.next(true);
 
-                } else if (params == 'maxtime' || params == 'mintime') {
-                    this.loadingSubjectTime.next(true);
+                } else if (params == 'mindistance') {
+                    this.loadingSubjectMinDistance.next(true);
+
+                } else if (params == 'maxtemp') {
+                    this.loadingSubjectMaxTemp.next(true);
+
+                } else if (params == 'mintemp') {
+                    this.loadingSubjectMinTemp.next(true);
+
+                } else if (params == 'maxtime') {
+                    this.loadingSubjectMaxTime.next(true);
+
+                } else if (params == 'mintime') {
+                    this.loadingSubjectMinTime.next(true);
+
                 }
             })
 
@@ -400,10 +570,14 @@ export class ReportComponent implements OnInit, OnDestroy
         this.loadingSubjectUnit.next(false);
         this.loadingSubjectDriver.next(false);
         this.loadingSubjectEvent.next(false);
-        this.loadingSubjectSpeed.next(false);
-        this.loadingSubjectDistance.next(false);
-        this.loadingSubjectTemp.next(false);
-        this.loadingSubjectTime.next(false);
+        this.loadingSubjectMaxSpeed.next(false);
+        this.loadingSubjectMinSpeed.next(false);
+        this.loadingSubjectMaxDistance.next(false);
+        this.loadingSubjectMinDistance.next(false);
+        this.loadingSubjectMaxTemp.next(false);
+        this.loadingSubjectMinTemp.next(false);
+        this.loadingSubjectMaxTime.next(false);
+        this.loadingSubjectMinTime.next(false);
 
         // this.company_flag = false;
         // this.loadingReport.complete();
@@ -421,13 +595,42 @@ export class ReportComponent implements OnInit, OnDestroy
         if (this.method_string == 'company') {
             this.dataSourceCompany.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'group') {
-            this.dataSourceGroup.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceGroup.loadGroup(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'unit') {
-            this.dataSourceUnit.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceUnit.loadGroup(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'driver') {
             this.dataSourceDriver.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'event') {
             this.dataSourceEvent.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+        }
+    }
+
+    dateFormat(date: any) {
+        let str = '';
+    
+        if (date != '') {
+          str = 
+            ("00" + (date.getMonth() + 1)).slice(-2) 
+            + "/" + ("00" + date.getDate()).slice(-2) 
+            + "/" + date.getFullYear() + " " 
+            + ("00" + date.getHours()).slice(-2) + ":" 
+            + ("00" + date.getMinutes()).slice(-2) 
+            + ":" + ("00" + date.getSeconds()).slice(-2); 
+        }
+
+        console.log(str);
+    
+        return str;
+    }
+
+    onDateRangeChange($event) {
+        console.log(this.selectedRange, "event: ", $event);
+        if (this.selectedRange == 'daterange') {
+            this.showRangePicker = true;
+            this.loadingSubjectDateRange.next(true);
+        } else {
+            this.showRangePicker = false;
+            this.loadingSubjectDateRange.next(false);
         }
     }
 

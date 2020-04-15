@@ -9,6 +9,10 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmDrawingModule } from '@agm/drawing';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+
+
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseHighlightModule } from '@fuse/components/index';
@@ -40,6 +44,8 @@ const routes = [
         AgmDrawingModule,
         MatToolbarModule,
         MatButtonToggleModule,
+        MatFormFieldModule,
+        MatSelectModule,
 
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ',

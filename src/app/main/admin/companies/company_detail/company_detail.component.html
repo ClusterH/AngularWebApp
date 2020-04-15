@@ -170,9 +170,68 @@
                                                 showFirstLastButtons
                                             ></mat-paginator>
                                         </mat-select>
-                                    </mat-form-field>                                    
+                                    </mat-form-field>     
+                                    
+                                    
                                 </div>
 
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.ADDRESS' | translate }}</mat-label>
+                                        <input matInput placeholder="Address"
+                                               name="address"
+                                                formControlName="address">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.COUNTRY' | translate }}</mat-label>
+                                        <input matInput placeholder="Country"
+                                               name="country"
+                                               formControlName="country">
+                                    </mat-form-field>
+                                </div>
+
+                                
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.CONTACT_NAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Contact Name"
+                                               name="contactname"
+                                                formControlName="contactname">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.PHONE' | translate }}</mat-label>
+                                        <input matInput placeholder="Phonenumber"
+                                               name="phone"
+                                               formControlName="phone">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.EMAIL' | translate }}</mat-label>
+                                        <input matInput placeholder="Email address"
+                                               name="email"
+                                                formControlName="email">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.COMMENTS' | translate }}</mat-label>
+                                        <input matInput placeholder="Comments"
+                                               name="comments"
+                                               formControlName="comments">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-checkbox formControlName="hasprivatelabel" fxFlex="50">{{ 'COMPANIES.HASPRIVATELABEL' | translate }}</mat-checkbox>
+
+                                    
+                                    
+                                   
+                                </div>
                                 <!-- <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.UNITTYPE' | translate }}</mat-label>
@@ -325,6 +384,45 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </div> -->
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="{{ 'COMPANIES.NOTIFICATIONS' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                               
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.EMAIL_SERVER' | translate }}</mat-label>
+                                        <input matInput placeholder="Email Server (leave empty to use default)"
+                                               name="emailserver"
+                                                formControlName="emailserver">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.EMAIL_SENDER' | translate }}</mat-label>
+                                        <input matInput placeholder="Email Sender"
+                                               name="emailsender"
+                                               formControlName="emailsender">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.EMAIL_USER' | translate }}</mat-label>
+                                        <input matInput placeholder="Email User"
+                                               name="emailuser"
+                                               formControlName="emailuser">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMPANIES.EMAIL_PASSWORD' | translate }}</mat-label>
+                                        <input matInput placeholder="Email Password"
+                                               name="emailpassword"
+                                               formControlName="emailpassword">
+                                    </mat-form-field>
+                                </div>
+
                             </div>
                         </mat-tab>
 

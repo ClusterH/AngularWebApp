@@ -53,6 +53,14 @@ const routes = [
         path        : 'groups',
         loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
     },
+    {
+        path        : 'insurancecompanies',
+        loadChildren: () => import('./insurancecompanies/insurancecompanies.module').then(m => m.InsuranceCompaniesModule)
+    },
+    {
+        path        : 'dealercompanies',
+        loadChildren: () => import('./dealercompanies/dealercompanies.module').then(m => m.DealerCompaniesModule)
+    }
 ];
 
 @NgModule({

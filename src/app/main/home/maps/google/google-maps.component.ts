@@ -33,6 +33,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
     showZones: boolean = true;
     showPOIs: boolean = true;
     showRoutes: boolean = true;
+    selectedCountry: string;
+    user: any;
 
     // managerOptions = {
     //     drawingControl: true,
@@ -54,7 +56,12 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
                 private _adminVehMarkersService: VehMarkersService
                 ,private _adminZonesService: ZonesService
                 ,private _adminRoutesService: RoutesService) {
-        console.log(this.lat);
+
+                    
+        this.user = JSON.parse(localStorage.getItem('user_info'));
+        console.log(this.user);
+
+        
         // Set the defaults
         this.lat = 25.7959;
         this.lng = -80.2871;
@@ -88,7 +95,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
             (data)=>{
                 // console.log("data");
                 // console.log(data.TrackingXLAPI.DATA.paths);
-                this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA.paths + "]");
+                this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
             }
         );
         
@@ -96,7 +103,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
             (data)=>{
                 // console.log("data");
                 // console.log(data.TrackingXLAPI.DATA.paths);
-                this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA.paths + "]");
+                this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
             }
         );
         

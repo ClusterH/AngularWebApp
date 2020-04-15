@@ -13,4 +13,20 @@ export interface CompanyDetail
     deletedby?: number;
     lastmodifieddate?: Date;
     lastmodifiedby?: number;
+    logofile?: string;
+    address?: string;
+    country?: string;
+    contactname?: string;
+    phone?: string;
+    email?: string;
+    comments?: string;
+    billingnote?: string;
+    emailserver?: string;
+    emailsender?: string;
+    emailuser?: string;
+    emailpassword?: string;
+    webstartlat?: number;
+    webstartlong?: number;
+    hasprivatelabel?: boolean;
+
 }

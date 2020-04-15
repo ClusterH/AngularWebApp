@@ -1,21 +1,28 @@
 <div id="countdown" class="page-layout simple fullwidth docs">
     <mat-toolbar>
-        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple>
-            <mat-button-toggle value="showVehicles" #showVehicles (change)="onShowValChange($event.value)" matTooltip="Show/Hide Vehicles" >
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple fxLayoutAlign="space-between">
+            <mat-button-toggle value="showVehicles" #showVehicles (change)="onShowValChange($event.value)"
+                matTooltip="Show/Hide Vehicles">
                 <mat-icon class="blue-600-fg">directions_car</mat-icon>
             </mat-button-toggle>
             <mat-button-toggle value="showPOIs" (change)="onShowValChange($event.value)" matTooltip="Show/Hide Points">
                 <mat-icon class="blue-600-fg">place</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle value="showZones" #showZones (change)="onShowValChange($event.value)" matTooltip="Show/Hide Geofences">
+            <mat-button-toggle value="showZones" #showZones (change)="onShowValChange($event.value)"
+                matTooltip="Show/Hide Geofences">
                 <mat-icon class="blue-600-fg">center_focus_strong</mat-icon>
             </mat-button-toggle>
-            <mat-button-toggle value="showRoutes" #showRoutes (change)="onShowValChange($event.value)" matTooltip="Show/Hide Routes">
+            <mat-button-toggle value="showRoutes" #showRoutes (change)="onShowValChange($event.value)"
+                matTooltip="Show/Hide Routes">
                 <mat-icon class="blue-600-fg">gesture</mat-icon>
             </mat-button-toggle>
-
-
         </mat-button-toggle-group>
+        <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
+            <mat-option [value]="'GB'">Great Britain</mat-option>
+            <mat-option [value]="'US'">United States</mat-option>
+            <mat-option [value]="'CA'">Canada</mat-option>
+        </mat-select>
+
     </mat-toolbar>
     <!-- HEADER -->
     <!-- <div class="header accent p-24 h-160" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
@@ -51,12 +58,12 @@
         <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="false"
             (mapClick)="mapClicked($event)">
             <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
-            <agm-marker-cluster [minimumClusterSize]="minClusterSize" 
+            <agm-marker-cluster [minimumClusterSize]="minClusterSize"
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
                 <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.label, i)"
-                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable" [visible]="m.Visible"
-                    (dragEnd)="markerDragEnd(m, $event)">
+                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
+                    [visible]="m.Visible" (dragEnd)="markerDragEnd(m, $event)">
 
                     <agm-info-window>
                         <strong>{{m.label}}</strong>
@@ -64,9 +71,9 @@
                 </agm-marker>
             </agm-marker-cluster>
 
-            <agm-polyline *ngFor="let rte of routes"  [strokeColor]="blue"  >          
+            <agm-polyline *ngFor="let rte of routes" [strokeColor]="blue">
                 <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
-                </agm-polyline-point>      
+                </agm-polyline-point>
             </agm-polyline>
 
             <agm-polygon *ngFor='let zone of zones' [fillColor]="red" [fillOpacity]="0.01" [strokeColor]="red"

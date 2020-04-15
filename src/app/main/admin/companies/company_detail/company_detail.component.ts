@@ -37,8 +37,8 @@ export class CompanyDetailComponent implements OnInit
   company_detail: any;
   public company: any;
   pageType: string;
-  user_conncode: string;
-  user_id: number;
+  userConncode: string;
+  userID: number;
 
   companyForm: FormGroup;
   companyDetail: CompanyDetail = {};
@@ -89,9 +89,9 @@ export class CompanyDetailComponent implements OnInit
         console.log(this.company);
         this.pageType = 'new';
       }
-
-      this.user_conncode = "PolarixUSA";
-      this.user_id = 2;
+ 
+      this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+      this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
       this.filter_string = '';
   }
@@ -103,14 +103,15 @@ export class CompanyDetailComponent implements OnInit
     this.dataSourceCompanyType       = new CompanyDetailDataSource(this.companyDetailService);
     this.dataSourceUserProfile       = new CompanyDetailDataSource(this.companyDetailService);
 
-    this.dataSourceAccount.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.account, "account_clist");
-    this.dataSourceCompanyType.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.companytype, "companytype_clist");
-    this.dataSourceUserProfile.loadCompanyDetail(this.user_conncode, this.user_id, 0, 10, this.company.userprofile, "userprofile_clist");
+    this.dataSourceAccount.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.company.account, "account_clist");
+    this.dataSourceCompanyType.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.company.companytype, "companytype_clist");
+    this.dataSourceUserProfile.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.company.userprofile, "userprofile_clist");
     
     this.companyForm = this._formBuilder.group({
       name               : [null, Validators.required],
       account            : [null, Validators.required],
       address            : [null, Validators.required],
+      logofile           : [null, Validators.required],
       country            : [null, Validators.required],
       contactname        : [null, Validators.required],
       phone              : [null, Validators.required],
@@ -177,11 +178,11 @@ export class CompanyDetailComponent implements OnInit
 
   loadCompanyDetail(method_string: string) {
     if (method_string == 'account') {
-        this.dataSourceAccount.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceAccount.loadCompanyDetail(this.userConncode, this.userID, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'companytype') {
-        this.dataSourceCompanyType.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorCompanyType.pageIndex, this.paginatorCompanyType.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceCompanyType.loadCompanyDetail(this.userConncode, this.userID, this.paginatorCompanyType.pageIndex, this.paginatorCompanyType.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'userprofile') {
-        this.dataSourceUserProfile.loadCompanyDetail(this.user_conncode, this.user_id, this.paginatorUserProfile.pageIndex, this.paginatorUserProfile.pageSize, this.filter_string, `${method_string}_clist`)
+        this.dataSourceUserProfile.loadCompanyDetail(this.userConncode, this.userID, this.paginatorUserProfile.pageIndex, this.paginatorUserProfile.pageSize, this.filter_string, `${method_string}_clist`)
     }
   }
 
@@ -258,15 +259,51 @@ export class CompanyDetailComponent implements OnInit
       this.companyForm.get('deletedbyname').setValue(this.company.deletedbyname);
       this.companyForm.get('lastmodifieddate').setValue(this.dateFormat(lastmodifieddate));
       this.companyForm.get('lastmodifiedbyname').setValue(this.company.lastmodifiedbyname);
+
+      this.companyForm.get('emailserver').setValue(this.company.emailserver)
+      this.companyForm.get('emailsender').setValue(this.company.emailsender)
+      this.companyForm.get('emailuser').setValue(this.company.emailuser)
+      this.companyForm.get('emailpassword').setValue(this.company.emailpassword)            
+      this.companyForm.get('logofile').setValue(this.company.logofile)
+      this.companyForm.get('address').setValue(this.company.address)
+      this.companyForm.get('country').setValue(this.company.country)
+      this.companyForm.get('contactname').setValue(this.company.contactname)
+      this.companyForm.get('phone').setValue(this.company.phone)
+      this.companyForm.get('email').setValue(this.company.email)
+      this.companyForm.get('comments').setValue(this.company.comments)
+      this.companyForm.get('billingnote').setValue(this.company.billingnote)
+      this.companyForm.get('webstartlat').setValue(this.company.webstartlat)
+      this.companyForm.get('webstartlong').setValue(this.company.webstartlong)
+      this.companyForm.get('hasprivatelabel').setValue(this.company.hasprivatelabel)
+
       this.companyForm.get('filterstring').setValue(this.filter_string);
+
   }
 
   getValues(dateTime: any, mode: string) {
-    this.companyDetail.name                 = this.companyForm.get('name').value || '',
-    this.companyDetail.orgno                = this.companyForm.get('orgno').value || '',
+    this.companyDetail.name                 = this.companyForm.get('name').value || '';
+    this.companyDetail.orgno                = this.companyForm.get('orgno').value || '';
     this.companyDetail.accountid            = this.companyForm.get('account').value || 0;
     this.companyDetail.companytypeid        = this.companyForm.get('companytype').value || 0;
     this.companyDetail.userprofileid        = this.companyForm.get('userprofile').value || 0;
+    this.companyDetail.emailserver = this.companyForm.get('emailserver').value || '';
+    this.companyDetail.emailsender = this.companyForm.get('emailsender').value || '';
+    this.companyDetail.emailuser = this.companyForm.get('emailuser').value || '';
+    this.companyDetail.emailpassword = this.companyForm.get('emailpassword').value || '';            
+    this.companyDetail.logofile = this.companyForm.get('logofile').value || '';
+    this.companyDetail.address = this.companyForm.get('address').value || '';
+    this.companyDetail.country = this.companyForm.get('country').value || '';
+    this.companyDetail.contactname = this.companyForm.get('contactname').value || '';
+    this.companyDetail.phone = this.companyForm.get('phone').value || '';
+    this.companyDetail.email = this.companyForm.get('email').value || '';
+    this.companyDetail.comments = this.companyForm.get('comments').value || '';
+    this.companyDetail.billingnote = this.companyForm.get('billingnote').value || '';
+    this.companyDetail.webstartlat = this.companyForm.get('webstartlat').value || 0;
+    this.companyDetail.webstartlong = this.companyForm.get('webstartlong').value || 0;
+    this.companyDetail.hasprivatelabel = this.companyForm.get('hasprivatelabel').value || false;
+
+
+
  
     this.companyDetail.isactive         = this.company.isactive || true;
     this.companyDetail.deletedwhen      = this.company.deletedwhen || '';
@@ -277,13 +314,13 @@ export class CompanyDetailComponent implements OnInit
       this.companyDetail.created          = this.company.created;
       this.companyDetail.createdby        = this.company.createdby;
       this.companyDetail.lastmodifieddate = dateTime;
-      this.companyDetail.lastmodifiedby   = this.user_id;
+      this.companyDetail.lastmodifiedby   = this.userID;
     } else if ( mode == "add" ) {
       this.companyDetail.id               = 0;
       this.companyDetail.created          = dateTime;
-      this.companyDetail.createdby        = this.user_id;
+      this.companyDetail.createdby        = this.userID;
       this.companyDetail.lastmodifieddate = dateTime;
-      this.companyDetail.lastmodifiedby   = this.user_id;
+      this.companyDetail.lastmodifiedby   = this.userID;
     }
     
   }
@@ -310,7 +347,7 @@ export class CompanyDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.companyDetail);
 
-    this.companyDetailService.saveCompanyDetail(this.user_conncode, this.user_id, this.companyDetail)
+    this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
     .subscribe((result: any) => {
       console.log(result);
       if (result.responseCode == 200) {
@@ -326,7 +363,7 @@ export class CompanyDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.companyDetail);
 
-    this.companyDetailService.saveCompanyDetail(this.user_conncode, this.user_id, this.companyDetail)
+    this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
     .subscribe((result: any) => {
       console.log(result);
       if (result.responseCode == 200) {

@@ -207,18 +207,18 @@ export const navigation: FuseNavigation[] = [
                 url      : '/admin/groups/groups'
             },
             {
-                id       : 'insurance_companies',
+                id       : 'insurancecompanies',
                 title    : 'Insurance Companies',
                 translate: 'NAV.INSURANCECOMPANIES',
                 type     : 'item',
-                url      : 'pages/admin/insurance_companies'
+                url      : '/admin/insurancecompanies/insurancecompanies'
             },
             {
-                id       : 'dealers',
+                id       : 'dealercompanies',
                 title    : 'Dealers',
                 translate: 'NAV.DEALERS',
                 type     : 'item',
-                url      : 'pages/admin/dealers'
+                url      : '/admin/dealercompanies/dealercompanies'
             },
             {
                 id       : 'events',
@@ -256,14 +256,14 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Logistics',
                 translate: 'NAV.LOGISTICS',
                 type     : 'item',
-                url      : 'pages/reports/reports_logistics'
+                url      : '/report/reportcomponent/3_Logistics'
             },
             {
                 id       : 'fuel',
                 title    : 'Fuel',
                 translate: 'NAV.FUEL',
                 type     : 'item',
-                url      : 'pages/reports/fuel'
+                url      : '/report/reportcomponent/4_Fuel'
             },
             {
                 id       : 'events',
@@ -277,21 +277,21 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Driver Behavior',
                 translate: 'NAV.DRIVERBEHAVIOR',
                 type     : 'item',
-                url      : 'pages/reports/driver_behavior'
-            },
-            {
-                id       : 'system_admin',
-                title    : 'System Admin',
-                translate: 'NAV.SYSTEMADMIN',
-                type     : 'item',
-                url      : 'pages/reports/system_admin'
+                url      : '/report/reportcomponent/6_DriverBehavior'
             },
             {
                 id       : 'telemetry',
                 title    : 'Telemetry',
                 translate: 'NAV.TELEMETRY',
                 type     : 'item',
-                url      : 'pages/reports/telemetry'
+                url      : '/report/reportcomponent/7_Telemetry'
+            },
+            {
+                id       : 'system_admin',
+                title    : 'System Admin',
+                translate: 'NAV.SYSTEMADMIN',
+                type     : 'item',
+                url      : '/report/reportcomponent/8_SystemAdministration'
             },
         ]
     },

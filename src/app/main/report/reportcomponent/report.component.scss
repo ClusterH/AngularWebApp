@@ -65,5 +65,39 @@ report-reportcomponent {
          .mat-input-element:disabled {
             color: black !important
         }
+
+        .spinner_container {
+            position: absolute;
+            top: 50%;
+            left: 40%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+        }
+    
+        .spinner_overlay {
+            height:100vh;
+            width:100%;
+            z-index:    10;
+            top:        0; 
+            left:       0; 
+            position:   fixed;
+        }
+
+        .mat-step-header {
+            pointer-events: none !important;
+        }
+
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
+        }
+
+        // .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, 
+        // .mat-step-header .mat-step-icon-state-edit {
+        //     // background-color: rgb(40, 44, 54) !important;
+        //     background-color: paleturquoise !important;
+        //     color: whitesmoke !important;
+        // }
     }
 }
