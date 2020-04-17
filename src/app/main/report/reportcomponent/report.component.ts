@@ -16,6 +16,7 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
+import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
 import { ReportDataSource } from "app/main/report/reportcomponent/services/report.datasource";
 
 import {CourseDialogComponent} from "./dialog/dialog.component";
@@ -24,6 +25,7 @@ import { locale as reportEnglish } from 'app/main/report/reportcomponent/i18n/en
 import { locale as reportSpanish } from 'app/main/report/reportcomponent/i18n/sp';
 import { locale as reportFrench } from 'app/main/report/reportcomponent/i18n/fr';
 import { locale as reportPortuguese } from 'app/main/report/reportcomponent/i18n/pt';
+import { ReportDetail } from './model/report.model';
 
 @Component({
     selector     : 'report-reportcomponent',
@@ -93,9 +95,16 @@ export class ReportComponent implements OnInit, OnDestroy
         'name',
     ];
 
+    public mask = {
+        mask: [/[0-9]/, /[0-9]/, ':', /[0-5]/, /[0-9]/]
+    };
+
+    selectedReport: {id: number, apimethod: string};
     selectedIndex: number = 0;
     selectedRange: string = '';
     showRangePicker: boolean = false;
+
+    entered_report_param: ReportDetail = {};
 
     reportSelection = new SelectionModel<Element>(false, []);
     companywholeSelection = new SelectionModel<Element>(false, []);
@@ -127,6 +136,7 @@ export class ReportComponent implements OnInit, OnDestroy
     @ViewChild('stepper') private myStepper: MatStepper;
     constructor(
         private reportService: ReportService,
+        private reportResultService: ReportResultService,
         public _matDialog: MatDialog,
         private activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
@@ -238,7 +248,9 @@ export class ReportComponent implements OnInit, OnDestroy
             });
 
             this.outputStep = this._formBuilder.group({
-                address : [null, Validators.required],
+                screen : [null],
+                // excel : [null],
+                // pdf : [null],
             });
         
             this.dateStep.get('selectDate').setValue('today');
@@ -483,10 +495,10 @@ export class ReportComponent implements OnInit, OnDestroy
             console.log(this.reportSelection.selected[0], this.reportService.report_cList);
 
             let selectedReportid = Number(this.reportSelection.selected[0]);
-            let selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
-            console.log(selectedReport);
+            this.selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
+            console.log(this.selectedReport);
 
-            this.reportService.getReportParams(this.userConncode, this.userID, selectedReportid, selectedReport.apimethod)
+            this.reportService.getReportParams(this.userConncode, this.userID, selectedReportid, this.selectedReport.apimethod)
             .subscribe((res: any) => {
                 console.log(res);
                 for (let i = 0; i< res.TrackingXLAPI.DATA.length; i++){
@@ -623,6 +635,25 @@ export class ReportComponent implements OnInit, OnDestroy
         return str;
     }
 
+    paramDateFormat(date: any) {
+        let str = '';
+    
+        if (date != '') {
+          str = date.getFullYear() + "/" + ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2);
+            // ("00" + (date.getMonth() + 1)).slice(-2) 
+            // + "/" + ("00" + date.getDate()).slice(-2) 
+            // + "/" + date.getFullYear() + " " 
+            // + ("00" + date.getHours()).slice(-2) + ":" 
+            // + ("00" + date.getMinutes()).slice(-2) 
+            // + ":" + ("00" + date.getSeconds()).slice(-2); 
+        }
+
+        console.log(str);
+    
+        return str;
+    }
+
+
     onDateRangeChange($event) {
         console.log(this.selectedRange, "event: ", $event);
         if (this.selectedRange == 'daterange') {
@@ -634,20 +665,44 @@ export class ReportComponent implements OnInit, OnDestroy
         }
     }
 
-    /**
-     * Finish the horizontal stepper
-     */
-    finishHorizontalStepper(): void
-    {
-        alert('You have finished the horizontal stepper!');
-    }
-
-    /**
-     * Finish the vertical stepper
-     */
     finishVerticalStepper(): void
     {
-        alert('You have finished the vertical stepper!');
+        console.log('You have finished the vertical stepper!');
+        console.log(this.paramDateFormat(new Date(this.dateStep.get('start').value)));
+        this.entered_report_param.reportname = this.selectedReport.apimethod || null;
+        this.entered_report_param.companyid = this.companySelection.selected[0]? this.companySelection.selected[0].id : null
+        this.entered_report_param.groupid = this.groupSelection.selected[0]? this.groupSelection.selected[0].id : null;
+        this.entered_report_param.unitid = this.unitSelection.selected[0]? this.unitSelection.selected[0].id : null;
+        this.entered_report_param.driverid = this.driverSelection.selected[0]? this.driverSelection.selected[0].id : null;
+        this.entered_report_param.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) || null;
+        this.entered_report_param.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) || null;
+        this.entered_report_param.eventid = this.eventSelection.selected[0]? this.eventSelection.selected[0].id : null;
+        this.entered_report_param.maxspeed = this.speedStep.get('maxspeed').value || null;
+        this.entered_report_param.minspeed = this.speedStep.get('minspeed').value || null;
+        this.entered_report_param.maxdistance = this.distanceStep.get('maxdistance').value || null;
+        this.entered_report_param.mindistance = this.distanceStep.get('mindistance').value || null;
+        this.entered_report_param.maxtemp = this.tempStep.get('maxtemp').value || null;
+        this.entered_report_param.mintemp = this.tempStep.get('mintemp').value || null;
+        this.entered_report_param.maxtime = this.timeStep.get('maxtime').value? Number(this.timeStep.get('maxtime').value.split(':')[0])*60 + Number(this.timeStep.get('maxtime').value.split(':')[1]) : null;
+        this.entered_report_param.mintime = this.timeStep.get('mintime').value? Number(this.timeStep.get('mintime').value.split(':')[0])*60 + Number(this.timeStep.get('mintime').value.split(':')[1]) : null;
+
+        console.log(this.entered_report_param);
+
+        for (let param in this.entered_report_param) { 
+            if (this.entered_report_param[param] === null) {
+              delete this.entered_report_param[param];
+            } else {
+                console.log(`${param}`, this.entered_report_param[param]);
+            }
+
+        }
+
+        localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));
+
+        console.log(this.entered_report_param);
+
+        this.router.navigate(['report/reportresult']);
+
     }
 
     connect(collectionViewer: CollectionViewer): Observable<any[]>

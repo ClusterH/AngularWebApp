@@ -158,8 +158,14 @@ export class ReportService
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
-                .set('conncode', userConncode.toString())
+        let params = new HttpParams();
+
+        // paramsss.forEach((key, value) => {
+            // if(value != null){
+                // params = params.set(key, value);
+            // }
+        // });
+        params.set('conncode', userConncode.toString())
                 .set('userid', userID.toString())
                 .set('id', id.toString())
                 .set('method', "unit_delete");

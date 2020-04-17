@@ -17,6 +17,11 @@
                 <mat-icon class="blue-600-fg">gesture</mat-icon>
             </mat-button-toggle>
         </mat-button-toggle-group>
+        <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country"  appearance="outline">
+            <mat-option [value]="'GB'">Great Britain</mat-option>
+            <mat-option [value]="'US'">United States</mat-option>
+            <mat-option [value]="'CA'">Canada</mat-option>
+        </mat-select>
         <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country">
             <mat-option [value]="'GB'">Great Britain</mat-option>
             <mat-option [value]="'US'">United States</mat-option>

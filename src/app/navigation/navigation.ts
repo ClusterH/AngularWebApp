@@ -390,11 +390,11 @@ export const navigation: FuseNavigation[] = [
         icon     : 'personal_video',
         children : [
             {
-                id       : 'privileges',
+                id       : 'userprofiles',
                 title    : 'Privileges',
                 translate: 'NAV.PRIVILEGES',
                 type     : 'item',
-                url      : '/system/privileges/privileges'
+                url      : '/system/userprofiles/userprofiles'
             },
             {
                 id       : 'unittypes',

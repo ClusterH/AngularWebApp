@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -19,39 +18,40 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { MatStepperModule } from '@angular/material/stepper';
-
-import { TextMaskModule } from 'angular2-text-mask';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BlockUIModule } from 'ng-block-ui';
 
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ReportComponent} from 'app/main/report/reportcomponent/report.component';
-import { ReportResultComponent} from 'app/main/report/reportcomponent/reportresult/reportresult.component';
-import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
-import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
-
-import { CourseDialogComponent } from 'app/main/report/reportcomponent/dialog/dialog.component';
+import { UserProfilesComponent} from 'app/main/system/userprofiles/userprofiles/userprofiles.component';
+import { UserProfilesService } from 'app/main/system/userprofiles/services/userprofiles.service';
+import { UserProfileDetailComponent} from 'app/main/system/userprofiles/userprofile_detail/userprofile_detail.component';
+import { UserProfileDetailService } from 'app/main/system/userprofiles/services/userprofile_detail.service';
+import { CourseDialogComponent } from 'app/main/system/userprofiles/dialog/dialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
 const routes = [
     {
-        path     : 'reportcomponent/:id',
-        component: ReportComponent,
+        path     : 'userprofiles',
+        component: UserProfilesComponent,
+        // pathMatch: 'full'
     },
     {
-        path     : 'reportresult',
-        component: ReportResultComponent,
+        path     : 'userprofile_detail',
+        component: UserProfileDetailComponent,
+        // pathMatch: 'full'
     },
 ];
 
@@ -63,7 +63,6 @@ const routes = [
         
         MatButtonModule,
         MatCheckboxModule,
-        MatRadioModule,
         MatIconModule,
         MatSelectModule,
         MatInputModule,
@@ -74,16 +73,15 @@ const routes = [
         MatFormFieldModule,
         MatPaginatorModule,
         MatRippleModule,
+        MatSortModule,
         MatSnackBarModule,
         MatTableModule,
+        MatTabsModule,
         MatDialogModule,
         MatProgressSpinnerModule,
-        MatStepperModule,
 
         TranslateModule,
         HttpClientModule,
-
-        TextMaskModule,
 
         NgSelectModule,
         BlockUIModule,
@@ -96,12 +94,12 @@ const routes = [
         RouterModule.forChild(routes),
     ],
     declarations: [
-        ReportComponent,
-        ReportResultComponent,
+        UserProfilesComponent,
+        UserProfileDetailComponent,
         CourseDialogComponent,
     ],
     providers: [
-        ReportService,ReportResultService
+        UserProfilesService, UserProfileDetailService
     ]
 })
-export class ReportModule{ }
+export class UserProfilesModule{ }

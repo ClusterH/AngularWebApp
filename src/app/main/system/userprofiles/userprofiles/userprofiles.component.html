@@ -1,0 +1,172 @@
+<div id="userprofiles" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'USERPROFILES.USERPROFILES' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'USERPROFILES.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'USERPROFILES.NAME' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'USERPROFILES.SEARCHFORUSERPROFILE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/admin/userprofiles/userprofile_detail'"
+                    class="accent  mt-24 mt-md-0">
+               <mat-icon (click)="addNewUserProfile()">add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="userprofiles-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 100%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile">
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowUserProfileDetail(userprofile)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteUserProfile(userprofile)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateUserProfile(userprofile)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'USERPROFILES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile">
+                        <p class="name text-truncate">{{userprofile.name}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Created Column -->
+                <ng-container matColumnDef="createdwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'USERPROFILES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{userprofile.createdwhen}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- CreatedByName Column -->
+                 <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'USERPROFILES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile" fxHide fxShow.gt-xs>
+                        <p class="created text-truncate">
+                            {{userprofile.createdbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'USERPROFILES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile" fxHide fxShow.gt-xs>
+                        <p class="lastmodifieddate text-truncate">
+                            {{userprofile.lastmodifieddate}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'USERPROFILES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let userprofile" fxHide fxShow.gt-xs>
+                        <p class="lastmodifiedbyname text-truncate">
+                            {{userprofile.lastmodifiedbyname}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let userprofile; columns: displayedColumns;"
+                            class="userprofile font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
