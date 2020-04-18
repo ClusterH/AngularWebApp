@@ -1,0 +1,135 @@
+<div id="command_detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" >
+                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/system/commands/commands'"> -->
+                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{command.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'COMMANDS.NEWCOMMAND' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'COMMANDS.COMMANDDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-command-button"
+                    *ngIf="pageType ==='new'" (click)="addCommand()">
+                <span>{{ 'COMMANDS.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-command-button"
+                    *ngIf="pageType ==='edit'" (click)="saveCommand()">
+                <span>{{ 'COMMANDS.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form [formGroup]="commandForm" class="command w-100-p" fxLayout="column" fxFlex >
+
+                    <mat-tab-group>
+
+                        <mat-tab label="{{ 'COMMANDS.GENERAL' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{ 'COMMANDS.NAME' | translate }}</mat-label>
+                                    <input matInput placeholder="Name"
+                                           name="name"
+                                           formControlName="name"
+                                           required>
+                                </mat-form-field>
+                            </div>
+                           
+                            <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
+                                <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
+                                    <legend>&nbsp;{{ 'COMMANDS.AUDIT' | translate }}&nbsp;</legend>
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'COMMANDS.CREATED' | translate }}</mat-label>
+                                            <input matInput placeholder="Created"
+                                                name="created"
+                                                    formControlName="created">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'COMMANDS.CREATEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="CreatedByName"
+                                                name="createdbyname"
+                                                formControlName="createdbyname">
+                                        </mat-form-field>
+                                    </div>
+
+                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMMANDS.DELETEDWHEN' | translate }}</mat-label>
+                                        <input matInput placeholder="Deleted When"
+                                            name="deletedwhen"
+                                            formControlName="deletedwhen">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'COMMANDS.DELETEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Deleted By Name"
+                                            name="deletedbyname"
+                                            formControlName="deletedbyname">
+                                    </mat-form-field>
+                                </div> -->
+
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'COMMANDS.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified Date"
+                                                name="lastmodifieddate"
+                                                formControlName="lastmodifieddate">
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'COMMANDS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified By Name"
+                                                name="lastmodifiedbyname"
+                                                formControlName="lastmodifiedbyname">
+                                        </mat-form-field>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
+

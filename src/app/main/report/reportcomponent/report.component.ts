@@ -72,6 +72,7 @@ export class ReportComponent implements OnInit, OnDestroy
     public loadingSubjectMinTemp     = new BehaviorSubject<boolean>(false);
     public loadingSubjectMaxTime     = new BehaviorSubject<boolean>(false);
     public loadingSubjectMinTime     = new BehaviorSubject<boolean>(false);
+    public loadingSubjectOutPut      = new BehaviorSubject<boolean>(false);
 
     private loadingReport = new BehaviorSubject <any>([]);
 
@@ -310,7 +311,7 @@ export class ReportComponent implements OnInit, OnDestroy
         } else {
             if (!this.isWholeCompany) {
                 this.dataSourceGroup = new ReportDataSource(this.reportService);
-                console.log(this.companySelection.selected[0].id);
+                console.log(JSON.parse(JSON.stringify(this.companySelection.selected[0])).name);
                 this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, this.companySelection.selected[0].id, '', 'group_clist' )
                 this.myStepper.selected.completed = true; 
             }
@@ -510,7 +511,8 @@ export class ReportComponent implements OnInit, OnDestroy
                 if (params == 'companyid') {
                     this.loadingSubjectCompany.next(true);
                     this.dataSourceCompany = new ReportDataSource(this.reportService);
-                    this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, this.filter_string, 'company_clist')
+                    this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, this.filter_string, 'company_clist');
+
                     console.log('loadingsubjectCompany: ', this.loadingSubjectCompany.value);
 
                 } else if (params == 'groupids') {
@@ -553,9 +555,8 @@ export class ReportComponent implements OnInit, OnDestroy
                     this.loadingSubjectMinTime.next(true);
 
                 }
-            })
 
-            // this.initBehaviorSubjects();
+            })
         }
     }
 
@@ -577,6 +578,7 @@ export class ReportComponent implements OnInit, OnDestroy
     }
 
     initBehaviorSubjects() {
+
         this.loadingSubjectCompany.next(false);
         this.loadingSubjectGroup.next(false);
         this.loadingSubjectUnit.next(false);
@@ -590,6 +592,7 @@ export class ReportComponent implements OnInit, OnDestroy
         this.loadingSubjectMinTemp.next(false);
         this.loadingSubjectMaxTime.next(false);
         this.loadingSubjectMinTime.next(false);
+        this.loadingSubjectOutPut.next(false);
 
         // this.company_flag = false;
         // this.loadingReport.complete();
@@ -637,20 +640,40 @@ export class ReportComponent implements OnInit, OnDestroy
 
     paramDateFormat(date: any) {
         let str = '';
-    
         if (date != '') {
-          str = date.getFullYear() + "/" + ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2);
-            // ("00" + (date.getMonth() + 1)).slice(-2) 
-            // + "/" + ("00" + date.getDate()).slice(-2) 
-            // + "/" + date.getFullYear() + " " 
-            // + ("00" + date.getHours()).slice(-2) + ":" 
-            // + ("00" + date.getMinutes()).slice(-2) 
-            // + ":" + ("00" + date.getSeconds()).slice(-2); 
+          str = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
         }
 
         console.log(str);
     
         return str;
+    }
+    
+    paramTimeFormat(time) {
+        // Check correct time format and split into components
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        console.log(time);
+        if (time.length > 1) { // If time format correct
+          time = time.slice(1); // Remove full string match value
+          console.log(time);
+
+          time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+          time[0] = +(time[0] % 12) < 10 ? '0' +  time[0] % 12 : time[0] % 12 || 12; // Adjust hours
+        }
+        console.log(time);
+
+        return time.join(''); // return adjusted time or original string
+    }
+
+    currentTimeFormat(date: any) {
+        let str = '';
+        if (date != '') {
+          str = ("00" + date.getHours()).slice(-2) + ":"  + ("00" + date.getMinutes()).slice(-2); 
+        }
+
+        console.log(str);
+    
+        return this.paramTimeFormat(str);
     }
 
 
@@ -670,12 +693,20 @@ export class ReportComponent implements OnInit, OnDestroy
         console.log('You have finished the vertical stepper!');
         console.log(this.paramDateFormat(new Date(this.dateStep.get('start').value)));
         this.entered_report_param.reportname = this.selectedReport.apimethod || null;
+        this.entered_report_param.runondate = this.paramDateFormat(new Date()) + " " + this.currentTimeFormat(new Date());
         this.entered_report_param.companyid = this.companySelection.selected[0]? this.companySelection.selected[0].id : null
+        this.entered_report_param.companyname = this.companySelection.selected[0]? JSON.parse(JSON.stringify(this.companySelection.selected[0])).name : null
         this.entered_report_param.groupid = this.groupSelection.selected[0]? this.groupSelection.selected[0].id : null;
+        if (!this.isWholeCompany) {
+            this.entered_report_param.groupname = this.groupSelection.selected[0]? JSON.parse(JSON.stringify(this.groupSelection.selected[0])).name : null;
+        }
+        if (!this.isWholeGroup && !this.isWholeCompany) {
+            this.entered_report_param.unitname = this.unitSelection.selected[0]? JSON.parse(JSON.stringify(this.unitSelection.selected[0])).name : null;
+        }
         this.entered_report_param.unitid = this.unitSelection.selected[0]? this.unitSelection.selected[0].id : null;
         this.entered_report_param.driverid = this.driverSelection.selected[0]? this.driverSelection.selected[0].id : null;
-        this.entered_report_param.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) || null;
-        this.entered_report_param.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) || null;
+        this.entered_report_param.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) + " " + this.paramTimeFormat(this.dateStep.get('starttime').value) || null;
+        this.entered_report_param.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) + " " + this.paramTimeFormat(this.dateStep.get('endtime').value) || null;
         this.entered_report_param.eventid = this.eventSelection.selected[0]? this.eventSelection.selected[0].id : null;
         this.entered_report_param.maxspeed = this.speedStep.get('maxspeed').value || null;
         this.entered_report_param.minspeed = this.speedStep.get('minspeed').value || null;
@@ -694,7 +725,6 @@ export class ReportComponent implements OnInit, OnDestroy
             } else {
                 console.log(`${param}`, this.entered_report_param[param]);
             }
-
         }
 
         localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));

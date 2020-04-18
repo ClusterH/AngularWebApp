@@ -226,7 +226,7 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.EVENTS',
                 type     : 'item',
                 url      : 'pages/admin/events'
-            },
+            }
         ]
     },
 
@@ -451,13 +451,27 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 url      : '/system/serviceplans/serviceplans'
             },
-            
+            {
+                id       : 'devconfigs',
+                title    : 'System Commands',
+                translate: 'NAV.DEV_CONFIG',
+                type     : 'item',
+                url      : 'system/devconfigs/devconfigs'
+            },
+            {
+                id       : 'syscommands',
+                title    : 'System Commands',
+                translate: 'NAV.SYSTEM_COMMANDS',
+                type     : 'item',
+                url      : 'system/syscommands/syscommands'
+            },
             {
                 id       : 'commands',
                 title    : 'Commands',
                 translate: 'NAV.COMMANDS',
                 type     : 'item',
-                url      : 'system/commands/commands'
+                url      : '/system/commands/commands'
+               
             },
             {
                 id       : 'connections',
@@ -465,7 +479,7 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.CONNECTIONS',
                 type     : 'item',
                 url      : 'system/connections/connections'
-            },
+            }
         ]
     },
 ];

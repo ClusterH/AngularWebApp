@@ -17,6 +17,8 @@ export class ReportResultDataSource extends DataSource<any>
     total_page: number;
     page_index: number;
     displayedColumns = [];
+    currentCompanyName: string = '';
+    currentGroupName: string = '';
 
     constructor(
         private reportResultService: ReportResultService,
@@ -41,18 +43,29 @@ export class ReportResultDataSource extends DataSource<any>
         .subscribe((result : any) => {
             console.log(result);
 
-            for(let column in result.TrackingXLAPI.DATA[0]) {
-                if (column != 'id') {
-                    this.displayedColumns.push(column);
+            if (result.responseCode == 100) {
+                for(let column in result.TrackingXLAPI.DATA[0]) {
+                    if ( column == 'companyid' ) {
+                        this.currentCompanyName = JSON.parse(localStorage.getItem('report_result')).companyname;
+                    } else if ( column == 'groupid' ) {
+                        this.currentGroupName = JSON.parse(localStorage.getItem('report_result')).groupname;
+                    } else if ( column != 'id' ) {
+                        this.displayedColumns.push(column);
+                    }
                 }
+    
+                console.log(this.displayedColumns);
+    
+                this.reportSubject.next(result.TrackingXLAPI.DATA);
+                this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.page_index = pageindex + 1;
+                this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+            } else if (result.responseCode == 200) {
+                this.totalLength = 0;
+                // this.loadingSubject.next(false);
             }
 
-            console.log(this.displayedColumns);
-
-            this.reportSubject.next(result.TrackingXLAPI.DATA);
-            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-            this.page_index = pageindex + 1;
-            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+            
         });
 
 

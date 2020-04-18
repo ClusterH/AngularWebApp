@@ -70,7 +70,9 @@ export const locale = {
             "SYSTEMCONFIGURATION": "System Configuration",
             "SERVICEPLANS": "Service Plans",
             "COMMANDS": "Commands",
+            "SYSTEM_COMMANDS": "System Commands",
             "CONNECTIONS": "Connections",
+            "DEV_CONFIG" : "Device Configurations"
         }
     }
 };

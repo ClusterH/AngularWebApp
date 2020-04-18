@@ -37,6 +37,7 @@ export class ReportResultComponent implements OnInit
 {
     dataSource: ReportResultDataSource;
     entered_report_params: any;
+    reportName: string = '';
 
     @Output()
     pageEvent: PageEvent;
@@ -79,6 +80,13 @@ export class ReportResultComponent implements OnInit
 
         this.entered_report_params = JSON.parse(localStorage.getItem('report_result'));
         console.log(this.entered_report_params);
+
+        let reportName = this.entered_report_params.reportname.split('_');
+        for (let i = 1; i < reportName.length; i++) {
+            this.reportName += reportName[i] + ' ';
+        }
+        
+        console.log(this.reportName);
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);

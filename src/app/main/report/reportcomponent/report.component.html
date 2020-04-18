@@ -89,7 +89,7 @@
 
                 </mat-step>
                 
-                <mat-step *ngIf="loadingSubjectCompany | async" [stepControl]="companyStep" completed="false">
+                <mat-step *ngIf="loadingSubjectCompany | async">
 
                     <form fxLayout="column" [formGroup]="companyStep">
 

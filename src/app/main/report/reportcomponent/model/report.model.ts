@@ -1,9 +1,13 @@
 export interface ReportDetail
 {
     reportname?: string;
+    runondate?: string;
     companyid?: string;
+    companyname?: string;
     groupid?: string;
+    groupname?: string;
     unitid?: string;
+    unitname?: string;
     driverid?: string;
     datefrom?: string;
     dateto?: string;

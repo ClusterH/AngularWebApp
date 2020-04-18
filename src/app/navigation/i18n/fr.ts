@@ -67,8 +67,10 @@ export const locale = {
             "ACCOUNTS": "Comptes",
             "SYSTEMCONFIGURATION": "Configuration du système",
             "SERVICEPLANS": "Service Plans",
-            "COMMANDS": "Commands",
+            "COMMANDS": "Commandes",
+            "SYSTEM_COMMANDS": "Commandes système",
             "CONNECTIONS": "Connexions",
+            "DEV_CONFIG" : "Configurations d'appareils"
         }
     }
 };

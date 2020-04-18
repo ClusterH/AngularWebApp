@@ -8,7 +8,7 @@
     <div class="center_table center">
 
         <!-- HEADER -->
-        <div class="header accent"
+        <div class="header accent mb-12 py-12" 
              fxLayout="column" fxLayoutAlign="center start"
              fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
 
@@ -16,12 +16,20 @@
             <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start start">
                 <div class="" fxLayout="column" fxLayoutAlign="start start">
                     <h3><strong>Report Type:</strong></h3>
+                    <span><strong>Run On:</strong></span>
+                    <span><strong>Company:</strong></span>
+                    <span *ngIf="entered_report_params.groupname"><strong>Group:</strong></span>
+                    <span *ngIf="entered_report_params.unitname"><strong>Unit:</strong></span>
                     <span><strong>From:</strong></span>
                     <span><strong>To:</strong></span>
                     <span><strong>Total:</strong></span>
                 </div>
                 <div class="ml-20" fxLayout="column" fxLayoutAlign="start start">
-                    <h3>{{entered_report_params.reportname}}</h3>
+                    <h3>{{reportName}}</h3>
+                    <span>{{entered_report_params.runondate}}</span>
+                    <span>{{entered_report_params.companyname}}</span>
+                    <span *ngIf="entered_report_params.groupname">{{entered_report_params.groupname}}</span>
+                    <span *ngIf="entered_report_params.unitname">{{entered_report_params.unitname}}</span>
                     <span>{{entered_report_params.datefrom}}</span>
                     <span>{{entered_report_params.dateto}}</span>
                     <span>{{dataSource.totalLength}}</span>
@@ -34,8 +42,17 @@
                     {{ 'USERS.USERS' | translate }}
                 </span> -->
             </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    picture_as_pdf
+                </mat-icon>
+
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    picture_as_pdf
+                </mat-icon>
+            </div>
         </div>
-        <!-- / HEADER -->
 
         <!-- CONTENT CARD -->
         <div class="content-card" style="width: 100%; overflow: auto;" >
@@ -50,10 +67,10 @@
                 </div>
             </div>
 
-            <mat-table class="report-table font-size-10"
+            <mat-table class="report-table font-size-10" *ngIf="dataSource.totalLength > 0"
                         #table [dataSource]="dataSource"
                         [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 120%;">
+                        fusePerfectScrollbar style="width: 100%;">
 
                 <ng-container *ngFor="let disCol of dataSource.displayedColumns" matColumnDef={{disCol}} >
                     <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
@@ -68,6 +85,10 @@
                 </mat-row>
 
             </mat-table>
+
+            <div *ngIf="dataSource.totalLength == 0" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90);">
+                <h1>No Data Found</h1>
+            </div>
 
         </div>
         <div>

@@ -41,6 +41,18 @@ const routes = [
     {
         path        : 'userprofiles',
         loadChildren: () => import('./userprofiles/userprofiles.module').then(m => m.UserProfilesModule)
+    },
+    {
+        path        : 'devconfigs',
+        loadChildren: () => import('./devconfigs/devconfigs.module').then(m => m.DevConfigsModule)
+    },
+    {
+        path        : 'syscommands',
+        loadChildren: () => import('./syscommands/syscommands.module').then(m => m.SysCommandsModule)
+    },
+    {
+        path        : 'commands',
+        loadChildren: () => import('./commands/commands.module').then(m => m.CommandsModule)
     }
 
 

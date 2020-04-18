@@ -134,6 +134,12 @@ $typography: mat-typography-config(
 @import "src/app/main/system/connections/connection_detail/connection_detail.theme";
 @import "src/app/main/system/userprofiles/userprofiles/userprofiles.theme";
 @import "src/app/main/system/userprofiles/userprofile_detail/userprofile_detail.theme";
+@import "src/app/main/system/syscommands/syscommands/syscommands.theme";
+@import "src/app/main/system/syscommands/syscommand_detail/syscommand_detail.theme";
+@import "src/app/main/system/commands/commands/commands.theme";
+@import "src/app/main/system/commands/command_detail/command_detail.theme";
+@import "src/app/main/system/devconfigs/devconfigs/devconfigs.theme";
+@import "src/app/main/system/devconfigs/devconfig_detail/devconfig_detail.theme";
 
 
 

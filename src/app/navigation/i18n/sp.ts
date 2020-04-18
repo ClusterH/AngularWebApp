@@ -68,7 +68,9 @@ export const locale = {
             "SYSTEMCONFIGURATION": "Configuración del sistema",
             "SERVICEPLANS": "Planes de servicio",
             "COMMANDS": "Comandos",
+            "SYSTEM_COMMANDS": "Comandos del Sistema",
             "CONNECTIONS": "Conexiones",
+            "DEV_CONFIG" : "Configuraciones de Dispositivos"
         }
     }
 };
