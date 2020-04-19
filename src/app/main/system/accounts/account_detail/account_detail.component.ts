@@ -235,7 +235,7 @@ export class AccountDetailComponent implements OnInit
     this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/accounts/accounts']);
       }
@@ -251,7 +251,7 @@ export class AccountDetailComponent implements OnInit
     this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/accounts/accounts']);
       }

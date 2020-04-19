@@ -60,7 +60,7 @@ export class ReportResultDataSource extends DataSource<any>
                 this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-            } else if (result.responseCode == 200) {
+            } else if ((result.responseCode == 200)||(result.responseCode == 100)) {
                 this.totalLength = 0;
                 // this.loadingSubject.next(false);
             }

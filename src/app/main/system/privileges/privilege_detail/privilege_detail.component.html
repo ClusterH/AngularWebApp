@@ -1,0 +1,200 @@
+<div id="privilege_detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" >
+                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/privileges/privileges'"> -->
+                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{privilege.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'PRIVILEGES.NEWPRIVILEGE' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'PRIVILEGES.PRIVILEGEDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-privilege-button"
+                    *ngIf="pageType ==='new'" (click)="addPrivilege()">
+                <span>{{ 'PRIVILEGES.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-privilege-button"
+                    *ngIf="pageType ==='edit'" (click)="savePrivilege()">
+                <span>{{ 'PRIVILEGES.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form [formGroup]="privilegeForm" class="privilege w-100-p" fxLayout="column" fxFlex >
+
+                    <mat-tab-group>
+
+                        <mat-tab label="{{ 'PRIVILEGES.GENERAL' | translate }}">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{ 'PRIVILEGES.NAME' | translate }}</mat-label>
+                                    <input matInput placeholder="Name"
+                                           name="name"
+                                           formControlName="name"
+                                           required>
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'PRIVILEGES.TYPE' | translate }}</mat-label>
+                                        <mat-select formControlName="privtype"  (click)="showCompanyList('privtype_clist')" (selectionChange)="onTypeChange($event)">
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourcePrivType"  class="privileges-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let privtype"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="privtype.id">{{privtype.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorPrivType
+                                                class="table_paginator"
+                                                [length]="dataSourcePrivType.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" *ngIf="privilegeObject_flag; else none">
+                                        <mat-label>{{ 'PRIVILEGES.OBJECT' | translate }}</mat-label>
+                                        <mat-select formControlName="privobject"  (click)="showCompanyList('privobject_clist')">
+                                            
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourcePrivObject"  class="privileges-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let privobject"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="privobject.id">{{privobject.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorPrivObject
+                                                class="table_paginator"
+                                                [length]="dataSourcePrivObject.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <ng-template #none>
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" (click)="checkTypeIsSelected()" >
+                                            <mat-label>{{ 'PRIVILEGES.OBJECT' | translate }}</mat-label>
+                                            <mat-select>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </ng-template>
+                                </div>
+
+                                <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
+                                    <legend>&nbsp;{{ 'PRIVILEGES.AUDIT' | translate }}&nbsp;</legend>
+
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.CREATED' | translate }}</mat-label>
+                                            <input matInput placeholder="Created"
+                                                   name="created"
+                                                    formControlName="created">
+                                        </mat-form-field>
+    
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.CREATEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="CreatedByName"
+                                                   name="createdbyname"
+                                                   formControlName="createdbyname">
+                                        </mat-form-field>
+                                    </div>
+    
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.DELETEDWHEN' | translate }}</mat-label>
+                                            <input matInput placeholder="Deleted When"
+                                                   name="deletedwhen"
+                                                   formControlName="deletedwhen">
+                                        </mat-form-field>
+    
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.DELETEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="Deleted By Name"
+                                                   name="deletedbyname"
+                                                   formControlName="deletedbyname">
+                                        </mat-form-field>
+                                    </div>
+    
+                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified Date"
+                                                   name="lastmodifieddate"
+                                                   formControlName="lastmodifieddate">
+                                        </mat-form-field>
+    
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'PRIVILEGES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                            <input matInput placeholder="Last Modified By Name"
+                                                   name="lastmodifiedbyname"
+                                                   formControlName="lastmodifiedbyname">
+                                        </mat-form-field>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+

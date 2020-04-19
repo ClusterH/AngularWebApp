@@ -351,7 +351,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
     this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
       }
@@ -367,7 +367,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
     this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
       }

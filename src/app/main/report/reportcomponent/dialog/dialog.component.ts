@@ -57,7 +57,7 @@ export class CourseDialogComponent implements OnInit {
            
         //     this.reportService.deleteVehicle(this.vehicle.id)
         //     .subscribe((result: any) => {
-        //         if (result.responseCode == 200) {
+        //         if ((result.responseCode == 200)||(result.responseCode == 100)) {
         //             this.reloadComponent();
         //         }
         //     });

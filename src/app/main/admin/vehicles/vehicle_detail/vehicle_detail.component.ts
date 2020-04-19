@@ -265,7 +265,6 @@ export class VehicleDetailComponent implements OnInit
       merge(this.paginatorModel.page)
       .pipe(
         tap(() => {
-          this.paginatorModel.pageIndex = 0
   
           this.loadVehicleDetail('model')
         })
@@ -486,7 +485,7 @@ export class VehicleDetailComponent implements OnInit
     this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/vehicles/vehicles']);
       }
@@ -499,7 +498,7 @@ export class VehicleDetailComponent implements OnInit
 
     this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/vehicles/vehicles']);
       }
@@ -535,6 +534,7 @@ export class VehicleDetailComponent implements OnInit
     console.log(event);
     this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
     this.vehicleModel_flag = true;
+
     this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
   }
 

@@ -82,4 +82,24 @@ export class DevConfigDetailService
             params: params_detail
         });
     }
+
+    saveDevConfigCmd(conncode: string, userid: number, currentDevConfigCmdid: number, commandid: number, syscommandid: number, devconfigid: number): Observable<any> {
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const params_detail = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('id', currentDevConfigCmdid.toString())
+            .set('commandid', commandid.toString())
+            .set('syscommandid', syscommandid.toString())
+            .set('devconfigid', devconfigid.toString())
+            .set('method', 'devconfigcmd_save');
+        
+            console.log(params_detail);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: header_detail,
+            params: params_detail
+        });
+    }
 }

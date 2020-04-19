@@ -241,7 +241,7 @@ export class ZoneDetailComponent implements OnInit
     this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/geofences/zones/zones']);
       }
@@ -254,7 +254,7 @@ export class ZoneDetailComponent implements OnInit
 
     this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/geofences/zones/zones']);
       }

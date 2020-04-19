@@ -60,6 +60,7 @@ export const locale = {
 
             "SYSTEM": "Sistema",
             "PRIVILEGES": "Privilegios",
+            "USER_ROLES" : "Roles de usuario",
             "UNITTYPES": "Tipos de unidad",
             "DEVICES": "Dispositivos",
             "SIMS": "SIMs",

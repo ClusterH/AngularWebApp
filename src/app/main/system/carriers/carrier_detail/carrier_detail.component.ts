@@ -158,7 +158,7 @@ export class CarrierDetailComponent implements OnInit
     this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/carriers/carriers']);
       }
@@ -174,7 +174,7 @@ export class CarrierDetailComponent implements OnInit
     this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/carriers/carriers']);
       }

@@ -349,7 +349,7 @@ export class OperatorDetailComponent implements OnInit
     this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/operators/operators']);
       }
@@ -365,7 +365,7 @@ export class OperatorDetailComponent implements OnInit
     this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/operators/operators']);
       }

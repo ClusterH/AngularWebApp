@@ -143,7 +143,7 @@ export class CommandDetailComponent implements OnInit
     this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/commands/commands']);
       }
@@ -159,7 +159,7 @@ export class CommandDetailComponent implements OnInit
     this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/commands/commands']);
       }

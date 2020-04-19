@@ -350,7 +350,7 @@ export class CompanyDetailComponent implements OnInit
     this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/companies/companies']);
       }
@@ -366,7 +366,7 @@ export class CompanyDetailComponent implements OnInit
     this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/companies/companies']);
       }

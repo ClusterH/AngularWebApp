@@ -286,7 +286,7 @@ export class GroupDetailComponent implements OnInit
     this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/groups/groups']);
       }
@@ -302,7 +302,7 @@ export class GroupDetailComponent implements OnInit
     this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/groups/groups']);
       }

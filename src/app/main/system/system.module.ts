@@ -43,6 +43,10 @@ const routes = [
         loadChildren: () => import('./userprofiles/userprofiles.module').then(m => m.UserProfilesModule)
     },
     {
+        path        : 'privileges',
+        loadChildren: () => import('./privileges/privileges.module').then(m => m.PrivilegesModule)
+    },
+    {
         path        : 'devconfigs',
         loadChildren: () => import('./devconfigs/devconfigs.module').then(m => m.DevConfigsModule)
     },

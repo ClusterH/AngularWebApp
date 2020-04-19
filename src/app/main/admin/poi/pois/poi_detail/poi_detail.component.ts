@@ -328,7 +328,7 @@ export class PoiDetailComponent implements OnInit
     this.poiDetailService.savePoiDetail(this.userConncode, this.userID, this.poiDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/poi/pois/pois']);
       }
@@ -341,7 +341,7 @@ export class PoiDetailComponent implements OnInit
 
     this.poiDetailService.savePoiDetail(this.userConncode, this.userID, this.poiDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/poi/pois/pois']);
       }

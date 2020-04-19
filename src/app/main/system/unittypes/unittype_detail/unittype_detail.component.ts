@@ -252,7 +252,7 @@ export class UnittypeDetailComponent implements OnInit
     this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/unittypes/unittypes']);
       }
@@ -268,7 +268,7 @@ export class UnittypeDetailComponent implements OnInit
     this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/unittypes/unittypes']);
       }

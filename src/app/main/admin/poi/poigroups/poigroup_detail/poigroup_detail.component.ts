@@ -336,7 +336,7 @@ export class PoigroupDetailComponent implements OnInit
     this.poigroupDetailService.savePoigroupDetail(this.userConncode, this.userID, this.poigroupDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/poi/poigroups/poigroups']);
       }
@@ -349,7 +349,7 @@ export class PoigroupDetailComponent implements OnInit
 
     this.poigroupDetailService.savePoigroupDetail(this.userConncode, this.userID, this.poigroupDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/poi/poigroups/poigroups']);
       }

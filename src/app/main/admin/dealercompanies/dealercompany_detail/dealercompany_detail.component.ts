@@ -351,7 +351,7 @@ export class DealerCompanyDetailComponent implements OnInit
     this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/dealercompanies/dealercompanies']);
       }
@@ -367,7 +367,7 @@ export class DealerCompanyDetailComponent implements OnInit
     this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/dealercompanies/dealercompanies']);
       }

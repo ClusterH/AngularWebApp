@@ -66,59 +66,186 @@
                                            formControlName="name"
                                            required>
                                 </mat-form-field>
-                            </div>
-                           
-                            <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
+
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
-                                    <legend>&nbsp;{{ 'DEVCONFIGS.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'DEVCONFIGS.CREATED' | translate }}</mat-label>
-                                            <input matInput placeholder="Created"
-                                                name="created"
-                                                    formControlName="created">
+                                    <legend>&nbsp;Command&nbsp;</legend>
+                                    <div fxLayout="row" fxLayoutAlign="space-between" class="p-16 pb-0">
+
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="40" class="mx-20">
+                                            <mat-label>Command</mat-label>
+                                            <mat-select  (click)="showCompanyList('command_clist')" formControlName="command">
+                                                <div class="filter_company_input" >
+                                                    <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                </div>
+
+                                                <div  style="width: 100%; overflow: auto;" >
+                                                    <mat-table [dataSource]="dataSourceCommand"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                                        <ng-container matColumnDef="name">
+                                                            <td mat-cell *matCellDef="let command;"  style="border: 0px;">
+                                                                <mat-option  [value]="command.id">{{command.name}}</mat-option>
+                                                            </td>
+                                                        </ng-container>
+                                                        <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    </mat-table>
+                                                </div>
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorCommand
+                                                    class="table_paginator_detail"
+                                                    [length]="dataSourceCommand.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                    sticky="true"
+                                                ></mat-paginator>
+                                            
+                                            </mat-select>
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'DEVCONFIGS.CREATEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="CreatedByName"
-                                                name="createdbyname"
-                                                formControlName="createdbyname">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="40">
+                                            <mat-label>System Command</mat-label>
+                                            <mat-select formControlName="syscommand"  (click)="showCompanyList('syscommand_clist')">
+                                                <div class="filter_company_input" >
+                                                    <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                                </div>
+
+                                                <div  style="width: 100%; overflow: auto;">
+                                                    <mat-table [dataSource]="dataSourceSysCommand"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                                        <ng-container matColumnDef="name">
+                                                            <td mat-cell *matCellDef="let syscommand"  style="border: 0px;">
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="syscommand.id">{{syscommand.name}}</mat-option>
+                                                            </td>
+                                                        </ng-container>
+                                                        <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    </mat-table>
+                                                </div>
+                                            
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorSysCommand
+                                                    class="table_paginator"
+                                                    [length]="dataSourceSysCommand.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                ></mat-paginator>
+                                            </mat-select>
                                         </mat-form-field>
+                                        <button mat-fab class="accent  ml-24 mt-26 mt-md-0">
+                                            <mat-icon *ngIf="!command_edit_flag" (click)="saveNewCommand()">add</mat-icon>
+                                            <mat-icon *ngIf="command_edit_flag" (click)="saveCurrentCommand()">edit</mat-icon>
+                                        </button>
                                     </div>
 
-                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'DEVCONFIGS.DELETEDWHEN' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted When"
-                                            name="deletedwhen"
-                                            formControlName="deletedwhen">
-                                    </mat-form-field>
+                                    <div class="content-card m-16 mb-0" style="overflow: auto; min-height: 200px; max-height: 200px; height: 200px; border-radius: 4px; border: 1px solid #2423233a;" >
+                                        <div class="filter_command" fxLayout="row" fxLayoutAlign="start" class="w-80-p pb-0">
+                                            <div class="filter_command_input px-12" fxFlex="50">
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Command"   (keyup) = "onKey($event)">
+                                                <mat-icon  >search</mat-icon>
+                                            </div>
+    
+                                            <div class="filter_command_input px-12" fxFlex="50">
+                                                <input matInput  formControlName="filterstring" #filter placeholder="System Command"   (keyup) = "onKey($event)">
+                                                <mat-icon >search</mat-icon>
+                                            </div>
+                                        </div>
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'DEVCONFIGS.DELETEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted By Name"
-                                            name="deletedbyname"
-                                            formControlName="deletedbyname">
-                                    </mat-form-field>
-                                </div> -->
+                                        <div class="spinner_overlay" *ngIf="dataSourceDevConfigCmd.loading$ | async">
+                                            <div class="spinner_container">
+                                                <mat-spinner
+                                                    color="accent" 
+                                                    mode="indeterminate"
+                                                    diameter="50"
+                                                    style="margin:0 auto;">
+                                                </mat-spinner>
+                                            </div>
+                                        </div>
+                            
+                                        <mat-table class="vehicles-table font-size-10"
+                                                    #table [dataSource]="dataSourceDevConfigCmd"
+                                                    [@animateStagger]="{value:'50'}"
+                                                    fusePerfectScrollbar style="width: 100%;">
+                            
+                                            <!-- Command Column -->
+                                            <ng-container matColumnDef="command" >
+                                                <mat-cell *matCellDef="let devconfigcmd">
+                                                    <p class="command text-truncate">{{devconfigcmd.command}}</p>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <!-- SysCommand Column -->
+                                            <ng-container matColumnDef="syscommand" >
+                                                <!-- <mat-header-cell *matHeaderCellDef>System Command</mat-header-cell> -->
+                                                <mat-cell *matCellDef="let devconfigcmd" >
+                                                    <p class="syscommand text-truncate">{{devconfigcmd.syscommand}}</p>
+                                                </mat-cell>
+                                            </ng-container>
 
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'DEVCONFIGS.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified Date"
-                                                name="lastmodifieddate"
-                                                formControlName="lastmodifieddate">
-                                        </mat-form-field>
-
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'DEVCONFIGS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified By Name"
-                                                name="lastmodifiedbyname"
-                                                formControlName="lastmodifiedbyname">
-                                        </mat-form-field>
+                                            <!-- Edit Column -->
+                                            <ng-container matColumnDef="edit" >
+                                                <!-- <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell> -->
+                                                <mat-cell *matCellDef="let devconfigcmd">
+                                                    <button mat-raised-button class="accent" (click)="editCommand(devconfigcmd)" style="width: 120px; height: 32px; border-radius: 12px;">Edit</button>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <!-- <mat-header-row *matHeaderRowDef="displayedCmdColumns; sticky:true"></mat-header-row> -->
+                            
+                                            <mat-row  *matRowDef="let devconfigcmd; columns: displayedCmdColumns;"
+                                                        class="devconfigcmd font-size-10"
+                                                        matRipple >
+                                            </mat-row>
+                            
+                                        </mat-table>
+                            
                                     </div>
+                                        
+                                    <mat-paginator #paginatorDevConfigCmd
+                                                    showFirstLastButtons
+                                                    class="command_table_paginator"
+                                                    [length]="dataSourceDevConfigCmd.totalLength"
+                                                    [pageSize]="10"
+                                                    [hidePageSize]="true"
+                                                >
+                                    </mat-paginator>
                                 </fieldset>
+                            
+                                <div class="mt-24" fusePerfectScrollbar fxLayout="column">
+                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
+                                        <legend>&nbsp;{{ 'DEVCONFIGS.AUDIT' | translate }}&nbsp;</legend>
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                                <mat-label>{{ 'DEVCONFIGS.CREATED' | translate }}</mat-label>
+                                                <input matInput placeholder="Created"
+                                                    name="created"
+                                                        formControlName="created">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                                <mat-label>{{ 'DEVCONFIGS.CREATEDBYNAME' | translate }}</mat-label>
+                                                <input matInput placeholder="CreatedByName"
+                                                    name="createdbyname"
+                                                    formControlName="createdbyname">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                                <mat-label>{{ 'DEVCONFIGS.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                                <input matInput placeholder="Last Modified Date"
+                                                    name="lastmodifieddate"
+                                                    formControlName="lastmodifieddate">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                                <mat-label>{{ 'DEVCONFIGS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                                <input matInput placeholder="Last Modified By Name"
+                                                    name="lastmodifiedbyname"
+                                                    formControlName="lastmodifiedbyname">
+                                            </mat-form-field>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
                         </mat-tab>
 

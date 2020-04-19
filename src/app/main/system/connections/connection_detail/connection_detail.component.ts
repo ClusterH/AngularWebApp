@@ -248,7 +248,7 @@ export class ConnectionDetailComponent implements OnInit
     this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/connections/connections']);
       }
@@ -264,7 +264,7 @@ export class ConnectionDetailComponent implements OnInit
     this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/connections/connections']);
       }

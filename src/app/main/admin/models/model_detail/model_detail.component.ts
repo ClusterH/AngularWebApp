@@ -260,7 +260,7 @@ export class ModelDetailComponent implements OnInit
     this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/models/models']);
       }
@@ -276,7 +276,7 @@ export class ModelDetailComponent implements OnInit
     this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/models/models']);
       }

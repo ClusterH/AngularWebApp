@@ -231,7 +231,7 @@ export class UserProfileDetailComponent implements OnInit {
     this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
         console.log(result);
-        if (result.responseCode == 200) {
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/userprofiles/userprofiles']);
         }
@@ -247,7 +247,7 @@ export class UserProfileDetailComponent implements OnInit {
     this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
         console.log(result);
-        if (result.responseCode == 200) {
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/userprofiles/userprofiles']);
         }

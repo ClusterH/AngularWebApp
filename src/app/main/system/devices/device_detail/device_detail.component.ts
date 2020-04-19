@@ -347,7 +347,7 @@ export class DeviceDetailComponent implements OnInit
     this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/devices/devices']);
       }
@@ -360,7 +360,7 @@ export class DeviceDetailComponent implements OnInit
 
     this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/devices/devices']);
       }

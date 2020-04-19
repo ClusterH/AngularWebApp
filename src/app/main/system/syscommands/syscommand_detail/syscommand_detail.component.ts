@@ -143,7 +143,7 @@ export class SysCommandDetailComponent implements OnInit
     this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/syscommands/syscommands']);
       }
@@ -159,7 +159,7 @@ export class SysCommandDetailComponent implements OnInit
     this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/syscommands/syscommands']);
       }

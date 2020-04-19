@@ -336,7 +336,7 @@ export class ZonegroupDetailComponent implements OnInit
     this.zonegroupDetailService.saveZonegroupDetail(this.userConncode, this.userID, this.zonegroupDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
       }
@@ -349,7 +349,7 @@ export class ZonegroupDetailComponent implements OnInit
 
     this.zonegroupDetailService.saveZonegroupDetail(this.userConncode, this.userID, this.zonegroupDetail)
     .subscribe((result: any) => {
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
       }

@@ -143,7 +143,7 @@ export class MakeDetailComponent implements OnInit
     this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/makes/makes']);
       }
@@ -159,7 +159,7 @@ export class MakeDetailComponent implements OnInit
     this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/makes/makes']);
       }

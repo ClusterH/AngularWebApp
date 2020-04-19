@@ -238,7 +238,7 @@ export class ServiceplanDetailComponent implements OnInit
     this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/serviceplans/serviceplans']);
       }
@@ -254,7 +254,7 @@ export class ServiceplanDetailComponent implements OnInit
     this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/serviceplans/serviceplans']);
       }

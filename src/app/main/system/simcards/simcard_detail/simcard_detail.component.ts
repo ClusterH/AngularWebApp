@@ -247,7 +247,7 @@ export class SimcardDetailComponent implements OnInit
     this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/simcards/simcards']);
       }
@@ -263,7 +263,7 @@ export class SimcardDetailComponent implements OnInit
     this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
     .subscribe((result: any) => {
       console.log(result);
-      if (result.responseCode == 200) {
+      if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['system/simcards/simcards']);
       }
