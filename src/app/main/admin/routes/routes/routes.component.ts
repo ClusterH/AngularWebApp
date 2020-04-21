@@ -5,34 +5,38 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { merge } from 'rxjs';
-import { tap,} from 'rxjs/operators';
+import { fromEvent, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
-import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
-import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
-import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
+import { RoutesService } from 'app/main/admin/routes/services/routes.service';
+import { RoutesDataSource } from "app/main/admin/routes/services/routes.datasource";
+import { RouteDetailService } from 'app/main/admin/routes/services/route_detail.service';
+import { AuthService } from 'app/authentication/services/authentication.service';
+
 
 import {CourseDialogComponent} from "../dialog/dialog.component";
+import { takeUntil } from 'rxjs/internal/operators';
 
-import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
-import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
-import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
+import { locale as routesEnglish } from 'app/main/admin/routes/i18n/en';
+import { locale as routesSpanish } from 'app/main/admin/routes/i18n/sp';
+import { locale as routesFrench } from 'app/main/admin/routes/i18n/fr';
+import { locale as routesPortuguese } from 'app/main/admin/routes/i18n/pt';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
-    selector     : 'admin-vehicles',
-    templateUrl  : './vehicles.component.html',
-    styleUrls    : ['./vehicles.component.scss'],
+    selector     : 'admin-routes',
+    templateUrl  : './routes.component.html',
+    styleUrls    : ['./routes.component.scss'],
     animations   : fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class VehiclesComponent implements OnInit
+export class RoutesComponent implements OnInit
 {
-    dataSource: VehiclesDataSource;
+    dataSource: RoutesDataSource;
 
     @Output()
     pageEvent: PageEvent;
@@ -45,31 +49,16 @@ export class VehiclesComponent implements OnInit
     index_number: number = 1;
     currentUser: any;
 
-    vehicle: any;
+    route: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
         'id',
         'name',
-        'company',
-        'group',
-        'subgroup',
-        'account',
-        'operator',
-        'unittype',
-        'serviceplan',
-        'producttype',
-        'make',
-        'model',
-        'isactive',
-        'timezone',
-        'created',
+        'createdwhen',
         'createdbyname',
-        'deletedwhen',
-        'deletedbyname', 
         'lastmodifieddate',
         'lastmodifiedbyname'
     ];
@@ -86,8 +75,8 @@ export class VehiclesComponent implements OnInit
     filter: ElementRef;
     
     constructor(
-        private _adminVehiclesService: VehiclesService,
-        private vehicleDetailService: VehicleDetailService,
+        private _adminRoutesService: RoutesService,
+        private routeDetailService: RouteDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -95,12 +84,11 @@ export class VehiclesComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).vehicles;
+        console.log(this.userConncode, this.userID);
 
-        console.log(this.restrictValue);
 
         //Load the translations
-        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(routesEnglish, routesSpanish, routesFrench, routesPortuguese);
 
         this.pageIndex= 0;
         this.pageSize = 25;
@@ -123,11 +111,14 @@ export class VehiclesComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
+        console.log(this.paginator.pageSize);
+
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList"))
+           tap(() => this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList"))
         )
         .subscribe( (res: any) => {
+            console.log(res);
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -138,12 +129,12 @@ export class VehiclesComponent implements OnInit
     {
         console.log(this.pageSize, this.pageIndex);
 
-        this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        this.dataSource = new RoutesDataSource(this._adminRoutesService);
+        this.dataSource.loadRoutes(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Route_TList");
     }
 
-    onRowClicked(vehicle) {
-        console.log('Row Clicked:', vehicle);
+    onRowClicked(route) {
+        console.log('Row Clicked:', route);
     }
 
     selectedFilter() {
@@ -152,12 +143,13 @@ export class VehiclesComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        console.log(pageIndex);
+        this.dataSource.loadRoutes(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
     }
 
     filterEvent() {
@@ -165,23 +157,24 @@ export class VehiclesComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
     }
 
-    addNewVehicle() {
-        this.vehicleDetailService.vehicle_detail = '';
-        localStorage.removeItem("vehicle_detail");
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+    addNewRoute() {
+        this.routeDetailService.route_detail = '';
+        localStorage.removeItem("route_detail");
+        this.router.navigate(['admin/routes/route_detail']);
     }
 
-    editShowVehicleDetail(vehicle: any) {
+    editShowRouteDetail(route: any) {
+        this.routeDetailService.route_detail = route;
 
-        localStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
+        localStorage.setItem("route_detail", JSON.stringify(route));
 
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+        this.router.navigate(['admin/routes/route_detail']);
     }
     
-    deleteVehicle(vehicle): void
+    deleteRoute(route): void
     {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
@@ -189,7 +182,7 @@ export class VehiclesComponent implements OnInit
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            route, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
@@ -204,17 +197,15 @@ export class VehiclesComponent implements OnInit
         });
     }
 
-    duplicateVehicle(vehicle: any): void
+    duplicateRoute(route): void
     {
-        console.log("first:", vehicle)
-        
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
 
         dialogConfig.disableClose = true;
         
         dialogConfig.data = {
-            vehicle, flag: this.flag
+            route, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
@@ -224,7 +215,7 @@ export class VehiclesComponent implements OnInit
             { 
                 console.log(result);
             } else {
-
+                console.log("FAIL:", result);
             }
         });
     }

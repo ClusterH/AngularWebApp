@@ -1,16 +1,16 @@
 <div id="dialog_table">
 <div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'DEVCONFIGS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'ROUTES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'DEVCONFIGS.DUPLICATE' | translate}}
+                {{'ROUTES.DUPLICATE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'DEVCONFIGS.NO' | translate}}
+                    {{'ROUTES.NO' | translate}}
             </button>
         </div>
 
@@ -19,35 +19,17 @@
 
 
 <div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'DEVCONFIGS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'ROUTES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'DEVCONFIGS.DELETE' | translate}}
+                {{'ROUTES.DELETE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'DEVCONFIGS.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
-</div>
-
-<div *ngIf="flag == 'delete_cmd'">
-    <h2 mat-dialog-title>{{'DEVCONFIGS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'DEVCONFIGS.DELETE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
-                    {{'DEVCONFIGS.NO' | translate}}
+                    {{'ROUTES.NO' | translate}}
             </button>
         </div>
 
@@ -55,17 +37,17 @@
 </div>
 
 <div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'DEVCONFIGS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'ROUTES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'DEVCONFIGS.YES' | translate}}
+                {{'ROUTES.YES' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()" fxFlex="30">
-                    {{'DEVCONFIGS.NO' | translate}}
+                    {{'ROUTES.NO' | translate}}
             </button>
         </div>
 

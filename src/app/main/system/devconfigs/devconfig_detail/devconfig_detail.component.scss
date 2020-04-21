@@ -4,15 +4,10 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        // background-color: rgb(255, 255, 255) !important;
         height: 40px !important;
         color: rgb(16, 20, 24) !important;
-        // box-shadow: 0px 0px 0px 1px rgb(42, 55, 59) !important;
     }
-
-    // .mat-form-field-appearance-outline .mat-form-field-outline {
-    //     color: #999999 !important;
-    // }
+   
     .mat-form-field-label {
             color: rgb(134, 132, 132) !important
     }
@@ -36,10 +31,7 @@
     mat-row:hover {
         background-color: #b2f5ef !important;
     }
-    // body.theme-default mat-row, body.theme-default mat-header-row, body.theme-default mat-footer-row, body.theme-default th.mat-header-cell, body.theme-default td.mat-cell, body.theme-default td.mat-footer-cell {
-    //     width: 10% !important;
-    // }
-
+  
     body.theme-default .mat-input-element:disabled {
         color: black !important
     }
@@ -49,9 +41,9 @@
         // width: 200% !important;
         overflow: hidden;
     }
-    .vehicles-table {
+    .devconfigcmd-table {
         flex: 1 1 auto;
-        border: 1px solid rgba(0, 0, 0, .12);
+        // border: 1px solid rgba(0, 0, 0, .12);
         // overflow: auto;
         // overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
@@ -64,7 +56,7 @@
             background-color: rgb(225, 245, 254) !important;
         }
 
-        .vehicle {
+        .devconfigcmd {
             position: relative;
             cursor: pointer;
             height: 32px;
@@ -76,18 +68,18 @@
             background-color: #b2f5ef !important;
         }
         mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
-            padding-left: 10px !important;
+            padding-left: 0px !important;
         }
         mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
-            padding-right: 10px !important;
+            padding-right: 0px !important;
         }
 
-        // .mat-row:nth-child(even){
-        //     background-color: #e4f0ec;
-        //   }
-        //   .mat-row:nth-child(odd){
-        //     background-color:#ffffff;
-        //   }
+        .mat-row:nth-child(even){
+            background-color: #e4f0ec;
+        }
+        .mat-row:nth-child(odd){
+            background-color:#ffffff;
+        }
 
         .mat-cell, .mat-footer-cell {
             font-size: 14px !important;
@@ -98,8 +90,6 @@
             display: flex;
             align-items: center;
         }
-
-        
 
         .quantity-indicator {
             display: inline-block;
@@ -131,18 +121,24 @@
         align-items: center !important;
         text-align: center !important;
         border-right: 1px solid grey;
-
+        // border-bottom:  1px solid grey;
+    }
+    .filter_command_input_empty{
+        width: 100% !important;
+        height: 40px !important;
+        // border-bottom:  1px solid grey;
     }
 
     .mat-column-command {
         word-wrap: break-word !important;
         white-space: unset !important;
-        flex: 0 0 40% !important;
+        flex: 0 0 48% !important;
         justify-content: center !important;
-        width: 40% !important;
+        width: 48% !important;
+        // padding-left: 0px !important;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        border-right: 1px solid grey;
+        // border-right: 1px solid grey;
         word-break: break-word;
         
         -ms-hyphens: auto;
@@ -154,13 +150,12 @@
     .mat-column-syscommand {
         word-wrap: break-word !important;
         white-space: unset !important;
-        flex: 0 0 40% !important;
+        flex: 0 0 48% !important;
         justify-content: center !important;
-        width: 40% !important;
+        width: 48% !important;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        border-right: 1px solid grey;
-        
+        // border-right: 1px solid grey;
         word-break: break-word;
         
         -ms-hyphens: auto;
@@ -172,11 +167,12 @@
     .mat-column-edit {
         word-wrap: break-word !important;
         white-space: unset !important;
-        flex: 0 0 20% !important;
-        width: 20% !important;
+        flex: 0 0 4% !important;
+        width: 4% !important;
+        // padding-right: 0px !important;
         overflow-wrap: break-word;
         word-wrap: break-word;
-        justify-content: center !important;
+        justify-content: space-around !important;
         word-break: break-word;
         
         -ms-hyphens: auto;
@@ -184,49 +180,25 @@
         -webkit-hyphens: auto;
         hyphens: auto;
     }
+
     .command_table_paginator {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        // background-color: rgb(30, 33, 41) !important;
+        background-color: rgb(30, 33, 41) !important;
         height: 40px !important;
         color: rgb(221, 221, 221) !important;
-    }
-    // .mat-paginator-range-actions {
-    //     // width: 700px;
-    //     margin-right: 3em !important;
-    // }
-   
-    // .edit_icon {
-    //     color: green;
-    //     margin-right: 3px;
-    // }
-    // .delete_icon {
-    //     color: red;
-    //     margin-right: 3px;
-    // }
-    // .copy_icon {
-    //     color: rgb(47, 170, 241);
-    // }
-    // .search_btn {
-    //     border-radius: 28px !important;
-    //     line-height: normal !important;
 
-    // }
-
-    .mat-paginator {
         .mat-paginator-container {
             justify-content: flex-end;
+            height: 40px !important;
         }
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -237,33 +209,58 @@
         .mat-paginator-range-label {
             order: 0;
         }
-        // .mat-form-field-infix {
-        //     width: 45px;
-        //     display: flex;
-        //     flex-direction: row;
-        // }
-        // .mat-input-element {
-        //     caret-color: rgba(47, 170, 241, 0.8);
-        //     color: rgb(47, 170, 241);
-        // }
-        // .index_input {
-        //     text-align: center;
-        //     margin-top: .35em !important;
-        // }
-        // .mat-select-value, .mat-select-arrow{
-        //     color: rgb(47, 170, 241) !important;
-        //     margin-right: 0px !important;
-        //     // text-align: center;
-        //     justify-content: center !important;
-        // }
+        .mat-form-field-infix {
+            width: 45px;
+            display: flex;
+            flex-direction: row;
+        }
+        .mat-input-element {
+            caret-color: rgba(47, 170, 241, 0.8);
+            color: rgb(47, 170, 241);
+        }
+        .index_input {
+            text-align: center;
+            margin-top: .35em !important;
+        }
+        .mat-select-value, .mat-select-arrow{
+            color: rgb(47, 170, 241) !important;
+            margin-right: 0px !important;
+            // text-align: center;
+            justify-content: center !important;
+        }
       
-        // .mat-focused .mat-form-field-underline .mat-form-field-ripple{
-        //     background: none;
-        // }
+        .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+            background: none;
+        }
 
-        // mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
-        //     padding-bottom: 1.2em !important;
-        // }
-       
+        mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
+            padding-bottom: 1.2em !important;
+        }
+    }
+   
+    .edit_icon {
+        color: green;
+        margin-right: 3px;
+    }
+    .delete_icon {
+        color: red;
+        margin-right: 3px;
     }
 
+    .spinner_container {
+        position: absolute;
+        top: 50%;
+        left: 60%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    .spinner_overlay {
+        height:100vh;
+        width:100%;
+        z-index:    10;
+        top:        0; 
+        left:       0; 
+        position:   fixed;
+    }

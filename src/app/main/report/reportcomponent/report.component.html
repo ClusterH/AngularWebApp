@@ -797,7 +797,7 @@
 
                 </mat-step>
 
-                <mat-step [stepControl]="outputStep" >
+                <mat-step [stepControl]="outputStep" [ngStyle]="{'display':loadingSubjectCompany? 'block' : 'none' }">
 
                     <form fxLayout="column" [formGroup]="outputStep">
 

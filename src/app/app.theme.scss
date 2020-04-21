@@ -143,8 +143,6 @@ $typography: mat-typography-config(
 @import "src/app/main/system/privileges/privileges/privileges.theme";
 @import "src/app/main/system/privileges/privilege_detail/privilege_detail.theme";
 
-
-
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
@@ -204,6 +202,12 @@ $typography: mat-typography-config(
     @include system-connection-theme($theme);
     @include system-userprofiles-theme($theme);
     @include system-userprofile-theme($theme);
+    @include system-privileges-theme($theme);
+    @include system-privilege-theme($theme);
+    @include system-devconfigs-theme($theme);
+    @include system-devconfig-theme($theme);
+
+
 }
 
 // -----------------------------------------------------------------------------------------------------

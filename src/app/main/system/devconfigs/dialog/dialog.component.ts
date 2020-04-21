@@ -29,6 +29,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.devconfig = devconfig;
         this.flag = flag;
+        console.log(this.devconfig, this,flag);
     }
 
     ngOnInit() {
@@ -50,10 +51,18 @@ export class CourseDialogComponent implements OnInit {
     
             this.router.navigate(['system/devconfigs/devconfig_detail']);
         } else if( this.flag == "delete") {
-            this.devconfigsService.deleteDevConfig(this.devconfig.id)
+            this.devconfigsService.deleteDevConfig(this.devconfig.id, 'devconfig_delete')
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     this.reloadComponent();
+                }
+            });
+        } else if (this.flag == "delete_cmd") {
+            this.devconfigsService.deleteDevConfig(this.devconfig.id, 'devconfigcmd_delete')
+            .subscribe((result: any) => {
+                console.log(result);
+                if ((result.responseCode == 200)||(result.responseCode == 100)) {
+                    this.reloadDetailComponent();
                 }
             });
         }
@@ -77,6 +86,12 @@ export class CourseDialogComponent implements OnInit {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['system/devconfigs/devconfigs']);
+    }
+
+    reloadDetailComponent() {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['system/devconfigs/devconfig_detail']);
     }
 
 }

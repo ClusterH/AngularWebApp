@@ -48,6 +48,23 @@ export class AuthService
         }));
     }
 
+    getUserObject(conncode: string, id: number) {
+        console.log(conncode, id)
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+       
+        let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('id', id.toString())
+            .set('method', 'user_Object');
+
+        console.log('params', params);
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        })
+    }
+
     logOut() {
         // remove user from local storage and set current user to null
         console.log("logout");

@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { DevConfigDetail } from 'app/main/system/devconfigs/model/devconfig.model';
 import { CourseDialogComponent } from "../dialog/dialog.component";
@@ -31,7 +31,6 @@ import { locale as devconfigsPortuguese } from 'app/main/system/devconfigs/i18n/
 
 export class DevConfigDetailComponent implements OnInit
 {
-  devconfig_detail: any;
   public devconfig: any;
   pageType: string;
   userConncode: string;
@@ -39,10 +38,14 @@ export class DevConfigDetailComponent implements OnInit
 
   command_edit_flag: boolean = false;
   currentCmdid: number;
-
-  // pageIndex= 0;
-  // pageSize = 25;
-  // pageSizeOptions: number[] = [5, 10, 25, 100];
+  filter_name: string = '';
+  
+  @Output()
+  pageEvent: PageEvent;
+ 
+  pageIndex= 0;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
 
   devconfigForm: FormGroup;
   devconfigDetail: DevConfigDetail = {};
@@ -57,10 +60,12 @@ export class DevConfigDetailComponent implements OnInit
   filter_string: string = '';
   method_string: string = '';
 
-  @ViewChild(MatPaginator, {static: true})
+  @ViewChild('paginatorDevConfigCmd', {read: MatPaginator, static: true})
     paginatorDevConfigCmd: MatPaginator;
+
   @ViewChild('paginatorCommand', {read: MatPaginator, static: true})
     paginatorCommand: MatPaginator;
+
   @ViewChild('paginatorSysCommand', {read: MatPaginator, static: true})
     paginatorSysCommand: MatPaginator;
   
@@ -74,6 +79,9 @@ export class DevConfigDetailComponent implements OnInit
   ) {
     this._fuseTranslationLoaderService.loadTranslations(devconfigsEnglish, devconfigsSpanish, devconfigsFrench, devconfigsPortuguese);
 
+    this.pageIndex= 0;
+    this.pageSize = 10;
+
     this.devconfig = localStorage.getItem("devconfig_detail")? JSON.parse(localStorage.getItem("devconfig_detail")) : '';
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
@@ -81,10 +89,12 @@ export class DevConfigDetailComponent implements OnInit
 
     if ( this.devconfig != '' )
     {
+      this.devconfigDetailService.devconfig_id = this.devconfig.id;
       this.pageType = 'edit';
     }
     else
     {
+      this.devconfigDetailService.devconfig_id = 0;
       this.pageType = 'new';
     }
 
@@ -98,7 +108,7 @@ export class DevConfigDetailComponent implements OnInit
     this.dataSourceCommand      = new DevConfigDetailDataSource(this.devconfigDetailService);
     this.dataSourceSysCommand   = new DevConfigDetailDataSource(this.devconfigDetailService);
 
-    this.dataSourceDevConfigCmd.loadDevConfigDetail(this.userConncode, this.userID, 0, 10, '', "DevConfigCmd_TList");
+    this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
     this.dataSourceCommand     .loadDevConfigDetail(this.userConncode, this.userID, 0, 10, '', "command_clist");
     this.dataSourceSysCommand  .loadDevConfigDetail(this.userConncode, this.userID, 0, 10, '', "syscommand_clist");
 
@@ -114,13 +124,18 @@ export class DevConfigDetailComponent implements OnInit
       lastmodifiedbyname : [{value: '', disabled: true}, Validators.required],
       filterstring       : [null, Validators.required],
 
-  });
+    });
 
     this.setValues();
   }
 
   ngAfterViewInit() {
     console.log("ngAfterViewInit:");
+
+    var node = $("div.page_index");
+    var node_length = node.length;
+    $("div.page_index").remove();
+    $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
     
     merge(this.paginatorDevConfigCmd.page)
     .pipe(
@@ -155,7 +170,7 @@ export class DevConfigDetailComponent implements OnInit
 
   loadDevConfigDetail(method_string: string) {
     if (method_string == 'devconfigcmd') {
-      this.dataSourceDevConfigCmd.loadDevConfigDetail(this.userConncode, this.userID, this.paginatorDevConfigCmd.pageIndex, this.paginatorDevConfigCmd.pageSize, this.filter_string, `${method_string}_tlist`)
+      this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, this.paginatorDevConfigCmd.pageIndex, this.paginatorDevConfigCmd.pageSize, '', this.filter_string, `${method_string}_tlist`)
     } else if (method_string == 'command') {
         this.dataSourceCommand.loadDevConfigDetail(this.userConncode, this.userID, this.paginatorCommand.pageIndex, this.paginatorCommand.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'syscommand') {
@@ -219,7 +234,7 @@ export class DevConfigDetailComponent implements OnInit
     // this.devconfigDetail.deletedby        = this.devconfig.deletedby || 0;
 
     if( mode  == "save" ) {
-      this.devconfigDetail.id               = this.devconfig.id;
+      this.devconfigDetail.id               = this.devconfig.id || 0;
       this.devconfigDetail.createdwhen      = this.devconfig.createdwhen;
       this.devconfigDetail.createdby        = this.devconfig.createdby;
       this.devconfigDetail.lastmodifieddate = dateTime;
@@ -235,15 +250,32 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   onKey(event: any) {
+    console.log(event);
     this.filter_string = event.target.value;
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
-     
-      this.managePageIndex(this.method_string);
-      this.loadDevConfigDetail(this.method_string);
+      if (this.method_string == 'devconfigcmd') {
+        this.managePageIndex(this.method_string);
+        console.log(this.filter_name, this.filter_string);
+        this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, this.filter_name, this.filter_string, "DevConfigCmd_TList");
+      } else {
+        this.managePageIndex(this.method_string);
+        this.loadDevConfigDetail(this.method_string);
+      }
     }
 
     console.log(this.filter_string);
+  }
+
+  onClickSearch(name: any) {
+    console.log(name);
+    this.method_string = 'devconfigcmd';
+
+    if (name == 'command') {
+      this.filter_name = 'command';
+    } else if (name == 'syscommand') {
+      this.filter_name = 'syscommand';
+    }
   }
 
   clearFilter() {
@@ -275,15 +307,41 @@ export class DevConfigDetailComponent implements OnInit
     if (selectedCommand == null || selectedSysCommand == null) {
       alert("Please choose command detail!");
     } else {
-      this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, 0, selectedCommand, selectedSysCommand, this.devconfig.id)
-      .subscribe((res: any) => {
-        console.log(res);
-        this.dataSourceDevConfigCmd.loadDevConfigDetail(this.userConncode, this.userID, 0, 10, '', "DevConfigCmd_TList");
-        this.command_edit_flag = false;
-        this.devconfigForm.get('command').setValue(0);
-        this.devconfigForm.get('syscommand').setValue(0);
-        console.log(this.devconfigForm.get('command').value);
-      });
+      if (this.devconfigDetailService.devconfig_id == 0) {
+        console.log('add new command');
+        let today = new Date().toISOString();
+        this.getValues(today, "add");
+        console.log(this.devconfigDetail);
+
+        this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
+        .subscribe((result: any) => {
+          console.log(result);
+          if ((result.responseCode == 200)||(result.responseCode == 100)) {
+            alert("Success!");
+            this.devconfigDetailService.devconfig_id = result.TrackingXLAPI.DATA[0].id;
+            this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, 0, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
+            .subscribe((res: any) => {
+              console.log(res);
+              this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
+              this.command_edit_flag = false;
+              this.devconfigForm.get('command').setValue(0);
+              this.devconfigForm.get('syscommand').setValue(0);
+              console.log(this.devconfigForm.get('command').value);
+            });
+            // this.router.navigate(['system/devconfigs/devconfigs']);
+          }
+        });
+      } else {
+        this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, 0, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
+        .subscribe((res: any) => {
+          console.log(res);
+          this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
+          this.command_edit_flag = false;
+          this.devconfigForm.get('command').setValue(0);
+          this.devconfigForm.get('syscommand').setValue(0);
+          console.log(this.devconfigForm.get('command').value);
+        });
+      }
     }
   }
 
@@ -291,18 +349,39 @@ export class DevConfigDetailComponent implements OnInit
     console.log("add Current Command");
     let selectedCommand = this.devconfigForm.get('command').value;
     let selectedSysCommand = this.devconfigForm.get('syscommand').value;
-    this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, this.currentCmdid, selectedCommand, selectedSysCommand, this.devconfig.id)
+    this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, this.currentCmdid, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
     .subscribe((res: any) => {
       console.log(res);
-      this.dataSourceDevConfigCmd.loadDevConfigDetail(this.userConncode, this.userID, 0, 10, '', "DevConfigCmd_TList");
+      // this.dataSourceDevConfigCmd =  new DevConfigDetailDataSource(this.devconfigDetailService);
+      this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
 
       this.command_edit_flag = false;
       this.devconfigForm.get('command').setValue(0);
       this.devconfigForm.get('syscommand').setValue(0);
       console.log(this.devconfigForm.get('command').value);
     })
-    
+  }
 
+  deleteCurrentCommand(devconfig): void {
+    const dialogConfig = new MatDialogConfig();
+    console.log(devconfig);
+
+    dialogConfig.disableClose = true;
+    
+    dialogConfig.data = {
+      devconfig, flag: 'delete_cmd'
+    };
+
+    const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if ( result )
+      { 
+          console.log(result);
+      } else {
+          console.log("FAIL:", result);
+      }
+    });
   }
 
   dateFormat(date: any) {
@@ -378,4 +457,11 @@ export class DevConfigDetailComponent implements OnInit
     });
 
   }
+
+  navigatePageEvent() {
+    console.log("pageEvent");
+    this.paginatorDevConfigCmd.pageIndex = this.dataSourceDevConfigCmd.page_index - 1;
+    this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, this.paginatorDevConfigCmd.pageIndex, this.paginatorDevConfigCmd.pageSize,  this.filter_name, this.filter_string, "DevConfigCmd_TList");
+  }
 }
+

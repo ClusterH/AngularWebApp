@@ -8,6 +8,7 @@ import { first } from 'rxjs/operators';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
+import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 
 import { AuthService } from 'app/authentication/services/authentication.service';
 
@@ -30,12 +31,20 @@ export class LoginComponent implements OnInit
     userPassword: string;
     userRemember: boolean;
 
+    userConncode: string;
+    userID: number;
+
     selectedLanguage: any;
     languages: any;
+
+    // hiddenNavItem: boolean;
+    isHideNavList: any = {};
 
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseConfigService: FuseConfigService,
+        private _fuseNavigationService: FuseNavigationService,
+
         private _formBuilder: FormBuilder,
         private router: Router,
 
@@ -43,7 +52,12 @@ export class LoginComponent implements OnInit
         private _translateService: TranslateService,
     )
     {
+        // this.hiddenNavItem = false;
+
         if (localStorage.getItem('user_info')) {
+            this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+            this.isHideNaveItem(this.userConncode, this.userID);
             this.router.navigate(['/home/analytics']);
         }
         
@@ -93,6 +107,7 @@ export class LoginComponent implements OnInit
 
     ngOnInit(): void
     {
+        console.log("Login Component:");
         this.loginForm = this._formBuilder.group({
             email   : ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
@@ -133,11 +148,37 @@ export class LoginComponent implements OnInit
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(first())
             .subscribe((res: any) => {
+                console.log(res);
+                if (res.responseCode == 100) {
+                    this.isHideNaveItem(res.TrackingXLAPI.DATA.conncode, res.TrackingXLAPI.DATA.id);
+                }
                 this.router.navigate(['/home/analytics']);
             },
             error => {
                 alert(error);
             });
+    }
+
+    isHideNaveItem(conncode: string, id: number) {
+        this.authService.getUserObject(conncode, id)
+        .subscribe((res: any) => {
+            console.log(res);
+            if (res.responseCode == 100) {
+                this.isHideNavList = res.TrackingXLAPI.DATA1;
+                localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
+
+                console.log("HideNavList: ", this.isHideNavList);
+                
+                for (let item in this.isHideNavList) { 
+                    if (Number(this.isHideNavList[item]) == 0) {
+                        this._fuseNavigationService.updateNavigationItem(`${item}`, {
+                            hidden: true
+                        });
+                    }
+                }
+            }
+           
+        })
     }
 
     setLanguage(lang): void

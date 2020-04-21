@@ -7,9 +7,10 @@ export class DevConfigDetailService
 {
     routeParams: any;
     devconfig: any;
-    public devconfig_detail: any;
+    devconfig_detail: any;
+
+    public devconfig_id: number;
     public unit_clist_item: any = {};
-    public current_devconfigID: number;
 
     /**
      * Constructor
@@ -37,7 +38,7 @@ export class DevConfigDetailService
             .set('pageindex', (pageindex + 1).toString())
             .set('pagesize', pagesize.toString())
             .set('method', method.toString());
-
+            console.log(params);
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
                 params: params
@@ -51,12 +52,54 @@ export class DevConfigDetailService
             .set('pagesize', pagesize.toString())
             .set('name', `^${name}^`) 
             .set('method', method.toString());
+            console.log(params);
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
+        }
+        
+    }
+
+    getDevConfigCmd(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, filterstring: string, method: string): Observable<any>
+    {
+        console.log("SERVICE-getCompanies() :", method);
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        
+        if (name == '') {
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('devconfigid', this.devconfig_id.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('method', method.toString());
+
+            console.log(params);
+
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                headers: headers,   
+                params: params
+            });
+        } else {
+            let params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('devconfigid', this.devconfig_id.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set(`${name}`, `^${filterstring}^`)
+            .set('method', method.toString());
+
+            console.log(params);
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
                 params: params
             });
         }
+            
         
     }
 

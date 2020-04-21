@@ -23,44 +23,77 @@ export class PrivilegeDetailService
         // Set the defaults
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, typeid: number, method: string): Observable<any>
+    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string,  method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method, typeid);
-        if (typeid == undefined) {
-            typeid = 0;
-        }
+        console.log("SERVICE-getCompanies() :", method);
+        // if (typeid == undefined) {
+        //     typeid = 0;
+        // }
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
         if(name == '') {
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('typeid', typeid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
+            if (method == 'privobject_clist') {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('typeid', this.current_typeID.toString())
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
-                params: params
-            });
-           
+                console.log(params);
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
         } else {
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('typeid', typeid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
+            if (method == 'privobject_clist') {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('typeid', this.current_typeID.toString())
+                .set('name', `^${name}^`) 
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
-                params: params
-            });
+                console.log(params);
+
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`) 
+                .set('method', method.toString());
+    
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
+           
         }
     }
 
@@ -71,16 +104,10 @@ export class PrivilegeDetailService
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
             .set('id', privilegeDetail.id.toString())
-            .set('name', privilegeDetail.name.toString())
-            .set('phonenumber', privilegeDetail.phonenumber.toString())
-            .set('carrierid', privilegeDetail.carrierid.toString())
             .set('isactive', privilegeDetail.isactive.toString())
-            .set('created', privilegeDetail.created.toString())
-            .set('createdby', privilegeDetail.createdby.toString())
-            .set('deletedwhen', privilegeDetail.deletedwhen.toString())
-            .set('deletedby', privilegeDetail.deletedby.toString())
-            .set('lastmodifieddate', privilegeDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', privilegeDetail.lastmodifiedby.toString())
+            .set('name', privilegeDetail.name.toString())
+            .set('typeid', privilegeDetail.typeid.toString())
+            .set('objectid', privilegeDetail.objectid.toString())
             .set('method', 'privilege_save');
         
             console.log(params_detail);

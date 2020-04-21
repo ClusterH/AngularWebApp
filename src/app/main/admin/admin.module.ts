@@ -60,6 +60,10 @@ const routes = [
     {
         path        : 'dealercompanies',
         loadChildren: () => import('./dealercompanies/dealercompanies.module').then(m => m.DealerCompaniesModule)
+    },
+    {
+        path        : 'routes',
+        loadChildren: () => import('./routes/routes.module').then(m => m.RoutesModule)
     }
 ];
 

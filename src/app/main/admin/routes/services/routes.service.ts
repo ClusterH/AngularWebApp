@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class DevConfigsService
+export class RoutesService
 {
-    devconfigs: any[];
+    routes: any[];
 
     /**
      * Constructor
@@ -16,7 +16,7 @@ export class DevConfigsService
         private _httpClient: HttpClient,
     ) { }
     
-    getDevConfigs(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
+    getRoutes(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
     {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
@@ -56,7 +56,7 @@ export class DevConfigsService
         }
     }
     
-    deleteDevConfig(id: number, method: string): Observable<any>
+    deleteRoute(id: number): Observable<any>
     {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -67,7 +67,7 @@ export class DevConfigsService
                 .set('conncode', userConncode.toString())
                 .set('userid', userID.toString())
                 .set('id', id.toString())
-                .set('method', method.toString());
+                .set('method', "route_delete");
                
             console.log('params', params);
 

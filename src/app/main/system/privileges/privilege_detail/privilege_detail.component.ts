@@ -52,10 +52,10 @@ export class PrivilegeDetailComponent implements OnInit {
   filter_string: string = '';
   method_string: string = '';
 
-  @ViewChild('paginatorPrivType', { static: true })
-  paginatorPrivType: MatPaginator;
+  @ViewChild(MatPaginator, { static: true })
+    paginatorPrivType: MatPaginator;
   @ViewChild('paginatorPrivObject', {read: MatPaginator})
-  paginatorPrivObject: MatPaginator;
+    paginatorPrivObject: MatPaginator;
 
   constructor(
     public privilegeDetailService: PrivilegeDetailService,
@@ -98,10 +98,10 @@ export class PrivilegeDetailComponent implements OnInit {
     this.dataSourcePrivType = new PrivilegeDetailDataSource(this.privilegeDetailService);
     this.dataSourcePrivObject = new PrivilegeDetailDataSource(this.privilegeDetailService);
 
-    this.dataSourcePrivType.loadPrivilegeDetail(this.userConncode, this.userID, 0, 10, '', this.privilege.typeid, "privtype_clist");
+    this.dataSourcePrivType.loadPrivilegeDetail(this.userConncode, this.userID, 0, 5, this.privilege.type, "privtype_clist");
 
     if (this.privilegeObject_flag) {
-      this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, 0, 10, '', this.privilegeDetailService.current_typeID, "privobject_clist");
+      this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, 0, 5,  this.privilege.object, "privobject_clist");
     }
 
     this.privilegeForm = this._formBuilder.group({
@@ -152,10 +152,10 @@ export class PrivilegeDetailComponent implements OnInit {
   loadPrivilegeDetail(method_string: string) {
     console.log("loadPrivilegeDetail:" + method_string);
     if (method_string == 'privtype') {
-      this.dataSourcePrivType.loadPrivilegeDetail(this.userConncode, this.userID, this.paginatorPrivType.pageIndex, this.paginatorPrivType.pageSize, "", this.privilegeDetailService.current_typeID, `${method_string}_clist`)
+      this.dataSourcePrivType.loadPrivilegeDetail(this.userConncode, this.userID, this.paginatorPrivType.pageIndex, this.paginatorPrivType.pageSize, this.filter_string,  `${method_string}_clist`)
     }
     else if (method_string == 'privobject') {
-      this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, this.paginatorPrivObject.pageIndex, this.paginatorPrivObject.pageSize, "", this.privilegeDetailService.current_typeID, `${method_string}_clist`)
+      this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, this.paginatorPrivObject.pageIndex, this.paginatorPrivObject.pageSize, this.filter_string,  `${method_string}_clist`)
     }
   }
 
@@ -173,7 +173,6 @@ export class PrivilegeDetailComponent implements OnInit {
 
   showCompanyList(item: string) {
     let methodString = item;
-    console.log("showCompanyList" + methodString);
     this.method_string = item.split('_')[0];
     if (this.method_string == 'privobject' && !this.privilegeObject_flag) {
       alert("Please select Type first!");
@@ -238,12 +237,12 @@ export class PrivilegeDetailComponent implements OnInit {
   getValues(dateTime: any, mode: string) {
     this.privilegeDetail.name = this.privilegeForm.get('name').value || '',
 
-    this.privilegeDetail.typeid = this.privilegeForm.get('privtype').value || 0;
-    this.privilegeDetail.objectid = this.privilegeForm.get('privobject').value || 0;
+    this.privilegeDetail.typeid      = this.privilegeForm.get('privtype').value || 0;
+    this.privilegeDetail.objectid    = this.privilegeForm.get('privobject').value || 0;
 
-    this.privilegeDetail.isactive = this.privilege.isactive || true;
+    this.privilegeDetail.isactive    = this.privilege.isactive || true;
     this.privilegeDetail.deletedwhen = this.privilege.deletedwhen || '';
-    this.privilegeDetail.deletedby = this.privilege.deletedby || 0;
+    this.privilegeDetail.deletedby   = this.privilege.deletedby || 0;
 
     if (mode == "save") {
       this.privilegeDetail.id = this.privilege.id;
@@ -258,7 +257,6 @@ export class PrivilegeDetailComponent implements OnInit {
       this.privilegeDetail.lastmodifieddate = dateTime;
       this.privilegeDetail.lastmodifiedby = this.userID;
     }
-
   }
 
   dateFormat(date: any) {
@@ -337,7 +335,7 @@ export class PrivilegeDetailComponent implements OnInit {
     console.log(event);
     this.privilegeDetailService.current_typeID = this.privilegeForm.get('privtype').value;
     this.privilegeObject_flag = true;
-    this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, 0, 10, "", this.privilegeDetailService.current_typeID, "privobject_clist");
+    this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, 0, 5, "",  "privobject_clist");
   }
 
   checkTypeIsSelected() {

@@ -1,8 +1,8 @@
 @import "src/@fuse/scss/fuse";
 
-admin-models {
+admin-routes {
 
-    #models {
+    #routes {
 
         .top-bg {
             height: 120px !important;
@@ -68,7 +68,7 @@ admin-models {
         // width: 200% !important;
         overflow: hidden;
     }
-    .models-table {
+    .routes-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
         // overflow: auto;
@@ -83,7 +83,7 @@ admin-models {
             background-color: rgb(225, 245, 254) !important;
         }
 
-        .model {
+        .route {
             position: relative;
             cursor: pointer;
             height: 32px;
@@ -117,10 +117,6 @@ admin-models {
             display: flex;
             align-items: center;
         }
-
-        // .mat-column-id {
-        //     flex: 0 1 4%;
-        // }
 
         .quantity-indicator {
             display: inline-block;
@@ -193,9 +189,7 @@ admin-models {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-    }
-    .disableEditBtn{
-        color: grey;
+
     }
 
     .mat-paginator {

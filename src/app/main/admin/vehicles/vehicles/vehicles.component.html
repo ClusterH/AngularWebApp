@@ -58,7 +58,8 @@
             <!-- ADD BUTTON -->
             <button mat-fab
                     [routerLink]="'/admin/vehicles/vehicle_detail'"
-                    class="accent  mt-24 mt-md-0">
+                    class="accent  mt-24 mt-md-0"
+                    [disabled]="restrictValue == 1 || restrictValue == 2">
                <mat-icon (click)="addNewVehicle()">add</mat-icon>
 
             </button>
@@ -90,7 +91,7 @@
                 <ng-container matColumnDef="id" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let vehicle">
-                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)">edit</mat-icon>
+                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowVehicleDetail(vehicle)" [disabled]="restrictValue == 1">edit</mat-icon>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteVehicle(vehicle)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateVehicle(vehicle)">file_copy</mat-icon>
                     </mat-cell>

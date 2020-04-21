@@ -73,7 +73,12 @@
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'PRIVILEGES.TYPE' | translate }}</mat-label>
                                         <mat-select formControlName="privtype"  (click)="showCompanyList('privtype_clist')" (selectionChange)="onTypeChange($event)">
-                                            
+
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
                                             <div  style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourcePrivType"  class="privileges-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
@@ -89,7 +94,7 @@
                                                 #paginatorPrivType
                                                 class="table_paginator"
                                                 [length]="dataSourcePrivType.totalLength"
-                                                [pageSize]="10"
+                                                [pageSize]="5"
                                                 [hidePageSize]="true"
                                                 showFirstLastButtons
                                             ></mat-paginator>
@@ -100,26 +105,32 @@
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" *ngIf="privilegeObject_flag; else none">
                                         <mat-label>{{ 'PRIVILEGES.OBJECT' | translate }}</mat-label>
                                         <mat-select formControlName="privobject"  (click)="showCompanyList('privobject_clist')">
-                                            
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourcePrivObject"  class="privileges-table font-size-10 mat-elevation-z8" >
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let privobject"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="privobject.id">{{privobject.name}}</mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                                </mat-table>
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-                                        
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorPrivObject
-                                                class="table_paginator"
-                                                [length]="dataSourcePrivObject.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                            ></mat-paginator>
+
+                                            <div>
+                                                <div  style="width: 100%; overflow: auto;">
+                                                    <mat-table [dataSource]="dataSourcePrivObject"  class="privileges-table font-size-10 mat-elevation-z8" >
+                                                        <ng-container matColumnDef="name">
+                                                            <td mat-cell *matCellDef="let privobject"  style="border: 0px;">
+                                                                <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="privobject.id">{{privobject.name}}</mat-option>
+                                                            </td>
+                                                        </ng-container>
+                                                        <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    </mat-table>
+                                                </div>
+                                            
+                                                <mat-paginator style=" height: 40px;"
+                                                    #paginatorPrivObject
+                                                    class="table_paginator"
+                                                    [length]="dataSourcePrivObject.totalLength"
+                                                    [pageSize]="5"
+                                                    [hidePageSize]="true"
+                                                    showFirstLastButtons
+                                                ></mat-paginator>
+                                            </div>
                                         
                                         </mat-select>
                                     </mat-form-field>

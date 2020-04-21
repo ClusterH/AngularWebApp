@@ -52,14 +52,13 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.OPERATORS',
                 type     : 'item',
                 url      : '/admin/operators/operators'
-               
             },
             {
                 id       : 'routes',
                 title    : 'Routes',
                 translate: 'NAV.ROUTES',
                 type     : 'item',
-                url      : 'pages/admin/routes'
+                url      : '/admin/routes/routes'
             },
             {
                 id       : 'users',
@@ -67,15 +66,7 @@ export const navigation: FuseNavigation[] = [
                 translate: 'NAV.USERS',
                 type     : 'item',
                 url      : '/admin/users/users'
-            },
-            {
-                id       : 'users_profiles',
-                title    : 'Users Profiles',
-                translate: 'NAV.USERSPROFILES',
-                type     : 'item',
-                url      : 'pages/admin/users_profiles'
-            },
-            
+            },            
             {
                 id       : 'monitoring_groups',
                 title    : 'Monitoring Groups',
