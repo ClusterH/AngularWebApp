@@ -51,6 +51,7 @@ export class AccountsComponent implements OnInit
     account: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -91,6 +92,8 @@ export class AccountsComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).accounts;
+
         console.log(this.userConncode, this.userID);
 
 

@@ -52,6 +52,7 @@ export class DevConfigsComponent implements OnInit
     devconfig: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -84,6 +85,8 @@ export class DevConfigsComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).devconfigs;
+
         console.log(this.userConncode, this.userID);
 
 

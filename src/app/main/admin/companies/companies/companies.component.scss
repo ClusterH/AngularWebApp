@@ -263,7 +263,9 @@ admin-companies {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
 
     .mat-paginator {

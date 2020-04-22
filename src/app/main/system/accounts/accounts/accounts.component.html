@@ -54,8 +54,10 @@
             <!-- ADD BUTTON -->
             <button mat-fab
                     [routerLink]="'/system/accounts/account_detail'"
-                    class="accent  mt-24 mt-md-0">
-               <mat-icon (click)="addNewAccount()">add</mat-icon>
+                    class="accent  mt-24 mt-md-0"
+                    [disabled]="restrictValue != 3"
+                    (click)="addNewAccount()">
+               <mat-icon>add</mat-icon>
 
             </button>
             <!-- / ADD BUTTON -->
@@ -86,7 +88,7 @@
                 <ng-container matColumnDef="id" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let account">
-                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowAccountDetail(account)">edit</mat-icon>
+                        <button (click) = "editShowAccountDetail(account)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteAccount(account)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateAccount(account)">file_copy</mat-icon>
                     </mat-cell>

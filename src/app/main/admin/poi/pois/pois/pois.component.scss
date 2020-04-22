@@ -65,21 +65,17 @@ admin-pois {
 
     .content-card {
         position: relative;
-        // width: 200% !important;
         overflow: hidden;
     }
     .pois-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
-        // overflow: auto;
-        // overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         
         .mat-header-row {
             height: 40px;
             min-height: 24px;
             font-weight: bold;
-            // color: 
             background-color: rgb(225, 245, 254) !important;
         }
 
@@ -145,7 +141,6 @@ admin-pois {
         color: rgb(221, 221, 221) !important;
     }
     .mat-paginator-range-actions {
-        // width: 700px;
         margin-right: 3em !important;
     }
     .mat-mini-fab {
@@ -155,13 +150,7 @@ admin-pois {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    // .mat-mini-fab[disabled] {
-    //     width: 35px !important;
-    //     height: 35px !important;
-    //     font-size: 14px !important;
-    //     color: turquoise !important;
-    //     background-color: rgba(64, 224, 208, .3) !important;
-    // }
+   
     .mat-fab .mat-button-wrapper {
         padding: 0px !important;
         line-height: normal !important;
@@ -170,11 +159,7 @@ admin-pois {
         color: moccasin !important;
         background-color: transparent !important;
     }
-    // .mat-select-value {
-    //     color: rgb(221, 221, 221) !important;
-    //     margin-left: 10px !important;
-    //     margin-right: 0px !important;
-    // }
+   
     .edit_icon {
         color: green;
         margin-right: 3px;
@@ -189,7 +174,9 @@ admin-pois {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
 
     .mat-paginator {
@@ -199,12 +186,9 @@ admin-pois {
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -231,7 +215,6 @@ admin-pois {
         .mat-select-value, .mat-select-arrow{
             color: rgb(47, 170, 241) !important;
             margin-right: 0px !important;
-            // text-align: center;
             justify-content: center !important;
         }
       
@@ -242,7 +225,6 @@ admin-pois {
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
-       
     }
 
     .spinner_container {

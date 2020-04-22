@@ -48,6 +48,7 @@ export class PoisComponent implements OnInit
     poi: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -89,6 +90,7 @@ export class PoisComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).pois;
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(poisEnglish, poisSpanish, poisFrench, poisPortuguese);

@@ -48,8 +48,10 @@
             <!-- ADD BUTTON -->
             <button mat-fab
                     [routerLink]="'/system/devconfigs/devconfig_detail'"
-                    class="accent  mt-24 mt-md-0">
-               <mat-icon (click)="addNewDevConfig()">add</mat-icon>
+                    class="accent  mt-24 mt-md-0"
+                    [disabled]="restrictValue != 3"
+                    (click)="addNewDevConfig()">
+               <mat-icon>add</mat-icon>
 
             </button>
             <!-- / ADD BUTTON -->
@@ -80,7 +82,7 @@
                 <ng-container matColumnDef="id" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let devconfig">
-                        <mat-icon class="active-icon s-16 edit_icon"  matRipple (click) = "editShowDevConfigDetail(devconfig)">edit</mat-icon>
+                        <button (click) = "editShowDevConfigDetail(devconfig)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDevConfig(devconfig)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateDevConfig(devconfig)">file_copy</mat-icon>
                     </mat-cell>

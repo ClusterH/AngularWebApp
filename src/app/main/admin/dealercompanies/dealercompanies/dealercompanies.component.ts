@@ -48,7 +48,8 @@ export class DealerCompaniesComponent implements OnInit {
     dealercompany: any;
     userConncode: string;
     userID: number;
-
+    restrictValue: number;
+    
     flag: string = '';
     displayedColumns = [
         'id',
@@ -98,6 +99,7 @@ export class DealerCompaniesComponent implements OnInit {
 
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).dealercompanies;
 
         this.pageIndex = 0;
         this.pageSize = 25;

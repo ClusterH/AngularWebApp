@@ -65,21 +65,17 @@ admin-groups {
 
     .content-card {
         position: relative;
-        // width: 200% !important;
         overflow: hidden;
     }
     .groups-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
-        // overflow: auto;
-        // overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         
         .mat-header-row {
             height: 40px;
             min-height: 24px;
             font-weight: bold;
-            // color: 
             background-color: rgb(225, 245, 254) !important;
         }
 
@@ -111,8 +107,6 @@ admin-groups {
         .mat-cell, .mat-footer-cell {
             font-size: 11px !important;
         }
-
-      
 
         .quantity-indicator {
             display: inline-block;
@@ -175,7 +169,9 @@ admin-groups {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
 
     .mat-paginator {
@@ -185,12 +181,9 @@ admin-groups {
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -217,7 +210,6 @@ admin-groups {
         .mat-select-value, .mat-select-arrow{
             color: rgb(47, 170, 241) !important;
             margin-right: 0px !important;
-            // text-align: center;
             justify-content: center !important;
         }
       

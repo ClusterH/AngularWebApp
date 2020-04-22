@@ -49,6 +49,7 @@ export class InsuranceCompaniesComponent implements OnInit
     insurancecompany: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -100,6 +101,7 @@ export class InsuranceCompaniesComponent implements OnInit
                 
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).insurancecompanies;
 
         this.pageIndex= 0;
         this.pageSize = 25;

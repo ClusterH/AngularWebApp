@@ -179,14 +179,11 @@ admin-zonegroups {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
    
-    // .mat-column-name{
-    //     flex-grow: 1 !important;
-    //     flex-shrink: 1 !important;
-    //     flex-basis: 0% !important;
-    // }
     .mat-paginator {
         .mat-paginator-container {
             justify-content: flex-end;
@@ -194,12 +191,9 @@ admin-zonegroups {
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -226,7 +220,6 @@ admin-zonegroups {
         .mat-select-value, .mat-select-arrow{
             color: rgb(47, 170, 241) !important;
             margin-right: 0px !important;
-            // text-align: center;
             justify-content: center !important;
         }
       
@@ -237,7 +230,6 @@ admin-zonegroups {
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
-       
     }
 
     .spinner_container {

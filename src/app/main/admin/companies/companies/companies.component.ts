@@ -49,6 +49,7 @@ export class CompaniesComponent implements OnInit
     company: any;   
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -100,6 +101,8 @@ export class CompaniesComponent implements OnInit
 
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).companies;
+
         console.log(this.userConncode, this.userID);
 
         this.pageIndex= 0;

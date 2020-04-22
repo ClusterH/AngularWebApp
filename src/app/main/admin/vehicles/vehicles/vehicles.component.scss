@@ -118,8 +118,6 @@ admin-vehicles {
             align-items: center;
         }
 
-        
-
         .quantity-indicator {
             display: inline-block;
             vertical-align: middle;
@@ -181,7 +179,9 @@ admin-vehicles {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
 
     .mat-paginator {

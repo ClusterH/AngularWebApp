@@ -51,7 +51,7 @@
             <button mat-fab
                     [routerLink]="'/admin/models/model_detail'"
                     class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue == 1 || restrictValue == 2"
+                    [disabled]="restrictValue != 3"
                     (click)="addNewModel()">
                <mat-icon>add</mat-icon>
 

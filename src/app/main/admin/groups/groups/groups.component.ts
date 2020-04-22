@@ -49,6 +49,7 @@ export class GroupsComponent implements OnInit
     group: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -90,6 +91,8 @@ export class GroupsComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).groups;
+
         console.log(this.userConncode, this.userID);
 
         //Load the translations

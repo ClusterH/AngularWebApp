@@ -51,6 +51,7 @@ export class CarriersComponent implements OnInit
     carrier: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -85,6 +86,8 @@ export class CarriersComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).carriers;
+
         console.log(this.userConncode, this.userID);
 
 
