@@ -23,6 +23,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatRadioModule } from '@angular/material/radio';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BlockUIModule } from 'ng-block-ui';
@@ -79,6 +80,7 @@ const routes = [
         MatTabsModule,
         MatDialogModule,
         MatProgressSpinnerModule,
+        MatRadioModule,
 
         TranslateModule,
         HttpClientModule,

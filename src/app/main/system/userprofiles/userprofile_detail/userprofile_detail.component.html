@@ -101,59 +101,92 @@
                                     
                                     </mat-select>
                                 </mat-form-field>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <fieldset style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;" fxFlex="30">
+                                        <legend>&nbsp;Modules&nbsp;</legend>
+                                        <div style="width: 100%; overflow: auto; height: 96%;">
+                                            <div *ngFor="let module of get_module_access">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <div  fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                                        <mat-icon>view_module</mat-icon>
+                                                        <span class="ml-4">{{module.privilege}}</span>
+                                                    </div>
+
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p get_module_access mr-12">
+
+                                                        <mat-select class="get_module_access_select" [(value)]="module.accesslevel" style=" height: 24px; max-height: 24px;" formControlName="{{module.privilege}}">
+                                                            <mat-option *ngFor="let restrict of access_restric_list" class="get_module_access_select_option" [value]="restrict">{{restrict}}</mat-option>
+                                                        </mat-select>
+                                                        
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
+                                        <legend>&nbsp;Reports&nbsp;</legend>
+                                        <div class="">
+                                            <mat-radio-group formControlName="get_report_access" class="report-radio-group" fxLayout="column">
+                                                <mat-radio-button class="report-radio-button mb-12 mt-4" *ngFor="let report of get_report_access" [value]="report.privilegeid">
+                                                {{report.privilege}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>   
+                                    </fieldset>
+
+                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
+                                        <legend>&nbsp;Commands&nbsp;</legend>
+                                        <div class="">
+                                            <mat-radio-group formControlName="get_command_access" class="command-radio-group" fxLayout="column">
+                                                <mat-radio-button class="command-radio-button mb-12 mt-4" *ngFor="let command of get_command_access" [value]="command.privilegeid">
+                                                {{command.privilege}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
                             </div>
+                           
+                        </mat-tab>
 
-                            <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
-                                <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
-                                    <legend>&nbsp;{{ 'USERPROFILES.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'USERPROFILES.CREATED' | translate }}</mat-label>
-                                            <input matInput placeholder="Created"
-                                                name="created"
-                                                    formControlName="created">
-                                        </mat-form-field>
+                        <mat-tab label="{{ 'VEHICLES.AUDIT' | translate }}">
 
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'USERPROFILES.CREATEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="CreatedByName"
-                                                name="createdbyname"
-                                                formControlName="createdbyname">
-                                        </mat-form-field>
-                                    </div>
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
 
-                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'USERPROFILES.DELETEDWHEN' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted When"
-                                            name="deletedwhen"
-                                            formControlName="deletedwhen">
+                                        <mat-label>{{ 'VEHICLES.CREATED' | translate }}</mat-label>
+                                        <input matInput placeholder="Created"
+                                               name="created"
+                                                formControlName="created">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'USERPROFILES.DELETEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted By Name"
-                                            name="deletedbyname"
-                                            formControlName="deletedbyname">
+                                        <mat-label>{{ 'VEHICLES.CREATEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="CreatedByName"
+                                               name="createdbyname"
+                                               formControlName="createdbyname">
                                     </mat-form-field>
-                                </div> -->
+                                </div>
 
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'USERPROFILES.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified Date"
-                                                name="lastmodifieddate"
-                                                formControlName="lastmodifieddate">
-                                        </mat-form-field>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified Date"
+                                               name="lastmodifieddate"
+                                               formControlName="lastmodifieddate">
+                                    </mat-form-field>
 
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'USERPROFILES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified By Name"
-                                                name="lastmodifiedbyname"
-                                                formControlName="lastmodifiedbyname">
-                                        </mat-form-field>
-                                    </div>
-                                </fieldset>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'VEHICLES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified By Name"
+                                               name="lastmodifiedbyname"
+                                               formControlName="lastmodifiedbyname">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </mat-tab>
 

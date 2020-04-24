@@ -52,6 +52,7 @@ export class UserProfilesComponent implements OnInit
     userprofile: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -84,8 +85,9 @@ export class UserProfilesComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        console.log(this.userConncode, this.userID);
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).userprofiles;
 
+        console.log(this.userConncode, this.userID);
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(userprofilesEnglish, userprofilesSpanish, userprofilesFrench, userprofilesPortuguese);

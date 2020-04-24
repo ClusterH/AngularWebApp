@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { MatRadioButton, MatRadioChange } from '@angular/material/radio';
+
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 
@@ -39,6 +41,12 @@ export class UserProfileDetailComponent implements OnInit {
 
   userprofileForm: FormGroup;
   userprofileDetail: UserProfileDetail = {};
+
+  get_module_access: any[];
+  get_report_access: any[];
+  get_command_access: any[];
+
+  access_restric_list: any = ['Denied', 'Read', 'Edit', 'Create'];
 
   dataSourceCompany: UserProfileDetailDataSource;
 
@@ -85,6 +93,9 @@ export class UserProfileDetailComponent implements OnInit {
     this.userprofileForm = this._formBuilder.group({
       name: [null, Validators.required],
       company: [null, Validators.required],
+      // get_module_access: [],
+      get_report_access: [],
+      get_command_access: [],
       isactive: [null, Validators.required],
       created: [{ value: '', disabled: true }, Validators.required],
       createdbyname: [{ value: '', disabled: true }, Validators.required],
@@ -93,6 +104,46 @@ export class UserProfileDetailComponent implements OnInit {
       filterstring       : [null, Validators.required],
     });
 
+    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 1)
+    .subscribe((res: any) => {
+      console.log(res);
+      if (res.responseCode == 100) {
+        this.get_module_access = res.TrackingXLAPI.DATA;
+        for (let module in this.get_module_access) {
+          console.log(this.get_module_access[module].privilege);
+
+          let module_form = new FormControl('')
+          this.userprofileForm.addControl(this.get_module_access[module].privilege.toString(), module_form);
+
+          this.userprofileForm.get(`${this.get_module_access[module].privilege}`).setValue(this.access_restric_list[this.get_module_access[module].accesslevel]);
+        }
+        console.log(this.get_module_access);
+      } else {
+        alert('No Data Found for module!');
+      }
+    });
+
+    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 2)
+    .subscribe((res: any) => {
+      console.log(res);
+      if (res.responseCode == 100) {
+        this.get_report_access = res.TrackingXLAPI.DATA;
+        console.log(this.get_report_access);
+      } else {
+        alert('No Data Found for Report!');
+      }
+    });
+
+    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 4)
+    .subscribe((res: any) => {
+      console.log(res);
+      if (res.responseCode == 100) {
+        this.get_command_access = res.TrackingXLAPI.DATA;
+        console.log(this.get_command_access);
+      } else {
+        alert('No Data Found for Command!');
+      }
+    });
 
     this.setValues();
   }
@@ -172,6 +223,7 @@ export class UserProfileDetailComponent implements OnInit {
   setValues() {
     this.userprofileForm.get('name').setValue(this.userprofile.name);
     this.userprofileForm.get('company').setValue(this.userprofile.companyid);
+    // this.userprofileForm.get('get_module_access').setValue(this.userprofile.companyid);
 
     let created = this.userprofile.createdwhen ? new Date(`${this.userprofile.createdwhen}`) : '';
     let lastmodifieddate = this.userprofile.lastmodifieddate ? new Date(`${this.userprofile.lastmodifieddate}`) : '';
@@ -276,6 +328,5 @@ export class UserProfileDetailComponent implements OnInit {
         console.log("FAIL:", result);
       }
     });
-
   }
 }

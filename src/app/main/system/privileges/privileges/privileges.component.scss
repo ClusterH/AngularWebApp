@@ -65,21 +65,17 @@ system-privileges {
 
     .content-card {
         position: relative;
-        // width: 200% !important;
         overflow: hidden;
     }
     .privileges-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
-        // overflow: auto;
-        // overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         
         .mat-header-row {
             height: 40px;
             min-height: 24px;
             font-weight: bold;
-            // color: 
             background-color: rgb(225, 245, 254) !important;
         }
 
@@ -145,7 +141,6 @@ system-privileges {
         color: rgb(221, 221, 221) !important;
     }
     .mat-paginator-range-actions {
-        // width: 700px;
         margin-right: 3em !important;
     }
     .mat-mini-fab {
@@ -179,7 +174,9 @@ system-privileges {
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
-
+    }
+    .disableEditBtn{
+        color: grey;
     }
 
     .mat-paginator {
@@ -189,12 +186,9 @@ system-privileges {
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -221,7 +215,6 @@ system-privileges {
         .mat-select-value, .mat-select-arrow{
             color: rgb(47, 170, 241) !important;
             margin-right: 0px !important;
-            // text-align: center;
             justify-content: center !important;
         }
       
@@ -232,7 +225,6 @@ system-privileges {
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
-       
     }
 
     .spinner_container {

@@ -51,6 +51,7 @@ export class UnittypesComponent implements OnInit
     unittype: any;
     userConncode: string;
     userID: number;
+    restrictValue: number;
 
     flag: string = '';
     displayedColumns = [
@@ -86,6 +87,8 @@ export class UnittypesComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).unittypes;
+
         console.log(this.userConncode, this.userID);
 
 

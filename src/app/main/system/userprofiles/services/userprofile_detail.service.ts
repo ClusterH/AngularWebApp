@@ -60,6 +60,24 @@ export class UserProfileDetailService
         
     }
 
+    getPrivilegeAccess(conncode: string, userid: number, userprofileid: number, typeid: number): Observable<any> {
+        const headers = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const params = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('userprofileid', userprofileid.toString())
+            .set('typeid', typeid.toString())
+            .set('method', 'get_privilege_access');
+        
+            console.log(params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
     saveUserProfileDetail(conncode: string, userid: number, userprofileDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
