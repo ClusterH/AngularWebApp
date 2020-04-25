@@ -281,7 +281,10 @@ export class PrivilegeDetailComponent implements OnInit {
     this.getValues(today, "save");
     console.log(this.privilegeDetail);
 
-    this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
+    if (this.privilegeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
@@ -289,6 +292,7 @@ export class PrivilegeDetailComponent implements OnInit {
           this.router.navigate(['system/privileges/privileges']);
         }
       });
+    }
   }
 
   addPrivilege(): void {
@@ -297,7 +301,10 @@ export class PrivilegeDetailComponent implements OnInit {
     this.getValues(today, "add");
     console.log(this.privilegeDetail);
 
-    this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
+    if (this.privilegeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
@@ -305,6 +312,7 @@ export class PrivilegeDetailComponent implements OnInit {
           this.router.navigate(['system/privileges/privileges']);
         }
       });
+    }
   }
 
   goBackUnit() {

@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'DEALERCOMPANIES.SELECTFIELD' | translate}}:</mat-label>
@@ -116,8 +116,8 @@
                                
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="created text-truncate">
                             {{dealercompany.created}}
                         </p>
@@ -126,8 +126,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="created text-truncate">
                             {{dealercompany.createdbyname}}
                         </p>
@@ -136,8 +136,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="deletedwhen text-truncate">
                             {{dealercompany.deletedwhen}}
                         </p>
@@ -146,8 +146,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="deletedbyname text-truncate">
                             {{dealercompany.deletedbyname}}
                         </p>
@@ -156,8 +156,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="lastmodifieddate text-truncate">
                             {{dealercompany.lastmodifieddate}}
                         </p>
@@ -166,8 +166,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEALERCOMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let dealercompany" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEALERCOMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let dealercompany" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{dealercompany.lastmodifiedbyname}}
                         </p>

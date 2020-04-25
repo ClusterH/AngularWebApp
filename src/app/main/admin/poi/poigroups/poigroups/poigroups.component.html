@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'POIGROUPS.SELECTFIELD' | translate}}:</mat-label>
@@ -113,8 +113,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="created text-truncate">
                             {{poigroup.created}}
                         </p>
@@ -123,8 +123,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="created text-truncate">
                             {{poigroup.createdbyname}}
                         </p>
@@ -133,8 +133,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="deletedwhen text-truncate">
                             {{poigroup.deletedwhen}}
                         </p>
@@ -143,8 +143,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="deletedbyname text-truncate">
                             {{poigroup.deletedbyname}}
                         </p>
@@ -153,8 +153,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="lastmodifieddate text-truncate">
                             {{poigroup.lastmodifieddate}}
                         </p>
@@ -163,8 +163,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIGROUPS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poigroup" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIGROUPS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poigroup" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{poigroup.lastmodifiedbyname}}
                         </p>

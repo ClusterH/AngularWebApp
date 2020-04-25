@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'OPERATORS.SELECTFIELD' | translate}}:</mat-label>
@@ -110,8 +110,8 @@
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.EMAIL' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.EMAIL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" >
                         <p class="email text-truncate">
                             {{user.email}}
                         </p>
@@ -130,8 +130,8 @@
 
                 <!-- PhoneNumber Column -->
                 <ng-container matColumnDef="phonenumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.PHONENUMBER' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.PHONENUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let user" >
                         <p class="phonenumber text-truncate">
                             {{user.phonenumber}}
                         </p>
@@ -160,8 +160,8 @@
 
                 <!-- Group Column -->
                 <ng-container matColumnDef="group">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.GROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="group text-truncate">
                             {{operator.group}}
                         </p>
@@ -170,8 +170,8 @@
 
                 <!-- SubGroup Column -->
                 <ng-container matColumnDef="subgroup">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.SUBGROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.SUBGROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="subgroup text-truncate">
                             {{operator.subgroup}}
                         </p>
@@ -180,8 +180,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="created text-truncate">
                             {{operator.created}}
                         </p>
@@ -190,8 +190,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="created text-truncate">
                             {{operator.createdbyname}}
                         </p>
@@ -200,8 +200,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="deletedwhen text-truncate">
                             {{operator.deletedwhen}}
                         </p>
@@ -210,8 +210,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="deletedbyname text-truncate">
                             {{operator.deletedbyname}}
                         </p>
@@ -220,8 +220,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="lastmodifieddate text-truncate">
                             {{operator.lastmodifieddate}}
                         </p>
@@ -230,8 +230,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{operator.lastmodifiedbyname}}
                         </p>
@@ -240,8 +240,8 @@
 
                  <!-- BirthDate Column -->
                 <ng-container matColumnDef="birthdate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.BIRTHDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.BIRTHDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="birthdate text-truncate">
                             {{operator.birthdate}}
                         </p>
@@ -250,8 +250,8 @@
 
                 <!-- HireDate Column -->
                 <ng-container matColumnDef="hiredate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.HIREDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.HIREDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="hiredate text-truncate">
                             {{operator.hiredate}}
                         </p>
@@ -260,8 +260,8 @@
 
                 <!-- physicaTestExpiryDate Column -->
                 <ng-container matColumnDef="physicaltestexpirydate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.PHYSICALTESTEXPIRYDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.PHYSICALTESTEXPIRYDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="physicaltestexpirydate text-truncate">
                             {{operator.physicaltestexpirydate}}
                         </p>
@@ -270,8 +270,8 @@
 
                 <!-- LicenseExpirationDate Column -->
                 <ng-container matColumnDef="licenseexpirationdate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.LICENSEEXPIRATIONDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.LICENSEEXPIRATIONDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="licenseexpirationdate text-truncate">
                             {{operator.licenseexpirationdate}}
                         </p>
@@ -280,8 +280,8 @@
 
                 <!-- DiverLicenseNumber Column -->
                 <ng-container matColumnDef="driverlicensenumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'OPERATORS.DRIVERLICENSENUMBER' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let operator" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'OPERATORS.DRIVERLICENSENUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let operator" >
                         <p class="driverlicensenumber text-truncate">
                             {{operator.driverlicensenumber}}
                         </p>

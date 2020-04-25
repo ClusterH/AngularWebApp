@@ -302,9 +302,6 @@ export class DealerCompanyDetailComponent implements OnInit
     this.dealercompanyDetail.webstartlat = this.dealercompanyForm.get('webstartlat').value || 0;
     this.dealercompanyDetail.webstartlong = this.dealercompanyForm.get('webstartlong').value || 0;
     this.dealercompanyDetail.hasprivatelabel = this.dealercompanyForm.get('hasprivatelabel').value || false;
-
-
-
  
     this.dealercompanyDetail.isactive         = this.dealercompany.isactive || true;
     this.dealercompanyDetail.deletedwhen      = this.dealercompany.deletedwhen || '';
@@ -323,7 +320,6 @@ export class DealerCompanyDetailComponent implements OnInit
       this.dealercompanyDetail.lastmodifieddate = dateTime;
       this.dealercompanyDetail.lastmodifiedby   = this.userID;
     }
-    
   }
 
   dateFormat(date: any) {
@@ -347,15 +343,18 @@ export class DealerCompanyDetailComponent implements OnInit
     let today = new Date().toISOString();
     this.getValues(today, "save");
     console.log(this.dealercompanyDetail);
-
-    this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/dealercompanies/dealercompanies']);
-      }
-    });
+    if (this.dealercompanyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/dealercompanies/dealercompanies']);
+        }
+      });
+    }
   }
 
   addDealerCompany(): void {
@@ -363,15 +362,18 @@ export class DealerCompanyDetailComponent implements OnInit
     let today = new Date().toISOString();
     this.getValues(today, "add");
     console.log(this.dealercompanyDetail);
-
-    this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/dealercompanies/dealercompanies']);
-      }
-    });
+    if (this.dealercompanyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/dealercompanies/dealercompanies']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

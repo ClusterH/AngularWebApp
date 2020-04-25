@@ -406,14 +406,18 @@ export class DevConfigDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.devconfigDetail);
 
-    this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/devconfigs/devconfigs']);
-      }
-    });
+    if (this.devconfigDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/devconfigs/devconfigs']);
+        }
+      });
+    }
   }
 
   addDevConfig(): void {
@@ -422,14 +426,18 @@ export class DevConfigDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.devconfigDetail);
 
-    this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/devconfigs/devconfigs']);
-      }
-    });
+    if (this.devconfigDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/devconfigs/devconfigs']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

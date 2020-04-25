@@ -344,27 +344,35 @@ export class DeviceDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.deviceDetail);
 
-    this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/devices/devices']);
-      }
-    });
+    if (this.deviceDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/devices/devices']);
+        }
+      });
+    } 
   }
 
   addDevice(): void {
     let today = new Date().toISOString();
     this.getValues(today, "add");
 
-    this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
-    .subscribe((result: any) => {
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/devices/devices']);
-      }
-    });
+    if (this.deviceDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
+      .subscribe((result: any) => {
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/devices/devices']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

@@ -76,7 +76,7 @@
                                            required>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <div fxFlex="48">
                                         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
@@ -146,7 +146,7 @@
                         <mat-tab label="{{ 'ACCOUNTS.AUDIT' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'ACCOUNTS.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -162,7 +162,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'ACCOUNTS.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -178,7 +178,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'ACCOUNTS.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

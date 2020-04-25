@@ -257,14 +257,18 @@ export class ModelDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.modelDetail);
 
-    this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/models/models']);
-      }
-    });
+    if (this.modelDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/models/models']);
+        }
+      });
+    }
   }
 
   addModel(): void {
@@ -273,14 +277,18 @@ export class ModelDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.modelDetail);
 
-    this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/models/models']);
-      }
-    });
+    if (this.modelDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/models/models']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'MODELS.SELECTFIELD' | translate}}:</mat-label>
@@ -100,8 +100,8 @@
                 
                 <!-- Make Column -->
                 <ng-container matColumnDef="make">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.MAKE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.MAKE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="make text-truncate">
                             {{model.make}}
                         </p>
@@ -110,8 +110,8 @@
 
                 <!-- Created Column -->
                 <ng-container matColumnDef="createdwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="createdwhen text-truncate">
                             {{model.createdwhen}}
                         </p>
@@ -120,8 +120,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="created text-truncate">
                             {{model.createdbyname}}
                         </p>
@@ -130,8 +130,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="deletedwhen text-truncate">
                             {{model.deletedwhen}}
                         </p>
@@ -140,8 +140,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="deletedbyname text-truncate">
                             {{model.deletedbyname}}
                         </p>
@@ -150,8 +150,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="lastmodifieddate text-truncate">
                             {{model.lastmodifieddate}}
                         </p>
@@ -160,8 +160,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{model.lastmodifiedbyname}}
                         </p>
@@ -170,8 +170,8 @@
 
                 <!-- TireConfiguration Column -->
                 <ng-container matColumnDef="tireconfiguration">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'MODELS.TIRECONFIGURATION' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let model" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MODELS.TIRECONFIGURATION' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let model" >
                         <p class="tireconfiguration text-truncate">
                             {{model.tireconfiguration}}
                         </p>

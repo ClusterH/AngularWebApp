@@ -346,15 +346,18 @@ export class CompanyDetailComponent implements OnInit
     let today = new Date().toISOString();
     this.getValues(today, "save");
     console.log(this.companyDetail);
-
-    this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/companies/companies']);
-      }
-    });
+    if (this.companyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/companies/companies']);
+        }
+      });
+    }
   }
 
   addCompany(): void {
@@ -362,15 +365,18 @@ export class CompanyDetailComponent implements OnInit
     let today = new Date().toISOString();
     this.getValues(today, "add");
     console.log(this.companyDetail);
-
-    this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/companies/companies']);
-      }
-    });
+    if (this.companyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/companies/companies']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

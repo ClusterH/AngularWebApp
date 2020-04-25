@@ -275,7 +275,6 @@ export class GroupDetailComponent implements OnInit
     let str = new Date(date).toISOString().substring(0, 10);
     console.log(str);
     return str;
-
   }
 
   saveGroup(): void {
@@ -283,14 +282,18 @@ export class GroupDetailComponent implements OnInit
     let today = new Date().toISOString();
     this.getValues(today, "save");
 
-    this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/groups/groups']);
-      }
-    });
+    if (this.groupDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/groups/groups']);
+        }
+      });
+    }
   }
 
   addGroup(): void {
@@ -299,14 +302,18 @@ export class GroupDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.groupDetail);
 
-    this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/groups/groups']);
-      }
-    });
+    if (this.groupDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/groups/groups']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

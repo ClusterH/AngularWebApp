@@ -60,7 +60,7 @@
 
                             <div class="tab-content p-20" fusePerfectScrollbar fxLayout="column">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'POIGROUPS.NAME' | translate }}</mat-label>
                                         <input matInput placeholder="Name"
@@ -110,7 +110,7 @@
 
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
                                     <legend>&nbsp;{{ 'POIGROUPS.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayoutAlign="space-between" class="mt-20">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" class="mt-20">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'POIGROUPS.CREATED' | translate }}</mat-label>
                                             <input matInput placeholder="Created"
@@ -126,7 +126,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'POIGROUPS.DELETEDWHEN' | translate }}</mat-label>
                                             <input matInput placeholder="Deleted When"
@@ -142,7 +142,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'POIGROUPS.LASTMODIFIEDDATE' | translate }}</mat-label>
                                             <input matInput placeholder="Last Modified Date"
@@ -164,7 +164,7 @@
                         <mat-tab label=POIs #tab>
                         <!-- <mat-tab label=POIs #tab [disabled]='!(poigroupDetail.companyid > 0)'> -->
                             <div class="tab-content p-24 pb-8"  fxLayout="column">
-                                <div fxLayout="row" fxLayoutAlign="space-between" style="margin: 30px; margin-top: 20px;">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" style="margin: 30px; margin-top: 20px;">
                                     <div class="content pl-30" fxFlex="20">
                                         <div class="card">
 
@@ -189,7 +189,7 @@
                                        
                                     <div class="includedPOI" fxFlex="80" class="mr-32 ml-32" [ngStyle]="{'display':filterBy ? 'block' : 'none' }" >
                                         <div class="included-card pb-20 pt-20" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div  fxLayout="row" fxLayoutAlign="space-between">
+                                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                                 <div class="filter_company_input" fxFlex="70">
                                                     <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onIncludedFilter($event)">
                                                     <mat-icon (click)="clearFilter()">clear</mat-icon>
@@ -236,9 +236,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="excludedPOI" fxFlex="80" class="mr-32 ml-32" [ngStyle]="{'display':!filterBy? 'block' : 'none' }">
+                                    <div class="excludedPOI" fxFlex="80" class="mr-gm-32 ml-32" [ngStyle]="{'display':!filterBy? 'block' : 'none' }">
                                         <div class="excluded-card pb-20 pt-20" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div  fxLayout="row" fxLayoutAlign="space-between">
+                                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                                 <div class="filter_company_input" fxFlex="70">
                                                     <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
                                                     <mat-icon (click)="clearFilter()">clear</mat-icon>

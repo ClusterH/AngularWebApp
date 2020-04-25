@@ -14,8 +14,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="mr-0 mr-sm-16" >
-                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/privileges/privileges'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
 
                 <div fxLayout="column" fxLayoutAlign="start start"
@@ -68,7 +67,7 @@
                                            required>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'PRIVILEGES.TYPE' | translate }}</mat-label>
@@ -146,7 +145,7 @@
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
                                     <legend>&nbsp;{{ 'PRIVILEGES.AUDIT' | translate }}&nbsp;</legend>
 
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'PRIVILEGES.CREATED' | translate }}</mat-label>
                                             <input matInput placeholder="Created"
@@ -162,7 +161,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'PRIVILEGES.DELETEDWHEN' | translate }}</mat-label>
                                             <input matInput placeholder="Deleted When"
@@ -178,7 +177,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'PRIVILEGES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                             <input matInput placeholder="Last Modified Date"

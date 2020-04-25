@@ -140,14 +140,18 @@ export class MakeDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.makeDetail);
 
-    this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/makes/makes']);
-      }
-    });
+    if (this.makeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/makes/makes']);
+        }
+      });
+    }
   }
 
   addMake(): void {
@@ -156,14 +160,18 @@ export class MakeDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.makeDetail);
 
-    this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/makes/makes']);
-      }
-    });
+    if (this.makeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/makes/makes']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

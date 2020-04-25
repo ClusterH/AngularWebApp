@@ -140,14 +140,18 @@ export class CommandDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.commandDetail);
 
-    this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/commands/commands']);
-      }
-    });
+    if (this.commandDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/commands/commands']);
+        }
+      });
+    }
   }
 
   addCommand(): void {
@@ -156,14 +160,18 @@ export class CommandDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.commandDetail);
 
-    this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/commands/commands']);
-      }
-    });
+    if (this.commandDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/commands/commands']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

@@ -348,14 +348,18 @@ export class InsuranceCompanyDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.insurancecompanyDetail);
 
-    this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
-      }
-    });
+    if (this.insurancecompanyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
+        }
+      });
+    }
   }
 
   addInsuranceCompany(): void {
@@ -364,14 +368,18 @@ export class InsuranceCompanyDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.insurancecompanyDetail);
 
-    this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
-      }
-    });
+    if (this.insurancecompanyDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

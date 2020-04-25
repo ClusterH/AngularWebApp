@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'ZONES.SELECTFIELD' | translate}}:</mat-label>
@@ -115,8 +115,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="created text-truncate">
                             {{zone.created}}
                         </p>
@@ -125,8 +125,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="created text-truncate">
                             {{zone.createdbyname}}
                         </p>
@@ -135,8 +135,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="deletedwhen text-truncate">
                             {{zone.deletedwhen}}
                         </p>
@@ -145,8 +145,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="deletedbyname text-truncate">
                             {{zone.deletedbyname}}
                         </p>
@@ -155,8 +155,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="lastmodifieddate text-truncate">
                             {{zone.lastmodifieddate}}
                         </p>
@@ -165,8 +165,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ZONES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let zone" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ZONES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let zone" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{zone.lastmodifiedbyname}}
                         </p>

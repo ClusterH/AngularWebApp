@@ -67,7 +67,7 @@
                                            required>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
                                         <mat-label>{{ 'VEHICLES.COMPANY' | translate }}</mat-label>
@@ -131,7 +131,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.ACCOUNT' | translate }}</mat-label>
                                         <mat-select formControlName="account"  (click)="showCompanyList('account_clist')">
@@ -194,7 +194,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.UNITTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="unittype"  (click)="showCompanyList('unittype_clist')">
@@ -257,7 +257,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
                                         <mat-label>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="producttype"  (click)="showCompanyList('producttype_clist')">
@@ -392,7 +392,7 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -408,7 +408,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -424,7 +424,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

@@ -140,14 +140,18 @@ export class SysCommandDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.syscommandDetail);
 
-    this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/syscommands/syscommands']);
-      }
-    });
+    if (this.syscommandDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/syscommands/syscommands']);
+        }
+      });
+    }
   }
 
   addSysCommand(): void {
@@ -156,14 +160,18 @@ export class SysCommandDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.syscommandDetail);
 
-    this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/syscommands/syscommands']);
-      }
-    });
+    if (this.syscommandDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/syscommands/syscommands']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

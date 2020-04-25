@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'DEVICES.SELECTFIELD' | translate}}:</mat-label>
@@ -116,8 +116,8 @@
 
                 <!-- IMEI Column -->
                 <ng-container matColumnDef="imei">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.IMEI' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.IMEI' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="imei text-truncate">
                             {{device.imei}}
                         </p>
@@ -126,8 +126,8 @@
 
                 <!-- SerialNumber Column -->
                 <ng-container matColumnDef="serialnumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.SERIALNUMBER' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.SERIALNUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="serialnumber text-truncate">
                             {{device.serialnumber}}
                         </p>
@@ -136,8 +136,8 @@
                 
                 <!-- DeviceType Column -->
                 <ng-container matColumnDef="devicetype">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.DEVICETYPE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.DEVICETYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="devicetype text-truncate">
                             {{device.devicetype}}
                         </p>
@@ -146,8 +146,8 @@
 
                  <!-- ConnIn Column -->
                  <ng-container matColumnDef="connin">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.CONNIN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.CONNIN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="connin text-truncate">
                             {{device.connin}}
                         </p>
@@ -156,8 +156,8 @@
                 
                 <!-- ConnOut Column -->
                 <ng-container matColumnDef="connout">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.CONNOUT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.CONNOUT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="connout text-truncate">
                             {{device.connout}}
                         </p>
@@ -166,8 +166,8 @@
 
                 <!-- ConnSMS Column -->
                 <ng-container matColumnDef="connsms">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.CONNSMS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.CONNSMS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="connsms text-truncate">
                             {{device.connsms}}
                         </p>
@@ -176,8 +176,8 @@
 
                 <!-- ActivationCode Column -->
                 <ng-container matColumnDef="activationcode">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.ACTIVATIONCODE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.ACTIVATIONCODE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="activationcode text-truncate">
                             {{device.activationcode}}
                         </p>
@@ -186,8 +186,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="created text-truncate">
                             {{device.created}}
                         </p>
@@ -196,8 +196,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="created text-truncate">
                             {{device.createdbyname}}
                         </p>
@@ -206,8 +206,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="deletedwhen text-truncate">
                             {{device.deletedwhen}}
                         </p>
@@ -216,8 +216,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="deletedbyname text-truncate">
                             {{device.deletedbyname}}
                         </p>
@@ -226,8 +226,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="lastmodifieddate text-truncate">
                             {{device.lastmodifieddate}}
                         </p>
@@ -236,8 +236,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'DEVICES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let device" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'DEVICES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let device" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{device.lastmodifiedbyname}}
                         </p>

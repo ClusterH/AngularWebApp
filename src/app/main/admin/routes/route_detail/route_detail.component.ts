@@ -142,7 +142,10 @@ export class RouteDetailComponent implements OnInit {
     this.getValues(today, "save");
     console.log(this.routeDetail);
 
-    this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
+    if (this.routeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
@@ -150,6 +153,7 @@ export class RouteDetailComponent implements OnInit {
           this.router.navigate(['admin/routes/routes']);
         }
       });
+    }
   }
 
   addRoute(): void {
@@ -158,7 +162,10 @@ export class RouteDetailComponent implements OnInit {
     this.getValues(today, "add");
     console.log(this.routeDetail);
 
-    this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
+    if (this.routeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
@@ -166,6 +173,7 @@ export class RouteDetailComponent implements OnInit {
           this.router.navigate(['admin/routes/routes']);
         }
       });
+    }
   }
 
   goBackUnit() {

@@ -59,6 +59,12 @@
         }
     }
 
+    .mat-paginator-range-label {
+        @include media-breakpoint('lt-md') {
+            display: none !important;
+        }
+    }
+
     .nav .nav-item .navlink {
         color: #b2f5ef !important
     }

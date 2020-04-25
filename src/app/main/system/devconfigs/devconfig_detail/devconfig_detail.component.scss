@@ -208,6 +208,9 @@
         }
         .mat-paginator-range-label {
             order: 0;
+            @include media-breakpoint('lt-md') {
+                display: none !important;
+            }
         }
         .mat-form-field-infix {
             width: 45px;

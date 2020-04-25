@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'VEHICLES.SELECTFIELD' | translate}}:</mat-label>
@@ -118,8 +118,8 @@
 
                 <!-- Group Column -->
                 <ng-container matColumnDef="group">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.GROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="group text-truncate">
                             {{vehicle.group}}
                         </p>
@@ -128,8 +128,8 @@
 
                 <!-- SubGroup Column -->
                 <ng-container matColumnDef="subgroup">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.SUBGROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.SUBGROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="subgroup text-truncate">
                             {{vehicle.subgroup}}
                         </p>
@@ -138,8 +138,8 @@
                 
                 <!-- Account Column -->
                 <ng-container matColumnDef="account">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ACCOUNT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.ACCOUNT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="account text-truncate">
                             {{vehicle.account}}
                         </p>
@@ -148,8 +148,8 @@
 
                  <!-- Operator Column -->
                  <ng-container matColumnDef="operator">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.OPERATOR' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.OPERATOR' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="operator text-truncate">
                             {{vehicle.operator}}
                         </p>
@@ -158,8 +158,8 @@
                 
                 <!-- UnitType Column -->
                 <ng-container matColumnDef="unittype">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.UNITTYPE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.UNITTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="unittype text-truncate">
                             {{vehicle.unittype}}
                         </p>
@@ -168,8 +168,8 @@
 
                 <!-- ServicePlan Column -->
                 <ng-container matColumnDef="serviceplan">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.SERVICEPLAN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.SERVICEPLAN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="serviceplan text-truncate">
                             {{vehicle.serviceplan}}
                         </p>
@@ -178,8 +178,8 @@
 
                 <!-- ProductType Column -->
                 <ng-container matColumnDef="producttype">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="producttype text-truncate">
                             {{vehicle.producttype}}
                         </p>
@@ -188,8 +188,8 @@
                 
                 <!-- Make Column -->
                 <ng-container matColumnDef="make">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MAKE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.MAKE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="make text-truncate">
                             {{vehicle.make}}
                         </p>
@@ -198,8 +198,8 @@
 
                 <!-- Model Column -->
                 <ng-container matColumnDef="model">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.MODEL' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.MODEL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="model text-truncate">
                             {{vehicle.model}}
                         </p>
@@ -208,8 +208,8 @@
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="isactive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.ISACTIVE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.ISACTIVE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="isactive text-truncate">
                             {{vehicle.isactive}}
                         </p>
@@ -218,8 +218,8 @@
 
                 <!-- TimeZone Column -->
                 <ng-container matColumnDef="timezone">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.TIMEZONE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.TIMEZONE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="timezone text-truncate">
                             {{vehicle.timezone}}
                         </p>
@@ -228,8 +228,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="created text-truncate">
                             {{vehicle.created}}
                         </p>
@@ -238,8 +238,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="created text-truncate">
                             {{vehicle.createdbyname}}
                         </p>
@@ -248,8 +248,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="deletedwhen text-truncate">
                             {{vehicle.deletedwhen}}
                         </p>
@@ -258,8 +258,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="deletedbyname text-truncate">
                             {{vehicle.deletedbyname}}
                         </p>
@@ -268,8 +268,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="lastmodifieddate text-truncate">
                             {{vehicle.lastmodifieddate}}
                         </p>
@@ -278,8 +278,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'VEHICLES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let vehicle" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'VEHICLES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{vehicle.lastmodifiedbyname}}
                         </p>

@@ -53,11 +53,11 @@ admin-pois {
                     }
                 }
 
-                @include media-breakpoint('lt-md') {
+                 @include media-breakpoint('lt-md') {
                     padding: 8px 0;
-                    height: 100x !important;
-                    min-height: 100px !important;
-                    max-height: 100px !important;
+                    height: auto !important;
+                    min-height: 300px !important;
+                    max-height: 300px !important;
                 }
             }
         }
@@ -198,6 +198,9 @@ admin-pois {
         }
         .mat-paginator-range-label {
             order: 0;
+            @include media-breakpoint('lt-md') {
+                display: none !important;
+            }
         }
         .mat-form-field-infix {
             width: 45px;

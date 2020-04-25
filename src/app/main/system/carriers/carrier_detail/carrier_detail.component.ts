@@ -155,14 +155,18 @@ export class CarrierDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.carrierDetail);
 
-    this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/carriers/carriers']);
-      }
-    });
+    if (this.carrierDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/carriers/carriers']);
+        }
+      });
+    }
   }
 
   addCarrier(): void {
@@ -171,14 +175,18 @@ export class CarrierDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.carrierDetail);
 
-    this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/carriers/carriers']);
-      }
-    });
+    if (this.carrierDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/carriers/carriers']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

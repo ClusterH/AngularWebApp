@@ -486,5 +486,5 @@ export class PoigroupDetailComponent implements OnInit
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['admin/poi/poigroups/poigroup_detail']);
-}
+  }
 }

@@ -238,27 +238,35 @@ export class ZoneDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.zoneDetail);
 
-    this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/geofences/zones/zones']);
-      }
-    });
+    if (this.zoneDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/geofences/zones/zones']);
+        }
+      });
+    }
   }
 
   addZone(): void {
     let today = new Date().toISOString();
     this.getValues(today, "add");
 
-    this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
-    .subscribe((result: any) => {
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/geofences/zones/zones']);
-      }
-    });
+    if (this.zoneDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
+      .subscribe((result: any) => {
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/geofences/zones/zones']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

@@ -55,9 +55,9 @@ admin-dealercompanies {
 
                 @include media-breakpoint('lt-md') {
                     padding: 8px 0;
-                    height: 100x !important;
-                    min-height: 100px !important;
-                    max-height: 100px !important;
+                    height: auto !important;
+                    min-height: 300px !important;
+                    max-height: 300px !important;
                 }
             }
         }
@@ -65,21 +65,17 @@ admin-dealercompanies {
 
     .content-card {
         position: relative;
-        // width: 200% !important;
         overflow: hidden;
     }
     .dealercompanies-table {
         flex: 1 1 auto;
         border-bottom: 1px solid rgba(0, 0, 0, .12);
-        // overflow: auto;
-        // overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         
         .mat-header-row {
             height: 40px;
             min-height: 24px;
             font-weight: bold;
-            // color: 
             background-color: rgb(225, 245, 254) !important;
         }
 
@@ -118,80 +114,6 @@ admin-dealercompanies {
             align-items: center;
         }
 
-        // .mat-column-id {
-        //     flex: 0 1 4%;
-        // }
-
-        // .mat-column-name {
-        //     flex: 0 1 7%;
-        // }
-        // .mat-column-dealercompany {
-        //     flex: 0 1 7%;
-        // }
-
-        // .mat-column-dealercompany {
-        //     flex: 0 1 8%;
-        // }
-
-        // // .mat-column-group {
-        // //     flex: 0 1 8%;
-        // // }
-
-        // .mat-column-subgroup {
-        //     flex: 0 1 5%;
-        // }
-        
-        // .mat-column-account {
-        //     flex: 0 1 5%;
-        // }
-        
-        // .mat-column-unittype {
-        //     flex: 0 1 5%;
-        // }
-        
-        // .mat-column-producttype {
-        //     flex: 0 1 5%;
-        // }
-
-        // .mat-column-make {
-        //     flex: 0 1 6%;
-        // }
-        // .mat-column-model {
-        //     flex: 0 1 6%;
-        // }
-        
-        // .mat-column-isactive {
-        //     flex: 0 1 4%;
-        // }
-
-        // .mat-column-timezone {
-        //     flex: 0 1 10%;
-        // }
-
-        // .mat-column-created {
-        //     flex: 0 1 8%;
-        // }
-
-        // .mat-column-deletedwhen {
-        //     flex: 0 1 8%;
-        // }
-
-        // .mat-column-lastmodifieddate {
-        //     flex: 0 1 8%;
-        // }
-
-        // .mat-column-createdbyname {
-        //     flex: 0 1 5%;
-        // }
-
-        // .mat-column-deletedbyname {
-        //     flex: 0 1 5%;
-        // }
-
-        // .mat-column-lastmodifiedbyname {
-        //     flex: 0 1 5%;
-        // }
-
         .quantity-indicator {
             display: inline-block;
             vertical-align: middle;
@@ -219,7 +141,6 @@ admin-dealercompanies {
         color: rgb(221, 221, 221) !important;
     }
     .mat-paginator-range-actions {
-        // width: 700px;
         margin-right: 3em !important;
     }
     .mat-mini-fab {
@@ -262,15 +183,18 @@ admin-dealercompanies {
         .mat-paginator-container {
             justify-content: flex-end;
         }
+
+        .mat-paginator-page-size {
+            @include media-breakpoint('lt-md') {
+                display: none !important;
+            }
+        }
     
         .mat-paginator-navigation-previous {
             order: 1;
-            // color: rgb(47, 170, 241) !important;
-
         }
         .mat-paginator-navigation-next {
             order: 3;
-            // width: 50px !important;
         }
         .mat-paginator-navigation-last {
             order: 4;
@@ -280,6 +204,9 @@ admin-dealercompanies {
         }
         .mat-paginator-range-label {
             order: 0;
+            @include media-breakpoint('lt-md') {
+                display: none !important;
+            }
         }
         .mat-form-field-infix {
             width: 45px;
@@ -297,7 +224,6 @@ admin-dealercompanies {
         .mat-select-value, .mat-select-arrow{
             color: rgb(47, 170, 241) !important;
             margin-right: 0px !important;
-            // text-align: center;
             justify-content: center !important;
         }
       

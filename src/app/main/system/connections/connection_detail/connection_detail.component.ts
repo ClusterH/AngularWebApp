@@ -245,14 +245,18 @@ export class ConnectionDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.connectionDetail);
 
-    this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/connections/connections']);
-      }
-    });
+    if (this.connectionDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/connections/connections']);
+        }
+      });
+    }
   }
 
   addConnection(): void {
@@ -261,14 +265,18 @@ export class ConnectionDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.connectionDetail);
 
-    this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/connections/connections']);
-      }
-    });
+    if (this.connectionDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/connections/connections']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

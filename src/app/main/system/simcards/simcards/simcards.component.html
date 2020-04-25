@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'SIMCARDS.SELECTFIELD' | translate}}:</mat-label>
@@ -108,8 +108,8 @@
 
                 <!-- Carrier Column -->
                 <ng-container matColumnDef="carrier">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.CARRIER' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.CARRIER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="carrier text-truncate">
                             {{simcard.carrier}}
                         </p>
@@ -118,8 +118,8 @@
 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="created text-truncate">
                             {{simcard.created}}
                         </p>
@@ -128,8 +128,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="created text-truncate">
                             {{simcard.createdbyname}}
                         </p>
@@ -138,8 +138,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="deletedwhen text-truncate">
                             {{simcard.deletedwhen}}
                         </p>
@@ -148,8 +148,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="deletedbyname text-truncate">
                             {{simcard.deletedbyname}}
                         </p>
@@ -158,8 +158,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="lastmodifieddate text-truncate">
                             {{simcard.lastmodifieddate}}
                         </p>
@@ -168,8 +168,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SIMCARDS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let simcard" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SIMCARDS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let simcard" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{simcard.lastmodifiedbyname}}
                         </p>

@@ -71,7 +71,7 @@
                             <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
                                     <legend>&nbsp;{{ 'SYSCOMMANDS.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'SYSCOMMANDS.CREATED' | translate }}</mat-label>
                                             <input matInput placeholder="Created"
@@ -103,7 +103,7 @@
                                     </mat-form-field>
                                 </div> -->
 
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'SYSCOMMANDS.LASTMODIFIEDDATE' | translate }}</mat-label>
                                             <input matInput placeholder="Last Modified Date"

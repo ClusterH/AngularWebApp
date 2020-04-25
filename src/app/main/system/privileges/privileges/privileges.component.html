@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'PRIVILEGES.SELECTFIELD' | translate}}:</mat-label>
@@ -108,8 +108,8 @@
 
                 <!-- Object Column -->
                 <ng-container matColumnDef="object">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.OBJECT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.OBJECT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="object text-truncate">
                             {{privilege.object}}
                         </p>
@@ -118,8 +118,8 @@
 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="created text-truncate">
                             {{privilege.created}}
                         </p>
@@ -128,8 +128,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="created text-truncate">
                             {{privilege.createdbyname}}
                         </p>
@@ -138,8 +138,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="deletedwhen text-truncate">
                             {{privilege.deletedwhen}}
                         </p>
@@ -148,8 +148,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="deletedbyname text-truncate">
                             {{privilege.deletedbyname}}
                         </p>
@@ -158,8 +158,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="lastmodifieddate text-truncate">
                             {{privilege.lastmodifieddate}}
                         </p>
@@ -168,8 +168,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'PRIVILEGES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let privilege" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PRIVILEGES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let privilege" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{privilege.lastmodifiedbyname}}
                         </p>

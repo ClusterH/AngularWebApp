@@ -216,7 +216,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Events',
                 translate: 'NAV.EVENTS',
                 type     : 'item',
-                url      : 'pages/admin/events'
+                url      : '/admin/events/events'
             }
         ]
     },

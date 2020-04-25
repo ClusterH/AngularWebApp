@@ -346,14 +346,18 @@ export class OperatorDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(new Date(this.operatorDetail.birthdate));
 
-    this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/operators/operators']);
-      }
-    });
+    if (this.operatorDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/operators/operators']);
+        }
+      });
+    }
   }
 
   addOperator(): void {
@@ -362,14 +366,18 @@ export class OperatorDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.operatorDetail);
 
-    this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/operators/operators']);
-      }
-    });
+    if (this.operatorDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/operators/operators']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

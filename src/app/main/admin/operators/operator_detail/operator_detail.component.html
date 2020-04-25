@@ -60,7 +60,7 @@
                         <mat-tab label="{{ 'OPERATORS.GENERAL' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-                                <div fxLayout="row" fxLayoutAlign="start center">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
 
                                     <div class="profile_image" style="width: 150px; height: 150px; margin-bottom: 20px; margin-right: 30px;" >
                                         {{imageError}}
@@ -78,7 +78,7 @@
                                     </div>
 
                                     <div style="width: 85%;">
-                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.NAME' | translate }}</mat-label>
                                                 <input matInput placeholder="Name"
@@ -96,7 +96,7 @@
                                             </mat-form-field>
                                         </div>
 
-                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                             <mat-form-field appearance="outline"  fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.BIRTHDATE' | translate }}</mat-label>
                                                 <input matInput [matDatepicker]="birthDatePicker" name="birthdate" formControlName="birthdate">
@@ -115,7 +115,7 @@
                                     </div>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
                                         <mat-label>{{ 'OPERATORS.COMPANY' | translate }}</mat-label>
@@ -179,7 +179,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30" class="select_list">
                                         <mat-label>{{ 'OPERATORS.OPERATORTYPE' | translate }}</mat-label>
                                         <mat-select  (click)="showCompanyList('operatortype_clist')" formControlName="operatortype">
@@ -223,7 +223,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                   
                                     <mat-form-field appearance="outline"  fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.PHYSICALTESTEXPIRYDATE'| translate }}</mat-label>
@@ -255,7 +255,7 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -271,7 +271,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -287,7 +287,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

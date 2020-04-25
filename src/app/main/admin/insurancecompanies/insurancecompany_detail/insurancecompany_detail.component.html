@@ -68,7 +68,7 @@
                                            required>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.ACCOUNT' | translate }}</mat-label>
@@ -101,7 +101,6 @@
                                         </mat-select>
                                     </mat-form-field>
 
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.COMPANYTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="companytype"  (click)="showInsuranceCompanyList('companytype_clist')">
@@ -133,7 +132,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.ORGNO' | translate }}</mat-label>
@@ -175,7 +174,7 @@
                                     
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.ADDRESS' | translate }}</mat-label>
                                         <input matInput placeholder="Address"
@@ -192,7 +191,7 @@
                                 </div>
 
                                 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.CONTACT_NAME' | translate }}</mat-label>
                                         <input matInput placeholder="Contact Name"
@@ -208,7 +207,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.EMAIL' | translate }}</mat-label>
                                         <input matInput placeholder="Email address"
@@ -227,9 +226,6 @@
                                 <div fxLayout="row" fxLayoutAlign="space-between">
 
                                     <mat-checkbox formControlName="hasprivatelabel" fxFlex="50">{{ 'INSURANCECOMPANIES.HASPRIVATELABEL' | translate }}</mat-checkbox>
-
-                                    
-                                    
                                    
                                 </div>
                                 <!-- <div fxLayout="row" fxLayoutAlign="space-between">
@@ -391,7 +387,7 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.EMAIL_SERVER' | translate }}</mat-label>
                                         <input matInput placeholder="Email Server (leave empty to use default)"
@@ -407,7 +403,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.EMAIL_USER' | translate }}</mat-label>
                                         <input matInput placeholder="Email User"
@@ -430,7 +426,7 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -446,7 +442,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -462,7 +458,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'INSURANCECOMPANIES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

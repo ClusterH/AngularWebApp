@@ -60,7 +60,7 @@ export class UserProfileDetailService
         
     }
 
-    getPrivilegeAccess(conncode: string, userid: number, userprofileid: number, typeid: number): Observable<any> {
+    getPrivilegeAccess(conncode: string, userid: number, userprofileid: number, typeid: number){
         const headers = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params = new HttpParams()

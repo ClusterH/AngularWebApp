@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'ACCOUNTS.SELECTFIELD' | translate}}:</mat-label>
@@ -104,8 +104,8 @@
 
                 <!-- Address Column -->
                 <ng-container matColumnDef="address">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.ADDRESS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.ADDRESS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="address text-truncate">
                             {{account.address}}
                         </p>
@@ -114,8 +114,8 @@
 
                 <!-- ContactName Column -->
                 <ng-container matColumnDef="contactname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.CONTACTNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.CONTACTNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="contactname text-truncate">
                             {{account.contactname}}
                         </p>
@@ -124,8 +124,8 @@
 
                  <!-- PhoneNumber Column -->
                  <ng-container matColumnDef="phonenumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.PHONENUMBER' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.PHONENUMBER' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="phonenumber text-truncate">
                             {{account.phonenumber}}
                         </p>
@@ -134,8 +134,8 @@
 
                  <!-- Email Column -->
                  <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.EMAIL' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.EMAIL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="email text-truncate">
                             {{account.email}}
                         </p>
@@ -144,8 +144,8 @@
 
                  <!-- BillingStatus Column -->
                  <ng-container matColumnDef="billingstatus">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.BILLINGSTATUS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.BILLINGSTATUS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="billingstatus text-truncate">
                             {{account.billingstatus}}
                         </p>
@@ -154,8 +154,8 @@
 
                 <!-- BillingFrequency Column -->
                 <ng-container matColumnDef="billingfrequency">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.BILLINGFREQUENCY' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.BILLINGFREQUENCY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="billingfrequency text-truncate">
                             {{account.billingfrequency}}
                         </p>
@@ -164,8 +164,8 @@
 
                  <!-- Created Column -->
                  <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="created text-truncate">
                             {{account.created}}
                         </p>
@@ -174,8 +174,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="created text-truncate">
                             {{account.createdbyname}}
                         </p>
@@ -184,8 +184,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="deletedwhen text-truncate">
                             {{account.deletedwhen}}
                         </p>
@@ -194,8 +194,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="deletedbyname text-truncate">
                             {{account.deletedbyname}}
                         </p>
@@ -204,8 +204,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="lastmodifieddate text-truncate">
                             {{account.lastmodifieddate}}
                         </p>
@@ -214,8 +214,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'ACCOUNTS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ACCOUNTS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let account" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{account.lastmodifiedbyname}}
                         </p>

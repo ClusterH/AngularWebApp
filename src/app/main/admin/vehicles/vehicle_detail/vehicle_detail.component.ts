@@ -482,27 +482,35 @@ export class VehicleDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.vehicleDetail);
 
-    this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/vehicles/vehicles']);
-      }
-    });
+    if (this.vehicleDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/vehicles/vehicles']);
+        }
+      });
+    }
   }
 
   addVehicle(): void {
     let today = new Date().toISOString();
     this.getValues(today, "add");
 
-    this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
-    .subscribe((result: any) => {
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['admin/vehicles/vehicles']);
-      }
-    });
+    if (this.vehicleDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
+      .subscribe((result: any) => {
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['admin/vehicles/vehicles']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

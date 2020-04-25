@@ -232,14 +232,18 @@ export class AccountDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.accountDetail);
 
-    this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/accounts/accounts']);
-      }
-    });
+    if (this.accountDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/accounts/accounts']);
+        }
+      });
+    }
   }
 
   addAccount(): void {
@@ -248,14 +252,18 @@ export class AccountDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.accountDetail);
 
-    this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/accounts/accounts']);
-      }
-    });
+    if (this.accountDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/accounts/accounts']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

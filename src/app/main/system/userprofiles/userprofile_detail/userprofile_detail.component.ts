@@ -46,7 +46,7 @@ export class UserProfileDetailComponent implements OnInit {
   get_report_access: any[];
   get_command_access: any[];
 
-  access_restric_list: any = ['Denied', 'Read', 'Edit', 'Create'];
+  access_restric_list: any = ['Denied', 'Read', 'Edit', 'Full'];
 
   dataSourceCompany: UserProfileDetailDataSource;
 
@@ -74,10 +74,11 @@ export class UserProfileDetailComponent implements OnInit {
     this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
     if (this.userprofile != '') {
+      this.userprofileDetailService.current_userprofileID = this.userprofile.id;
       this.pageType = 'edit';
     }
     else {
-      console.log(this.userprofile);
+      this.userprofileDetailService.current_userprofileID = 0;
       this.pageType = 'new';
     }
 
@@ -93,9 +94,6 @@ export class UserProfileDetailComponent implements OnInit {
     this.userprofileForm = this._formBuilder.group({
       name: [null, Validators.required],
       company: [null, Validators.required],
-      // get_module_access: [],
-      get_report_access: [],
-      get_command_access: [],
       isactive: [null, Validators.required],
       created: [{ value: '', disabled: true }, Validators.required],
       createdbyname: [{ value: '', disabled: true }, Validators.required],
@@ -103,47 +101,64 @@ export class UserProfileDetailComponent implements OnInit {
       lastmodifiedbyname: [{ value: '', disabled: true }, Validators.required],
       filterstring       : [null, Validators.required],
     });
+    if (this.userprofileDetailService.current_userprofileID !=0 ) {
 
-    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 1)
-    .subscribe((res: any) => {
-      console.log(res);
-      if (res.responseCode == 100) {
-        this.get_module_access = res.TrackingXLAPI.DATA;
-        for (let module in this.get_module_access) {
-          console.log(this.get_module_access[module].privilege);
+      this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofileDetailService.current_userprofileID, 1)
+      .subscribe((res: any) => {
+        if (res.responseCode == 100) {
+          this.get_module_access = res.TrackingXLAPI.DATA;
+          console.log(this.get_module_access);
 
-          let module_form = new FormControl('')
-          this.userprofileForm.addControl(this.get_module_access[module].privilege.toString(), module_form);
+          for (let module in this.get_module_access) {
 
-          this.userprofileForm.get(`${this.get_module_access[module].privilege}`).setValue(this.access_restric_list[this.get_module_access[module].accesslevel]);
+            let module_form = new FormControl('')
+            this.userprofileForm.addControl(this.get_module_access[module].privilege.toString(), module_form);
+
+            this.userprofileForm.get(`${this.get_module_access[module].privilege}`).setValue(this.access_restric_list[this.get_module_access[module].accesslevel]);
+          }
+        } else {
+          alert('No Data Found for module!');
         }
-        console.log(this.get_module_access);
-      } else {
-        alert('No Data Found for module!');
-      }
-    });
+      });
 
-    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 2)
-    .subscribe((res: any) => {
-      console.log(res);
-      if (res.responseCode == 100) {
-        this.get_report_access = res.TrackingXLAPI.DATA;
-        console.log(this.get_report_access);
-      } else {
-        alert('No Data Found for Report!');
-      }
-    });
+      this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofileDetailService.current_userprofileID, 2)
+      .subscribe((res: any) => {
+        console.log(res);
+        if (res.responseCode == 100) {
+          this.get_report_access = res.TrackingXLAPI.DATA;
+          console.log(this.get_report_access);
 
-    this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofile.id, 4)
-    .subscribe((res: any) => {
-      console.log(res);
-      if (res.responseCode == 100) {
-        this.get_command_access = res.TrackingXLAPI.DATA;
-        console.log(this.get_command_access);
-      } else {
-        alert('No Data Found for Command!');
-      }
-    });
+          for (let report in this.get_report_access) {
+
+            let report_form = new FormControl('')
+            this.userprofileForm.addControl(this.get_report_access[report].privilege.toString(), report_form);
+
+            this.userprofileForm.get(`${this.get_report_access[report].privilege}`).setValue(this.get_report_access[report].accesslevel);
+          }
+        } else {
+          alert('No Data Found for Report!');
+        }
+      });
+
+      this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofileDetailService.current_userprofileID, 4)
+      .subscribe((res: any) => {
+        console.log(res);
+        if (res.responseCode == 100) {
+          this.get_command_access = res.TrackingXLAPI.DATA;
+          console.log(this.get_command_access);
+
+          for (let command in this.get_command_access) {
+
+            let command_form = new FormControl('')
+            this.userprofileForm.addControl(this.get_command_access[command].privilege.toString(), command_form);
+
+            this.userprofileForm.get(`${this.get_command_access[command].privilege}`).setValue(this.get_command_access[command].accesslevel);
+          }
+        } else {
+          alert('No Data Found for Command!');
+        }
+      });
+    }
 
     this.setValues();
   }
@@ -160,8 +175,6 @@ export class UserProfileDetailComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res);
       });
-
-
   }
 
   onKey(event: any) {
@@ -220,10 +233,10 @@ export class UserProfileDetailComponent implements OnInit {
     this.loadUserProfileDetail(this.method_string);
   }
 
-  setValues() {
+   setValues() {
+    console.log("setValue");
     this.userprofileForm.get('name').setValue(this.userprofile.name);
     this.userprofileForm.get('company').setValue(this.userprofile.companyid);
-    // this.userprofileForm.get('get_module_access').setValue(this.userprofile.companyid);
 
     let created = this.userprofile.createdwhen ? new Date(`${this.userprofile.createdwhen}`) : '';
     let lastmodifieddate = this.userprofile.lastmodifieddate ? new Date(`${this.userprofile.lastmodifieddate}`) : '';
@@ -255,7 +268,6 @@ export class UserProfileDetailComponent implements OnInit {
       this.userprofileDetail.lastmodifieddate = dateTime;
       this.userprofileDetail.lastmodifiedby = this.userID;
     }
-
   }
 
   dateFormat(date: any) {
@@ -280,7 +292,10 @@ export class UserProfileDetailComponent implements OnInit {
     this.getValues(today, "save");
     console.log(this.userprofileDetail);
 
-    this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
+    if (this.userprofileDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
@@ -288,6 +303,7 @@ export class UserProfileDetailComponent implements OnInit {
           this.router.navigate(['system/userprofiles/userprofiles']);
         }
       });
+    }
   }
 
   addUserProfile(): void {
@@ -296,7 +312,10 @@ export class UserProfileDetailComponent implements OnInit {
     this.getValues(today, "add");
     console.log(this.userprofileDetail);
 
-    this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
+    if (this.userprofileDetail.name == '') {
+      alert('Please enter Detail Name.')
+    } else {
+      this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
         console.log(result);
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
@@ -304,6 +323,7 @@ export class UserProfileDetailComponent implements OnInit {
           this.router.navigate(['system/userprofiles/userprofiles']);
         }
       });
+    }
   }
 
   goBackUnit() {

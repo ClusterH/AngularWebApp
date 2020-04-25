@@ -102,14 +102,14 @@
                                     </mat-select>
                                 </mat-form-field>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
-                                    <fieldset style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;" fxFlex="30">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <fieldset style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em; margin-bottom: 12px;" fxFlex="40">
                                         <legend>&nbsp;Modules&nbsp;</legend>
-                                        <div style="width: 100%; overflow: auto; height: 96%;">
+                                        <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
                                             <div *ngFor="let module of get_module_access">
                                                 <div fxLayout="row" fxLayoutAlign="space-between center">
                                                     <div  fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
-                                                        <mat-icon>view_module</mat-icon>
+                                                        <mat-icon style="color: rgb(3, 155, 229); margin-right: 4px;">label</mat-icon>
                                                         <span class="ml-4">{{module.privilege}}</span>
                                                     </div>
 
@@ -118,25 +118,36 @@
                                                         <mat-select class="get_module_access_select" [(value)]="module.accesslevel" style=" height: 24px; max-height: 24px;" formControlName="{{module.privilege}}">
                                                             <mat-option *ngFor="let restrict of access_restric_list" class="get_module_access_select_option" [value]="restrict">{{restrict}}</mat-option>
                                                         </mat-select>
-                                                        
+
                                                     </mat-form-field>
                                                 </div>
                                             </div>
                                         </div>
                                     </fieldset>
 
-                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
+                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;" fxFlex="28">
                                         <legend>&nbsp;Reports&nbsp;</legend>
-                                        <div class="">
-                                            <mat-radio-group formControlName="get_report_access" class="report-radio-group" fxLayout="column">
-                                                <mat-radio-button class="report-radio-button mb-12 mt-4" *ngFor="let report of get_report_access" [value]="report.privilegeid">
-                                                {{report.privilege}}
-                                                </mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>   
+                                        <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
+                                            <div *ngFor="let report of get_report_access" class="report-check-button mb-12 mt-4">
+                                                <mat-checkbox formControlName="{{report.privilege}}" >
+                                                    <label>{{report.privilege}}</label>
+                                                </mat-checkbox>
+                                            </div>  
+                                        </div> 
                                     </fieldset>
 
-                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
+                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;" fxFlex="28">
+                                        <legend>&nbsp;Commands&nbsp;</legend>
+                                        <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
+                                            <div *ngFor="let command of get_command_access" class="command-check-button mb-12 mt-4">
+                                                <mat-checkbox formControlName="{{command.privilege}}" >
+                                                    <label>{{command.privilege}}</label>
+                                                </mat-checkbox>
+                                            </div>  
+                                        </div> 
+                                    </fieldset>
+
+                                    <!-- <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
                                         <legend>&nbsp;Commands&nbsp;</legend>
                                         <div class="">
                                             <mat-radio-group formControlName="get_command_access" class="command-radio-group" fxLayout="column">
@@ -145,18 +156,18 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                    </fieldset>
+                                    </fieldset> -->
                                 </div>
 
                             </div>
                            
                         </mat-tab>
 
-                        <mat-tab label="{{ 'VEHICLES.AUDIT' | translate }}">
+                        <mat-tab label="{{ 'USERPROFILES.AUDIT' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -172,7 +183,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

@@ -244,14 +244,18 @@ export class SimcardDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.simcardDetail);
 
-    this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/simcards/simcards']);
-      }
-    });
+    if (this.simcardDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/simcards/simcards']);
+        }
+      });
+    }
   }
 
   addSimcard(): void {
@@ -260,14 +264,18 @@ export class SimcardDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.simcardDetail);
 
-    this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/simcards/simcards']);
-      }
-    });
+    if (this.simcardDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/simcards/simcards']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

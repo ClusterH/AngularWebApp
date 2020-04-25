@@ -113,8 +113,8 @@
 
                  <!-- Radius Column -->
                  <ng-container matColumnDef="radius">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.RADIUS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.RADIUS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="radius text-truncate">
                             {{poi.radius}}
                         </p>
@@ -123,8 +123,8 @@
 
                  <!-- Point Column -->
                  <ng-container matColumnDef="point">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.POINT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.POINT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="point text-truncate">
                             {{poi.point}}
                         </p>
@@ -133,8 +133,8 @@
 
                  <!-- PointType Column -->
                  <ng-container matColumnDef="pointtype">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.POINTTYPE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.POINTTYPE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="pointtype text-truncate">
                             {{poi.pointtype}}
                         </p>
@@ -153,8 +153,8 @@
 
                 <!-- Group Column -->
                 <ng-container matColumnDef="group">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.GROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="group text-truncate">
                             {{poi.group}}
                         </p>
@@ -163,8 +163,8 @@
 
                 <!-- SubGroup Column -->
                 <ng-container matColumnDef="subgroup">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.SUBGROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.SUBGROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="subgroup text-truncate">
                             {{poi.subgroup}}
                         </p>
@@ -173,8 +173,8 @@
 
                 <!-- Address Column -->
                 <ng-container matColumnDef="address">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.ADDRESS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.ADDRESS' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="address text-truncate">
                             {{poi.address}}
                         </p>
@@ -183,8 +183,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="created text-truncate">
                             {{poi.created}}
                         </p>
@@ -193,8 +193,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="created text-truncate">
                             {{poi.createdbyname}}
                         </p>
@@ -203,8 +203,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="deletedwhen text-truncate">
                             {{poi.deletedwhen}}
                         </p>
@@ -213,8 +213,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="deletedbyname text-truncate">
                             {{poi.deletedbyname}}
                         </p>
@@ -223,8 +223,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="lastmodifieddate text-truncate">
                             {{poi.lastmodifieddate}}
                         </p>
@@ -233,8 +233,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'POIS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let poi" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{poi.lastmodifiedbyname}}
                         </p>

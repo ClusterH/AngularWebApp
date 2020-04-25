@@ -235,14 +235,18 @@ export class ServiceplanDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.serviceplanDetail);
 
-    this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/serviceplans/serviceplans']);
-      }
-    });
+    if (this.serviceplanDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/serviceplans/serviceplans']);
+        }
+      });
+    }
   }
 
   addServiceplan(): void {
@@ -251,14 +255,18 @@ export class ServiceplanDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.serviceplanDetail);
 
-    this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/serviceplans/serviceplans']);
-      }
-    });
+    if (this.serviceplanDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/serviceplans/serviceplans']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

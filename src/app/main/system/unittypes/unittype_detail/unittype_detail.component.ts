@@ -249,14 +249,18 @@ export class UnittypeDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.unittypeDetail);
 
-    this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/unittypes/unittypes']);
-      }
-    });
+    if (this.unittypeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/unittypes/unittypes']);
+        }
+      });
+    }
   }
 
   addUnittype(): void {
@@ -265,14 +269,18 @@ export class UnittypeDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.unittypeDetail);
 
-    this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if ((result.responseCode == 200)||(result.responseCode == 100)) {
-        alert("Success!");
-        this.router.navigate(['system/unittypes/unittypes']);
-      }
-    });
+    if (this.unittypeDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if ((result.responseCode == 200)||(result.responseCode == 100)) {
+          alert("Success!");
+          this.router.navigate(['system/unittypes/unittypes']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'SYSCOMMANDS.SELECTFIELD' | translate}}:</mat-label>
@@ -98,8 +98,8 @@
                 
                 <!-- Created Column -->
                 <ng-container matColumnDef="createdwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SYSCOMMANDS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let syscommand" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SYSCOMMANDS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let syscommand" >
                         <p class="created text-truncate">
                             {{syscommand.createdwhen}}
                         </p>
@@ -108,8 +108,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SYSCOMMANDS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let syscommand" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SYSCOMMANDS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let syscommand" >
                         <p class="created text-truncate">
                             {{syscommand.createdbyname}}
                         </p>
@@ -118,8 +118,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SYSCOMMANDS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let syscommand" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SYSCOMMANDS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let syscommand" >
                         <p class="lastmodifieddate text-truncate">
                             {{syscommand.lastmodifieddate}}
                         </p>
@@ -128,8 +128,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'SYSCOMMANDS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let syscommand" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SYSCOMMANDS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let syscommand" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{syscommand.lastmodifiedbyname}}
                         </p>

@@ -60,7 +60,7 @@
 
                             <div class="tab-content p-20" fusePerfectScrollbar fxLayout="column">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'ZONEGROUPS.NAME' | translate }}</mat-label>
                                         <input matInput placeholder="Name"
@@ -110,7 +110,7 @@
 
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
                                     <legend>&nbsp;{{ 'ZONEGROUPS.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayoutAlign="space-between" class="mt-20">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" class="mt-20">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ZONEGROUPS.CREATED' | translate }}</mat-label>
                                             <input matInput placeholder="Created"
@@ -126,7 +126,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ZONEGROUPS.DELETEDWHEN' | translate }}</mat-label>
                                             <input matInput placeholder="Deleted When"
@@ -142,7 +142,7 @@
                                         </mat-form-field>
                                     </div>
     
-                                    <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ZONEGROUPS.LASTMODIFIEDDATE' | translate }}</mat-label>
                                             <input matInput placeholder="Last Modified Date"
@@ -164,7 +164,7 @@
                         <mat-tab label=ZONEs #tab>
                         <!-- <mat-tab label=ZONEs #tab [disabled]='!(zonegroupDetail.companyid > 0)'> -->
                             <div class="tab-content p-24 pb-8"  fxLayout="column">
-                                <div fxLayout="row" fxLayoutAlign="space-between" style="margin: 30px; margin-top: 20px;">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" style="margin: 30px; margin-top: 20px;">
                                     <div class="content pl-30" fxFlex="20">
                                         <div class="card">
 

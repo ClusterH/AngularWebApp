@@ -417,14 +417,18 @@ export class UserDetailComponent implements OnInit
     this.getValues(today, "save");
     console.log(this.userDetail);
 
-    this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if (result.responseCode == 100) {
-        alert("Success!");
-        this.router.navigate(['admin/users/users']);
-      }
-    });
+    if (this.userDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if (result.responseCode == 100) {
+          alert("Success!");
+          this.router.navigate(['admin/users/users']);
+        }
+      });
+    }
   }
 
   addUser(): void {
@@ -433,14 +437,18 @@ export class UserDetailComponent implements OnInit
     this.getValues(today, "add");
     console.log(this.userDetail);
 
-    this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
-    .subscribe((result: any) => {
-      console.log(result);
-      if (result.responseCode == 100) {
-        alert("Success!");
-        this.router.navigate(['admin/users/users']);
-      }
-    });
+    if (this.userDetail.name == '') {
+      alert('Please enter Detail Name')
+    } else {
+      this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
+      .subscribe((result: any) => {
+        console.log(result);
+        if (result.responseCode == 100) {
+          alert("Success!");
+          this.router.navigate(['admin/users/users']);
+        }
+      });
+    }
   }
 
   goBackUnit() {

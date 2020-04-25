@@ -60,7 +60,7 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.NAME' | translate }}</mat-label>
                                         <input matInput placeholder="Name"
@@ -102,7 +102,7 @@
                                     
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.DEVICETYPE' | translate }}</mat-label>
                                         <mat-select formControlName="devicetype"  (click)="showCompanyList('devicetype_clist')">
@@ -143,7 +143,7 @@
                                     
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.IMEI' | translate }}</mat-label>
                                         <input matInput placeholder="IMEI"
@@ -159,7 +159,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
                                         <mat-label>{{ 'DEVICES.CONNIN' | translate }}</mat-label>
                                         <mat-select formControlName="connin"  (click)="showCompanyList('connin_clist')">
@@ -258,7 +258,7 @@
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created"
@@ -274,7 +274,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -290,7 +290,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'DEVICES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date"

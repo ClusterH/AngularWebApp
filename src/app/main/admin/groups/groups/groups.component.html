@@ -23,7 +23,7 @@
                 </span>
             </div>
             <!-- / APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'GROUPS.SELECTFIELD' | translate}}:</mat-label>
@@ -104,8 +104,8 @@
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.EMAIL' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.EMAIL' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="email text-truncate">
                             {{group.email}}
                         </p>
@@ -124,8 +124,8 @@
 
                 <!-- ContactPhone Column -->
                 <ng-container matColumnDef="contactphone">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CONTACTPHONE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.CONTACTPHONE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="contactphone text-truncate">
                             {{group.contactphone}}
                         </p>
@@ -154,8 +154,8 @@
 
                 <!-- Account Column -->
                 <ng-container matColumnDef="account">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.ACCOUNT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.ACCOUNT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="account text-truncate">
                             {{group.account}}
                         </p>
@@ -164,8 +164,8 @@
 
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.CREATED' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="created text-truncate">
                             {{group.created}}
                         </p>
@@ -174,8 +174,8 @@
 
                  <!-- CreatedByName Column -->
                  <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.CREATEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="created text-truncate">
                             {{group.createdbyname}}
                         </p>
@@ -184,8 +184,8 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.DELETEDWHEN' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="deletedwhen text-truncate">
                             {{group.deletedwhen}}
                         </p>
@@ -194,8 +194,8 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.DELETEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="deletedbyname text-truncate">
                             {{group.deletedbyname}}
                         </p>
@@ -204,8 +204,8 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="lastmodifieddate text-truncate">
                             {{group.lastmodifieddate}}
                         </p>
@@ -214,8 +214,8 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>{{ 'GROUPS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let group" fxHide fxShow.gt-xs>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GROUPS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let group" >
                         <p class="lastmodifiedbyname text-truncate">
                             {{group.lastmodifiedbyname}}
                         </p>
