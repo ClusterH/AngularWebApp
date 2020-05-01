@@ -1,16 +1,16 @@
 <div id="dialog_table">
 <div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'MAKES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'EVENTS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MAKES.DUPLICATE' | translate}}
+                {{'EVENTS.DUPLICATE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'MAKES.NO' | translate}}
+                    {{'EVENTS.NO' | translate}}
             </button>
         </div>
 
@@ -19,17 +19,17 @@
 
 
 <div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'MAKES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'EVENTS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MAKES.DELETE' | translate}}
+                {{'EVENTS.DELETE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'MAKES.NO' | translate}}
+                    {{'EVENTS.NO' | translate}}
             </button>
         </div>
 
@@ -37,17 +37,17 @@
 </div>
 
 <div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'MAKES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'EVENTS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'MAKES.YES' | translate}}
+                {{'EVENTS.YES' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()" fxFlex="30">
-                    {{'MAKES.NO' | translate}}
+                    {{'EVENTS.NO' | translate}}
             </button>
         </div>
 

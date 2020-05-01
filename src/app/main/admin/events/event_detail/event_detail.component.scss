@@ -1,3 +1,4 @@
+@import "src/@fuse/scss/fuse";
 
    .table_paginator_detail {
         display: flex;
@@ -41,4 +42,303 @@
    
     body.theme-default .mat-input-element:disabled {
         color: black !important
+    }
+
+    .edit_icon {
+        color: green;
+        margin-right: 3px;
+    }
+    .delete_icon {
+        color: red;
+        margin-right: 3px;
+    }
+
+    .add_condition_btn .mat-button-wrapper {
+        padding: 0 !important;
+    }
+
+    .add_condition {
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        background-color: rgb(225, 245, 254) !important;
+        padding: 6px !important;
+    }
+
+    .evcondition-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        -webkit-overflow-scrolling: touch;
+       
+        .evcondition {
+            position: relative;
+            cursor: pointer;
+            height: 32px;
+        }
+        mat-row, mat-footer-row {
+            min-height: 32px !important;
+        }
+        mat-row:hover {
+            background-color: #b2f5ef !important;
+        }
+        mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+            padding-left: 10px !important;
+        }
+        mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
+            padding-right: 10px !important;
+        }
+
+        .mat-row:nth-child(even){
+            background-color: #ffffff;
+          }
+          .mat-row:nth-child(odd){
+            background-color:#e4f0ec;
+          }
+
+        .mat-cell, .mat-footer-cell {
+            font-size: 12px !important;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .mat-column-id {
+            word-wrap: break-word !important;
+            white-space: unset !important;
+            flex: 0 0 14% !important;
+            width: 14% !important;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          
+            word-break: break-word;
+          
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+          
+
+        .mat-column-description {
+            word-wrap: break-word !important;
+            white-space: unset !important;
+            flex: 0 0 86% !important;
+            width: 86% !important;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          
+            word-break: break-word;
+          
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+
+    .condition_detail {
+        height: 300px;
+
+        .speed_detail {
+           margin: 24px;
+        }
+        .offhours_detail {
+            margin: 24px;
+        }
+        .latestart_detail {
+            margin: 24px;
+        }
+        .longstop_detail {
+            margin: 24px;
+        }
+        .idle_detail {
+            margin: 24px;
+        }
+        .noreport_detail {
+            margin: 24px;
+            // .mat-form-field-flex {
+            //     padding: 0 !important
+            // }
+        }
+        .fuel_detail {
+            margin: 24px;
+        }
+        .temp_detail {
+            margin: 24px;
+        }
+        .poi_detail {
+            margin: 24px;
+        }
+        .zone_detail {
+            margin: 24px;
+        }
+        .sensor_detail {
+            margin: 24px;
+        }
+        .device_detail {
+            margin: 24px;
+        }
+        .route_detail {
+            margin: 24px;
+        }
+        .tow_detail {
+            margin: 24px;
+        }
+    }
+
+    .unit_evlist {
+        flex: 1 1 auto;
+        // border: 1px solid rgba(0, 0, 0, .12);
+        // overflow: auto;
+        // overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        
+        .mat-header-row {
+            height: 40px;
+            min-height: 24px;
+            font-weight: bold;
+            // color: 
+            background-color: rgb(225, 245, 254) !important;
+        }
+
+        .unit {
+            position: relative;
+            cursor: pointer;
+            height: 32px;
+        }
+        mat-row, mat-footer-row {
+            min-height: 32px !important;
+        }
+        mat-row:hover {
+            background-color: #b2f5ef !important;
+        }
+        mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+            padding-left: 0px !important;
+        }
+        mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
+            padding-right: 0px !important;
+        }
+
+        .mat-row:nth-child(even){
+            background-color: #e4f0ec;
+        }
+        .mat-row:nth-child(odd){
+            background-color:#ffffff;
+        }
+
+        .mat-cell, .mat-footer-cell {
+            font-size: 14px !important;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+        
+    }
+
+
+    .unit_list_pagination_container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 40px !important;
+        width: 100% !important;
+
+        .unit_table_paginator {
+            color: rgb(221, 221, 221) !important;
+            background-color: rgb(30, 33, 41) !important;
+            width: 100% !important;
+            height: 40px !important;
+
+            .mat-paginator-container {
+                justify-content: flex-end;
+                height: 40px !important;
+                min-height: 40px !important;
+            }
+        
+            .mat-paginator-navigation-previous {
+                order: 1;
+            }
+            .mat-paginator-navigation-next {
+                order: 3;
+            }
+            .mat-paginator-navigation-last {
+                order: 4;
+            }
+            .page_index {
+                order: 2;
+            }
+            .mat-paginator-range-label {
+                order: 0;
+                @include media-breakpoint('lt-md') {
+                    display: none !important;
+                }
+            }
+            .mat-form-field-infix {
+                width: 45px;
+                display: flex;
+                flex-direction: row;
+            }
+            .mat-input-element {
+                caret-color: rgba(47, 170, 241, 0.8);
+                color: rgb(47, 170, 241);
+            }
+            .index_input {
+                text-align: center;
+                margin-top: .35em !important;
+            }
+            .mat-select-value, .mat-select-arrow{
+                color: rgb(47, 170, 241) !important;
+                margin-right: 0px !important;
+                // text-align: center;
+                justify-content: center !important;
+            }
+        
+            .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+                background: none;
+            }
+
+            mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
+                padding-bottom: 1.2em !important;
+            }
+        }
     }

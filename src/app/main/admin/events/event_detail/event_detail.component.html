@@ -67,60 +67,473 @@
                                            formControlName="name"
                                            required>
                                 </mat-form-field>
-                            </div>
-                           
-                            <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
-                                <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
-                                    <legend>&nbsp;{{ 'EVENTS.AUDIT' | translate }}&nbsp;</legend>
-                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'EVENTS.CREATED' | translate }}</mat-label>
-                                            <input matInput placeholder="Created"
-                                                name="created"
-                                                    formControlName="created">
-                                        </mat-form-field>
+                                
+                                <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column" fxLayoutAlign="space-between">
+                                    <div class="p-0 pb-12" fxFlex="50" style="height: auto; min-height: 500px; border: 1px solid #2423233a; border-radius: 4px; background-color: rgb(225, 245, 254);">
+                                        <div class="add_condition w-100-p" fxLayout="row" fxLayoutAlign="end">
+                                            <button mat-fab class="accent add_condition_btn" style="width: 32px; height: 32px;">
+                                                <mat-icon (click)="addNewCondition()" class="mb-4" style="width: 50%; height: 50%;" >add</mat-icon>
+                                            </button>
+                                        </div>
 
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'EVENTS.CREATEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="CreatedByName"
-                                                name="createdbyname"
-                                                formControlName="createdbyname">
-                                        </mat-form-field>
+                                        <mat-table class="evcondition-table font-size-10" *ngIf="dataSourceEvCondition.totalLength > 0"
+                                                    #table [dataSource]="dataSourceEvCondition"
+                                                    [@animateStagger]="{value:'50'}"
+                                                    fusePerfectScrollbar style="width: 100%;">
+                            
+                                            <!-- Id Column -->
+                                            <ng-container matColumnDef="id">
+                                                <mat-cell *matCellDef="let evcondition">
+                                                    <button (click) = "editEvCondition(evcondition)" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" matRipple>edit</mat-icon></button>
+                                                    <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDevConfig(devconfig)">delete</mat-icon>
+                                                </mat-cell>
+                                            </ng-container>
+                                         
+                                            <!-- Description Column -->
+                                            <ng-container matColumnDef="description" >
+                                                <mat-cell *matCellDef="let evcondition">
+                                                    <p class="description text-truncate">{{evcondition.description}}</p>
+                                                </mat-cell>
+                                            </ng-container>
+                            
+                                            <mat-row  *matRowDef="let evcondition; columns: displayedConditionColumns;"
+                                                        class="evcondition font-size-10"
+                                                        matRipple >
+                                            </mat-row>
+                                        </mat-table>
+
+                                        <div *ngIf="dataSourceEvCondition.totalLength == 0" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90); height: 430px;">
+                                            <h1>No Data Found</h1>
+                                        </div>
                                     </div>
 
-                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'EVENTS.DELETEDWHEN' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted When"
-                                            name="deletedwhen"
-                                            formControlName="deletedwhen">
-                                    </mat-form-field>
+                                    <fieldset class="p-24 pt-28" fxFlex="46" style="height: auto; min-height: 500px; border-radius: 4px; border: 1px solid #2423233a; margin-top: -9px;">
+                                        <legend>&nbsp;{{ 'EVENTS.CONDITION' | translate }}&nbsp;</legend>
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'EVENTS.DELETEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted By Name"
-                                            name="deletedbyname"
-                                            formControlName="deletedbyname">
-                                    </mat-form-field>
-                                </div> -->
+                                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p ev_condition_list">
 
-                                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'EVENTS.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified Date"
-                                                name="lastmodifieddate"
-                                                formControlName="lastmodifieddate">
+                                            <mat-select class="ev_condition_select" formControlName="ev_condition" (selectionChange)="onConditionChange($event)">
+                                                <mat-option class="ev_conditionList_option" value="none"></mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_SPEED" >{{ 'EVENTS.EV_SPEED' | translate }}</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_OFFHOURS">{{ 'EVENTS.EV_OFFHOURS' | translate }}</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_LATESTART">Late Start</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_LONGSTOP">Long Stop</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_IDLE" >IDLE</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_NODATA">No Reporting</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_FUEL">Fuel Level</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_TEMP">Temperature</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_ZONE">Zone</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_POI">Poi</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_SENSOR">Sensor</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_DEVICE">Device Triggered</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_ROUTE">Route</mat-option>
+                                                <mat-option class="ev_conditionList_option" value="EV_TOW">Tow</mat-option>
+                                            </mat-select>
+
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                            <mat-label>{{ 'EVENTS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified By Name"
-                                                name="lastmodifiedbyname"
-                                                formControlName="lastmodifiedbyname">
-                                        </mat-form-field>
-                                    </div>
-                                </fieldset>
+                                        <div class="condition_detail" fxLayout="column" fxLayoutAlign="space-between">
+                                            <!-- Speed Condition Detail -->
+                                            <div class="speed_detail" fxLayout="row" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_SPEED'">
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_speed_condition" fxFlex="50">
+                                                    <mat-select class="ev_speed_select" [(value)]="speed_condition">
+                                                        <mat-option class="ev_speed_option" value="1">{{ 'EVENTS.HIGHERTHAN' | translate }}</mat-option>
+                                                        <mat-option class="ev_speed_option" value="0">{{ 'EVENTS.LOWERTHAN' | translate }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" class="ev_speed_input" floatLabel="always" fxFlex="18">
+                                                    <input matInput  formControlName="speedinput" min="0" step="0.1" type="number" style="text-align: center;">
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_speed_unit" fxFlex="28">
+                                                    <mat-select class="ev_speed_select" [(value)]="speed_unit">
+                                                        <mat-option class="ev_speed_km" value="km">Km/h</mat-option>
+                                                        <mat-option class="ev_speed_mph" value="mph">Mph</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- OffHours Condition Detail -->
+                                            <div class="offhours_detail" fxLayout="column"  *ngIf="ev_condition == 'EV_OFFHOURS'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.OFFHOURCONDITIONDETAIL' | translate }}
+                                                </div>
+
+                                                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
+                                                    <mat-form-field appearance="outline" class="ev_offhourstart_input" floatLabel="always" fxFlex="30">
+                                                        <input matInput  formControlName="offhourstart"  type="time" style="text-align: center; font-size: larger;">
+                                                    </mat-form-field>
+
+                                                    <span class="h3">{{ 'EVENTS.AND' | translate }}</span>
+
+                                                    <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="30">
+                                                        <input matInput  formControlName="offhourend"  type="time" style="text-align: center; font-size: larger;">
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- LateStart Condition Detail -->
+                                            <div class="latestart_detail" fxLayout="column"  *ngIf="ev_condition == 'EV_LATESTART'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.LASTSTARTCONDITIONDETAIL' | translate }} 
+                                                </div>
+                                                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
+                                                    <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always"  style="width: 30%; min-width: 150px;">
+                                                        <input matInput  formControlName="latestart"  type="time" style="text-align: center; font-size: larger;">
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- Long Stop Condition Detail -->
+                                            <div class="longstop_detail" fxLayout="column"  *ngIf="ev_condition == 'EV_LONGSTOP'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.LONGSTOPCONDITIONDETAIL' | translate }} 
+                                                </div>
+                                                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
+                                                    <mat-form-field appearance="outline" class="ev_longstop_input" floatLabel="always" fxFlex="20">
+                                                        <input matInput  formControlName="longstopinput"  type="number" min="0" max="999" style="text-align: center; font-size: larger;">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_longstop_unit" fxFlex="30">
+                                                        <mat-select class="ev_longstop_select" [(value)]="longstop_unit">
+                                                            <mat-option class="ev_longstop_minute" value="minute">Minute(s)</mat-option>
+                                                            <mat-option class="ev_longstop_hour" value="hour">Hour(s)</mat-option>
+                                                            <mat-option class="ev_longstop_day" value="day">Day(s)</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- IDLE Condition Detail -->
+                                            <div class="idle_detail" fxLayout="column"  *ngIf="ev_condition == 'EV_IDLE'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.IDLECONDITIONDETAIL' | translate }} 
+                                                </div>
+                                                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
+                                                    <mat-form-field appearance="outline" class="ev_idle_input" floatLabel="always" fxFlex="20">
+                                                        <input matInput  formControlName="idleinput"  type="number" min="0" max="999" style="text-align: center; font-size: larger;">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_idle_unit" fxFlex="30">
+                                                        <mat-select class="ev_idle_select" [(value)]="idle_unit">
+                                                            <mat-option class="ev_idle_minute" value="minute">Minute(s)</mat-option>
+                                                            <mat-option class="ev_idle_hour" value="hour">Hour(s)</mat-option>
+                                                            <mat-option class="ev_idle_day" value="day">Day(s)</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- No Report Condition Detail -->
+                                            <div class="noreport_detail" fxLayout="column" *ngIf="ev_condition == 'EV_NODATA'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.NOREPORTCONDITIONDETAIL' | translate }} 
+                                                </div>
+
+                                                <div fxLayout="column" fxLayoutAlign="center center">
+                                                    <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
+                                                        <mat-form-field appearance="outline" class="ev_noreportoff_input" floatLabel="always" fxFlex="90px">
+                                                            <input matInput  formControlName="noreportoninput"  type="number" style="text-align: center;">
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" floatLabel="always" class="ev_noreporton_unit" fxFlex="120px">
+                                                            <mat-select class="ev_noreporton_select" [(value)]="noreporton_unit">
+                                                                <mat-option class="ev_noreporton_minute" value="minute">Minute(s)</mat-option>
+                                                                <mat-option class="ev_noreporton_hour" value="hour">Hour(s)</mat-option>
+                                                                <mat-option class="ev_noreporton_day" value="day">Day(s)</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <div class="h2">{{ 'EVENTS.WHILEON' | translate }}</div>
+                                                    </div>
+
+                                                    <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="space-between center">
+                                                        <mat-form-field appearance="outline" class="ev_noreportoff_input" floatLabel="always" fxFlex="90px">
+                                                            <input matInput  formControlName="noreportoffinput"  type="number" style="text-align: center;">
+                                                        </mat-form-field>
+
+                                                        <mat-form-field appearance="outline" floatLabel="always" class="ev_noreportoff_unit" fxFlex="120px">
+                                                            <mat-select class="ev_noreportoff_select" [(value)]="noreportoff_unit">
+                                                                <mat-option class="ev_noreportoff_minute" value="minute">Minute(s)</mat-option>
+                                                                <mat-option class="ev_noreportoff_hour" value="hour">Hour(s)</mat-option>
+                                                                <mat-option class="ev_noreportoff_day" value="day">Day(s)</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                        <div class="h2">{{ 'EVENTS.WHILEOFF' | translate }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Fuel Level Condition Detail -->
+                                            <div class="fuel_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_FUEL'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.FUELCONDITIONDETAIL' | translate }} 
+                                                </div>
+
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_fuel_tank">
+                                                    <mat-select class="ev_fuel_tank_select" [(value)]="fuel_tank">
+                                                        <mat-option class="ev_fueltank_option" value="0">{{ 'EVENTS.ANYTANK' | translate }}</mat-option>
+                                                        <mat-option class="ev_fueltank_option" value="1">{{ 'EVENTS.TANK' | translate }} 1</mat-option>
+                                                        <mat-option class="ev_fueltank_option" value="2">{{ 'EVENTS.TANK' | translate }} 2</mat-option>
+                                                        <mat-option class="ev_fueltank_option" value="3">{{ 'EVENTS.TANK' | translate }} 3</mat-option>
+                                                        <mat-option class="ev_fueltank_option" value="4">{{ 'EVENTS.TANK' | translate }} 4</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_fuel_condition" fxFlex="50">
+                                                        <mat-select class="ev_fuel_select" [(value)]="fuel_condition">
+                                                            <mat-option class="ev_fuel_option" value="4">{{ 'EVENTS.FUELHIGHERCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_fuel_option" value="3">{{ 'EVENTS.FUELLOWERCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_fuel_option" value="2">{{ 'EVENTS.FUELCHANGECONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_fuel_option" value="1">{{ 'EVENTS.FUELINCREASESCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_fuel_option" value="0">{{ 'EVENTS.FUELDECREASESCONDITION' | translate }}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" class="ev_fuel_input" floatLabel="always" fxFlex="18">
+                                                        <input matInput  formControlName="fuelinput"  type="number" min="{{fuelmin}}" max="{{fuelmax}}" style="text-align: center;">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_fuel_unit" fxFlex="28">
+                                                        <mat-select class="ev_fuel_select" [(value)]="fuel_unit">
+                                                            <mat-option class="ev_fuel_lts" value="liters">LTS</mat-option>
+                                                            <mat-option class="ev_fuel_gal" value="gallons">GAL</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- Temperature Level Condition Detail -->
+                                            <div class="temp_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_TEMP'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.TEMPCONDITIONDETAIL' | translate }}
+                                                </div>
+
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_fuel_tank">
+                                                    <mat-select class="ev_temp_sensor_select" [(value)]="temp_sensor">
+                                                        <mat-option class="ev_tempsensor_option" value="0">{{ 'EVENTS.ANYSENSOR' | translate }}</mat-option>
+                                                        <mat-option class="ev_tempsensor_option" value="1">{{ 'EVENTS.SENSOR' | translate }} 1</mat-option>
+                                                        <mat-option class="ev_tempsensor_option" value="2">{{ 'EVENTS.SENSOR' | translate }} 2</mat-option>
+                                                        <mat-option class="ev_tempsensor_option" value="3">{{ 'EVENTS.SENSOR' | translate }} 3</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_temp_condition" fxFlex="50">
+                                                        <mat-select class="ev_temp_select" [(value)]="temp_condition">
+                                                            <mat-option class="ev_temp_option" value="4">{{ 'EVENTS.FUELHIGHERCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_temp_option" value="3">{{ 'EVENTS.FUELLOWERCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_temp_option" value="2">{{ 'EVENTS.FUELCHANGECONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_temp_option" value="1">{{ 'EVENTS.FUELINCREASESCONDITION' | translate }}</mat-option>
+                                                            <mat-option class="ev_temp_option" value="0">{{ 'EVENTS.FUELDECREASESCONDITION' | translate }}</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" class="ev_temp_input" floatLabel="always" fxFlex="18">
+                                                        <input matInput  formControlName="tempinput"  type="number" min="{{tempmin}}" max="{{tempmax}}" style="text-align: center;">
+                                                    </mat-form-field>
+
+                                                    <mat-form-field appearance="outline" floatLabel="always" class="ev_fuel_unit" fxFlex="28">
+                                                        <mat-select class="ev_temp_select" [(value)]="temp_unit">
+                                                            <mat-option class="ev_temp_celsius" value="celsius">&#8451;</mat-option>
+                                                            <mat-option class="ev_temp_fahrenheit" value="fahrenheit">&#8457;</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+
+                                            <!-- Zone Level Condition Detail -->
+                                            <div class="zone_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_ZONE'">
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_zone_condition">
+                                                    <mat-select class="ev_zone_select" [(value)]="zone_condition">
+                                                        <mat-option class="ev_zone_option" value="1">{{ 'EVENTS.ZONEEXITCONDITION' | translate }}</mat-option>
+                                                        <mat-option class="ev_zone_option" value="2">{{ 'EVENTS.ZONEENTERCONDITION' | translate }}</mat-option>
+                                                        <mat-option class="ev_zone_option" value="3">{{ 'EVENTS.ZONEENTEROREXITCONDITION' | translate }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- POI Level Condition Detail -->
+                                            <div class="poi_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_POI'">
+                                                <mat-form-field appearance="outline" floatLabel="always" class="ev_poi_condition">
+                                                    <mat-select class="ev_poi_select" [(value)]="poi_condition">
+                                                        <mat-option class="ev_poi_option" value="1">{{ 'EVENTS.ZONEEXITCONDITION' | translate }}</mat-option>
+                                                        <mat-option class="ev_poi_option" value="2">{{ 'EVENTS.ZONEENTERCONDITION' | translate }}</mat-option>
+                                                        <mat-option class="ev_poi_option" value="3">{{ 'EVENTS.ZONEENTEROREXITCONDITION' | translate }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Sensor Level Condition Detail -->
+                                            <div class="sensor_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_SENSOR'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.SENSOR' | translate }}
+                                                </div>
+                                            </div>
+
+                                            <!-- Device Level Condition Detail -->
+                                            <div class="device_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_DEVICE'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.DEVICECONDTITIONDETAIL' | translate }}
+                                                </div>
+
+                                                <mat-form-field appearance="outline" class="ev_device_input" floatLabel="always">
+                                                    <textarea matInput  formControlName="deviceinput" maxlength="200" style="min-height: 100px; font-size: larger;"></textarea>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Route Level Condition Detail -->
+                                            <div class="route_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_ROUTE'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.ROUTECONDITIONDETAIL' | translate }}
+                                                </div>
+                                            </div>
+
+                                            <!-- Tow Level Condition Detail -->
+                                            <div class="tow_detail" fxLayout="column" fxLayoutAlign="space-between" *ngIf="ev_condition == 'EV_TOW'">
+                                                <div class="h2 mb-16" fxLayout="row wrap">
+                                                    {{ 'EVENTS.TOWCONDITIONDETAIL' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="save_condition" fxLayout="row" fxLayoutAlign="end">
+                                            <button mat-raised-button
+                                                    class="save-event-button"
+                                                    *ngIf="evType ==='new'" (click)="addEvCondition('new')">
+                                                <span>{{ 'EVENTS.ADD' | translate }}</span>
+                                            </button>
+                                
+                                            <button mat-raised-button
+                                                    class="save-event-button accent"
+                                                    *ngIf="evType ==='old'" (click)="addEvCondition('old')">
+                                                <span>{{ 'EVENTS.SAVE' | translate }}</span>
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="{{ 'EVENTS.UNIT' | translate }}">
+                            <div class="tab-content p-24 pt-40" fusePerfectScrollbar fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
+                                <div class="select_company_group pb-12" fxLayout="column" fxFlex="48">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                                        <mat-label>{{ 'EVENTS.COMPANY' | translate }}</mat-label>
+                                        <mat-select  (click)="showCompanyList('company_clist')" (selectionChange)="onCompanyChange($event)" formControlName="company">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceCompany" class="vehicles-table font-size-10 mat-elevation-z8">
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let company;"  style="border: 0px;">
+                                                            <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorCompany
+                                                class="table_paginator_detail"
+                                                [length]="dataSourceCompany.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                                sticky="true"
+                                            ></mat-paginator>
+                                          
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <mat-label>{{ 'EVENTS.GROUP' | translate }}</mat-label>
+                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')" (selectionChange)="onGroupChange($event)">
+                                            <div class="filter_company_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
+
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceGroup"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorGroup
+                                                class="table_paginator"
+                                                [length]="dataSourceGroup.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <div fxLayout="row" fxLayoutAlign="start" class="ml-12 p-24">
+                                        <mat-checkbox (change)="selectWholeCompany($event)"
+                                            formControlName="wholeCompany"
+                                            > &nbsp;Apply To all Vehicles
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+
+                                <div class="ev_unit_table" fxFlex="48" fxLayout="column" style="border-radius: 4px; border: 1px solid #2423233a; height: 500px;">
+                                    <div class="unit_evlist_header w-100-p" style="background-color: rgb(225, 245, 254); height: 30px;"></div>
+                                    <mat-table class="unit_evlist font-size-10" *ngIf="!loadUnitList_flag"
+                                            #table [dataSource]="dataSourceUnit"
+                                            [@animateStagger]="{value:'50'}"
+                                            fusePerfectScrollbar style="width: 100%; height: 430px; overflow: auto;">
+                                        <ng-container matColumnDef="id">
+                                            <mat-cell *matCellDef="let unit" style="flex-basis: 30%; flex-grow: 0; flex-shrink: 1; margin-left: 12px; ">
+                                                <mat-checkbox
+                                                    labelPosition="after"
+                                                    (click)="$event.stopPropagation()"
+                                                    [checked]="unitSelection.isSelected(unit)"
+                                                    >
+                                                </mat-checkbox>
+                                            </mat-cell>
+                                        </ng-container>
+    
+                                        <ng-container matColumnDef="name">
+                                            <mat-cell *matCellDef="let unit" class="p-0">
+                                                <p class="report text-truncate">{{unit.name}}</p>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-row class="unit" *matRowDef="let unit; columns: displayedUnitColumns;" matRipple style="border-bottom-width: 0px;">
+                                        </mat-row>
+                                    </mat-table>
+
+                                    <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90); height: 430px;">
+                                        <h1>No Data Found</h1>
+                                    </div>
+
+                                    <div class="unit_list_pagination_container">
+                                        <mat-paginator #paginatorUnit
+                                                        showFirstLastButtons
+                                                        class="unit_table_paginator"
+                                                        [length]="dataSourceUnit.totalLength"
+                                                        [hidePageSize] = "true"
+                                                        [pageSize]="20"
+                                                        (click)="paginatorClick(paginatorUnit)"
+                                                        >
+                                        </mat-paginator>
+                                    </div>
+                                </div>
+                            </div>
+
                         </mat-tab>
 
                     </mat-tab-group>

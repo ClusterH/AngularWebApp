@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit
 
     // hiddenNavItem: boolean;
     isHideNavList: any = {};
+    userObjectList: any = {};
 
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -165,7 +166,10 @@ export class LoginComponent implements OnInit
             console.log(res);
             if (res.responseCode == 100) {
                 this.isHideNavList = res.TrackingXLAPI.DATA1;
+                this.userObjectList = res.TrackingXLAPI.DATA;
+
                 localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
+                localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
 
                 console.log("HideNavList: ", this.isHideNavList);
                 
