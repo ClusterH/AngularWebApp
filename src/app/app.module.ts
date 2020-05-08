@@ -53,6 +53,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/report/report.module').then(m => m.ReportModule)
     },
     {
+        path        : 'logistic',
+        loadChildren: () => import('./main/logistic/logistic.module').then(m => m.LogisticModule)
+    },
+    {
         path      : '**',
         redirectTo: 'login'
     }

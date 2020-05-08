@@ -155,6 +155,9 @@
         }
     }
 
+    fieldset[disabled]{
+        pointer-events: none;
+    }
     .condition_detail {
         height: 300px;
 

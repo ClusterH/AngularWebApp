@@ -1,0 +1,176 @@
+<div id="events" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'EVENTS.EVENTS' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'EVENTS.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'EVENTS.NAME' | translate}}</mat-option>
+                            <mat-option value="email">{{'EVENTS.EMAIL' | translate}}</mat-option>
+                            <mat-option value="password">{{'EVENTS.PASSWORD' | translate}}</mat-option>
+                            <mat-option value="eventprofile">{{'EVENTS.EVENTPROFILE' | translate}}</mat-option>
+                            <mat-option value="timezone">{{'EVENTS.TIMEZONE' | translate}}</mat-option>
+                            <mat-option value="lengthunit">{{'EVENTS.LENGTHUNIT' | translate}}</mat-option>
+                            <mat-option value="fuelunit">{{'EVENTS.FUELUNIT' | translate}}</mat-option>
+                            <mat-option value="weightunit">{{'EVENTS.WEIGHTUNIT' | translate}}</mat-option>
+                            <mat-option value="tempunit">{{'EVENTS.TEMPUNIT' | translate}}</mat-option>
+                            <mat-option value="company">{{'EVENTS.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'EVENTS.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'EVENTS.SUBGROUP' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'EVENTS.SEARCHFOREVENT' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/admin/events/event_detail'"
+                    class="accent  mt-24 mt-md-0"
+                    [disabled]="restrictValue != 3"
+                    (click)="addNewEvent()">
+               <mat-icon>add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="events-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 100%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let event">
+                        <button (click) = "editShowEventDetail(event)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteEvent(event)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateEvent(event)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'EVENTS.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let event">
+                        <p class="name text-truncate">{{event.name}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+              
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'EVENTS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let event">
+                        <p class="company text-truncate">
+                            {{event.company}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Group Column -->
+                <ng-container matColumnDef="group">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'EVENTS.GROUP' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let event" >
+                        <p class="group text-truncate">
+                            {{event.group}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'EVENTS.DESCRIPTION' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let event" >
+                        <p class="description text-truncate">
+                            {{event.description}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let event; columns: displayedColumns;"
+                            class="event font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

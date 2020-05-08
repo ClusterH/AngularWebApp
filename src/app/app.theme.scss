@@ -146,6 +146,12 @@ $typography: mat-typography-config(
 @import "src/app/main/system/privileges/privileges/privileges.theme";
 @import "src/app/main/system/privileges/privilege_detail/privilege_detail.theme";
 
+//Logistic
+@import "src/app/main/logistic/maintenance/pendings/pendings/pendings.theme";
+@import "src/app/main/logistic/maintenance/events/events/events.theme";
+@import "src/app/main/logistic/maintenance/events/event_detail/event_detail.theme";
+// @import "src/app/main/system/privileges/privilege_detail/privilege_detail.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
@@ -213,6 +219,13 @@ $typography: mat-typography-config(
     @include system-privilege-theme($theme);
     @include system-devconfigs-theme($theme);
     @include system-devconfig-theme($theme);
+
+    //Logistic
+    @include logistic-pendings-theme($theme);
+    @include logistic-events-theme($theme);
+    @include logistic-event-theme($theme);
+
+
 
 
 }

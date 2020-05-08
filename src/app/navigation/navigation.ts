@@ -298,8 +298,44 @@ export const navigation: FuseNavigation[] = [
                 id       : 'maintenance',
                 title    : 'Maintenance',
                 translate: 'NAV.MAINTENANCE',
-                type     : 'item',
-                url      : 'pages/logistics/maintenance'
+                type     : 'collapsable',
+                children : [
+                    {
+                        id       : 'pendings',
+                        title    : 'Dashboards',
+                        translate: 'NAV.DASHBOARD',
+                        type     : 'item',
+                        url      : '/logistic/pendings/pendings'
+                    },
+                    {
+                        id       : 'events',
+                        title    : 'Events',
+                        translate: 'NAV.EVENT',
+                        type     : 'item',
+                        url      : '/logistic/events/events'
+                    },
+                    {
+                        id       : 'serviceitems',
+                        title    : 'Service Items',
+                        translate: 'NAV.SERVICEITEM',
+                        type     : 'item',
+                        url      : '/logistic/serviceitems/serviceitems'
+                    },
+                    {
+                        id       : 'services',
+                        title    : 'Services',
+                        translate: 'NAV.SERVICE',
+                        type     : 'item',
+                        url      : '/logistic/services/services'
+                    },
+                    {
+                        id       : 'history',
+                        title    : 'History',
+                        translate: 'NAV.HISTORY',
+                        type     : 'item',
+                        url      : '/logistic/history/history'
+                    },
+                ]
             },
             {
                 id       : 'route_center',

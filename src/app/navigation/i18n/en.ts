@@ -44,6 +44,10 @@ export const locale = {
             "TELEMETRY": "Telemetry",
 
             "MAINTENANCE": "Maintenance",
+            "EVENT": "Events",
+            "SERVICEITEM": "Service Items",
+            "SERVICE": "Services",
+            "HISTORY": "History",
             "ROUTECENTER": "Route Center",
             "MONITORING": "Monitoring",
             "JOBMANAGEMENT": "Job Management",
