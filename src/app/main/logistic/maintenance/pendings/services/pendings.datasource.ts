@@ -6,7 +6,7 @@ import { PendingsService } from 'app/main/logistic/maintenance/pendings/services
 
 export class PendingsDataSource extends DataSource<any>
 {
-    private pendingsSubject = new BehaviorSubject<any>([]);
+    public pendingsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -35,13 +35,16 @@ export class PendingsDataSource extends DataSource<any>
         .subscribe((result : any) => {
             console.log("result", result);
             console.log("page_size", pagesize);
-           this.pendingsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           console.log(this.total_page);
 
-           console.log(this.totalLength);
+            this._adminPendingsService.maintPendingList = result.TrackingXLAPI.DATA;
+
+            this.pendingsSubject.next(result.TrackingXLAPI.DATA);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+            console.log(this.total_page);
+
+            console.log(this.totalLength);
         //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );

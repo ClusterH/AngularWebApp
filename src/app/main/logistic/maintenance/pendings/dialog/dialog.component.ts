@@ -6,6 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { PendingsService } from 'app/main/logistic/maintenance/pendings/services/pendings.service';
+import { PendingsDataSource } from "app/main/logistic/maintenance/pendings/services/pendings.datasource";
+
 import { AttendDetail } from 'app/main/logistic/maintenance/pendings/model/pending.model';
 
 import { locale as pendingsEnglish } from 'app/main/logistic/maintenance/pendings/i18n/en';
@@ -29,6 +31,7 @@ export class AttendDialogComponent implements OnInit {
 
    private flag = new BehaviorSubject<boolean>(false);
 
+   dataSource: PendingsDataSource;
 
     constructor(
         private router: Router,
@@ -79,7 +82,16 @@ export class AttendDialogComponent implements OnInit {
 
         this.attendDetail.performdate = performdate + " " + hour;
 
-        console.log(performdate, hour);
+        let currentPending =  this.pendingsService.maintPendingList.findIndex((pending: any) => pending.id == this.attend.id);
+        console.log(currentPending);
+
+        this.pendingsService.maintPendingList[currentPending].id = this.attendDetail.id;
+        this.pendingsService.maintPendingList[currentPending].status = this.attendDetail.action;
+        this.pendingsService.maintPendingList[currentPending].cost = this.attendDetail.cost;
+        this.pendingsService.maintPendingList[currentPending].performdate = this.attendDetail.performdate;
+        // this.pendingsService.maintPendingList[currentPending].performdate = (new Date(this.attendForm.get('performdate').value)).toISOString();
+
+        console.log(performdate, hour, this.pendingsService.maintPendingList[currentPending].performdate );
 
         this.flag.next(true);
     }
@@ -143,8 +155,11 @@ export class AttendDialogComponent implements OnInit {
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     alert('Successfully saved');
+                    this.dataSource = new PendingsDataSource(this.pendingsService);
 
-                    this.reloadComponent();
+                    this.dataSource.pendingsSubject.next(this.pendingsService.maintPendingList);
+
+                    // this.reloadComponent();
 
                 } else {
                     alert("Failed save!")
@@ -156,11 +171,4 @@ export class AttendDialogComponent implements OnInit {
 
         this.matDialogRef.close();
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['logistic/pendings/pendings']);
-    }
-
 }

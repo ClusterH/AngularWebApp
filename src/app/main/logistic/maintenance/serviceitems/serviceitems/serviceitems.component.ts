@@ -14,9 +14,8 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { ServiceitemsService } from 'app/main/logistic/maintenance/serviceitems/services/serviceitems.service';
 import { ServiceitemsDataSource } from "app/main/logistic/maintenance/serviceitems/services/serviceitems.datasource";
-import { ServiceitemDetailService } from 'app/main/logistic/maintenance/serviceitems/services/serviceitem_detail.service';
 
-import {CourseDialogComponent} from "../dialog/dialog.component";
+import {ServiceItemDialogComponent} from "../dialog/dialog.component";
 
 import { locale as serviceitemsEnglish } from 'app/main/logistic/maintenance/serviceitems/i18n/en';
 import { locale as serviceitemsSpanish } from 'app/main/logistic/maintenance/serviceitems/i18n/sp';
@@ -55,10 +54,11 @@ export class ServiceitemsComponent implements OnInit
     displayedColumns = [
         'id',
         'name',
-        'description',
         'company',
-        'group',
+        'group'
     ];
+
+    dialogRef: any;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -73,7 +73,6 @@ export class ServiceitemsComponent implements OnInit
     
     constructor(
         private _adminServiceitemsService: ServiceitemsService,
-        private serviceitemDetailService: ServiceitemDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -160,17 +159,36 @@ export class ServiceitemsComponent implements OnInit
     }
 
     addNewServiceitem() {
-        this.serviceitemDetailService.serviceitem_detail = '';
-        localStorage.removeItem("serviceitem_detail");
-        this.router.navigate(['logistic/serviceitems/serviceitem_detail']);
+
+        this.dialogRef = this._matDialog.open(ServiceItemDialogComponent, {
+            panelClass: 'serviceitem-dialog',
+            data      : {
+                serviceDetail: null,
+                flag: 'new'
+            }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+        });
     }
 
     editShowServiceitemDetail(serviceitem: any) {
-        this.serviceitemDetailService.serviceitem_detail = serviceitem;
+        console.log(serviceitem);
 
-        localStorage.setItem("serviceitem_detail", JSON.stringify(serviceitem));
+        this.dialogRef = this._matDialog.open(ServiceItemDialogComponent, {
+            panelClass: 'serviceitem-dialog',
+            data      : {
+                serviceDetail: serviceitem,
+                flag: 'edit'
+            }
+        });
 
-        this.router.navigate(['logistic/serviceitems/serviceitem_detail']);
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+        });
     }
     
     deleteServiceitem(serviceitem): void
@@ -184,7 +202,7 @@ export class ServiceitemsComponent implements OnInit
             serviceitem, flag: this.flag
         };
 
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+        const dialogRef = this._matDialog.open(ServiceItemDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
@@ -196,26 +214,26 @@ export class ServiceitemsComponent implements OnInit
         });
     }
 
-    duplicateServiceitem(serviceitem): void
-    {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'duplicate';
+    // duplicateServiceitem(serviceitem): void
+    // {
+    //     const dialogConfig = new MatDialogConfig();
+    //     this.flag = 'duplicate';
 
-        dialogConfig.disableClose = true;
+    //     dialogConfig.disableClose = true;
         
-        dialogConfig.data = {
-            serviceitem, flag: this.flag
-        };
+    //     dialogConfig.data = {
+    //         serviceitem, flag: this.flag
+    //     };
 
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+    //     const dialogRef = this._matDialog.open(ServiceItemDialogComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
-            }
-        });
-    }
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if ( result )
+    //         { 
+    //             console.log(result);
+    //         } else {
+    //             console.log("FAIL:", result);
+    //         }
+    //     });
+    // }
 }

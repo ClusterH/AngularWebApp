@@ -1,21 +1,19 @@
 export const locale = {
     lang: 'en',
     data: {
-        SERVICEITEM: {
-            "SERVICEITEMS": "Serviceitems",
-            "SEARCHFORSERVICEITEM": "Search for a Serviceitem",
-            "NEWSERVICEITEM": "New Serviceitem",
-            "SERVICEITEMDETAIL": "Serviceitem Detail",
+        MAINTSERVICES: {
+            "MAINTSERVICES": "Maintservices",
+            "SEARCHFORMAINTSERVICE": "Search for a Maintservice",
+            "NEWMAINTSERVICE": "New Maintservice",
+            "MAINTSERVICEDETAIL": "Maintservice Detail",
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
-            "CLOSE": "Close",
 
             "NAME": "Name",
             "COMPANY": "Company",
             "GROUP": "Group",
             "DESCRIPTION": "Description",
-            "SERVICEITEMCREATE": "Create Service",
 
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",

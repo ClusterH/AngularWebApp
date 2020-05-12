@@ -34,18 +34,23 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ServiceitemsComponent} from 'app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.component';
-import { ServiceitemsService } from 'app/main/logistic/maintenance/serviceitems/services/serviceitems.service';
-import { ServiceItemDialogComponent } from 'app/main/logistic/maintenance/serviceitems/dialog/dialog.component';
+import { HistoryComponent} from 'app/main/logistic/maintenance/history/history/history.component';
+import { HistoryService } from 'app/main/logistic/maintenance/history/services/history.service';
+import { CourseDialogComponent } from 'app/main/logistic/maintenance/history/dialog/dialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
 const routes = [
     {
-        path     : 'serviceitems',
-        component: ServiceitemsComponent,
+        path     : 'history',
+        component: HistoryComponent,
         // pathMatch: 'full'
     },
+    // {
+    //     path     : 'maintservice_detail',
+    //     component: MaintserviceDetailComponent,
+    //     // pathMatch: 'full'
+    // },
 ];
 
 @NgModule({
@@ -87,11 +92,11 @@ const routes = [
         RouterModule.forChild(routes),
     ],
     declarations: [
-        ServiceitemsComponent,
-        ServiceItemDialogComponent,
+        HistoryComponent,
+        CourseDialogComponent,
     ],
     providers: [
-        ServiceitemsService
+        HistoryService
     ]
 })
-export class ServiceitemsModule{ }
+export class HistoryModule{ }

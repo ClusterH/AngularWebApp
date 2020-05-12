@@ -51,6 +51,8 @@ export const locale = {
             "ROUTECENTER": "Route Center",
             "MONITORING": "Monitoring",
             "JOBMANAGEMENT": "Job Management",
+            "BOARD": "Board",
+            "LIST": "List",
 
             "FUELMANAGEMENT": "Fuel Management",
             "TANKS": "Tanks",

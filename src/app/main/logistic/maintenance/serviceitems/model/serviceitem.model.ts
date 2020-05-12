@@ -1,24 +1,21 @@
-export interface ServiceitemDetail
+export class ServiceitemDetail
 {
     id?: number;
     name?: string;
-    email?: string;
-    password?: string;
-    serviceitemprofileid?: number;
-    timezoneid?: number
-    lengthunitid?: number;
-    fuelunitid?: number;
-    weightunitid?: number;
-    tempunitid?: number;
-    isactive?: boolean;
-    companyid?: number;
-    groupid?: number;
-    subgroup?: number;
-    created?: Date;
-    createdby?: number;
-    deletedwhen?: Date;
-    deletedby?: number;
-    lastmodifieddate?: Date;
-    lastmodifiedby?: number;
-    languageid?: number;
+    isactive?: string;
+    companyid?: string;
+    company?: string;
+    groupid?: string;
+    group?: string;
+
+    constructor(serviceDetail?) {
+        serviceDetail = serviceDetail || {};
+        this.id = serviceDetail.id || 0;
+        this.name = serviceDetail.name || '';
+        this.isactive = serviceDetail.isactive || 'false';
+        this.companyid = serviceDetail.companyid || '';
+        this.groupid = serviceDetail.groupid || '';
+        this.companyid = serviceDetail.company || '';
+        this.groupid = serviceDetail.group || '';
+    }
 }

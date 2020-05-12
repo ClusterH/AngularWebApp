@@ -1,9 +1,9 @@
-@mixin logistic-serviceitem-theme($theme) {
+@mixin logistic-history-theme($theme) {
 
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
-    logistic-serviceitem-detail {
+    logistic-history {
 
         .header {
 

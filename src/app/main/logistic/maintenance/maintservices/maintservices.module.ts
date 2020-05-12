@@ -34,16 +34,23 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ServiceitemsComponent} from 'app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.component';
-import { ServiceitemsService } from 'app/main/logistic/maintenance/serviceitems/services/serviceitems.service';
-import { ServiceItemDialogComponent } from 'app/main/logistic/maintenance/serviceitems/dialog/dialog.component';
+import { MaintservicesComponent} from 'app/main/logistic/maintenance/maintservices/maintservices/maintservices.component';
+import { MaintservicesService } from 'app/main/logistic/maintenance/maintservices/services/maintservices.service';
+import { MaintserviceDetailComponent} from 'app/main/logistic/maintenance/maintservices/maintservice_detail/maintservice_detail.component';
+import { MaintserviceDetailService } from 'app/main/logistic/maintenance/maintservices/services/maintservice_detail.service';
+import { CourseDialogComponent } from 'app/main/logistic/maintenance/maintservices/dialog/dialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
 const routes = [
     {
-        path     : 'serviceitems',
-        component: ServiceitemsComponent,
+        path     : 'maintservices',
+        component: MaintservicesComponent,
+        // pathMatch: 'full'
+    },
+    {
+        path     : 'maintservice_detail',
+        component: MaintserviceDetailComponent,
         // pathMatch: 'full'
     },
 ];
@@ -87,11 +94,12 @@ const routes = [
         RouterModule.forChild(routes),
     ],
     declarations: [
-        ServiceitemsComponent,
-        ServiceItemDialogComponent,
+        MaintservicesComponent,
+        MaintserviceDetailComponent,
+        CourseDialogComponent,
     ],
     providers: [
-        ServiceitemsService
+        MaintservicesService, MaintserviceDetailService
     ]
 })
-export class ServiceitemsModule{ }
+export class MaintservicesModule{ }

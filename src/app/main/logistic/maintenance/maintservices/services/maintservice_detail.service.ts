@@ -3,11 +3,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class ServiceitemDetailService 
+export class MaintserviceDetailService 
 {
     routeParams: any;
-    serviceitem: any;
-    public serviceitem_detail: any;
+    maintservice: any;
+    public maintservice_detail: any;
     public unit_clist_item: any = {};
 
     /**
@@ -58,35 +58,35 @@ export class ServiceitemDetailService
         
     }
 
-    saveServiceitemDetail(conncode: string, userid: number, serviceitemDetail: any = {}): Observable<any> {
+    saveMaintserviceDetail(conncode: string, userid: number, maintserviceDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        console.log(serviceitemDetail);
+        console.log(maintserviceDetail);
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
-            .set('id', serviceitemDetail.id.toString())
-            .set('name', serviceitemDetail.name.toString())
-            .set('email', serviceitemDetail.email.toString())
-            // .set('password', serviceitemDetail.password.toString())
-            .set('serviceitemprofileid', serviceitemDetail.serviceitemprofileid.toString())
-            .set('timezoneid', serviceitemDetail.timezoneid.toString())
-            .set('lengthunitid', serviceitemDetail.lengthunitid.toString())
-            .set('fuelunitid', serviceitemDetail.fuelunitid.toString())
-            .set('weightunitid', serviceitemDetail.weightunitid.toString())
-            .set('tempunitid', serviceitemDetail.tempunitid.toString())
-            .set('isactive', serviceitemDetail.isactive.toString())
-            .set('companyid', serviceitemDetail.companyid.toString())
-            .set('groupid', serviceitemDetail.groupid.toString())
-            .set('subgroup', serviceitemDetail.subgroup.toString())
-            .set('created', serviceitemDetail.created.toString())
-            .set('createdby', serviceitemDetail.createdby.toString())
-            .set('deletedwhen', serviceitemDetail.deletedwhen.toString())
-            .set('deletedby', serviceitemDetail.deletedby.toString())
-            .set('lastmodifieddate', serviceitemDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', serviceitemDetail.lastmodifiedby.toString())
-            .set('languageid', serviceitemDetail.languageid.toString())
-            .set('method', 'serviceitem_save');
+            .set('id', maintserviceDetail.id.toString())
+            .set('name', maintserviceDetail.name.toString())
+            .set('email', maintserviceDetail.email.toString())
+            // .set('password', maintserviceDetail.password.toString())
+            .set('maintserviceprofileid', maintserviceDetail.maintserviceprofileid.toString())
+            .set('timezoneid', maintserviceDetail.timezoneid.toString())
+            .set('lengthunitid', maintserviceDetail.lengthunitid.toString())
+            .set('fuelunitid', maintserviceDetail.fuelunitid.toString())
+            .set('weightunitid', maintserviceDetail.weightunitid.toString())
+            .set('tempunitid', maintserviceDetail.tempunitid.toString())
+            .set('isactive', maintserviceDetail.isactive.toString())
+            .set('companyid', maintserviceDetail.companyid.toString())
+            .set('groupid', maintserviceDetail.groupid.toString())
+            .set('subgroup', maintserviceDetail.subgroup.toString())
+            .set('created', maintserviceDetail.created.toString())
+            .set('createdby', maintserviceDetail.createdby.toString())
+            .set('deletedwhen', maintserviceDetail.deletedwhen.toString())
+            .set('deletedby', maintserviceDetail.deletedby.toString())
+            .set('lastmodifieddate', maintserviceDetail.lastmodifieddate.toString())
+            .set('lastmodifiedby', maintserviceDetail.lastmodifiedby.toString())
+            .set('languageid', maintserviceDetail.languageid.toString())
+            .set('method', 'maintservice_save');
         
             console.log(params_detail);
 

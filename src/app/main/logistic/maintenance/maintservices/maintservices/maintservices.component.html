@@ -1,4 +1,4 @@
-<div id="serviceitems" class="page-layout carded fullwidth inner-scroll">
+<div id="maintservices" class="page-layout carded fullwidth inner-scroll">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -19,30 +19,30 @@
                     drive_eta
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    {{ 'SERVICEITEM.SERVICEITEMS' | translate }}
+                    {{ 'MAINTSERVICES.MAINTSERVICES' | translate }}
                 </span>
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
                     <!-- FILTER ITEM -->
-                    <mat-label style="min-width: max-content;">{{'SERVICEITEM.SELECTFIELD' | translate}}:</mat-label>
+                    <mat-label style="min-width: max-content;">{{'MAINTSERVICES.SELECTFIELD' | translate}}:</mat-label>
 
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
-                            <mat-option value="name">{{'SERVICEITEM.NAME' | translate}}</mat-option>
-                            <mat-option value="email">{{'SERVICEITEM.EMAIL' | translate}}</mat-option>
-                            <mat-option value="password">{{'SERVICEITEM.PASSWORD' | translate}}</mat-option>
-                            <mat-option value="serviceitemprofile">{{'SERVICEITEM.SERVICEITEMPROFILE' | translate}}</mat-option>
-                            <mat-option value="timezone">{{'SERVICEITEM.TIMEZONE' | translate}}</mat-option>
-                            <mat-option value="lengthunit">{{'SERVICEITEM.LENGTHUNIT' | translate}}</mat-option>
-                            <mat-option value="fuelunit">{{'SERVICEITEM.FUELUNIT' | translate}}</mat-option>
-                            <mat-option value="weightunit">{{'SERVICEITEM.WEIGHTUNIT' | translate}}</mat-option>
-                            <mat-option value="tempunit">{{'SERVICEITEM.TEMPUNIT' | translate}}</mat-option>
-                            <mat-option value="company">{{'SERVICEITEM.COMPANY' | translate}}</mat-option>
-                            <mat-option value="group">{{'SERVICEITEM.GROUP' | translate}}</mat-option>
-                            <mat-option value="subgroup">{{'SERVICEITEM.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="name">{{'MAINTSERVICES.NAME' | translate}}</mat-option>
+                            <mat-option value="email">{{'MAINTSERVICES.EMAIL' | translate}}</mat-option>
+                            <mat-option value="password">{{'MAINTSERVICES.PASSWORD' | translate}}</mat-option>
+                            <mat-option value="maintserviceprofile">{{'MAINTSERVICES.MAINTSERVICEPROFILE' | translate}}</mat-option>
+                            <mat-option value="timezone">{{'MAINTSERVICES.TIMEZONE' | translate}}</mat-option>
+                            <mat-option value="lengthunit">{{'MAINTSERVICES.LENGTHUNIT' | translate}}</mat-option>
+                            <mat-option value="fuelunit">{{'MAINTSERVICES.FUELUNIT' | translate}}</mat-option>
+                            <mat-option value="weightunit">{{'MAINTSERVICES.WEIGHTUNIT' | translate}}</mat-option>
+                            <mat-option value="tempunit">{{'MAINTSERVICES.TEMPUNIT' | translate}}</mat-option>
+                            <mat-option value="company">{{'MAINTSERVICES.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'MAINTSERVICES.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'MAINTSERVICES.SUBGROUP' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -50,7 +50,7 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'SERVICEITEM.SEARCHFORSERVICEITEM' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterServiceitem()">
+                        <input #filter placeholder="{{ 'MAINTSERVICES.SEARCHFORMAINTSERVICE' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterMaintservice()">
                     </div>
                 </div>
             </div>
@@ -58,8 +58,10 @@
 
             <!-- ADD BUTTON -->
             <button mat-fab
+                    [routerLink]="'/admin/maintservices/maintservice_detail'"
                     class="accent  mt-24 mt-md-0"
-                    (click)="addNewServiceitem()">
+                    [disabled]="restrictValue != 3"
+                    (click)="addNewMaintservice()">
                <mat-icon>add</mat-icon>
 
             </button>
@@ -81,7 +83,7 @@
                 </div>
             </div>
 
-            <mat-table class="serviceitems-table font-size-10"
+            <mat-table class="maintservices-table font-size-10"
                         #table [dataSource]="dataSource"
                         matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
                         [@animateStagger]="{value:'50'}"
@@ -90,41 +92,25 @@
                 <!-- ID Column -->
                 <ng-container matColumnDef="id" >
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                    <mat-cell *matCellDef="let serviceitem">
-                        <button (click) = "editShowServiceitemDetail(serviceitem)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteServiceitem(serviceitem)">delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateServiceitem(serviceitem)">file_copy</mat-icon>
+                    <mat-cell *matCellDef="let maintservice">
+                        <button (click) = "editShowMaintserviceDetail(maintservice)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteMaintservice(maintservice)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateMaintservice(maintservice)">file_copy</mat-icon>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEITEM.NAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceitem">
-                        <p class="name text-truncate">{{serviceitem.name}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                 <!-- Company Column -->
-                 <ng-container matColumnDef="company">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEITEM.COMPANY' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceitem">
-                        <p class="company text-truncate">{{serviceitem.company}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                 <!-- Group Column -->
-                 <ng-container matColumnDef="group">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEITEM.GROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceitem">
-                        <p class="group text-truncate">{{serviceitem.group}}</p>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'MAINTSERVICES.NAME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let maintservice">
+                        <p class="name text-truncate">{{maintservice.name}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
-                <mat-row  *matRowDef="let serviceitem; columns: displayedColumns;"
-                            class="serviceitem font-size-10"
+                <mat-row  *matRowDef="let maintservice; columns: displayedColumns;"
+                            class="maintservice font-size-10"
                             matRipple >
                 </mat-row>
 
@@ -136,7 +122,7 @@
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
                 <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageServiceitem()" [(ngModel)] = "dataSource.page_index">
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageMaintservice()" [(ngModel)] = "dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
@@ -149,7 +135,7 @@
                             [pageIndex] = "pageIndex"
                             [pageSize]="pageSize"
                             [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageServiceitem = $event">
+                            (page) ="pageMaintservice = $event">
             </mat-paginator>
         </div>
            

@@ -17,14 +17,14 @@ const routes = [
         path        : 'serviceitems',
         loadChildren: () => import('./maintenance/serviceitems/serviceitems.module').then(m => m.ServiceitemsModule)
     },
-    // {
-    //     path        : 'services',
-    //     loadChildren: () => import('./services/services.module').then(m => m.ServicesModule)
-    // },
-    // {
-    //     path        : 'history',
-    //     loadChildren: () => import('./history/history.module').then(m => m.HistoryModule)
-    // },
+    {
+        path        : 'maintservices',
+        loadChildren: () => import('./maintenance/maintservices/maintservices.module').then(m => m.MaintservicesModule)
+    },
+    {
+        path        : 'history',
+        loadChildren: () => import('./maintenance/history/history.module').then(m => m.HistoryModule)
+    },
 ];
 
 @NgModule({

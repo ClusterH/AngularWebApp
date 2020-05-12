@@ -322,11 +322,11 @@ export const navigation: FuseNavigation[] = [
                         url      : '/logistic/serviceitems/serviceitems'
                     },
                     {
-                        id       : 'services',
+                        id       : 'maintservices',
                         title    : 'Services',
                         translate: 'NAV.SERVICE',
                         type     : 'item',
-                        url      : '/logistic/services/services'
+                        url      : '/logistic/maintservices/maintservices'
                     },
                     {
                         id       : 'history',
@@ -355,8 +355,23 @@ export const navigation: FuseNavigation[] = [
                 id       : 'job_management',
                 title    : 'Job Management',
                 translate: 'NAV.JOBMANAGEMENT',
-                type     : 'item',
-                url      : 'pages/logistics/job_management'
+                type     : 'collapsable',
+                children: [
+                    {
+                        id       : 'board',
+                        title    : 'Board',
+                        translate: 'NAV.BOARD',
+                        type     : 'item',
+                        url      : '/logistic/jobmanagement/board'
+                    },
+                    {
+                        id       : 'list',
+                        title    : 'List',
+                        translate: 'NAV.LIST',
+                        type     : 'item',
+                        url      : '/logistic/jobmanagement/list'
+                    },
+                ]
             },
         ]
     },
