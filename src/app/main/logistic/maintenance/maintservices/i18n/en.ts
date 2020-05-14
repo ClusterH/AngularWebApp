@@ -1,7 +1,7 @@
 export const locale = {
     lang: 'en',
     data: {
-        MAINTSERVICES: {
+        MAINTSERVICE: {
             "MAINTSERVICES": "Maintservices",
             "SEARCHFORMAINTSERVICE": "Search for a Maintservice",
             "NEWMAINTSERVICE": "New Maintservice",
@@ -9,11 +9,14 @@ export const locale = {
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
+            "CLOSE": "Close",
 
             "NAME": "Name",
             "COMPANY": "Company",
             "GROUP": "Group",
             "DESCRIPTION": "Description",
+            "MAINTSERVICECREATE": "Create Service",
+            "MAINTSERVICEEDIT": "Edit Service",
 
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",

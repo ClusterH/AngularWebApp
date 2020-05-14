@@ -14,6 +14,8 @@ export const locale = {
             "COMPANY": "Company",
             "GROUP": "Group",
             "DESCRIPTION": "Description",
+            "UNIT": "Unit",
+            "MAINTSERVICE": "Service",
 
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",

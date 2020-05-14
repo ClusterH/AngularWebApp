@@ -27,7 +27,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BlockUIModule } from 'ng-block-ui';
 
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -36,7 +35,7 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { HistoryComponent} from 'app/main/logistic/maintenance/history/history/history.component';
 import { HistoryService } from 'app/main/logistic/maintenance/history/services/history.service';
-import { CourseDialogComponent } from 'app/main/logistic/maintenance/history/dialog/dialog.component';
+import { AttendDialogComponent } from 'app/main/logistic/maintenance/history/dialog/dialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -46,11 +45,6 @@ const routes = [
         component: HistoryComponent,
         // pathMatch: 'full'
     },
-    // {
-    //     path     : 'maintservice_detail',
-    //     component: MaintserviceDetailComponent,
-    //     // pathMatch: 'full'
-    // },
 ];
 
 @NgModule({
@@ -93,7 +87,7 @@ const routes = [
     ],
     declarations: [
         HistoryComponent,
-        CourseDialogComponent,
+        AttendDialogComponent,
     ],
     providers: [
         HistoryService

@@ -5,7 +5,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { merge } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
@@ -15,13 +15,12 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 import { HistoryService } from 'app/main/logistic/maintenance/history/services/history.service';
 import { HistoryDataSource } from "app/main/logistic/maintenance/history/services/history.datasource";
 
-import {CourseDialogComponent} from "../dialog/dialog.component";
+import { AttendDialogComponent } from "../dialog/dialog.component";
 
 import { locale as historyEnglish } from 'app/main/logistic/maintenance/history/i18n/en';
 import { locale as historySpanish } from 'app/main/logistic/maintenance/history/i18n/sp';
 import { locale as historyFrench } from 'app/main/logistic/maintenance/history/i18n/fr';
 import { locale as historyPortuguese } from 'app/main/logistic/maintenance/history/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector     : 'logistic-history',
@@ -35,7 +34,7 @@ export class HistoryComponent implements OnInit
     dataSource: HistoryDataSource;
 
     @Output()
-    pageHistory: PageEvent;
+    pageEvent: PageEvent;
    
     pageIndex= 0;
     pageSize = 25;
@@ -43,18 +42,28 @@ export class HistoryComponent implements OnInit
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
-    currentHistory: any;
+    currentUser: any;
 
     history: any;
     userConncode: string;
     userID: number;
     restrictValue: number;
 
+    dash_history: string = '';
+    dash_created: string = '';
+    dash_postponed: string = '';
+
     flag: string = '';
     displayedColumns = [
         'id',
-        'name',
+        'notifydate',
+        'unit',
+        'description',
+        'maintevent',
     ];
+
+    dialogRef: any;
+
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -68,7 +77,7 @@ export class HistoryComponent implements OnInit
     filter: ElementRef;
     
     constructor(
-        private _adminHistoryService: HistoryService,
+        private historyService: HistoryService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -76,10 +85,9 @@ export class HistoryComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).history;
+        // this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).history;
 
         console.log(this.userConncode, this.userID);
-
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(historyEnglish, historySpanish, historyFrench, historyPortuguese);
@@ -95,21 +103,21 @@ export class HistoryComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:history");
+        console.log("ngAfterViewInit:");
 
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
    
-        // when paginator history is invoked, retrieve the related data
+        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
         console.log(this.paginator.pageSize);
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenance_history_tlist"))
+           tap(() => this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -123,8 +131,21 @@ export class HistoryComponent implements OnInit
     {
         console.log(this.pageSize, this.pageIndex);
 
-        this.dataSource = new HistoryDataSource(this._adminHistoryService);
-        this.dataSource.loadHistory(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenance_history_tlist");
+        this.dataSource = new HistoryDataSource(this.historyService);
+        this.dataSource.loadHistory(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancehistory_TList");
+        
+        this.getDash();
+    }
+
+    getDash() {
+        this.historyService.getDashboard(this.userConncode, this.userID)
+        .subscribe((res: any) => {
+            console.log(res);
+
+            this.dash_history = res.TrackingXLAPI.DATA[0].history;
+            this.dash_created = res.TrackingXLAPI.DATA[0].created;
+            this.dash_postponed = res.TrackingXLAPI.DATA[0].postponed;
+        });
     }
 
     onRowClicked(history) {
@@ -137,80 +158,52 @@ export class HistoryComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenance_history_tlist");
+            this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadHistory(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenance_history_tlist");
+        this.dataSource.loadHistory(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
     }
 
-    filterHistory() {
+    filterEvent() {
         this.selectedFilter();
     }
-    navigatePageHistory() {
+    navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "mainthistory_TList");
+        this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
     }
 
-    // addNewHistory() {
-    //     this.historyDetailService.history_detail = '';
-    //     localStorage.removeItem("history_detail");
-    //     this.router.navigate(['logistic/history/history_detail']);
-    // }
+    attendDetail(history: any) {
+        console.log(history);
 
-    // editShowHistoryDetail(history: any) {
-    //     this.historyDetailService.history_detail = history;
-
-    //     localStorage.setItem("history_detail", JSON.stringify(history));
-
-    //     this.router.navigate(['logistic/history/history_detail']);
-    // }
-    
-    deleteHistory(history): void
-    {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'delete';
-
-        dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            history, flag: this.flag
-        };
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
+        this.dialogRef = this._matDialog.open(AttendDialogComponent, {
+            panelClass: 'attend-form-dialog',
+            data      : {
+                attend: history,
             }
         });
+
+        this.dialogRef.afterClosed()
+            .subscribe(res => {
+                console.log(res);
+
+                // if ( !res ) {
+                //     return;
+                // }
+
+                // this.historyService.saveAttend(this.userConncode, this.userID, res)
+                // .subscribe((result: any) => {
+                //     if ((result.responseCode == 200)||(result.responseCode == 100)) {
+                //         alert('Successfully saved');
+                //     } else {
+                //         alert("Failed save!")
+                //     }
+                // });
+
+                // const formData: FormGroup = response[1];
+            });
     }
 
-    duplicateHistory(history): void
-    {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'duplicate';
-
-        dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            history, flag: this.flag
-        };
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
-            }
-        });
-    }
 }

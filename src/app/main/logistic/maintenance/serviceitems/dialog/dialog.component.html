@@ -1,7 +1,8 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">{{ 'SERVICEITEM.SERVICEITEMCREATE' | translate }}</span>
+            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'SERVICEITEM.SERVICEITEMCREATE' | translate }}</span>
+            <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'SERVICEITEM.SERVICEITEMEDIT' | translate }}</span>
             <button mat-icon-button (click)="close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -16,9 +17,9 @@
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                     <mat-label>{{ 'SERVICEITEM.NAME' | translate }}</mat-label>
                     <input matInput placeholder="Name"
-                           name="name"
-                           formControlName="name"
-                           required>
+                        name="name"
+                        formControlName="name"
+                        required>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="select_list">
@@ -46,9 +47,10 @@
                             [pageSize]="10"
                             [hidePageSize]="true"
                             showFirstLastButtons
+                            (click)="comapnyPagenation(paginatorCompany)"
                             sticky="true"
                         ></mat-paginator>
-                      
+                    
                     </mat-select>
                 </mat-form-field>
 
@@ -78,6 +80,7 @@
                             [pageSize]="10"
                             [hidePageSize]="true"
                             showFirstLastButtons
+                            (click)="groupPagenation(paginatorGroup)"
                         ></mat-paginator>
                     </mat-select>
                 </mat-form-field>
@@ -96,7 +99,8 @@
             {{ 'SERVICEITEM.CLOSE' | translate }}
         </button>
 
-        <button mat-button
+        <button *ngIf="flag=='edit'"
+                mat-button
                 class="save-button accent"
                 (click)="save()"
                 [disabled]="serviceitemForm.invalid"
@@ -104,5 +108,15 @@
             {{ 'SERVICEITEM.SAVE' | translate }}
         </button>
 
+        <button *ngIf="flag=='new'"
+                mat-button
+                class="save-button accent"
+                (click)="add()"
+                [disabled]="serviceitemForm.invalid"
+                aria-label="ADD">
+            {{ 'SERVICEITEM.ADD' | translate }}
+        </button>
+
     </div>
+    
 </div>

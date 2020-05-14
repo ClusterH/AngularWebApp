@@ -7,6 +7,44 @@
     <!-- CENTER -->
     <div class="center_table center">
 
+        <div class="dashboard mx-8 my-16" fxLayout="row" fxLayoutAlign="center center" style="height: 120px; min-height: 100px; max-height: 100px;">
+            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification history_notification p-0">
+                <div class="color_header_history p-0 m-0" fxFlex="5"></div>
+                <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+                    <img width="60%" src="assets/icons/maintenance/pending_maintenance.png">
+                </div>
+                <div class="dash_content" fxLayout="column" fxLayoutAlign="center" fxFlex="60">
+                    <div class="h2"><strong>{{dash_history}}</strong></div>
+                    <div class="h5 mb-4"><strong>{{ 'HISTORY.HISTORYNOTIFICATION' | translate }}</strong></div>
+                    <div class="h5">{{ 'HISTORY.HISTORYNOTIFICATIONDETAIL' | translate }}</div>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification created_event">
+                <div class="color_header_created p-0 m-0" fxFlex="5"></div>
+                <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+                    <img width="60%" src="assets/icons/maintenance/created_maintenance.png">
+                </div>
+                <div class="dash_content" fxLayout="column" fxLayoutAlign="center" fxFlex="60" fxFlex="60">
+                    <div class="h2"><strong>{{dash_created}}</strong></div>
+                    <div class="h5 mb-4"><strong>{{ 'HISTORY.CREATEDEVENTS' | translate }}</strong></div>
+                    <div class="h5">{{ 'HISTORY.CREATEDEVENTSDETAIL' | translate }}</div>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification postponed_notification">
+                <div class="color_header_postponed p-0 m-0" fxFlex="5"></div>
+                <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+                    <img width="60%" src="assets/icons/maintenance/postponed_maintenance.png">
+                </div>
+                <div class="dash_content" fxLayout="column" fxLayoutAlign="center" fxFlex="60" fxFlex="60">
+                    <div class="h2"><strong>{{dash_postponed}}</strong></div>
+                    <div class="h5 mb-4"><strong>{{ 'HISTORY.POSTPONEDNOTIFICATION' | translate }}</strong></div>
+                    <div class="h5">{{ 'HISTORY.POSTPONEDNOTIFICATIONDETAIL' | translate }}</div>
+                </div>
+            </div>
+        </div>
+
         <!-- HEADER -->
         <div class="header accent"
              fxLayout="column" fxLayoutAlign="center center"
@@ -31,18 +69,10 @@
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
-                            <mat-option value="name">{{'HISTORY.NAME' | translate}}</mat-option>
-                            <mat-option value="email">{{'HISTORY.EMAIL' | translate}}</mat-option>
-                            <mat-option value="password">{{'HISTORY.PASSWORD' | translate}}</mat-option>
-                            <mat-option value="historyprofile">{{'HISTORY.HISTORYPROFILE' | translate}}</mat-option>
-                            <mat-option value="timezone">{{'HISTORY.TIMEZONE' | translate}}</mat-option>
-                            <mat-option value="lengthunit">{{'HISTORY.LENGTHUNIT' | translate}}</mat-option>
-                            <mat-option value="fuelunit">{{'HISTORY.FUELUNIT' | translate}}</mat-option>
-                            <mat-option value="weightunit">{{'HISTORY.WEIGHTUNIT' | translate}}</mat-option>
-                            <mat-option value="tempunit">{{'HISTORY.TEMPUNIT' | translate}}</mat-option>
-                            <mat-option value="company">{{'HISTORY.COMPANY' | translate}}</mat-option>
-                            <mat-option value="group">{{'HISTORY.GROUP' | translate}}</mat-option>
-                            <mat-option value="subgroup">{{'HISTORY.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="unit">{{'HISTORY.UNIT' | translate}}</mat-option>
+                            <mat-option value="description">{{'HISTORY.DESCRIPTION' | translate}}</mat-option>
+                            <mat-option value="notifydate">{{'HISTORY.NOTIFYDATE' | translate}}</mat-option>
+                            <mat-option value="maintevent">{{'HISTORY.MAINTEVENT' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -50,7 +80,7 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'HISTORY.SEARCHFORHISTORY' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterHistory()">
+                        <input #filter placeholder="{{ 'HISTORY.SEARCHFORHISTORY' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
                     </div>
                 </div>
             </div>
@@ -60,7 +90,6 @@
             <!-- <button mat-fab
                     [routerLink]="'/admin/history/history_detail'"
                     class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue != 3"
                     (click)="addNewHistory()">
                <mat-icon>add</mat-icon>
 
@@ -91,19 +120,47 @@
 
                 <!-- ID Column -->
                 <ng-container matColumnDef="id" >
-                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.ATTENED' | translate }}</mat-header-cell>
                     <mat-cell *matCellDef="let history">
-                        <button (click) = "editShowHistoryDetail(history)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteHistory(history)">delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateHistory(history)">file_copy</mat-icon>
+                        <img width="24" src="assets/icons/maintenance/attend.png" (click)="attendDetail(history)">
                     </mat-cell>
                 </ng-container>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.NAME' | translate }}</mat-header-cell>
+                <!-- Unit Column -->
+                <ng-container matColumnDef="unit">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.UNIT' | translate }}</mat-header-cell>
                     <mat-cell *matCellDef="let history">
-                        <p class="name text-truncate">{{history.name}}</p>
+                        <p class="unit text-truncate">{{history.unit}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.DESCRIPTION' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let history">
+                        <p class="description text-truncate">
+                            {{history.description}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+               
+                <!-- MaintEvent Column -->
+                <ng-container matColumnDef="maintevent">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.MAINTEVENT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let history" >
+                        <p class="maintevent text-truncate">
+                            {{history.maintevent}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- NotifyDate Column -->
+                <ng-container matColumnDef="notifydate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'HISTORY.NOTIFYDATE' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let history" >
+                        <p class="notifydate text-truncate">
+                            {{history.notifydate}}
+                        </p>
                     </mat-cell>
                 </ng-container>
 
@@ -122,7 +179,7 @@
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
                 <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageHistory()" [(ngModel)] = "dataSource.page_index">
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
@@ -135,7 +192,7 @@
                             [pageIndex] = "pageIndex"
                             [pageSize]="pageSize"
                             [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageHistory = $event">
+                            (page) ="pageEvent = $event">
             </mat-paginator>
         </div>
            

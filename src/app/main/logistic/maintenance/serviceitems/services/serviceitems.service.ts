@@ -7,7 +7,8 @@ export class ServiceitemsService
 {
     serviceitems: any[];
     public unit_clist_item: any = {};
-    public current_makeID: number;
+    public serviceitemList: any = [];
+
 
     /**
      * Constructor
@@ -153,7 +154,7 @@ export class ServiceitemsService
         });
     }
     
-    deleteServiceitem(id: number): Observable<any>
+    deleteServiceitem(id: string): Observable<any>
     {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -164,7 +165,7 @@ export class ServiceitemsService
                 .set('conncode', userConncode.toString())
                 .set('userid', userID.toString())
                 .set('id', id.toString())
-                .set('method', "serviceitem_delete");
+                .set('method', "maintserviceitem_delete");
                
             console.log('params', params);
 

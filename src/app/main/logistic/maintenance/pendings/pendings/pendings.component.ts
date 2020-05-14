@@ -117,7 +117,7 @@ export class PendingsComponent implements OnInit
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
-           tap(() => this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList"))
+           tap(() => this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList"))
         )
         .subscribe( (res: any) => {
             console.log(res);
@@ -132,7 +132,7 @@ export class PendingsComponent implements OnInit
         console.log(this.pageSize, this.pageIndex);
 
         this.dataSource = new PendingsDataSource(this.pendingsService);
-        this.dataSource.loadPendings(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancehistory_TList");
+        this.dataSource.loadPendings(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancepending_TList");
         
         this.getDash();
     }
@@ -158,13 +158,13 @@ export class PendingsComponent implements OnInit
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+            this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
         console.log(pageIndex);
-        this.dataSource.loadPendings(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+        this.dataSource.loadPendings(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList");
     }
 
     filterEvent() {
@@ -172,7 +172,7 @@ export class PendingsComponent implements OnInit
     }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+        this.dataSource.loadPendings(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList");
     }
 
     attendDetail(pending: any) {

@@ -1,24 +1,10 @@
 export interface MaintserviceDetail
 {
-    id?: number;
+    id?: string;
     name?: string;
-    email?: string;
-    password?: string;
-    maintserviceprofileid?: number;
-    timezoneid?: number
-    lengthunitid?: number;
-    fuelunitid?: number;
-    weightunitid?: number;
-    tempunitid?: number;
-    isactive?: boolean;
-    companyid?: number;
-    groupid?: number;
-    subgroup?: number;
-    created?: Date;
-    createdby?: number;
-    deletedwhen?: Date;
-    deletedby?: number;
-    lastmodifieddate?: Date;
-    lastmodifiedby?: number;
-    languageid?: number;
+    isactive?: string;
+    companyid?: string;
+    company?: string;
+    groupid?: string;
+    group?: string;
 }

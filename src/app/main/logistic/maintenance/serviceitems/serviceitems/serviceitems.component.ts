@@ -16,6 +16,7 @@ import { ServiceitemsService } from 'app/main/logistic/maintenance/serviceitems/
 import { ServiceitemsDataSource } from "app/main/logistic/maintenance/serviceitems/services/serviceitems.datasource";
 
 import {ServiceItemDialogComponent} from "../dialog/dialog.component";
+import {DeleteDialogComponent} from "../deletedialog/deletedialog.component";
 
 import { locale as serviceitemsEnglish } from 'app/main/logistic/maintenance/serviceitems/i18n/en';
 import { locale as serviceitemsSpanish } from 'app/main/logistic/maintenance/serviceitems/i18n/sp';
@@ -162,6 +163,7 @@ export class ServiceitemsComponent implements OnInit
 
         this.dialogRef = this._matDialog.open(ServiceItemDialogComponent, {
             panelClass: 'serviceitem-dialog',
+            disableClose: true,
             data      : {
                 serviceDetail: null,
                 flag: 'new'
@@ -171,6 +173,8 @@ export class ServiceitemsComponent implements OnInit
         this.dialogRef.afterClosed()
         .subscribe(res => {
             console.log(res);
+            this.dataSource.serviceitemsSubject.next(res);
+
         });
     }
 
@@ -179,6 +183,7 @@ export class ServiceitemsComponent implements OnInit
 
         this.dialogRef = this._matDialog.open(ServiceItemDialogComponent, {
             panelClass: 'serviceitem-dialog',
+            disableClose: true,
             data      : {
                 serviceDetail: serviceitem,
                 flag: 'edit'
@@ -188,29 +193,28 @@ export class ServiceitemsComponent implements OnInit
         this.dialogRef.afterClosed()
         .subscribe(res => {
             console.log(res);
+            this.dataSource.serviceitemsSubject.next(res);
         });
     }
     
     deleteServiceitem(serviceitem): void
     {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'delete';
+        console.log(serviceitem);
 
-        dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            serviceitem, flag: this.flag
-        };
-
-        const dialogRef = this._matDialog.open(ServiceItemDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
+        this.dialogRef = this._matDialog.open(DeleteDialogComponent, {
+            panelClass: 'delete-dialog',
+            disableClose: true,
+            data      : {
+                serviceDetail: serviceitem,
+                flag: 'delete'
             }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+            this.dataSource.serviceitemsSubject.next(res);
+
         });
     }
 

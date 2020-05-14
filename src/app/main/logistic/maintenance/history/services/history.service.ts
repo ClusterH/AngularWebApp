@@ -6,6 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class HistoryService
 {
     history: any[];
+    public maintHistoryList: any = [];
+
 
     /**
      * Constructor
@@ -56,7 +58,7 @@ export class HistoryService
         }
     }
     
-    deleteMaintservice(id: number): Observable<any>
+    deleteHistory(id: number): Observable<any>
     {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -67,7 +69,45 @@ export class HistoryService
                 .set('conncode', userConncode.toString())
                 .set('userid', userID.toString())
                 .set('id', id.toString())
-                .set('method', "maintservice_delete");
+                .set('method', "history_delete");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
+
+    getDashboard(userConncode: string, userID: number): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('method', "maintenance_dashboard");
+               
+            console.log('params', params);
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+            headers: headers,   
+            params: params
+        });
+    }
+
+    saveAttend(userConncode, userID, attend: any): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        
+        let params = new HttpParams()
+                .set('conncode', userConncode.toString())
+                .set('userid', userID.toString())
+                .set('id', attend.id.toString())
+                .set('action', attend.action.toString())
+                .set('cost', attend.cost.toString())
+                .set('performdate', attend.performdate.toString())
+                .set('method', "maintevent_attend");
                
             console.log('params', params);
 

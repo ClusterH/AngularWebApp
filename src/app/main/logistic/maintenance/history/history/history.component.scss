@@ -4,8 +4,35 @@ logistic-history {
 
     #history {
 
+        .dashboard_notification {
+            background-color: white !important;
+            border-radius: 12px !important;
+            box-shadow: 0 4px 2px -2px #607d8b;
+            margin: 12px !important;
+            // color: whitesmoke !important;
+            height: 90% !important;
+            width: 30% !important;
+            // box-sizing: border-box !important;
+            overflow: auto;
+
+            .color_header_history {
+                background-color: #ff5852ec;
+            }
+            .color_header_created {
+                background-color: #ffd655ec;
+            }
+            .color_header_postponed {
+                background-color: #3d77e9ec;
+            }
+            .icon_section {
+                border-right: 1px solid #607d8bd3;
+                margin: 12px !important; 
+                margin-left: 0 !important;
+            }
+        }
+
         .top-bg {
-            height: 120px !important;
+            height: 200px !important;
 
             @include media-breakpoint('lt-md') {
                 height: 126px !important;
@@ -53,7 +80,7 @@ logistic-history {
                     }
                 }
 
-                 @include media-breakpoint('lt-md') {
+                @include media-breakpoint('lt-md') {
                     padding: 8px 0;
                     height: auto !important;
                     min-height: 300px !important;
@@ -78,6 +105,14 @@ logistic-history {
             font-weight: bold;
             background-color: rgb(225, 245, 254) !important;
         }
+        // .mat-header-cell {
+        //     flex-direction: column;
+        //     justify-content: center;
+        // }
+        // .mat-cell {
+        //     text-align: center;
+        //     justify-content:center;
+        //   }
 
         .history {
             position: relative;
@@ -108,12 +143,6 @@ logistic-history {
             font-size: 11px !important;
         }
 
-        .mat-cell {
-            min-width: 0;
-            display: flex;
-            align-items: center;
-        }
-
         .quantity-indicator {
             display: inline-block;
             vertical-align: middle;
@@ -141,6 +170,7 @@ logistic-history {
         color: rgb(221, 221, 221) !important;
     }
     .mat-paginator-range-actions {
+        // width: 700px;
         margin-right: 3em !important;
     }
     .mat-mini-fab {
@@ -234,6 +264,7 @@ logistic-history {
         mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
             padding-bottom: 1.2em !important;
         }
+       
     }
 
     .spinner_container {
@@ -253,4 +284,5 @@ logistic-history {
         left:       0; 
         position:   fixed;
     }
+   
 }

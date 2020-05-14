@@ -1,24 +1,21 @@
 export interface EventDetail
 {
-    id?: number;
+    id?: string;
     name?: string;
-    email?: string;
-    password?: string;
-    eventprofileid?: number;
-    timezoneid?: number
-    lengthunitid?: number;
-    fuelunitid?: number;
-    weightunitid?: number;
-    tempunitid?: number;
-    isactive?: boolean;
-    companyid?: number;
-    groupid?: number;
-    subgroup?: number;
-    created?: Date;
-    createdby?: number;
-    deletedwhen?: Date;
-    deletedby?: number;
-    lastmodifieddate?: Date;
-    lastmodifiedby?: number;
-    languageid?: number;
+    description?: string;
+    odomultiple?: string;
+    odounitid?: string;
+    hourmultiple?: string;
+    hourofuseinterval?: string;
+    dayinterval?: string;
+    odointerval?: string;
+    company?: string;
+    group?: string;
+    isfullcompany?: string;
+    isfullgroup?: string;
+    maintservice?: string;
+    companyid?: string;
+    groupid?: string;
+    maintserviceid?: string;
+    isactive?: string;
 }

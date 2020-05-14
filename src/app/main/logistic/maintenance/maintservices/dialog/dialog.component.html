@@ -1,57 +1,232 @@
-<div id="dialog_table">
-<div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'MAINTSERVICES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MAINTSERVICES.DUPLICATE' | translate}}
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'MAINTSERVICE.MAINTSERVICECREATE' | translate }}</span>
+            <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'MAINTSERVICE.MAINTSERVICEEDIT' | translate }}</span>
+            <button mat-icon-button (click)="close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
             </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
-                    {{'MAINTSERVICES.NO' | translate}}
-            </button>
-        </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
 
-    </mat-dialog-actions>
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="maintserviceForm">
+
+            <div fxLayout="column">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'MAINTSERVICE.NAME' | translate }}</mat-label>
+                    <input matInput placeholder="Name"
+                        name="name"
+                        formControlName="name"
+                        required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" class="select_list" *ngIf="flag == 'new'">
+                    <mat-label>{{ 'MAINTSERVICE.COMPANY' | translate }}</mat-label>
+                    <mat-select  (click)="showCompanyList('company_clist')" (selectionChange)="onCompanyChange($event)" formControlName="company">
+                        <div class="filter_company_input" >
+                            <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                            <mat-icon (click)="clearFilter()">clear</mat-icon>
+                        </div>
+
+                        <div  style="width: 100%; overflow: auto;">
+                            <mat-table [dataSource]="dataSourceCompany" class="vehicles-table font-size-10 mat-elevation-z8">
+                                <ng-container matColumnDef="name">
+                                    <td mat-cell *matCellDef="let company;"  style="border: 0px;">
+                                        <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                    </td>
+                                </ng-container>
+                                <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                            </mat-table>
+                        </div>
+                        <mat-paginator style=" height: 40px;"
+                            #paginatorCompany
+                            class="table_paginator_detail"
+                            [length]="dataSourceCompany.totalLength"
+                            [pageSize]="10"
+                            [hidePageSize]="true"
+                            showFirstLastButtons
+                            (click)="comapnyPagenation(paginatorCompany)"
+                            sticky="true"
+                        ></mat-paginator>
+                    
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" *ngIf="flag == 'edit'" >
+                    <mat-label>{{ 'MAINTSERVICE.COMPANY' | translate }}</mat-label>
+                    <input matInput placeholder="Company"
+                           name="companyInput"
+                           formControlName="companyInput">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                    <mat-label>{{ 'MAINTSERVICE.GROUP' | translate }}</mat-label>
+                    <mat-select formControlName="group"  (click)="showCompanyList('group_clist')">
+                        <div class="filter_company_input" >
+                            <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                            <mat-icon (click)="clearFilter()">clear</mat-icon>
+                        </div>
+
+                        <div  style="width: 100%; overflow: auto;">
+                            <mat-table [dataSource]="dataSourceGroup"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                <ng-container matColumnDef="name">
+                                    <td mat-cell *matCellDef="let group"  style="border: 0px;">
+                                        <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
+                                    </td>
+                                </ng-container>
+                                <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                            </mat-table>
+                        </div>
+                    
+                        <mat-paginator style=" height: 40px;"
+                            #paginatorGroup
+                            class="table_paginator"
+                            [length]="dataSourceGroup.totalLength"
+                            [pageSize]="10"
+                            [hidePageSize]="true"
+                            showFirstLastButtons
+                            (click)="groupPagenation(paginatorGroup)"
+                        ></mat-paginator>
+                    </mat-select>
+                </mat-form-field>
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                    <div class="includedItem" fxFlex="48" class="">
+                        <div class="included-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                <div class="filter_company_input" fxFlex="80">
+                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onIncludedFilter($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <button mat-raised-button
+                                        class="save-maintservicegroup-button accent my-20"
+                                        (click)="deleteItems()"
+                                        [disabled]="maintserviceForm.invalid"
+                                        fxFlex="20"
+                                        style="margin: 10px; color: antiquewhite;">
+                                    <span>{{ 'MAINTSERVICE.DELETE' | translate }}</span>
+                                </button>
+                            </div>
+    
+                            <div class="ItemGroup_table" style="width: 100%; overflow: auto;">
+                                <mat-table [dataSource]="dataSourceIncluded" fusePerfectScrollbar>
+                                    <ng-container matColumnDef="id" >
+                                        <mat-cell *matCellDef="let includedmaintservice" style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1;">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? includedSelection.toggle(includedmaintservice.id) : null"
+                                                [checked]="includedSelection.isSelected(includedmaintservice.id)">
+                                            </mat-checkbox>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="name">
+                                        <mat-cell *matCellDef="let includedmaintservice" class="p-0 ml-12">
+                                            <p class="included text-truncate">{{includedmaintservice.name}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-row  *matRowDef="let included; columns: itemsColumns;" matRipple style="border-bottom-width: 0px;">
+                                    </mat-row>
+                                </mat-table>
+                            </div>
+
+                            <mat-paginator 
+                                #paginatorIncluded
+                                showFirstLastButtons
+                                class="table_paginator_detail"
+                                [length]="dataSourceIncluded.totalLength"
+                                [pageSize]="10"
+                                [hidePageSize]="true"
+                            ></mat-paginator>
+                        </div>
+                    </div>
+
+                    <div class="excludedItem" fxFlex="48" class="">
+                        <div class="excluded-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                <div class="filter_company_input" fxFlex="80">
+                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <button mat-raised-button
+                                        class="save-poigroup-button accent my-20"
+                                        (click)="addItems()"
+                                        [disabled]="maintserviceForm.invalid"
+                                        fxFlex="20"
+                                        style="margin: 10px; color: antiquewhite;">
+                                    <span>{{ 'MAINTSERVICE.ADD' | translate }}</span>
+                                </button>
+                            </div>
+    
+                            <div class="ItemGroup_table" style="width: 100%; overflow: auto;">
+                                <mat-table [dataSource]="dataSourceExcluded" fusePerfectScrollbar >
+                                    <ng-container matColumnDef="id">
+                                        <mat-cell *matCellDef="let excludedmaintservice" style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1">
+                                            <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? excludedSelection.toggle(excludedmaintservice.id) : null"
+                                                [checked]="excludedSelection.isSelected(excludedmaintservice.id)">
+                                            </mat-checkbox>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="name">
+                                        <mat-cell *matCellDef="let excludedmaintservice" class="p-0 ml-12">
+                                            <p class="excluded text-truncate">{{excludedmaintservice.name}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-row  *matRowDef="let excluded; columns: itemsColumns;" matRipple style="border-bottom-width: 0px;">
+                                    </mat-row>
+                                </mat-table>
+                            </div>
+
+                            <mat-paginator 
+                                #paginatorExcluded
+                                showFirstLastButtons
+                                class="table_paginator_detail"
+                                [length]="dataSourceExcluded.totalLength"
+                                [pageSize]="10"
+                                [hidePageSize]="true"
+                            ></mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-button
+                class="mr-8"
+                (click)="close()"
+                aria-label="Close"
+                matTooltip="Close">
+            {{ 'MAINTSERVICE.CLOSE' | translate }}
+        </button>
+
+        <button *ngIf="flag=='edit'"
+                mat-button
+                class="save-button accent"
+                (click)="save()"
+                [disabled]="maintserviceForm.invalid"
+                aria-label="SAVE">
+            {{ 'MAINTSERVICE.SAVE' | translate }}
+        </button>
+
+        <button *ngIf="flag=='new'"
+                mat-button
+                class="save-button accent"
+                (click)="add()"
+                [disabled]="maintserviceForm.invalid"
+                aria-label="ADD">
+            {{ 'MAINTSERVICE.ADD' | translate }}
+        </button>
+
+    </div>
+    
 </div>
-
-
-<div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'MAINTSERVICES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MAINTSERVICES.DELETE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
-                    {{'MAINTSERVICES.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
-</div>
-
-<div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'MAINTSERVICES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'MAINTSERVICES.YES' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()" fxFlex="30">
-                    {{'MAINTSERVICES.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
-</div>
-</div>
-

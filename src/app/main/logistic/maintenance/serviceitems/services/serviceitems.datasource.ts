@@ -36,6 +36,8 @@ export class ServiceitemsDataSource extends DataSource<any>
             console.log("result", result);
             console.log("page_size", pagesize);
            this.serviceitemsSubject.next(result.TrackingXLAPI.DATA);
+           this.serviceitemsService.serviceitemList = result.TrackingXLAPI.DATA;
+
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
@@ -68,7 +70,7 @@ export class ServiceitemsDataSource extends DataSource<any>
             console.log(result.TrackingXLAPI.DATA);
             this.serviceitemsService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            // console.log("unit_clist: ", this.eventDetailService.unit_clist_item);
+            console.log("unit_clist: ", this.serviceitemsService.unit_clist_item);
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;

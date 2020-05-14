@@ -148,11 +148,11 @@ $typography: mat-typography-config(
 
 //Logistic
 @import "src/app/main/logistic/maintenance/pendings/pendings/pendings.theme";
+@import "src/app/main/logistic/maintenance/history/history/history.theme";
 @import "src/app/main/logistic/maintenance/events/events/events.theme";
 @import "src/app/main/logistic/maintenance/events/event_detail/event_detail.theme";
 @import "src/app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.theme";
 @import "src/app/main/logistic/maintenance/maintservices/maintservices/maintservices.theme";
-@import "src/app/main/logistic/maintenance/maintservices/maintservice_detail/maintservice_detail.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -224,11 +224,11 @@ $typography: mat-typography-config(
 
     //Logistic
     @include logistic-pendings-theme($theme);
+    @include logistic-history-theme($theme);
     @include logistic-events-theme($theme);
     @include logistic-event-theme($theme);
     @include logistic-serviceitems-theme($theme);
     @include logistic-maintservices-theme($theme);
-    @include logistic-maintservice-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

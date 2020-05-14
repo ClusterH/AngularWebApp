@@ -36,9 +36,8 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { MaintservicesComponent} from 'app/main/logistic/maintenance/maintservices/maintservices/maintservices.component';
 import { MaintservicesService } from 'app/main/logistic/maintenance/maintservices/services/maintservices.service';
-import { MaintserviceDetailComponent} from 'app/main/logistic/maintenance/maintservices/maintservice_detail/maintservice_detail.component';
-import { MaintserviceDetailService } from 'app/main/logistic/maintenance/maintservices/services/maintservice_detail.service';
-import { CourseDialogComponent } from 'app/main/logistic/maintenance/maintservices/dialog/dialog.component';
+import { MaintserviceDialogComponent } from 'app/main/logistic/maintenance/maintservices/dialog/dialog.component';
+import { DeleteDialogComponent } from 'app/main/logistic/maintenance/maintservices/deletedialog/deletedialog.component';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -46,11 +45,6 @@ const routes = [
     {
         path     : 'maintservices',
         component: MaintservicesComponent,
-        // pathMatch: 'full'
-    },
-    {
-        path     : 'maintservice_detail',
-        component: MaintserviceDetailComponent,
         // pathMatch: 'full'
     },
 ];
@@ -95,11 +89,11 @@ const routes = [
     ],
     declarations: [
         MaintservicesComponent,
-        MaintserviceDetailComponent,
-        CourseDialogComponent,
+        MaintserviceDialogComponent,
+        DeleteDialogComponent,
     ],
     providers: [
-        MaintservicesService, MaintserviceDetailService
+        MaintservicesService
     ]
 })
 export class MaintservicesModule{ }

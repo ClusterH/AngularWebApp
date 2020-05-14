@@ -1,12 +1,15 @@
+@import "src/@fuse/scss/fuse";
 
    .table_paginator_detail {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        // background-color: rgb(255, 255, 255) !important;
         height: 40px !important;
         color: rgb(16, 20, 24) !important;
+        // box-shadow: 0px 0px 0px 1px rgb(42, 55, 59) !important;
     }
-
+    
     .mat-form-field-label {
             color: rgb(134, 132, 132) !important
     }
@@ -34,3 +37,151 @@
     body.theme-default .mat-input-element:disabled {
         color: black !important
     }
+
+    .unit_evlist {
+        flex: 1 1 auto;
+        // border: 1px solid rgba(0, 0, 0, .12);
+        // overflow: auto;
+        // overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        
+        .mat-header-row {
+            height: 40px;
+            min-height: 24px;
+            font-weight: bold;
+            // color: 
+            background-color: rgb(225, 245, 254) !important;
+        }
+
+        .unit {
+            position: relative;
+            cursor: pointer;
+            height: 32px;
+        }
+        mat-row, mat-footer-row {
+            min-height: 32px !important;
+        }
+        mat-row:hover {
+            background-color: #b2f5ef !important;
+        }
+        mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type {
+            padding-left: 0px !important;
+        }
+        mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type {
+            padding-right: 0px !important;
+        }
+
+        .mat-row:nth-child(even){
+            background-color: #e4f0ec;
+        }
+        .mat-row:nth-child(odd){
+            background-color:#ffffff;
+        }
+
+        .mat-cell, .mat-footer-cell {
+            font-size: 14px !important;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+        
+    }
+
+    .unit_list_pagination_container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 40px !important;
+        width: 100% !important;
+
+        .unit_table_paginator {
+            color: rgb(221, 221, 221) !important;
+            background-color: rgb(30, 33, 41) !important;
+            width: 100% !important;
+            height: 40px !important;
+
+            .mat-paginator-container {
+                justify-content: flex-end;
+                height: 40px !important;
+                min-height: 40px !important;
+            }
+        
+            .mat-paginator-navigation-previous {
+                order: 1;
+            }
+            .mat-paginator-navigation-next {
+                order: 3;
+            }
+            .mat-paginator-navigation-last {
+                order: 4;
+            }
+            .page_index {
+                order: 2;
+            }
+            .mat-paginator-range-label {
+                order: 0;
+                @include media-breakpoint('lt-md') {
+                    display: none !important;
+                }
+            }
+            .mat-form-field-infix {
+                width: 45px;
+                display: flex;
+                flex-direction: row;
+            }
+            .mat-input-element {
+                caret-color: rgba(47, 170, 241, 0.8);
+                color: rgb(47, 170, 241);
+            }
+            .index_input {
+                text-align: center;
+                margin-top: .35em !important;
+            }
+            .mat-select-value, .mat-select-arrow{
+                color: rgb(47, 170, 241) !important;
+                margin-right: 0px !important;
+                // text-align: center;
+                justify-content: center !important;
+            }
+        
+            .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+                background: none;
+            }
+
+            mat-form-field .mat-form-field-wrapper.ng-tns-c221-25{
+                padding-bottom: 1.2em !important;
+            }
+        }
+    }
+
+    .mat-checkbox .mat-checkbox-inner-container {
+        // transform: scale(1.5);
+        width: 25px !important;
+        height: 25px !important;
+        margin-bottom: 16px !important;
+    }
+   
+    // .mat-checkbox-checked .mat-checkbox-background {
+    //     transform: scale(1.5);
+    // }

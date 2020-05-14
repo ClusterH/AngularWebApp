@@ -14,9 +14,9 @@ import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.
 
 import { MaintservicesService } from 'app/main/logistic/maintenance/maintservices/services/maintservices.service';
 import { MaintservicesDataSource } from "app/main/logistic/maintenance/maintservices/services/maintservices.datasource";
-import { MaintserviceDetailService } from 'app/main/logistic/maintenance/maintservices/services/maintservice_detail.service';
 
-import {CourseDialogComponent} from "../dialog/dialog.component";
+import {MaintserviceDialogComponent} from "../dialog/dialog.component";
+import {DeleteDialogComponent} from "../deletedialog/deletedialog.component";
 
 import { locale as maintservicesEnglish } from 'app/main/logistic/maintenance/maintservices/i18n/en';
 import { locale as maintservicesSpanish } from 'app/main/logistic/maintenance/maintservices/i18n/sp';
@@ -55,7 +55,11 @@ export class MaintservicesComponent implements OnInit
     displayedColumns = [
         'id',
         'name',
+        'company',
+        'group'
     ];
+
+    dialogRef: any;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -70,7 +74,6 @@ export class MaintservicesComponent implements OnInit
     
     constructor(
         private _adminMaintservicesService: MaintservicesService,
-        private maintserviceDetailService: MaintserviceDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -157,62 +160,85 @@ export class MaintservicesComponent implements OnInit
     }
 
     addNewMaintservice() {
-        this.maintserviceDetailService.maintservice_detail = '';
-        localStorage.removeItem("maintservice_detail");
-        this.router.navigate(['logistic/maintservices/maintservice_detail']);
+
+        this.dialogRef = this._matDialog.open(MaintserviceDialogComponent, {
+            panelClass: 'maintservice-dialog',
+            disableClose: true,
+            data      : {
+                serviceDetail: null,
+                flag: 'new'
+            }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+            this.dataSource.maintservicesSubject.next(res);
+
+        });
     }
 
     editShowMaintserviceDetail(maintservice: any) {
-        this.maintserviceDetailService.maintservice_detail = maintservice;
+        console.log(maintservice);
 
-        localStorage.setItem("maintservice_detail", JSON.stringify(maintservice));
 
-        this.router.navigate(['logistic/maintservices/maintservice_detail']);
+        this.dialogRef = this._matDialog.open(MaintserviceDialogComponent, {
+            panelClass: 'maintservice-dialog',
+            disableClose: true,
+            data      : {
+                serviceDetail: maintservice,
+                flag: 'edit'
+            }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+            this.dataSource.maintservicesSubject.next(res);
+        });
     }
     
     deleteMaintservice(maintservice): void
     {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'delete';
+        console.log(maintservice);
 
-        dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            maintservice, flag: this.flag
-        };
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
+        this.dialogRef = this._matDialog.open(DeleteDialogComponent, {
+            panelClass: 'delete-dialog',
+            disableClose: true,
+            data      : {
+                serviceDetail: maintservice,
+                flag: 'delete'
             }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+            this.dataSource.maintservicesSubject.next(res);
+
         });
     }
 
-    duplicateMaintservice(maintservice): void
-    {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'duplicate';
+    // duplicateMaintservice(maintservice): void
+    // {
+    //     const dialogConfig = new MatDialogConfig();
+    //     this.flag = 'duplicate';
 
-        dialogConfig.disableClose = true;
+    //     dialogConfig.disableClose = true;
         
-        dialogConfig.data = {
-            maintservice, flag: this.flag
-        };
+    //     dialogConfig.data = {
+    //         maintservice, flag: this.flag
+    //     };
 
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+    //     const dialogRef = this._matDialog.open(MaintserviceDialogComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                console.log(result);
-            } else {
-                console.log("FAIL:", result);
-            }
-        });
-    }
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if ( result )
+    //         { 
+    //             console.log(result);
+    //         } else {
+    //             console.log("FAIL:", result);
+    //         }
+    //     });
+    // }
 }

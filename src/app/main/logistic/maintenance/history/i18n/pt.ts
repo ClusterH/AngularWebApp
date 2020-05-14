@@ -1,21 +1,36 @@
 export const locale = {
     lang: 'pt',
     data: {
-        HISTORY: {
-            "HISTORY": "Usuários",
-            "SEARCHFORMAINTSERVICE": "Procurar um usuário",
-            "NEWMAINTSERVICE": "Novo usuário",
-            "MAINTSERVICEDETAIL": "Detalhes do usuário",
+        PENDINGS: {
+            "PENDINGS": "Pending Maintenance",
+            "SEARCHFORPENDING": "Procurar um pendente",
+            "NEWPENDING": "New Pending",
+            "PENDINGDETAIL": "Detalhes pendentes",
             "SELECTFIELD": "Selecionar campo",
             "SAVE": "SALVAR",
             "ADD": "ADICIONAR",
             
-            "NAME": "Nome",
-            
-            "COMPANY": "Empresa",
-            "GROUP": "Grupo",
+            "ATTENED": "Attened",
+            "NOTIFYDATE": "Data de notificação",
+            "UNIT": "Unidade",
             "DESCRIPTION": "Description",
-
+            "MAINTEVENT": "Maint Event",
+            "PENDINGNOTIFICATION": "Notificações pendentes",
+            "PENDINGNOTIFICATIONDETAIL": "Total de notificações pendentes de atenção",
+            "CREATEDEVENTS": "Eventos criados",
+            "CREATEDEVENTSDETAIL": "Eventos criados para garantir a operação da sua frota",
+            "POSTPONEDNOTIFICATION": "Adiadas Notificações",
+            "POSTPONEDNOTIFICATIONDETAIL": "Notificações planejadas para serem tratadas em datas posteriores",
+            "SERVICEATTENTION": "Service Attention",
+            "ACTION": "Ação",
+            "COST": "Custo",
+            "DATE": "Data",
+            "HOUR": "Hour",
+            "DELAY": "Atraso",
+            "REGISTER": "Register",
+            
+            "CLOSE": "Close",
+           
             "GENERAL": "Geral",
             "AUDIT": "Auditoria",
            

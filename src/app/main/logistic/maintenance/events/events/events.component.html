@@ -32,17 +32,9 @@
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'EVENTS.NAME' | translate}}</mat-option>
-                            <mat-option value="email">{{'EVENTS.EMAIL' | translate}}</mat-option>
-                            <mat-option value="password">{{'EVENTS.PASSWORD' | translate}}</mat-option>
-                            <mat-option value="eventprofile">{{'EVENTS.EVENTPROFILE' | translate}}</mat-option>
-                            <mat-option value="timezone">{{'EVENTS.TIMEZONE' | translate}}</mat-option>
-                            <mat-option value="lengthunit">{{'EVENTS.LENGTHUNIT' | translate}}</mat-option>
-                            <mat-option value="fuelunit">{{'EVENTS.FUELUNIT' | translate}}</mat-option>
-                            <mat-option value="weightunit">{{'EVENTS.WEIGHTUNIT' | translate}}</mat-option>
-                            <mat-option value="tempunit">{{'EVENTS.TEMPUNIT' | translate}}</mat-option>
                             <mat-option value="company">{{'EVENTS.COMPANY' | translate}}</mat-option>
                             <mat-option value="group">{{'EVENTS.GROUP' | translate}}</mat-option>
-                            <mat-option value="subgroup">{{'EVENTS.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'EVENTS.DESCRIPTION' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -110,7 +102,7 @@
               
                 <!-- Company Column -->
                 <ng-container matColumnDef="company">
-                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'EVENTS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-md>{{ 'EVENTS.COMPANY' | translate }}</mat-header-cell>
                     <mat-cell *matCellDef="let event">
                         <p class="company text-truncate">
                             {{event.company}}
