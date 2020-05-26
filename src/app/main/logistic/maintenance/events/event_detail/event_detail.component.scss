@@ -175,13 +175,24 @@
         }
     }
 
-    .mat-checkbox .mat-checkbox-inner-container {
-        // transform: scale(1.5);
-        width: 25px !important;
-        height: 25px !important;
+    .checkodo {
         margin-bottom: 16px !important;
     }
+    .checkday {
+        margin-bottom: 16px !important;
+    }
+    .checkhour {
+        margin-bottom: 16px !important;
+    }
+
+    .ItemGroup_table {
+        height: 30vh !important;
+    }
+    
+    @media screen and (min-height: 890px){
+        .ItemGroup_table {
+            height: 45vh !important;
+        }
+    }
    
-    // .mat-checkbox-checked .mat-checkbox-background {
-    //     transform: scale(1.5);
-    // }
+    

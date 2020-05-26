@@ -388,7 +388,7 @@ export const navigation: FuseNavigation[] = [
                 title    : 'Tanks',
                 translate: 'NAV.TANKS',
                 type     : 'item',
-                url      : 'pages/fuel_management/tanks'
+                url      : 'fuelmanagement/tanks/tanks'
             },
             {
                 id       : 'fueling_registry',

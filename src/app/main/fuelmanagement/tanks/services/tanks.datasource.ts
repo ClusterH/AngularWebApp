@@ -1,11 +1,20 @@
 import {CollectionViewer, DataSource} from "@angular/cdk/collections";
+// import { MatPaginator, PageEvent } from '@angular/material/paginator';
+// import { MatSort } from '@angular/material/sort';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { catchError, finalize } from "rxjs/operators";
-import { EventsService } from 'app/main/logistic/maintenance/events/services/events.service'
+import {catchError, finalize} from "rxjs/operators";
 
-export class EventsDataSource extends DataSource<any>
+// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service'
+import { TanksComponent } from "app/main/fuelmanagement/tanks/tanks/tanks.component";
+
+// import { FuseUtils } from '@fuse/utils';
+
+
+export class TanksDataSource extends DataSource<any>
 {
-    public eventsSubject = new BehaviorSubject<any>([]);
+    private tanksSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -15,18 +24,18 @@ export class EventsDataSource extends DataSource<any>
     page_index: number;
 
     constructor(
-        private _adminEventsService: EventsService,
+        private tanksService: TanksService,
       
     ) {
         super();
     }
 
-    loadEvents(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+    loadTanks(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
+        console.log("loadTanks:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
-        this._adminEventsService.getEvents(conncode, userid, pageindex, pagesize, orderby,  orderdirection, filterItem, filterString, method)
+        this.tanksService.getTanks(conncode, userid, pageindex, pagesize, orderby,  orderdirection, filterItem, filterString, method)
         .pipe(
            catchError(() => of([])),
            finalize(() => this.loadingSubject.next(false))
@@ -35,9 +44,9 @@ export class EventsDataSource extends DataSource<any>
         .subscribe((result : any) => {
             console.log("result", result);
             console.log("page_size", pagesize);
-           this.eventsSubject.next(result.TrackingXLAPI.DATA);
-           this._adminEventsService.mainteventList = result.TrackingXLAPI.DATA;
-
+           this.tanksSubject.next(result.TrackingXLAPI.DATA);
+           this.tanksService.tanks = result.TrackingXLAPI.DATA;
+           
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
@@ -52,7 +61,7 @@ export class EventsDataSource extends DataSource<any>
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
         console.log("Connecting data source", collectionViewer);
-        return this.eventsSubject.asObservable();
+        return this.tanksSubject.asObservable();
     }
  
     /**
@@ -60,7 +69,7 @@ export class EventsDataSource extends DataSource<any>
      */
     disconnect(): void
     {
-        this.eventsSubject.complete();
+        this.tanksSubject.complete();
         this.loadingSubject.complete();
     }
 }

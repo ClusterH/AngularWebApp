@@ -12,6 +12,9 @@ export class EventDetailService
     public unit_clist_item: any = {};
     public current_eventID: string = '';
     public eventConditionList: any = [];
+    public new_eventID: string = '';
+
+    pageType: string = '';
 
     /**
      * Constructor
@@ -115,6 +118,85 @@ export class EventDetailService
             params: params_detail
         });
     }
+
+    getEventUnits(conncode: string, userid: number, pageindex: number, pagesize: number, eventid: string, groupid: string,  name: string, method: string): Observable<any>
+    {
+        console.log("SERVICE-getCompanies() :", method);
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        let paramIdentity = (this.pageType == 'edit' || this.new_eventID != '')? 'mainteventid' : 'companyid';
+        if(name == '') {
+            if (paramIdentity == 'companyid') {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('groupid', groupid.toString())
+                .set(`${paramIdentity}`, eventid.toString())
+                .set('method', method.toString());
+
+                console.log(params);
+
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set(`${paramIdentity}`, eventid.toString())
+                .set('method', method.toString());
+
+                console.log(params);
+
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
+
+        } else {
+            if (paramIdentity == 'companyid') {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('groupid', groupid.toString())
+                .set(`${paramIdentity}`, eventid.toString())
+                .set('name', `^${name}^`) 
+                .set('method', method.toString());
+
+                console.log(params);
+
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            } else {
+                let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set(`${paramIdentity}`, eventid.toString())
+                .set('name', `^${name}^`) 
+                .set('method', method.toString());
+
+                console.log(params);
+
+                return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                });
+            }
+        }
+    }
   
     saveEventDetail(eventDetail: any = {}): Observable<any> {
 
@@ -122,6 +204,38 @@ export class EventDetailService
        
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(eventDetail), {
             headers: header_detail,
+        });
+    }
+
+    addMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
+        console.log(maintserviceArray);
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const params_data = {
+            'conncode': conncode.toString(),
+            'userid': userid.toString(),
+            'data': maintserviceArray,
+            'method': 'MaintEvent_AddUnit'
+        }
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
+            headers: header_detail
+        });
+    }
+
+    deleteMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
+        console.log(maintserviceArray);
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const params_data = {
+            'conncode': conncode.toString(),
+            'userid': userid.toString(),
+            'data': maintserviceArray,
+            'method': 'MaintEvent_DeleteUnit'
+        }
+
+        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
+            headers: header_detail
         });
     }
 }

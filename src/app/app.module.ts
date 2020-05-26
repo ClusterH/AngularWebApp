@@ -57,6 +57,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./main/logistic/logistic.module').then(m => m.LogisticModule)
     },
     {
+        path        : 'fuelmanagement',
+        loadChildren: () => import('./main/fuelmanagement/fuelmanagement.module').then(m => m.FuelmanagementModule)
+    },
+    {
         path      : '**',
         redirectTo: 'login'
     }

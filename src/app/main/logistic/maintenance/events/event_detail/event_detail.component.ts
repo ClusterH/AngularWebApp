@@ -46,6 +46,8 @@ export class EventDetailComponent implements OnInit
 
   eventConditionList: string[];
 
+  neweventid: string = '';
+
   odomultiple: string = '';
   odounit: string = '';
   hourmultiple: string = '';
@@ -60,6 +62,8 @@ export class EventDetailComponent implements OnInit
   dataSourceGroup:   EventDetailDataSource;
   dataSourceUnit:   EventDetailDataSource;
   dataSourceMaintService:   EventDetailDataSource;
+  dataSourceIncluded: EventDetailDataSource;
+  dataSourceExcluded: EventDetailDataSource;
 
   filter_string: string = '';
   method_string: string = '';
@@ -67,6 +71,9 @@ export class EventDetailComponent implements OnInit
   loadUnitList_flag: boolean = false;
 
   unitSelection = new SelectionModel<Element>(false, []);
+
+  includedSelection = new SelectionModel<Element>(true, []);
+  excludedSelection = new SelectionModel<Element>(true, []);
 
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
@@ -76,6 +83,11 @@ export class EventDetailComponent implements OnInit
     paginatorUnit: MatPaginator;
   @ViewChild('paginatorMaintService', {read: MatPaginator})
     paginatorMaintService: MatPaginator;
+
+  @ViewChild('paginatorIncluded', {read: MatPaginator, static: true})
+    paginatorIncluded: MatPaginator;
+  @ViewChild('paginatorExcluded', {read: MatPaginator, static: true})
+    paginatorExcluded: MatPaginator;
  
   constructor(
     public eventDetailService: EventDetailService,
@@ -97,11 +109,13 @@ export class EventDetailComponent implements OnInit
     if ( this.event != this.event_detail )
     {
       this.pageType = 'edit';
+      this.eventDetailService.pageType = 'edit';
       this.eventDetailService.current_eventID = this.event.id;
     }
     else
     {
       this.pageType = 'new';
+      this.eventDetailService.pageType = 'new';
       this.eventDetailService.current_eventID = '0';
     }
 
@@ -113,6 +127,7 @@ export class EventDetailComponent implements OnInit
     this.eventForm = this._formBuilder.group({
       name: [null, Validators.required],
       company: [null],
+      companyInput: [{value: '', disabled: true}],
       group: [null],
       unit: [null],
       maintservice: [null],
@@ -133,29 +148,42 @@ export class EventDetailComponent implements OnInit
     this.dataSourceGroup = new EventDetailDataSource(this.eventDetailService);
     this.dataSourceUnit = new EventDetailDataSource(this.eventDetailService);
     this.dataSourceMaintService = new EventDetailDataSource(this.eventDetailService);
+
+    this.dataSourceIncluded = new EventDetailDataSource(this.eventDetailService);
+    this.dataSourceExcluded = new EventDetailDataSource(this.eventDetailService);
  
-    this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.event.company, "company_clist");
     if (this.pageType == 'edit') {
       this.dataSourceGroup  .loadGroupDetail(this.userConncode, this.userID, 0, 10, this.event.group, this.event.companyid, "group_clist");
+
+      if ((this.event.isfullcompany == 'false') && (this.event.isfullgroup == 'false')) {
+        this.loadUnitList_flag = false;
+
+        this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.eventDetailService.current_eventID, '', '', "GetMaintEventIncludedUnits");
+        this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.eventDetailService.current_eventID, '', '', "GetMaintEventExcludedUnits");
+      }
+
+    } else {
+      this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.event.company, "company_clist");
+
     }
 
     this.dataSourceMaintService.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.event.maintservice, "maintservice_clist");
 
-    if ((this.event.isfullcompany == 'false') && (this.event.isfullgroup == 'false')) {
-      this.loadUnitList_flag = false;
-      this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, this.event.companyid, this.event.groupid, this.eventDetailService.current_eventID);
-    }
+    // if ((this.event.isfullcompany == 'false') && (this.event.isfullgroup == 'false')) {
+    //   this.loadUnitList_flag = false;
+    //   this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, this.event.companyid, this.event.groupid, this.eventDetailService.current_eventID);
+    // }
 
-    this.unitSelection.isSelected = this.isCheckedRow.bind(this);
+    // this.unitSelection.isSelected = this.isCheckedRow.bind(this);
 
     this.setValues();
   }
 
-  isCheckedRow(row: any): boolean {
-    const found = this.unitSelection.selected.find(el => el.id === row.id);
-    if (found) { return true; }
-    return false;
-  }
+  // isCheckedRow(row: any): boolean {
+  //   const found = this.unitSelection.selected.find(el => el.id === row.id);
+  //   if (found) { return true; }
+  //   return false;
+  // }
 
   ngAfterViewInit() {
 
@@ -176,6 +204,26 @@ export class EventDetailComponent implements OnInit
     )
     .subscribe( (res: any) => {
     });
+
+    merge(this.paginatorIncluded.page)
+    .pipe(
+      tap(() => {
+        this.loadEventDetail("included")
+      })
+    )
+    .subscribe( (res: any) => {
+        console.log(res);
+    });
+
+    merge(this.paginatorExcluded.page)
+    .pipe(
+      tap(() => {
+        this.loadEventDetail("excluded");
+      })
+    )
+    .subscribe( (res: any) => {
+      console.log(res);
+    })
   }
 
   loadEventDetail(method_string: string) {
@@ -183,9 +231,14 @@ export class EventDetailComponent implements OnInit
       this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     
     } else if (method_string == 'group') {
-      let companyid = this.eventForm.get('company').value;
-      this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
-    
+      if (this.pageType == 'new') {
+        let companyid = this.eventForm.get('company').value;
+        this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
+
+      } else {
+          this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, this.event.companyid, `${method_string}_clist`)
+      }
+
     } else if (method_string == 'unit') {
       if (this.eventForm.get('wholeCompany').value == false) {
         this.loadUnitList_flag = false;
@@ -195,7 +248,31 @@ export class EventDetailComponent implements OnInit
     } else if (method_string == 'maintservice') {
       this.dataSourceMaintService.loadCompanyDetail(this.userConncode, this.userID, this.paginatorMaintService.pageIndex, this.paginatorMaintService.pageSize, this.filter_string, `${method_string}_clist`)
     
-    }
+    } else if (method_string == 'included' && this.eventForm.get('wholeCompany').value == false) {
+      this.loadUnitList_flag = false;
+
+        if (this.pageType == 'new') {
+          let companyid = this.eventForm.get('company').value;
+          let groupid = this.eventForm.get('group').value;
+          this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, companyid,groupid, this.filter_string, "GetMaintEventIncludedUnits")
+        } else {
+            this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.event.id, '', this.filter_string, "GetMaintEventIncludedUnits")
+        }
+        console.log(this.includedSelection.selected);
+  
+    } else if (method_string == 'excluded' && this.eventForm.get('wholeCompany').value == false) {
+      this.loadUnitList_flag = false;
+
+      if (this.pageType == 'new') {
+        let companyid = this.eventForm.get('company').value;
+        let groupid = this.eventForm.get('group').value;
+        this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, companyid, groupid, this.filter_string, "GetMaintEventExcludedUnits")
+      } else {
+          this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.event.id, '', this.filter_string, "GetMaintEventExcludedUnits")
+      }
+      
+      console.log(this.excludedSelection.selected.length);
+  }
   }
 
   managePageIndex(method_string: string) {
@@ -215,6 +292,14 @@ export class EventDetailComponent implements OnInit
       case 'maintservice':
         this.paginatorMaintService.pageIndex = 0;
       break;
+
+      case 'included':
+          this.paginatorIncluded.pageIndex = 0;
+      break;
+
+      case 'excluded':
+          this.paginatorExcluded.pageIndex = 0;
+      break;
     }
   }
 
@@ -222,28 +307,53 @@ export class EventDetailComponent implements OnInit
     let methodString = item;
     this.method_string = item.split('_')[0];
    
-    let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
+    if (this.pageType == 'new') {
+      if(this.method_string == 'group' && (this.eventForm.get('company').value == '' || this.eventForm.get('company').value == undefined) ) {
+          alert('Please choose company first');
+      } else {
+          let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
+      
+          console.log(methodString, this.eventDetailService.unit_clist_item[methodString], selected_element_id );
+       
+          let clist = this.eventDetailService.unit_clist_item[methodString];
+       
+          for (let i = 0; i< clist.length; i++) {
+              if ( clist[i].id == selected_element_id ) {
+                  this.eventForm.get('filterstring').setValue(clist[i].name);
+                  this.filter_string = clist[i].name;
+              }
+          }
+           
+          this.managePageIndex(this.method_string);
+          this.loadEventDetail(this.method_string);
+      } 
+    } else if (this.pageType == 'edit') {
+      
+      let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
 
-    let clist = this.eventDetailService.unit_clist_item[methodString];
-
-    for (let i = 0; i< clist.length; i++) {
-      if ( clist[i].id == selected_element_id ) {
-        this.eventForm.get('filterstring').setValue(clist[i].name);
-        this.filter_string = clist[i].name;
+      console.log(methodString, this.eventDetailService.unit_clist_item[methodString], selected_element_id );
+  
+      let clist = this.event.unit_clist_item[methodString];
+  
+      for (let i = 0; i< clist.length; i++) {
+          if ( clist[i].id == selected_element_id ) {
+              this.eventForm.get('filterstring').setValue(clist[i].name);
+              this.filter_string = clist[i].name;
+          }
       }
+      
+      this.managePageIndex(this.method_string);
+      this.loadEventDetail(this.method_string);
     }
-    
-    this.managePageIndex(this.method_string);
-    this.loadEventDetail(this.method_string);
   }
 
   onCompanyChange(event: any) {
     let current_companyID = this.eventForm.get('company').value;
 
     this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
-    if (this.loadUnitList_flag == false) {
-      this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, current_companyID, '0', this.eventDetailService.current_eventID);
-    }
+    // if (this.loadUnitList_flag == false) {
+    //   this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, current_companyID, '0', this.eventDetailService.current_eventID);
+    // }
   }
 
   onGroupChange(event: any) {
@@ -256,6 +366,10 @@ export class EventDetailComponent implements OnInit
     
     if (this.eventForm.get('wholeCompany').value == false) {
       this.loadUnitList_flag = false;
+      if (this.pageType == 'new') {
+        this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, current_companyID, current_groupID, '', "GetMaintEventIncludedUnits");
+        this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, current_companyID, current_groupID, '', "GetMaintEventExcludedUnits");
+      }
 
       this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, current_companyID, current_groupID, this.eventDetailService.current_eventID);
     }
@@ -266,13 +380,27 @@ export class EventDetailComponent implements OnInit
     let current_companyID = this.eventForm.get('company').value;
     let current_groupID = this.eventForm.get('group').value;
 
-
     if (event.checked == false) {
       this.loadUnitList_flag = false;
 
-      this.dataSourceUnit = new EventDetailDataSource(this.eventDetailService); 
-      this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, 0, 20, current_companyID, current_groupID, this.eventDetailService.current_eventID);
+      this.dataSourceIncluded = new EventDetailDataSource(this.eventDetailService); 
+      this.dataSourceExcluded = new EventDetailDataSource(this.eventDetailService);
 
+      if (this.pageType == 'edit') {
+        this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventIncludedUnits");
+        this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventExcludedUnits");
+      
+      } else {
+        if (this.neweventid != '') {
+          this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventIncludedUnits");
+          this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventExcludedUnits");
+        
+        } else if (this.neweventid == '') {
+          this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, current_companyID, current_groupID, '', "GetMaintEventIncludedUnits");
+          this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, current_companyID, current_groupID, '', "GetMaintEventExcludedUnits");
+
+        }
+      }
     } else {
        this.loadUnitList_flag = true;
 
@@ -338,6 +466,34 @@ export class EventDetailComponent implements OnInit
     this.loadEventDetail(this.method_string);
   }
 
+  onIncludedFilter(event: any) {
+    this.method_string = 'included';
+    this.filter_string = event.target.value;
+
+    console.log(this.filter_string, this.method_string)
+
+    if(this.filter_string.length >= 3 || this.filter_string == '') {
+     
+      this.managePageIndex(this.method_string);
+      this.loadEventDetail(this.method_string);
+    }
+
+    console.log(this.filter_string);
+  }
+
+  onExcludedFilter(event: any) {
+    this.method_string = 'excluded';
+    this.filter_string = event.target.value;
+
+    if(this.filter_string.length >= 3 || this.filter_string == '') {
+     
+      this.managePageIndex(this.method_string);
+      this.loadEventDetail(this.method_string);
+    }
+
+    console.log(this.filter_string);
+  }
+
   onKey(event: any) {
     this.filter_string = event.target.value;
 
@@ -351,7 +507,9 @@ export class EventDetailComponent implements OnInit
   setValues() {
       this.eventForm.get('name').setValue(this.event.name);
       this.eventForm.get('company').setValue(this.event.companyid);
+      this.eventForm.get('companyInput').setValue(this.event.company);
       this.eventForm.get('group').setValue(this.event.groupid);
+     
       this.eventForm.get('maintservice').setValue(this.event.maintserviceid);
       this.eventForm.get('odointervalinput').setValue(this.event.odointerval);
       this.eventForm.get('dayintervalinput').setValue(this.event.dayinterval);
@@ -366,12 +524,6 @@ export class EventDetailComponent implements OnInit
         if (this.event.dayinterval != '0') { this.eventForm.get('checkday').setValue(true); }
         if (this.event.hourofuseinterval != '0') { this.eventForm.get('checkhour').setValue(true); }
       }
-     
-
-      // let daymultiple = 'Every';
-      // let hoursofuse = 'Hour of use';
-      // this.eventForm.get('daymultiple').setValue(daymultiple);
-      // this.eventForm.get('hourofuseunit').setValue(hoursofuse);
 
       this.odomultiple = this.event.odomultiple;
       this.odounit = this.event.odounitid;
@@ -431,12 +583,8 @@ export class EventDetailComponent implements OnInit
     if( mode  == "save" ) {
       this.event_detail.id = this.event.id;
     } else if ( mode == "add" ) {
-      this.event_detail.id = '0';
+      this.event_detail.id = (this.neweventid == '')? '0' : this.neweventid;
     }
-  }
-
-  saveUnits() {
-
   }
  
   saveEvent(): void {
@@ -482,6 +630,187 @@ export class EventDetailComponent implements OnInit
     }
   }
 
+  addItems() {
+    if (this.excludedSelection.selected.length == 0) {
+        alert('Please choose Items first!');
+    } else {
+      if (this.pageType == 'new') {
+        if (this.neweventid != '') {
+          let addData = [];
+          for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
+            addData[i] = {
+                maintserviceid: Number(this.neweventid),
+                maintserviceitemid: Number(this.excludedSelection.selected[i])
+            }
+          }
+
+          this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
+          .subscribe((res: any) => {
+            if (res.TrackingXLAPI.DATA) {
+                console.log(res);
+                alert("MaintService added successfully!");
+                this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '','', "GetMaintEventIncludedUnits");
+                this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventExcludedUnits");
+            }
+          });
+        } else if (this,this.neweventid == '') {
+            this.getNewvalue();
+    
+            this.eventDetailService.saveEventDetail(this.event_detail)
+            .subscribe((result: any) => {
+              console.log(result);
+              if (result.responseCode == 100) {
+                  console.log(result.TrackingXLAPI.DATA[0].id);
+                  this.neweventid = result.TrackingXLAPI.DATA[0].id;
+                  this.eventDetailService.new_eventID = result.TrackingXLAPI.DATA[0].id;
+          
+                  let addData = [];
+                  for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
+                      addData[i] = {
+                        mainteventid: Number(result.TrackingXLAPI.DATA[0].id),
+                        unitid: Number(this.excludedSelection.selected[i])
+                      }
+                  }
+                  
+                  console.log(addData);
+                  this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
+                  .subscribe((res: any) => {
+                    if (res.TrackingXLAPI.DATA) {
+                        console.log(res);
+                        alert("MaintService added successfully!");
+                        this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '','', "GetMaintEventIncludedUnits");
+                        this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventExcludedUnits");
+                    }
+                  });
+                }
+            });
+          }
+      } else {
+          console.log(this.excludedSelection.selected, this.event.id);
+          let addData = [];
+          for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
+            addData[i] = {
+                mainteventid: Number(this.event.id),
+                unitid: Number(this.excludedSelection.selected[i])
+            }
+          }
+          
+          console.log(addData);
+          this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
+          .subscribe((res: any) => {
+            if (res.TrackingXLAPI.DATA) {
+                console.log(res);
+                alert("Items added successfully!");
+                this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventIncludedUnits");
+                this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventExcludedUnits");
+            }
+          });
+      }
+    }
+    
+  }
+
+  deleteItems() {
+    if (this.includedSelection.selected.length == 0) {
+        alert('Please choose items first!');
+    } else {
+        console.log(this.includedSelection.selected, this.event.id);
+        let deleteData = [];
+        for (let i = 0; i < this.includedSelection.selected.length; i ++ ){
+            if (this.pageType == 'new') {
+              deleteData[i] = {
+                  mainteventid: Number(this.neweventid),
+                  unitid: Number(this.includedSelection.selected[i])
+              }
+            } else if (this.pageType == 'edit') {
+                deleteData[i] = {
+                    mainteventid: Number(this.event.id),
+                    unitid: Number(this.includedSelection.selected[i])
+                }
+            }
+        }
+        
+        console.log(deleteData);
+        this.eventDetailService.deleteMaintServiceToGroup(this.userConncode, this.userID, deleteData)
+        .subscribe((res: any) => {
+          if (res.TrackingXLAPI.DATA) {
+              alert("Items deleted successfully!");
+              if (this.pageType == 'new') {
+                  this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventIncludedUnits");
+                  this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventExcludedUnits");
+              
+              } else {
+                  this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventIncludedUnits");
+                  this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventExcludedUnits");
+              }
+          }
+        });
+    }
+  }
+
+  getNewvalue() {
+    this.event_detail.id = (this.neweventid == '')? '0' : this.neweventid;
+    this.event_detail.name = this.eventForm.get('name').value || '';
+    this.event_detail.odomultiple = this.odomultiple || '';
+    this.event_detail.odounitid = this.odounit || '';
+    this.event_detail.odointerval = this.eventForm.get('odointervalinput').value? this.eventForm.get('odointervalinput').value.toString() : '';
+    this.event_detail.hourmultiple = this.hourmultiple || '';
+    this.event_detail.hourofuseinterval =  this.eventForm.get('hourofuseintervalinput').value? this.eventForm.get('hourofuseintervalinput').value.toString() : '';
+    this.event_detail.dayinterval =  this.eventForm.get('dayintervalinput').value? this.eventForm.get('dayintervalinput').value.toString() : '';
+    this.event_detail.companyid = this.eventForm.get('company').value? this.eventForm.get('company').value : '';
+    this.event_detail.groupid = this.eventForm.get('group').value ? this.eventForm.get('group').value : '';
+    this.event_detail.maintserviceid = this.eventForm.get('maintservice')? this.eventForm.get('maintservice').value : '';
+    this.event_detail.isactive = 'true';
+    this.event_detail.description = '';
+
+    if (this.loadUnitList_flag && this.eventForm.get('group').value && this.eventForm.get('group').value != 'none') {
+      this.event_detail.isfullgroup = 'true';
+      this.event_detail.isfullcompany = 'false';
+    
+    } else if (this.loadUnitList_flag && ( this.eventForm.get('group').value == 'none' || this.eventForm.get('group').value == undefined )) {
+      this.event_detail.isfullgroup = 'false';
+      this.event_detail.isfullcompany = 'true';
+    
+    } else if (!this.loadUnitList_flag) {
+      this.event_detail.isfullgroup = 'false';
+      this.event_detail.isfullcompany = 'false';
+    }
+
+    if (this.eventForm.get('group').value == 'none' || this.eventForm.get('group').value == undefined) {
+      this.event_detail.groupid = '';
+    }
+
+    this.event_detail.conncode = this.userConncode;
+    this.event_detail.userid = this.userID;
+    this.event_detail.method = 'maintevent_save';
+
+    let clist = this.eventDetailService.unit_clist_item['company_clist'];
+    
+    for (let i = 0; i< clist.length; i++) {
+        if ( clist[i].id == this.event_detail.companyid ) {
+            this.event_detail.company = clist[i].name;
+        }
+    }
+
+    let glist = this.eventDetailService.unit_clist_item['group_clist'];
+    
+    for (let i = 0; i< glist.length; i++) {
+        if ( glist[i].id == this.event_detail.groupid ) {
+            this.event_detail.group = glist[i].name;
+        }
+    }
+
+    // if (this.neweventid != '') {
+    //     this.eventDetailService.maintserviceList.pop();
+    // }
+    
+    // this.maintservicesService.maintserviceList = this.maintservicesService.maintserviceList.concat(this.serviceDetail);
+    // console.log("Concat");
+
+    // this.flagForSaving.next(true);
+  }
+
+
   goBackUnit() {
     const dialogConfig = new MatDialogConfig();
     let flag = 'goback';
@@ -505,8 +834,5 @@ export class EventDetailComponent implements OnInit
     });
   }
 
-  paginatorClick(paginator) {
-   
-    this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, this.event.companyid, this.event.groupid, this.eventDetailService.current_eventID);
-  }
+  
 }

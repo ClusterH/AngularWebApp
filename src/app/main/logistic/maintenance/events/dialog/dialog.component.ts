@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { EventsService } from 'app/main/logistic/maintenance/events/services/events.service';
+import { EventsDataSource } from "app/main/logistic/maintenance/events/services/events.datasource";
 
 import { locale as eventsEnglish } from 'app/main/logistic/maintenance/events/i18n/en';
 import { locale as eventsSpanish } from 'app/main/logistic/maintenance/events/i18n/sp';
@@ -19,57 +20,60 @@ export class CourseDialogComponent implements OnInit {
    event: any;
    flag: any;
 
+   userConncode: string;
+   userID: number;
+
+   dataSource: EventsDataSource;
+
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private eventsService: EventsService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {event, flag} 
+        @Inject(MAT_DIALOG_DATA) private _data: any, 
     ) {
+        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
 
-        this.event = event;
-        this.flag = flag;
+        this.event = _data.eventDetail;
+        this.flag = _data.flag;
     }
 
     ngOnInit() {
     }
 
-    save() {
-        if(this.flag == "duplicate") {
-        
-            this.event.id = 0;
-            this.event.name = '';
-            this.event.email = '';
-            this.event.password = '';
-            this.event.created = '';
-            this.event.createdbyname = '';
-            this.event.deletedwhen = '';
-            this.event.deletedbyname = '';
-            this.event.lastmodifieddate = '';
-            this.event.lastmodifiedbyname = '';
+    deleteList(): boolean {
+        let deletedMaintevent = this.eventsService.mainteventList.findIndex((index: any) => index.id == this.event.id);
+      
+        if (deletedMaintevent > -1) {
+            this.eventsService.mainteventList.splice(deletedMaintevent, 1);
+
+            return true;
+        }
+    }
     
-            localStorage.setItem("event_detail", JSON.stringify(this.event));
-    
-            console.log("localstorage:", JSON.parse(localStorage.getItem("event_detail")));
-    
-            this.router.navigate(['logistic/events/event_detail']);
-        } else if( this.flag == "delete") {
+    delete() {
+        let result = this.deleteList();
+
+        if (result) {
             this.eventsService.deleteEvent(this.event.id)
             .subscribe((result: any) => {
+                console.log(result);
+                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    // this.reloadComponent();
+                    this.dataSource = new EventsDataSource(this.eventsService);
+                    this.dataSource.eventsSubject.next(this.eventsService.mainteventList);
                 }
-              });
+            });
+            // this.flagForDeleting.next(false);
+            this.dialogRef.close(this.eventsService.mainteventList);
         }
-
-
-        this.dialogRef.close();
     }
-
     close() {
-        localStorage.removeItem("event_detail");
-        this.dialogRef.close();
+        // localStorage.removeItem("event_detail");
+        this.dialogRef.close(this.eventsService.mainteventList);
     }
 
     goback() {

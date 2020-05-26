@@ -1,0 +1,232 @@
+@import "src/@fuse/scss/fuse";
+
+fuelmanagement-tanks {
+
+    #tanks {
+
+        .top-bg {
+            height: 80px !important;
+
+            @include media-breakpoint('lt-md') {
+                height: 80px !important;
+            }
+        }
+
+        > .center_table {
+            width: auto !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            > .header {
+
+                height: 80x !important;
+                min-height: 80px !important;
+                max-height: 80px !important;
+                padding-left: 30px !important;
+                padding-right: 30px !important;
+
+                .search-wrapper {
+                    width: 100%;
+                    max-width: 320px;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    @include mat-elevation(1);
+
+                    @include media-breakpoint('xs') {
+                        width: 100%;
+                    }
+
+                    .search {
+                        width: 100%;
+                        height: 30px;
+                        line-height: 30px;
+                        padding: 0 18px;
+
+                        input {
+                            width: 100%;
+                            height: 48px;
+                            min-height: 48px;
+                            max-height: 48px;
+                            padding: 0 16px;
+                            border: none;
+                            outline: none;
+                        }
+                    }
+                }
+
+                @include media-breakpoint('lt-md') {
+                    padding: 8px 0;
+                    height: auto !important;
+                    min-height: 300px !important;
+                    max-height: 300px !important;
+                }
+            }
+        }
+
+        .content {
+
+            .category-selector {
+                min-width: 320px;
+            }
+    
+            .filters {
+                width: 100%;
+                max-width: 1040px;
+                margin: 24px auto;
+                padding: 0 20px;
+    
+                @include media-breakpoint('xs') {
+                    margin: 0 auto;
+                }
+    
+                .course-search {
+                    width: 320px;
+    
+                    @include media-breakpoint('gt-xs') {
+                        margin-right: 16px;
+                    }
+                }
+            }
+    
+            .courses {
+                width: 100%;
+                max-width: 1040px;
+                margin: 0 auto;
+    
+                .no-courses {
+                    font-size: 24px;
+                    margin: 24px 0;
+                    text-align: center;
+                }
+    
+                .course {
+                    padding: 16px;
+    
+                    &:hover {
+    
+                        .course-content {
+                            border: none;
+                            @include mat-elevation(12);
+                        }
+                    }
+    
+                    .course-content {
+                        min-height: 240px;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        transition: box-shadow 200ms ease-in-out;
+                        @include mat-elevation(3);
+    
+
+                        // .tank_card_header {
+                        //     // background: mat-color($mat-, 500);
+                        //     // color: white !important;
+                        // }
+
+                        .header {
+                            padding: 16px 24px;
+                            height: 40px !important;
+                            min-height: 40px !important;
+                            max-height: 40px !important;
+                            
+                            .category {
+                                text-transform: capitalize;
+                                text-align: left;
+                                font-weight: 800;
+                            }
+    
+                            .length {
+    
+                                .length-icon {
+                                    margin-right: 8px;
+                                }
+    
+                                .min {
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+    
+                        .content {
+                            padding: 24px;
+                            padding-top: 4px !important;
+                            background-color: white !important;
+                            position: relative;
+    
+                            .last_report {
+                                border-bottom: 1px solid #00000054;
+                                padding: 4px !important;
+                                // margin-top: 8px !important;
+                            }
+                            .background_fuel_orange {
+                                transform: rotate(-0.5deg);
+                                .background_white {
+                                    background-color: white;
+                                }
+                                .background_orange {
+                                    background-color: rgb(241, 196, 21);
+                                }
+                            }
+                            .tank_img {
+                                position: absolute;
+                                top: -5px;
+                                z-index: 1000;
+                            }
+                            .percentage_tank {
+                                position: absolute;
+                                top: 15%;
+                                left: 45%;
+                                transform: transition(-50%, -50%);
+                            }
+                        }
+    
+                        .footer {
+                            padding: 16px;
+                            height: 48px !important;
+                            min-height: 48px !important;
+                            max-height: 48px !important;
+                            box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.12);
+                        }
+                    }
+                }
+            }
+
+            .step-navigation {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                bottom: 32px;
+                padding: 0 24px;
+                width: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+    
+                .previous {
+                    margin-right: auto;
+                }
+    
+                .next,
+                .done {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    .spinner_container {
+        position: absolute;
+        top: 50%;
+        left: 60%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+    .spinner_overlay {
+        height:100vh;
+        width:100%;
+        z-index:    10;
+        top:        0; 
+        left:       0; 
+        position:   fixed;
+    }
+}

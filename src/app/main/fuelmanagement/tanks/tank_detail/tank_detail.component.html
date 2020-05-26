@@ -1,0 +1,198 @@
+<div id="tank_detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center"  style="overflow: auto;" >
+
+        <!-- HEADER -->
+        <div class="header accent px-32" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" >
+                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/tanks/tanks'"> -->
+                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{tank.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'TANKS.NEWTANK' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'TANKS.TANKDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button
+                    class="save-tank-button"
+                    *ngIf="pageType ==='new'" (click)="addTank()">
+                <span>{{ 'TANKS.ADD' | translate }}</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-tank-button"
+                    *ngIf="pageType ==='edit'" (click)="saveTank()">
+                <span>{{ 'TANKS.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content p-0 pt-32">
+            <div class="detail_info px-48" fxLayout="row" fxLayoutAlign="start">
+                <div class="w-336 h-160 fuel_tank_img">
+                    <div class="background_fuel_orange w-100-p" fxLayout="column">
+                        <div class="background_white w-100-p" [style.height.%]="100 - tank.volume * 100/tank.capacity"></div>
+                        <div class="background_orange w-100-p" [style.height.%]="tank.volume * 100/tank.capacity"></div>
+                    </div>
+                    <img src="assets/icons/fuelManagement/fuel_tank3.png" class="h-100-p tank_img">
+
+                    <div class="percentage_tank h2"><strong>{{tank.volume * 100/tank.capacity}}%</strong></div>
+                </div>
+               
+                <div class="w-280 h-160 fuel_report_detail mx-24" fxLayout="column">
+                    <div class="report_graph_icon_content w-100-p h-80 mb-12" fxLayout="row" fxLayoutAlign="start">
+                        <div fxLayout="column"  fxLayoutAlign="start" style="width: 50%; height: 100%">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon class="report_graph_icon s-24">description</mat-icon>
+                                <mat-icon class="report_graph_icon s-28">bar_chart</mat-icon>
+                            </div>
+                            <span style="color: rgb(241, 196, 21); font-size: 32px; font-weight: bold">{{tank.volume | number: '.2'}}</span>
+                            <span>{{tank.volumeunit}}</span>
+                        </div>
+
+                        <div class="row" style="width: 50%">
+                            <img src="assets/icons/fuelManagement/20-per-f.png"  *ngIf="tank.volume * 100/tank.capacity != 0" class="tank_img">
+                            <img src="assets/icons/fuelManagement/20-per.png"  *ngIf="tank.volume * 100/tank.capacity == 0" class="tank_img">
+                            <img src="assets/icons/fuelManagement/40-per-f.png"  *ngIf="tank.volume * 100/tank.capacity >= 20" class="tank_img">
+                            <img src="assets/icons/fuelManagement/40-per.png"  *ngIf="tank.volume * 100/tank.capacity < 20" class="tank_img">
+                            <img src="assets/icons/fuelManagement/60-per-f.png"  *ngIf="tank.volume * 100/tank.capacity >= 40" class="tank_img">
+                            <img src="assets/icons/fuelManagement/60-per.png"  *ngIf="tank.volume * 100/tank.capacity < 40" class="tank_img">
+                            <img src="assets/icons/fuelManagement/80-per-f.png"  *ngIf="tank.volume * 100/tank.capacity >= 60" class="tank_img">
+                            <img src="assets/icons/fuelManagement/80-per.png"  *ngIf="tank.volume * 100/tank.capacity < 60" class="tank_img">
+                            
+                            <img src="assets/icons/fuelManagement/100-per-f.png" *ngIf="tank.volume * 100/tank.capacity == 100" class="tank_img">
+                            <img src="assets/icons/fuelManagement/100-per.png" *ngIf="tank.volume * 100/tank.capacity !== 100" class="tank_img">
+                        </div>
+                    </div>
+
+                    <div class="h-68 mt-12" fxLayout="column">
+                        <div class="tank_company">
+                            <span class="h3 text-bold">Company:&nbsp;&nbsp;{{tank.company}}</span>
+                        </div>
+
+                        <div class="tank_group">
+                            <span class="h3 text-bold">Group:&nbsp;&nbsp;{{tank.group}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-30-p ml-32">
+                    <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
+                        <div class="w-30-p"><span class="h3"><strong>Capacity: </strong></span></div>
+                        <div class="w-60-p"><span class="h3">{{tank.capacity}}&nbsp;&nbsp;{{tank.volumeunit}}</span></div>
+                    </div>
+
+                    <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
+                        <div class="w-30-p"><span class="h3"><strong>Last Report: </strong></span></div>
+                        <div class="w-60-p"><span class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss a'}}</span></div>
+                    </div>
+
+                    <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
+                        <div class="w-30-p"><span class="h3"><strong>{{tank.volumeunit}}: </strong></span></div>
+                        <div class="w-60-p"><span class="h3">{{tank.volume}}&nbsp;&nbsp;{{tank.volumeunit}}</span></div>
+                    </div>
+
+                    <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
+                        <div class="w-30-p"><span class="h3"><strong>Level: </strong></span></div>
+                        <div class="w-60-p"><span class="h3">{{tank.level}}&nbsp;&nbsp;{{tank.levelunit}}</span></div>
+                    </div>
+
+                    <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
+                        <div class="w-30-p"><span class="h3"><strong>Temp: </strong></span></div>
+                        <div class="w-60-p" *ngIf="tank.tempunit == 'Celsius'"><span class="h3">{{tank.temp}}&nbsp;&nbsp;&#8451;</span></div>
+                        <div class="w-60-p" *ngIf="tank.tempunit == 'Fahrenheit'"><span class="h3">{{tank.temp}}&nbsp;&nbsp;&#8457;</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history_chart mt-24 blue-600">
+                <div class="position-relative p-24 blue-600"
+                    fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="column" fxLayoutAlign="start start">
+                        <span class="h2">Fuel Tank History</span>
+                        <span class="h5 secondary-text">Tank History by Day</span>
+                    </div>
+
+                    <div class="data_range" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="py-8 px-12 border-radius-2  mr-8 cursor-pointer"
+                            (click)="getTankHistory('today')"
+                            [ngClass]="{'blue-700': dateOption === 'today'}">
+                            Today
+                        </div>
+
+                        <div class="py-8 px-12 border-radius-2  mr-8 cursor-pointer"
+                            (click)="getTankHistory('yesterday')"
+                            [ngClass]="{'blue-700': dateOption === 'yesterday'}">
+                            Yesterday
+                        </div>
+
+                        <div class="py-8 px-12 border-radius-2  mr-8 cursor-pointer"
+                            (click)="getTankHistory('this_week')"
+                            [ngClass]="{'blue-700': dateOption === 'this_week'}">
+                            This Week
+                        </div>
+
+                        <div class="py-8 px-12 border-radius-2  mr-8 cursor-pointer"
+                            (click)="getTankHistory('last_week')"
+                            [ngClass]="{'blue-700': dateOption === 'last_week'}">
+                            Last Week
+                        </div>
+
+                        <div class="">
+                            <form [formGroup]="tankForm">
+                                <mat-form-field>
+                                    <input matInput
+                                            class="pl-12"
+                                            (dateChange)="rangeChange($event)"
+                                            [satDatepicker]="picker2"
+                                            formControlName="date">
+                                    <sat-datepicker #picker2 [rangeMode]="true">
+                                    </sat-datepicker>
+                                    <sat-datepicker-toggle matSuffix [for]="picker2" style="color: whitesmoke"></sat-datepicker-toggle>
+                                </mat-form-field>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div  style="overflow-x: auto; width: 100%;" *ngIf="noData">
+                    <div class="position-relative h-256 pb-16 blue-600" style="width: 120%;">
+                        <canvas baseChart
+                                [datasets]="widget1.datasets[dateOption]"
+                                [labels]="widget1.labels"
+                                [colors]="widget1.colors"
+                                [options]="widget1.options"
+                                [chartType]="widget1.chartType">
+                        </canvas>
+                    </div>
+                </div>
+                <div *ngIf="!noData" class="h1" style="color: beige;">No Data</div> -->
+                <div id="chartdiv" style="width: 100%; height: 500px"></div>
+            </div>
+        </div>
+    </div>
+    <!-- / CENTER -->
+</div>
+

@@ -120,6 +120,32 @@ export class EventDetailDataSource extends DataSource<any>
           }
         );
     }
+
+    loadMaintEventUnits(conncode: string, userid: number, pageindex: number, pagesize: number, eventid: string, groupid: string,  name: string, method: string) {
+        if (!name) {
+            name = '';
+        }
+        this.loadingSubject.next(true);
+       
+        // use pipe operator to chain functions with Observable type
+        this.eventDetailService.getEventUnits(conncode, userid, pageindex, pagesize, eventid, groupid,  name, method)
+        .pipe(
+           catchError(() => of([])),
+           finalize(() => this.loadingSubject.next(false))
+        )
+        // subscribe method to receive Observable type data when it is ready
+        .subscribe((result : any) => {
+           
+            console.log(method, result);
+
+            this.eventsSubject.next(result.TrackingXLAPI.DATA);
+            this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
+            // this.totalLength = result.TrackingXLAPI.DATA1?  result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0 : 0;
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+          }
+        );
+     }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {

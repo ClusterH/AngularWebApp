@@ -60,6 +60,8 @@ export class EventsComponent implements OnInit
         'group',
     ];
 
+    dialogRef: any;
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     @ViewChild(MatPaginator, {static: true})
@@ -175,47 +177,45 @@ export class EventsComponent implements OnInit
     
     deleteEvent(event): void
     {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'delete';
+        console.log(event);
 
-        dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            event, flag: this.flag
-        };
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                
-            } else {
-                
+        this.dialogRef = this._matDialog.open(CourseDialogComponent, {
+            panelClass: 'delete-dialog',
+            disableClose: true,
+            data      : {
+                eventDetail: event,
+                flag: 'delete'
             }
+        });
+
+        this.dialogRef.afterClosed()
+        .subscribe(res => {
+            console.log(res);
+            this.dataSource.eventsSubject.next(res);
+
         });
     }
 
-    duplicateEvent(event): void
-    {
-        const dialogConfig = new MatDialogConfig();
-        this.flag = 'duplicate';
+    // duplicateEvent(event): void
+    // {
+    //     const dialogConfig = new MatDialogConfig();
+    //     this.flag = 'duplicate';
 
-        dialogConfig.disableClose = true;
+    //     dialogConfig.disableClose = true;
         
-        dialogConfig.data = {
-            event, flag: this.flag
-        };
+    //     dialogConfig.data = {
+    //         event, flag: this.flag
+    //     };
 
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+    //     const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if ( result )
+    //         { 
                 
-            } else {
+    //         } else {
                 
-            }
-        });
-    }
+    //         }
+    //     });
+    // }
 }

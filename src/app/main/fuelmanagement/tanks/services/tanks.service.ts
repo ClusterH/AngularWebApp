@@ -3,10 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class EventsService
+export class TanksService
 {
-    events: any[];
-    public mainteventList: any = [];
+    tanks: any[];
 
     /**
      * Constructor
@@ -17,7 +16,7 @@ export class EventsService
         private _httpClient: HttpClient,
     ) { }
     
-    getEvents(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
+    getTanks(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
     {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
@@ -57,7 +56,7 @@ export class EventsService
         }
     }
     
-    deleteEvent(id: number): Observable<any>
+    deleteTank(id: number): Observable<any>
     {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -68,7 +67,7 @@ export class EventsService
                 .set('conncode', userConncode.toString())
                 .set('userid', userID.toString())
                 .set('id', id.toString())
-                .set('method', "maintevent_delete");
+                .set('method', "tank_delete");
                
             console.log('params', params);
 

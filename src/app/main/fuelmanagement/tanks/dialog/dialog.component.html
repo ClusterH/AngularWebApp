@@ -1,16 +1,16 @@
 <div id="dialog_table">
 <div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'EVENTS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'TANKS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'EVENTS.DUPLICATE' | translate}}
+                {{'TANKS.DUPLICATE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'EVENTS.NO' | translate}}
+                    {{'TANKS.NO' | translate}}
             </button>
         </div>
 
@@ -19,17 +19,17 @@
 
 
 <div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'EVENTS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'TANKS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="delete()">
-                {{'EVENTS.DELETE' | translate}}
+            <button class="mat-raised-button accent-500"  (click)="save()">
+                {{'TANKS.DELETE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'EVENTS.NO' | translate}}
+                    {{'TANKS.NO' | translate}}
             </button>
         </div>
 
@@ -37,17 +37,17 @@
 </div>
 
 <div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'EVENTS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'TANKS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'EVENTS.YES' | translate}}
+                {{'TANKS.YES' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()" fxFlex="30">
-                    {{'EVENTS.NO' | translate}}
+                    {{'TANKS.NO' | translate}}
             </button>
         </div>
 

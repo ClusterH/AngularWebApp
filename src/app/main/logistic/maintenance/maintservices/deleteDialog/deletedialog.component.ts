@@ -77,6 +77,6 @@ export class DeleteDialogComponent {
 
     close() {
         // localStorage.removeItem("maintservice_detail");
-        this.dialogRef.close();
+        this.dialogRef.close(this.maintservicesService.maintserviceList);
     }
 }

@@ -154,6 +154,10 @@ $typography: mat-typography-config(
 @import "src/app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.theme";
 @import "src/app/main/logistic/maintenance/maintservices/maintservices/maintservices.theme";
 
+//Fuel Management
+@import "src/app/main/fuelmanagement/tanks/tanks/tanks.theme";
+@import "src/app/main/fuelmanagement/tanks/tank_detail/tank_detail.theme";
+
 // Define a mixin for easier access
 @mixin components-theme($theme) {
 
@@ -229,6 +233,10 @@ $typography: mat-typography-config(
     @include logistic-event-theme($theme);
     @include logistic-serviceitems-theme($theme);
     @include logistic-maintservices-theme($theme);
+
+    //Fuel Management
+    @include fuelmanagement-tanks-theme($theme);
+    @include fuelmanagement-tank-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------
