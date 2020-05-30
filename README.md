@@ -1,4 +1,4 @@
-# Fuse - Angular
+# Angular Web Application
 
 Material Design Admin Template with Angular 8 and Angular Material
 
