@@ -38,7 +38,7 @@ import { FuseConfirmDialogModule } from '@fuse/components';
 
 import { TanksComponent} from 'app/main/fuelmanagement/tanks/tanks/tanks.component';
 import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service';
-import { TankDetailComponent} from 'app/main/fuelmanagement/tanks/tank_detail/tank_detail.component';
+import { TankDetailComponent } from 'app/main/fuelmanagement/tanks/tank_detail/tank_detail.component';
 import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
 import { CourseDialogComponent } from 'app/main/fuelmanagement/tanks/dialog/dialog.component';
 

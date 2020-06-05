@@ -97,6 +97,44 @@ export class VehicleDetailService
         
     }
 
+    getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
+        console.log(pageindex, pagesize,  companyid);
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        if (name == '') {
+            const params_detail = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('companyid', companyid.toString())
+            .set('method', 'group_CList');
+        
+            console.log(params_detail);
+
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: header_detail,
+                params: params_detail
+            });
+        } else {
+            const params_detail = new HttpParams()
+            .set('conncode', conncode.toString())
+            .set('userid', userid.toString())
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString())
+            .set('name', `^${name}^`) 
+            .set('companyid', companyid.toString())
+            .set('method', 'group_CList');
+        
+            console.log(params_detail);
+
+            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: header_detail,
+                params: params_detail
+            });
+        }
+        
+    }
+
     saveVehicleDetail(conncode: string, userid: number, vehicleDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 

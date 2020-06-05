@@ -153,6 +153,8 @@ $typography: mat-typography-config(
 @import "src/app/main/logistic/maintenance/events/event_detail/event_detail.theme";
 @import "src/app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.theme";
 @import "src/app/main/logistic/maintenance/maintservices/maintservices/maintservices.theme";
+@import "src/app/main/logistic/jobmanagement/scrumboard/scrumboard.theme";
+@import "src/app/main/logistic/jobmanagement/todo/todo.theme";
 
 //Fuel Management
 @import "src/app/main/fuelmanagement/tanks/tanks/tanks.theme";
@@ -233,6 +235,8 @@ $typography: mat-typography-config(
     @include logistic-event-theme($theme);
     @include logistic-serviceitems-theme($theme);
     @include logistic-maintservices-theme($theme);
+    @include scrumboard-theme($theme);
+    @include todo-theme($theme);
 
     //Fuel Management
     @include fuelmanagement-tanks-theme($theme);

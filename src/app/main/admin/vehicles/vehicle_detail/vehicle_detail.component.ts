@@ -63,7 +63,7 @@ export class VehicleDetailComponent implements OnInit
   
   @ViewChild(MatPaginator, {static: true})
     paginatorCompany: MatPaginator;
-  @ViewChild('paginatorGroup', {read: MatPaginator, static: true})
+  @ViewChild('paginatorGroup', {read: MatPaginator})
     paginatorGroup: MatPaginator;
   @ViewChild('paginatorAccount', {read: MatPaginator, static: true})
     paginatorAccount: MatPaginator;
@@ -140,13 +140,19 @@ export class VehicleDetailComponent implements OnInit
     this.dataSourceTimeZone       = new VehicleDetailDataSource(this.vehicleDetailService);
 
     this.dataSourceCompany      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.company, "company_clist");
-    this.dataSourceGroup        .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, "group_clist");
+    if (this.vehicle != '') {
+      this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, this.vehicle.companyid, "group_clist");
+    } else  {
+      this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, 0, "group_clist");
+    }
+
     this.dataSourceAccount      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.account, "account_clist");
     this.dataSourceOperator     .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.operator, "operator_clist");
     this.dataSourceUnitType     .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.unittype, "unittype_clist");
     this.dataSourceServicePlan  .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.serviceplan, "serviceplan_clist");
     this.dataSourceProductType  .loadVehicleDetail(this.userConncode, this.userID, 0, 10, '', "producttype_clist");
     this.dataSourceMake         .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.make, "make_clist");
+
     if(this.vehicleModel_flag) {
       this.dataSourceModel      .loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.model, "model_clist");
     }
@@ -289,7 +295,14 @@ export class VehicleDetailComponent implements OnInit
     if (method_string == 'company') {
       this.dataSourceCompany.loadVehicleDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'group') {
-        this.dataSourceGroup.loadVehicleDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
+        let companyid = this.vehicleForm.get('company').value;
+        console.log(companyid);
+        if (companyid == undefined) {
+          this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, 0, `${method_string}_clist`)
+        } else {
+          this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
+
+        }
     } else if (method_string == 'active') {
         this.dataSourceAccount.loadVehicleDetail(this.userConncode, this.userID, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'operator') {
@@ -538,12 +551,21 @@ export class VehicleDetailComponent implements OnInit
     });
 
   }
+
   onMakeChange(event: any) {
     console.log(event);
     this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
     this.vehicleModel_flag = true;
 
     this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
+  }
+
+  onCompanyChange(event: any) {
+    console.log(event);
+    let current_companyID = this.vehicleForm.get('company').value;
+
+    this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
+    
   }
 
   checkMakeIsSelected() {

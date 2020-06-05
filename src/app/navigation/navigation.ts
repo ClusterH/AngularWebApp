@@ -362,14 +362,14 @@ export const navigation: FuseNavigation[] = [
                         title    : 'Board',
                         translate: 'NAV.BOARD',
                         type     : 'item',
-                        url      : '/logistic/jobmanagement/board'
+                        url      : '/logistic/scrumboard'
                     },
                     {
                         id       : 'list',
                         title    : 'List',
                         translate: 'NAV.LIST',
                         type     : 'item',
-                        url      : '/logistic/jobmanagement/list'
+                        url      : '/logistic/todo'
                     },
                 ]
             },

@@ -25,6 +25,14 @@ const routes = [
         path        : 'history',
         loadChildren: () => import('./maintenance/history/history.module').then(m => m.HistoryModule)
     },
+    {
+        path        : 'todo',
+        loadChildren: () => import('./jobmanagement/todo/todo.module').then(m => m.TodoModule)
+    },
+    {
+        path        : 'scrumboard',
+        loadChildren: () => import('./jobmanagement/scrumboard/scrumboard.module').then(m => m.ScrumboardModule)
+    },
 ];
 
 @NgModule({

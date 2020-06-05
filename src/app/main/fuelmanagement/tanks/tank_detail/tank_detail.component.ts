@@ -50,130 +50,6 @@ export class TankDetailComponent implements OnInit
 
     chart_data: any = [];
 
-    private chart: am4charts.XYChart;
-
-    // widget1: any = {
-    //     chartType: 'line',
-    //     datasets : {
-    //         'today': [
-    //             {
-    //                 label: 'today',
-    //                 data : [],
-    //                 fill : 'start',
-    //                 showLine: true,
-    //                 // steppedLine: true,
-
-    //             }
-    //         ],
-    //         'yesterday': [
-    //             {
-    //                 label: 'yesterday',
-    //                 data : [],
-    //                 fill : 'start'
-    //             }
-    //         ],
-    //         'this_week': [
-    //             {
-    //                 label: 'this_week',
-    //                 data : [],
-    //                 fill : 'start'
-    //             }
-    //         ],
-    //         'last_week': [
-    //             {
-    //                 label: 'last_week',
-    //                 data : [],
-    //                 fill : 'start'
-    //             }
-    //         ],
-    //         'date_range': [
-    //             {
-    //                 label: 'date_range',
-    //                 data : [],
-    //                 fill : 'start'
-    //             }
-    //         ]
-    //     },
-    //     labels   : [],
-    //     colors   : [
-    //         {
-    //             borderColor              : '#42a5f5',
-    //             backgroundColor          : '#42a5f5',
-    //             pointBackgroundColor     : '#1e88e5',
-    //             pointHoverBackgroundColor: '#1e88e5',
-    //             pointBorderColor         : '#ffffff',
-    //             pointHoverBorderColor    : '#ffffff'
-    //         }
-    //     ],
-    //     options  : {
-    //         spanGaps           : false,
-    //         legend             : {
-    //             display: false
-    //         },
-    //         maintainAspectRatio: false,
-    //         layout             : {
-    //             padding: {
-    //                 top  : 32,
-    //                 left : 12,
-    //                 right: 12
-    //             }
-    //         },
-    //         elements           : {
-    //             point: {
-    //                 radius          : 4,
-    //                 borderWidth     : 2,
-    //                 hoverRadius     : 4,
-    //                 hoverBorderWidth: 2
-    //             },
-    //             line : {
-    //                 tension: 0
-    //             }
-    //         },
-    //         scales             : {
-    //             xAxes: [
-    //                 {
-    //                     gridLines: {
-    //                         display       : false,
-    //                         drawBorder    : false,
-    //                         tickMarkLength: 18
-    //                     },
-    //                     ticks    : {
-    //                         fontColor: '#ffffff'
-    //                     }
-    //                 }
-    //             ],
-    //             yAxes: [
-    //                 {
-    //                     display: false,
-    //                     ticks  : {
-    //                         // min     : 200,
-    //                         // max     : 9999,
-    //                         stepSize: 100
-    //                     }
-    //                 }
-    //             ]
-    //         },
-    //         plugins            : {
-    //             filler      : {
-    //                 propagate: false
-    //             },
-    //             xLabelsOnTop: {
-    //                 active: true
-    //             },
-    //             // zoom: {
-    //             //     pan: {
-    //             //         enabled: true,
-    //             //         mode: 'xy'
-    //             //     },
-    //             //     zoom: {
-    //             //         enabled: true,
-    //             //         mode: 'xy' 
-    //             //     }
-    //             // }
-    //         }
-    //     }
-    // }
-
     dateOption = 'today';
     noData: boolean = true;
 
@@ -199,13 +75,6 @@ export class TankDetailComponent implements OnInit
         {
             this.pageType = 'edit';
             this.getTankHistory('today');
-            // .subscribe((res: any) => {
-            //     console.log(res);
-            //     this.chart_data = res;
-            //     this.generateChartData(this.chart_data);
-            // });
-
-            // this._registerCustomChartJSPlugin();
         }
         else
         {
@@ -220,23 +89,6 @@ export class TankDetailComponent implements OnInit
         console.log(this.tank);
         this.tankForm = this._formBuilder.group({
             date: [null],
-            // date: [{begin: new Date(2020, 4, 1), end: new Date()}],
-        });
-
-    }
-
-    ngAfterViewInit() {
-        this.zone.runOutsideAngular(() => {
-            console.log("onAfterviewInit: ");
-         
-        });
-      }
-
-    ngOnDestroy() {
-        this.zone.runOutsideAngular(() => {
-            if (this.chart) {
-                this.chart.dispose();
-            }
         });
     }
 
@@ -255,38 +107,52 @@ export class TankDetailComponent implements OnInit
         }
         console.log(chartData);
 
-        let chart = am4core.create("chartdiv", am4charts.XYChart);
+        am4core.ready(() => {
+
+            am4core.disposeAllCharts();
+
+            let chart = am4core.create("chartdiv", am4charts.XYChart);
       
-        // Add data
-        chart.data = chartData;
-
-        // Create axes
-        let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        dateAxis.renderer.minGridDistance = 30;
-
-        let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-        // Create series
-        let series = chart.series.push(new am4charts.LineSeries());
-        series.dataFields.valueY = "level";
-        series.dataFields.dateX = "date";
-        series.strokeWidth = 2;
-        series.minBulletDistance = 1;
-        series.tooltipText = "{valueY}";
-        series.tooltip.pointerOrientation = "vertical";
-        series.tooltip.background.cornerRadius = 20;
-        series.tooltip.background.fillOpacity = 0.5;
-        series.tooltip.label.padding(12,12,12,12)
-
-        // Add scrollbar
-        let scrollbarX = new am4charts.XYChartScrollbar();
-        scrollbarX.series.push(series);
-        chart.scrollbarX = scrollbarX;
-        // Add cursor
-        chart.cursor = new am4charts.XYCursor();
-        chart.cursor.xAxis = dateAxis;
-        chart.cursor.snapToSeries = series;
-        // return chartData;
+            // Add data
+            chart.data = chartData;
+    
+            // Create axes
+            let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+            dateAxis.renderer.minGridDistance = 50;
+            // dateAxis.renderer.grid.template.disabled = true;
+            // dateAxis.renderer.fullWidthTooltip = true;
+    
+            let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.min = 0;
+            // valueAxis.renderer.minGridDistance = 0.01;
+            // dateAxis.renderer.grid.template.disabled = true;
+            // dateAxis.renderer.fullWidthTooltip = true;
+            // valueAxis.adjustMinMax(0, 10000, 100, 100, true);
+            // valueAxis.strictMinMax = true;
+            
+            // Create series
+            let series = chart.series.push(new am4charts.LineSeries());
+            series.dataFields.valueY = "level";
+            series.dataFields.dateX = "date";
+            series.strokeWidth = 2;
+            series.minBulletDistance = 1;
+            series.tooltipText = "{valueY}";
+            series.tooltip.pointerOrientation = "vertical";
+            series.tooltip.background.cornerRadius = 20;
+            series.tooltip.background.fillOpacity = 0.5;
+            series.tooltip.label.padding(12,12,12,12);
+    
+            // Add scrollbar
+            let scrollbarX = new am4charts.XYChartScrollbar();
+            scrollbarX.series.push(series);
+            chart.scrollbarX = scrollbarX;
+            // chart.scrollbarY = scrollbarX;
+            // Add cursor
+            chart.cursor = new am4charts.XYCursor();
+            chart.cursor.xAxis = dateAxis;
+            chart.cursor.snapToSeries = series;
+            // return chartData;
+        });
     }
 
     getValues(dateTime: any, mode: string) {
@@ -473,7 +339,7 @@ export class TankDetailComponent implements OnInit
 
         if (date == 'today') {
             let todayDate = new Date();
-            todayDate.setDate(todayDate.getDate() - 7);
+            todayDate.setDate(todayDate.getDate() - 10);
 
             todate = this.dateFormat(todayDate);
             // todate = this.dateFormat(todayDate).substr(0, 10) + " " + '00:10:00 AM'
@@ -483,9 +349,7 @@ export class TankDetailComponent implements OnInit
 
             this.getHistoryData(date, fromdate, todate)
             .subscribe((res: any) => {
-                console.log(res);
                 this.generateChartData(res);
-                // subject.next(res);
             });
 
             console.log(data);
@@ -501,7 +365,6 @@ export class TankDetailComponent implements OnInit
 
             this.getHistoryData(date, fromdate, todate)
             .subscribe((res: any) => {
-                console.log(res);
                 this.generateChartData(res);
             });
 
@@ -517,7 +380,6 @@ export class TankDetailComponent implements OnInit
 
             this.getHistoryData(date, fromdate, todate)
             .subscribe((res: any) => {
-                console.log(res);
                 this.generateChartData(res);
             });
 
@@ -529,11 +391,10 @@ export class TankDetailComponent implements OnInit
             fromdate = this.dateFormat(new Date(curr.setDate(first)));
             todate = this.dateFormat(new Date(curr.setDate(last)));
 
-            this.dateOption = 'this_week';
+            this.dateOption = 'last_week';
 
              this.getHistoryData(date, fromdate, todate)
             .subscribe((res: any) => {
-                console.log(res);
                 this.generateChartData(res);
             });
 
@@ -542,14 +403,10 @@ export class TankDetailComponent implements OnInit
 
             this.getHistoryData(date, this.fromDate, this.toDate)
             .subscribe((res: any) => {
-                console.log(res);
                 this.generateChartData(res);
             });
         }
 
-        console.log(fromdate, todate);
-
-        // return subject.asObservable();
     }
 
     getHistoryData(dateOption: string, fromdate: string, todate: string): Observable<any> {
@@ -565,28 +422,7 @@ export class TankDetailComponent implements OnInit
                 volume_data = res.TrackingXLAPI.DATA;
                 console.log(volume_data);
                 subject.next(volume_data);
-                // this.widget1.labels = [];
-
-                // for (let data of res.TrackingXLAPI.DATA) {
-                //     console.log(data, this.widget1.datasets[`${dateOption}`][0].data);
-                //     if (dateOption == 'today' || dateOption == 'yesterday') {
-                //         this.widget1.datasets[`${dateOption}`][0].data.push(Number(data.volume));
-
-                //         this.widget1.labels.push(this.dateFormat(new Date(data.truetime)).substring(11)); 
-
-                //     } else if (dateOption == 'this_week' || dateOption == 'last_week' || dateOption == 'date_range') {
-                //         this.widget1.datasets[`${dateOption}`][0].data.push(Number(data.volume));
-
-                //         this.widget1.labels.push(this.dateFormat(new Date(data.truetime)).substring(11)); 
-
-                //     }
-                // }
-    
-                // let min = Math.min(...this.widget1.datasets[`${dateOption}`][0].data);
-                // let max = Math.max(...this.widget1.datasets[`${dateOption}`][0].data);
-    
-                // this.widget1.options.scales['yAxes'][0].ticks.min = min;
-                // this.widget1.options.scales['yAxes'][0].ticks.max = max;
+               
             } else {
                 this.noData = false;
             }

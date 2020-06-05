@@ -71,7 +71,7 @@
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
                                         <mat-label>{{ 'VEHICLES.COMPANY' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
+                                        <mat-select  (click)="showCompanyList('company_clist')" (selectionChange)="onCompanyChange($event)" formControlName="company">
                                             <div class="filter_company_input" >
                                                 <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
