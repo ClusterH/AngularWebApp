@@ -25,12 +25,12 @@
     <div class="list-content" fxLayout="column">
 
         <div class="list-cards ngx-dnd-container"
-             [model]="list.idCards" ngxDroppable="card" (out)="onDrop($event)"
+             [model]="list.idcards" ngxDroppable="card" (out)="onDrop($event)"
              fusePerfectScrollbar #listScroll>
             <scrumboard-board-card ngxDraggable
                                    (click)="openCardDialog(cardId)"
                                    class="scrumboard-board-card ngx-dnd-item"
-                                   *ngFor="let cardId of list.idCards"
+                                   *ngFor="let cardId of list.idcards"
                                    [model]="cardId"
                                    [cardId]="cardId">
             </scrumboard-board-card>

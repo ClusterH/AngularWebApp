@@ -1,7 +1,7 @@
 <!-- CARD COVER -->
-<div *ngIf="board.settings.cardCoverImages && card.idAttachmentCover"
+<div *ngIf="board.settings.cardcoverimages && card.idattachmentcover"
      class="list-card-cover">
-    <img [src]="card.attachments | getById:card.idAttachmentCover:'src'">
+    <img [src]="card.attachments | getById:card.idattachmentcover:'src'">
 </div>
 <!-- / CARD COVER -->
 
@@ -15,11 +15,11 @@
     <!-- /CARD SORT HANDLE -->
 
     <!-- CARD LABELS -->
-    <div *ngIf="card.idLabels.length > 0" class="list-card-labels" fxLayout="row wrap">
+    <div *ngIf="card.idlabels.length > 0" class="list-card-labels" fxLayout="row wrap">
 
         <span class="list-card-label"
               [ngClass]="board.labels | getById:labelId:'color'"
-              *ngFor="let labelId of card.idLabels"
+              *ngFor="let labelId of card.idlabels"
               [matTooltip]="board.labels | getById:labelId:'name'">
         </span>
 
@@ -30,7 +30,7 @@
     <div class="list-card-name">{{card.name}}</div>
     <!-- / CARD NAME -->
 
-    <div *ngIf="card.due || card.checkItems"
+    <div *ngIf="card.due || card.checkitems"
          class="list-card-badges" fxLayout="row" fxLayoutAlign="start center">
 
         <!-- CARD DUE -->
@@ -38,32 +38,33 @@
               [ngClass]="{'overdue': isOverdue(card.due)}"
               *ngIf="card.due" fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="s-16">access_time</mat-icon>
-            <span>{{card.due | date:'mediumDate'}}</span>
+            <!-- <span>{{card.due | date:'mediumDate'}}</span> -->
+            <span>{{card.due}}</span>
 
         </span>
         <!-- / CARD DUE -->
 
         <!-- CARD CHECK ITEMS STATUS -->
-        <span *ngIf="card.checkItems"
+        <span *ngIf="card.checkitems"
               class="badge check-items"
-              [ngClass]="{'completed': card.checkItemsChecked === card.checkItems}"
+              [ngClass]="{'completed': card.checkitemschecked === card.checkitems}"
               fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="s-16">check_circle</mat-icon>
-            <span>{{card.checkItemsChecked}}</span>
+            <span>{{card.checkitemchecked}}</span>
             <span>/</span>
-            <span>{{card.checkItems}}</span>
+            <span>{{card.checkitems}}</span>
         </span>
         <!-- / CARD CHECK ITEMS STATUS -->
 
     </div>
 
     <!-- CARD MEMBERS -->
-    <div *ngIf="card.idMembers.length > 0"
+    <div *ngIf="card.idmembers.length > 0"
          class="list-card-members"
          fxLayout="row">
 
         <div class="list-card-member"
-             *ngFor="let memberId of card.idMembers">
+             *ngFor="let memberId of card.idmembers">
 
             <img class="list-card-member-avatar"
                  [src]="board.members | getById:memberId:'avatar'"

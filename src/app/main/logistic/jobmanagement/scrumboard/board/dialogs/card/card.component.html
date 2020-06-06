@@ -53,9 +53,9 @@
                     <mat-menu #membersMenu="matMenu" [overlapTrigger]="false">
                         <div fxFlex fxLayout="column" class="scrumboard-members-menu"
                              (click)="$event.stopPropagation()">
-                            <mat-checkbox class="member px-16" [checked]="card.idMembers.indexOf(member.id) > -1"
+                            <mat-checkbox class="member px-16" [checked]="card.idmembers.indexOf(member.id) > -1"
                                           *ngFor="let member of board.members"
-                                          (change)="toggleInArray(member.id, card.idMembers);updateCard()">
+                                          (change)="toggleInArray(member.id, card.idmembers);updateCard()">
                                 <div fxLayout="row" fxLayoutAlign="start center">
                                     <img [alt]="member.name" [src]=" member.avatar" class="avatar"/>
                                     <p class="member-name">{{ member.name }}</p>
@@ -200,10 +200,10 @@
         <div class="sections">
 
             <!-- LABELS & MEMBERS SECTION -->
-            <div *ngIf="card.idLabels[0] || card.idMembers[0]" class="section"
+            <div *ngIf="card.idlabels[0] || card.idmembers[0]" class="section"
                  fxLayout="column" fxLayout.gt-xs="row">
 
-                <div *ngIf="card.idLabels[0]" fxFlex class="labels">
+                <div *ngIf="card.idlabels[0]" fxFlex class="labels">
 
                     <div class="section-header" fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon class="mr-8">label</mat-icon>
@@ -213,7 +213,7 @@
                     <div class="section-content">
                         <mat-chip-list class="label-chips">
                             <mat-chip class="label-chip mb-4"
-                                      *ngFor="let labelId of card.idLabels"
+                                      *ngFor="let labelId of card.idlabels"
                                       [ngClass]="board.labels | getById:labelId:'color'"
                                       fxLayout="row" fxLayoutAlign="start center">
                                 <span>{{board.labels|getById:labelId:'name'}}</span>
@@ -223,7 +223,7 @@
 
                 </div>
 
-                <div *ngIf="card.idMembers[0]" fxFlex class="members">
+                <div *ngIf="card.idmembers[0]" fxFlex class="members">
 
                     <div class="section-header" fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon class="mr-8">supervisor_account</mat-icon>
@@ -232,7 +232,7 @@
 
                     <div class="section-content">
                         <div class="member-chips" fxLayout="row" fxLayoutWrap>
-                            <div class="member-chip mb-4" *ngFor="let memberId of card.idMembers"
+                            <div class="member-chip mb-4" *ngFor="let memberId of card.idmembers"
                                  fxLayout="row" fxLayoutAlign="start center">
                                 <img class="member-chip-avatar" [src]="board.members | getById:memberId:'avatar'"
                                      [matTooltip]="board.members | getById:memberId:'name'">
@@ -275,7 +275,7 @@
 
                                             <div fxLayout="row" fxLayoutAlign="start start">
                                                 <span class="attachment-name">{{item.name}}</span>
-                                                <mat-icon *ngIf="card.idAttachmentCover === item.id"
+                                                <mat-icon *ngIf="card.idattachmentcover === item.id"
                                                           class="yellow-700-fg attachment-is-cover">
                                                     star
                                                 </mat-icon>
@@ -292,8 +292,8 @@
 
                                         <mat-menu #attachmentActionsMenu="matMenu">
                                             <button mat-menu-item (click)="toggleCoverImage(item.id)">
-                                                <span *ngIf="card.idAttachmentCover !== item.id">Make Cover</span>
-                                                <span *ngIf="card.idAttachmentCover === item.id">Remove Cover</span>
+                                                <span *ngIf="card.idattachmentcover !== item.id">Make Cover</span>
+                                                <span *ngIf="card.idattachmentcover === item.id">Remove Cover</span>
                                             </button>
                                             <button mat-menu-item (click)="removeAttachment(item)">
                                                 Remove Attachment

@@ -62,14 +62,18 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        console.log("card_dialog: ", this._data);
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
 
                 this.card = this.board.cards.find((_card) => {
+                    console.log("AAAAAAAAAAAAAA", this._data.cardId, _card.id);
                     return this._data.cardId === _card.id;
                 });
+
+                console.log(this.card);
 
                 this.list = this.board.lists.find((_list) => {
                     return this._data.listId === _list.id;
@@ -117,13 +121,13 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     toggleCoverImage(attachmentId): void
     {
-        if ( this.card.idAttachmentCover === attachmentId )
+        if ( this.card.idattachmentCover === attachmentId )
         {
-            this.card.idAttachmentCover = '';
+            this.card.idattachmentcover = '';
         }
         else
         {
-            this.card.idAttachmentCover = attachmentId;
+            this.card.idattachmentcover = attachmentId;
         }
 
         this.updateCard();
@@ -136,9 +140,9 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     removeAttachment(attachment): void
     {
-        if ( attachment.id === this.card.idAttachmentCover )
+        if ( attachment.id === this.card.idattachmentcover )
         {
-            this.card.idAttachmentCover = '';
+            this.card.idattachmentcover = '';
         }
 
         this.card.attachments.splice(this.card.attachments.indexOf(attachment), 1);
@@ -182,12 +186,12 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
 
         for ( const item of this.card.checklists )
         {
-            allCheckItems += item.checkItems.length;
-            allCheckedItems += item.checkItemsChecked;
+            allCheckItems += item.checkitems.length;
+            allCheckedItems += item.checkitemchecked;
         }
 
-        this.card.checkItems = allCheckItems;
-        this.card.checkItemsChecked = allCheckedItems;
+        this.card.checkitems = allCheckItems;
+        this.card.checkitemChecked = allCheckedItems;
 
         this.updateCard();
     }
@@ -246,8 +250,8 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         this.card.checklists.push({
             id               : FuseUtils.generateGUID(),
             name             : form.value.checklistTitle,
-            checkItemsChecked: 0,
-            checkItems       : []
+            checkitemchecked: 0,
+            checkitems       : []
         });
 
         form.setValue({checklistTitle: ''});
@@ -276,7 +280,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         const newCommentText = form.value.newComment;
 
         const newComment = {
-            idMember: '36027j1930450d8bf7b10158',
+            idmember: '36027j1930450d8bf7b10158',
             message : newCommentText,
             time    : 'now'
         };

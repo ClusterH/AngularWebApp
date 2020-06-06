@@ -78,8 +78,9 @@ export class ScrumboardService implements Resolve<any>
                 })
                 .subscribe((response: any) => {
                     if (response.responseCode == 100) {
-                        let jsons = response.TrackingXLAPI.DATA[0].Column1;
-                        console.log(jsons);
+                        this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
+                       
+                        console.log(this.boards);
     
                         this.onBoardsChanged.next(this.boards);
                         resolve(this.boards);
@@ -106,12 +107,43 @@ export class ScrumboardService implements Resolve<any>
     getBoard(boardId): Promise<any>
     {
         return new Promise((resolve, reject) => {
-            this._httpClient.get('api/scrumboard-boards/' + boardId)
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+            // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                    .set('conncode', conncode.toString())
+                    .set('userid', userid.toString())
+                    .set('method', "GetBoards");
+                   
+                console.log('params', params);
+    
+                this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
+                    headers: headers,   
+                    params: params
+                })
                 .subscribe((response: any) => {
-                    this.board = response;
-                    this.onBoardChanged.next(this.board);
-                    resolve(this.board);
+                    if (response.responseCode == 100) {
+                        this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
+                       
+                        // console.log(this.boards);
+
+                        let board = this.boards.find(i => i.id == boardId);
+                        console.log(board);
+    
+                        this.onBoardChanged.next(board);
+                        resolve(board);
+                    }
+                    
                 }, reject);
+            // this._httpClient.get('api/scrumboard-boards/' + boardId)
+            //     .subscribe((response: any) => {
+            //         this.board = response;
+            //         this.onBoardChanged.next(this.board);
+            //         resolve(this.board);
+            //     }, reject);
         });
     }
 

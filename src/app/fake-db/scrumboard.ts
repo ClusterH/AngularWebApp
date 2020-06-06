@@ -14,7 +14,7 @@ export class ScrumboardFakeDb
                 {
                     'id'     : '56027cf5a2ca3839a5d36103',
                     'name'   : 'Design',
-                    'idCards': [
+                    'idcards': [
                         '5603a2a3cab0c8300f6096b3',
                         '44d1.2b51ea6cc2b5d.21f4a3412e857.8ffa2d8b44ad9.ac87215ed53a1.67d4921ad8f8d.9f318bcb2'
                     ]
@@ -22,7 +22,7 @@ export class ScrumboardFakeDb
                 {
                     'id'     : '56127cf2a2ca3539g7d36103',
                     'name'   : 'Development',
-                    'idCards': [
+                    'idcards': [
                         '2837273da9b93dd84243s0f9',
                         '5787b7e4740c57bf0dffd5b6',
                         '5637273da9b93bb84743a0f9',
@@ -32,7 +32,7 @@ export class ScrumboardFakeDb
                 {
                     'id'     : 'faf244627326f1249525763d',
                     'name'   : 'Upcoming Features',
-                    'idCards': [
+                    'idcards': [
                         'd9005a4b89ed2aadca48a6ad',
                         'f6b9d7a9247e5d794a081927',
                         '80ed.24ad3b18e2668.f28fbbceeeff9.5a834620a42f1.5909be19a2bf2.6c4a54947ce2d.da356b0c1',
@@ -43,7 +43,7 @@ export class ScrumboardFakeDb
                 {
                     'id'     : 'ad7d.9fffac5dff412.c83bca6853767.8fd7549b2b1ca.ceda8a01774c4.a5cf3976e87e4.ce79eeeea',
                     'name'   : 'Known Bugs',
-                    'idCards': [
+                    'idcards': [
                         'acc6.9c673cd2f5e35.521e91d8d5991.4b2a95e0539d1.027930c0743c5.7ad1ea7bea476.e8fbe6347',
                         '3279.3d69b40cc0b75.690252b6bea08.1e1789b0b7c2e.2f264b8661ce2.84d5f56910e23.429be5e8a',
                         'ba01.8e1a43f92a03a.0022bd5cbb9ba.275c64d911d8c.880e0846a3966.f75ff43e53ad.48ad612e7'
@@ -56,10 +56,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Update generators',
                     'description'      : 'Current generator doesn\'t support Node.js 6 and above.',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '26027s1930450d8bf7b10828'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd'
                     ],
                     'attachments'      : [],
@@ -82,10 +82,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Change background colors',
                     'description'      : '',
                     'idAttachmentCover': '67027cahbe3b52ecf2dc631c',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '76027g1930450d8bf7b10958'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '56027e4119ad3a5dc28b36cd',
                         '5640635e19ad3a5dc21416b2'
                     ],
@@ -188,10 +188,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Fix splash screen bugs',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '56027c1930450d8bf7b10758'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '5640635e19ad3a5dc21416b2'
                     ],
                     'attachments'      : [],
@@ -208,10 +208,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Add alternative authentication pages',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '36027j1930450d8bf7b10158'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '6540635g19ad3s5dc31412b2',
                         '56027e4119ad3a5dc28b36cd'
                     ],
@@ -257,8 +257,8 @@ export class ScrumboardFakeDb
                     'name'             : 'Fix the console',
                     'description'      : 'We need to fix the console asap!',
                     'idAttachmentCover': '',
-                    'idMembers'        : [],
-                    'idLabels'         : [
+                    'idmembers'        : [],
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd'
                     ],
                     'attachments'      : [],
@@ -281,12 +281,12 @@ export class ScrumboardFakeDb
                     'name'             : 'New media player',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '76027g1930450d8bf7b10958',
                         '56027c1930450d8bf7b10758',
                         '26027s1930450d8bf7b10828'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '5640635e19ad3a5dc21416b2',
                         '6540635g19ad3s5dc31412b2'
                     ],
@@ -304,10 +304,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Memory Leak',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '36027j1930450d8bf7b10158'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd',
                         '5640635e19ad3a5dc21416b2'
                     ],
@@ -325,10 +325,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Broken toolbar on profile page',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '26027s1930450d8bf7b10828'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd'
                     ],
                     'attachments'      : [],
@@ -351,10 +351,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Button hover style',
                     'description'      : 'If there are 3 or more buttons in certain page, weird flashing happens when you hover over the red ones.',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '26027s1930450d8bf7b10828'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd',
                         '5640635e19ad3a5dc21416b2'
                     ],
@@ -372,8 +372,8 @@ export class ScrumboardFakeDb
                     'name'             : 'New header designs',
                     'description'      : '',
                     'idAttachmentCover': '12027cafbe3b52ecf2ef632c',
-                    'idMembers'        : [],
-                    'idLabels'         : [
+                    'idmembers'        : [],
+                    'idlabels'         : [
                         '56027e4119ad3a5dc28b36cd',
                         '6540635g19ad3s5dc31412b2',
                         '5640635e19ad3a5dc21416b2'
@@ -413,11 +413,11 @@ export class ScrumboardFakeDb
                     'name'             : 'Fixed footer',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '26027s1930450d8bf7b10828',
                         '56027c1930450d8bf7b10758'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '6540635g19ad3s5dc31412b2'
                     ],
                     'attachments'      : [],
@@ -434,8 +434,8 @@ export class ScrumboardFakeDb
                     'name'             : 'Collapsable navigation',
                     'description'      : '',
                     'idAttachmentCover': '',
-                    'idMembers'        : [],
-                    'idLabels'         : [
+                    'idmembers'        : [],
+                    'idlabels'         : [
                         '6540635g19ad3s5dc31412b2'
                     ],
                     'attachments'      : [],
@@ -458,13 +458,13 @@ export class ScrumboardFakeDb
                     'name'             : 'Mail app new layout',
                     'description'      : 'Current layout has lots of flaws in mobile. Outlook view should help with that.',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '56027c1930450d8bf7b10758',
                         '26027s1930450d8bf7b10828',
                         '76027g1930450d8bf7b10958',
                         '36027j1930450d8bf7b10158'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '56027e4119ad3a5dc28b36cd',
                         '26022e4129ad3a5sc28b36cd'
                     ],
@@ -482,11 +482,11 @@ export class ScrumboardFakeDb
                     'name'             : 'API recover and monitoring',
                     'description'      : 'We need a service to monitor and recover failed APIs.',
                     'idAttachmentCover': '',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '36027j1930450d8bf7b10158',
                         '76027g1930450d8bf7b10958'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '26022e4129ad3a5sc28b36cd',
                         '5640635e19ad3a5dc21416b2'
                     ],
@@ -597,14 +597,14 @@ export class ScrumboardFakeDb
                 {
                     'id'     : '56027cf5a2ca3839a5d36103',
                     'name'   : 'Designs',
-                    'idCards': [
+                    'idcards': [
                         '5603a2a3cab0c8300f6096b3'
                     ]
                 },
                 {
                     'id'     : '56127cf2a2ca3539g7d36103',
                     'name'   : 'Development',
-                    'idCards': [
+                    'idcards': [
                         '5637273da9b93bb84743a0f9'
                     ]
                 }
@@ -615,11 +615,11 @@ export class ScrumboardFakeDb
                     'name'             : 'Calendar App Design',
                     'description'      : '',
                     'idAttachmentCover': '56027cfcbe1b72ecf1fc452a',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '56027c1930450d8bf7b10758',
                         '36027j1930450d8bf7b10158'
                     ],
-                    'idLabels'         : [
+                    'idlabels'         : [
                         '56027e4119ad3a5dc28b36cd',
                         '5640635e19ad3a5dc21416b2'
                     ],
@@ -721,10 +721,10 @@ export class ScrumboardFakeDb
                     'name'             : 'Fix Splash Screen bugs',
                     'description'      : '',
                     'idAttachmentCover': '5603a2ae2bbd55bb2db57478',
-                    'idMembers'        : [
+                    'idmembers'        : [
                         '56027c1930450d8bf7b10758'
                     ],
-                    'idLabels'         : [],
+                    'idlabels'         : [],
                     'attachments'      : [
                         {
                             'id'  : '5603a2ae2bbd55bb2db57478',

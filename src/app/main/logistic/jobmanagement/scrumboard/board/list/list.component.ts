@@ -62,6 +62,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
+                console.log(board);
                 this.board = board;
             });
     }
@@ -137,6 +138,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      */
     openCardDialog(cardId): void
     {
+        console.log(cardId);
         this.dialogRef = this._matDialog.open(ScrumboardCardDialogComponent, {
             panelClass: 'scrumboard-card-dialog',
             data      : {

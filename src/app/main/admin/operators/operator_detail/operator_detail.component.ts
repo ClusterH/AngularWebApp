@@ -243,6 +243,7 @@ export class OperatorDetailComponent implements OnInit
       this.operatorForm.get('phonenumber').setValue(this.operator.phonenumber);
 
       this.operatorForm.get('operatortype').setValue(this.operator.operatortypeid);
+      console.log("setValueCompany",this.operator.companyid);
       this.operatorForm.get('company').setValue(this.operator.companyid);
       this.operatorForm.get('group').setValue(this.operator.groupid);
 
