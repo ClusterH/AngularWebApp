@@ -5,7 +5,7 @@ export class Card
     id: string;
     name: string;
     description: string;
-    idattachmentcover: string;
+    attachmentcoverid: string;
     idmembers: string[];
     idlabels: string[];
     attachments: any[];
@@ -24,10 +24,10 @@ export class Card
      */
     constructor(card)
     {
-        this.id = card.id || FuseUtils.generateGUID();
+        this.id = card.id || '';
         this.name = card.name || '';
         this.description = card.description || '';
-        this.idattachmentcover = card.idattachmentcover || '';
+        this.attachmentcoverid = card.attachmentcoverid || '';
         this.idmembers = card.idmembers || [];
         this.idlabels = card.idlabels || [];
         this.attachments = card.attachments || [];

@@ -1,6 +1,10 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 
 @Component({
     selector     : 'scrumboard-board-card',
@@ -16,13 +20,18 @@ export class ScrumboardBoardCardComponent implements OnInit
     card: any;
     board: any;
 
+    private _unsubscribeAll: Subject<any>;
+
+
     /**
      * Constructor
      *
      * @param {ActivatedRoute} _activatedRoute
      */
     constructor(
-        private _activatedRoute: ActivatedRoute
+        private _activatedRoute: ActivatedRoute,
+        private _scrumboardService: ScrumboardService,
+
     )
     {
     }
@@ -43,6 +52,18 @@ export class ScrumboardBoardCardComponent implements OnInit
             // console.log(card);
             return this.cardId === card.id;
         })[0];
+
+        // this._scrumboardService.onBoardChanged
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(board => {
+        //         console.log(board);
+        //         this.board = board;
+        //         console.log(this.board);
+        //         this.card = this.board.cards[0].filter((card) => {
+        //             console.log(card);
+        //             return this.cardId === card.id;
+        //         })[0];
+        //     });
     }
 
     // -----------------------------------------------------------------------------------------------------

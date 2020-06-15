@@ -45,8 +45,8 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
-                console.log("board-id: 1: ", board)
                 this.board = board;
+                console.log("board-id: 1: ", this.board)
             });
     }
 
@@ -76,7 +76,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
             return;
         }
 
-        this._scrumboardService.addList(new List({name: newListName}));
+        this._scrumboardService.addList(new List({name: newListName}), this.board.id);
     }
 
     /**

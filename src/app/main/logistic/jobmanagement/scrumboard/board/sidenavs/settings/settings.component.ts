@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { fuseAnimations } from '@fuse/animations';
 import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
@@ -21,7 +22,9 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     private _unsubscribeAll: Subject<any>;
 
     constructor(
-        private scrumboardService: ScrumboardService
+        private scrumboardService: ScrumboardService,
+        private  _router: Router,
+
     )
     {
         // Set the defaults
@@ -77,5 +80,12 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     {
         this.board.settings.subscribed = !this.board.settings.subscribed;
         this.scrumboardService.updateBoard();
+    }
+    deleteBoard(): void {
+        this.scrumboardService.deleteBoard(this.board.id)
+        .then((res: any) => {
+            console.log(res);
+            this._router.navigate(['logistic/scrumboard/boards']);
+        })
     }
 }

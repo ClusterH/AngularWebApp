@@ -170,9 +170,7 @@ export class LoginComponent implements OnInit
 
                 localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
                 localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
-
-                console.log("HideNavList: ", this.isHideNavList);
-                
+               
                 for (let item in this.isHideNavList) { 
                     if (Number(this.isHideNavList[item]) == 0) {
                         this._fuseNavigationService.updateNavigationItem(`${item}`, {

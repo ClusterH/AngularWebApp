@@ -67,8 +67,9 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
+                console.log(this.board);
 
-                this.card = this.board.cards.find((_card) => {
+                this.card = this.board.cards[0].find((_card) => {
                     console.log("AAAAAAAAAAAAAA", this._data.cardId, _card.id);
                     return this._data.cardId === _card.id;
                 });
@@ -121,7 +122,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     toggleCoverImage(attachmentId): void
     {
-        if ( this.card.idattachmentCover === attachmentId )
+        if ( this.card.idattachmentcover === attachmentId )
         {
             this.card.idattachmentcover = '';
         }
@@ -169,7 +170,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     updateCheckedCount(list): void
     {
-        const checkItems = list.checkItems;
+        const checkItems = list.checkitems;
         let checkedItems = 0;
         let allCheckedItems = 0;
         let allCheckItems = 0;
@@ -182,7 +183,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
             }
         }
 
-        list.checkItemsChecked = checkedItems;
+        list.checkitemschecked = checkedItems;
 
         for ( const item of this.card.checklists )
         {
@@ -204,7 +205,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     removeChecklistItem(checkItem, checklist): void
     {
-        checklist.checkItems.splice(checklist.checkItems.indexOf(checkItem), 1);
+        checklist.checkItems.splice(checklist.checkitems.indexOf(checkItem), 1);
 
         this.updateCheckedCount(checklist);
 

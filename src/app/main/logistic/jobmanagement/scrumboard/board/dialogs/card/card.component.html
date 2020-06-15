@@ -363,18 +363,18 @@
                         <div class="checklist-progress" fxLayout="row" fxLayoutAlign="start center">
 
                             <span class="checklist-progress-value">
-                                {{checklist.checkItemsChecked}} / {{checklist.checkItems.length}}
+                                {{checklist.checkitemchecked}} / {{checklist.checkitems.length}}
                             </span>
 
                             <mat-progress-bar color="accent" class="checklist-progressbar" mode="determinate"
-                                              value="{{100 * checklist.checkItemsChecked / checklist.checkItems.length}}">
+                                              value="{{100 * checklist.checkitemchecked / checklist.checkitems.length}}">
                             </mat-progress-bar>
 
                         </div>
 
                         <div class="check-items">
 
-                            <div class="check-item" *ngFor="let checkItem of checklist.checkItems" fxLayout="row"
+                            <div class="check-item" *ngFor="let checkItem of checklist.checkitems" fxLayout="row"
                                  fxLayoutAlign="space-between center">
 
                                 <div fxFlex fxLayout="row" fxLayoutAlign="start center">
@@ -461,11 +461,11 @@
                              *ngFor="let comment of card.comments">
 
                             <img class="comment-member-avatar"
-                                 [src]="board.members | getById: comment.idMember:'avatar'">
+                                 [src]="board.members | getById: comment.idmember:'avatar'">
 
                             <div fxLayout="column">
                                 <div class="comment-member-name">
-                                    {{board.members | getById: comment.idMember:'name'}}
+                                    {{board.members | getById: comment.idmember:'name'}}
                                 </div>
                                 <div class="comment-bubble">{{comment.message}}</div>
                                 <div class="comment-time secondary-text">{{comment.time}}</div>
@@ -495,14 +495,14 @@
                              fxLayoutAlign="start center">
 
                             <img class="activity-member-avatar"
-                                 [src]="board.members | getById:activity.idMember:'avatar'">
+                                 [src]="board.members | getById:activity.idmember:'avatar'">
 
                             <div>
 
                                 <div fxLayout="row" fxLayoutAlign="start center">
 
                                     <div class="activity-member-name">
-                                        {{board.members | getById:activity.idMember:'name'}}
+                                        {{board.members | getById:activity.idmember:'name'}}
                                     </div>
                                     <div class="activity-message">{{activity.message}}</div>
 

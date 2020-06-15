@@ -18,8 +18,8 @@
                 <div class="label-color" [ngClass]="label.color"></div>
 
                 <mat-checkbox fxFlex fxLayout="row" fxLayoutAlign="start center"
-                              [checked]="card.idLabels.indexOf(label.id) > -1"
-                              (change)="toggleInArray(label.id, card.idLabels);onCardLabelsChanged()">
+                              [checked]="card.idlabels.indexOf(label.id) > -1"
+                              (change)="toggleInArray(label.id, card.idlabels);onCardLabelsChanged()">
                     {{label.name}}
                 </mat-checkbox>
 

@@ -18,6 +18,7 @@ import { Board } from 'app/main/logistic/jobmanagement/scrumboard/board.model';
 export class ScrumboardComponent implements OnInit, OnDestroy
 {
     boards: any[];
+    userObject: any;
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -35,6 +36,8 @@ export class ScrumboardComponent implements OnInit, OnDestroy
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this.userObject = JSON.parse(localStorage.getItem('userObjectList'));
+        console.log(this.userObject);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -49,8 +52,9 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         this._scrumboardService.onBoardsChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(boards => {
-                console.log(boards);
                 this.boards =boards;
+                console.log(this.boards);
+
             });
     }
 
@@ -75,7 +79,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
     {
         const newBoard = new Board({});
         this._scrumboardService.createNewBoard(newBoard).then(() => {
-            this._router.navigate(['logistic/scrumboard/boards/' + newBoard.id + '/' + newBoard.uri]);
+            this._router.navigate(['logistic/scrumboard/boards/' + this._scrumboardService.newBoardID + '/' + 'untitled-board']);
         });
     }
 

@@ -103,7 +103,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
             return;
         }
 
-        this._scrumboardService.addCard(this.list.id, new Card({name: newCardName}));
+        this._scrumboardService.addCard(this.board.id, this.list.id, new Card({name: newCardName}));
 
         setTimeout(() => {
             this.listScroll.scrollToBottom(0, 400);

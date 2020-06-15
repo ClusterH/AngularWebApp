@@ -13,7 +13,7 @@ export class List
      */
     constructor(list)
     {
-        this.id = list.id || FuseUtils.generateGUID();
+        this.id = list.id || '';
         this.name = list.name || '';
         this.idCards = [];
     }
