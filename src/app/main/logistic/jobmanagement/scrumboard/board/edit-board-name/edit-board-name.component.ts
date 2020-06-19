@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
 
 @Component({
     selector     : 'scrumboard-edit-board-name',
@@ -22,7 +23,8 @@ export class ScrumboardEditBoardNameComponent
     nameInputField;
 
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private scrumboardService: ScrumboardService,
     )
     {
         // Set the defaults
@@ -73,8 +75,8 @@ export class ScrumboardEditBoardNameComponent
         {
             this.board.name = this.form.getRawValue().name;
             this.board.uri = encodeURIComponent(this.board.name).replace(/%20/g, '-').toLowerCase();
-
             this.boardNameChanged.next(this.board.name);
+          
             this.formActive = false;
         }
     }

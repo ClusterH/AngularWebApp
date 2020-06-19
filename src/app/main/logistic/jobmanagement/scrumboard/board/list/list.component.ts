@@ -89,6 +89,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
     onListNameChanged(newListName): void
     {
         this.list.name = newListName;
+        this._scrumboardService.updateList(this.list, this.board.id);
     }
 
     /**
@@ -159,6 +160,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      */
     onDrop(ev): void
     {
-        this._scrumboardService.updateBoard();
+        this._scrumboardService.updateBoard(this.board);
     }
 }

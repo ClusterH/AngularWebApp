@@ -86,7 +86,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      */
     onBoardNameChanged(newName): void
     {
-        this._scrumboardService.updateBoard();
+        this._scrumboardService.updateBoard(this.board);
         this._location.go('logistic/scrumboard/boards/' + this.board.id + '/' + this.board.uri);
     }
 
@@ -97,6 +97,6 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      */
     onDrop(ev): void
     {
-        this._scrumboardService.updateBoard();
+        this._scrumboardService.updateBoard(this.board);
     }
 }

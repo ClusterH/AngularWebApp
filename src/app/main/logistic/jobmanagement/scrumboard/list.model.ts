@@ -4,7 +4,7 @@ export class List
 {
     id: string;
     name: string;
-    idCards: string[];
+    idcards: string[];
 
     /**
      * Constructor
@@ -15,6 +15,6 @@ export class List
     {
         this.id = list.id || '';
         this.name = list.name || '';
-        this.idCards = [];
+        this.idcards = [];
     }
 }

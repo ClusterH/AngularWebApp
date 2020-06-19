@@ -318,6 +318,6 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     updateCard(): void
     {
-        this._scrumboardService.updateCard(this.card);
+        this._scrumboardService.updateCard(this.card, this.list.id, this.board.id);
     }
 }

@@ -98,7 +98,7 @@ export class ScrumboardLabelSelectorComponent implements OnInit, OnDestroy
      */
     onLabelChange(): void
     {
-        this._scrumboardService.updateBoard();
+        this._scrumboardService.updateBoard(this.board);
     }
 
     /**

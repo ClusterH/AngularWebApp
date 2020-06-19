@@ -70,7 +70,7 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     toggleCardCover(): void
     {
         this.board.settings.cardCoverImages = !this.board.settings.cardCoverImages;
-        this.scrumboardService.updateBoard();
+        this.scrumboardService.updateBoard(this.board);
     }
 
     /**
@@ -79,7 +79,7 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     toggleSubscription(): void
     {
         this.board.settings.subscribed = !this.board.settings.subscribed;
-        this.scrumboardService.updateBoard();
+        this.scrumboardService.updateBoard(this.board);
     }
     deleteBoard(): void {
         this.scrumboardService.deleteBoard(this.board.id)
