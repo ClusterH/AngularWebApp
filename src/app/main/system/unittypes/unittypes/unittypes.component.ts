@@ -89,7 +89,7 @@ export class UnittypesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).unittypes;
 
-        console.log(this.userConncode, this.userID);
+        
 
 
         //Load the translations
@@ -106,7 +106,7 @@ export class UnittypesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -116,14 +116,14 @@ export class UnittypesComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadUnittypes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unittype_Tlist"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -132,18 +132,18 @@ export class UnittypesComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new UnittypesDataSource(this._systemUnittypesService);
         this.dataSource.loadUnittypes(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unittype_Tlist");
     }
 
     onRowClicked(unittype) {
-        console.log('Row Clicked:', unittype);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -153,7 +153,7 @@ export class UnittypesComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadUnittypes(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unittype_Tlist");
     }
 
@@ -195,16 +195,16 @@ export class UnittypesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicateUnittype(unittype: any): void
     {
-        console.log(unittype);
+        
 
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -220,9 +220,9 @@ export class UnittypesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }

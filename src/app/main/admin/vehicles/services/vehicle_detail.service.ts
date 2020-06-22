@@ -25,13 +25,13 @@ export class VehicleDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
         if(name == '') {
             if(method == 'model_clist') {
-                console.log(this.current_makeID);
+                
 
                 let params = new HttpParams()
                 .set('conncode', conncode.toString())
@@ -62,7 +62,7 @@ export class VehicleDetailService
         } else {
 
             if(method == 'model_clist') {
-                console.log(this.current_makeID);
+                
 
                 let params = new HttpParams()
                 .set('conncode', conncode.toString())
@@ -73,7 +73,7 @@ export class VehicleDetailService
                 .set('name', `^${name}^`) 
                 .set('method', method.toString());
 
-                console.log(params);
+                
     
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -98,7 +98,7 @@ export class VehicleDetailService
     }
 
     getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        console.log(pageindex, pagesize,  companyid);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
@@ -109,7 +109,7 @@ export class VehicleDetailService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -125,7 +125,7 @@ export class VehicleDetailService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -163,7 +163,7 @@ export class VehicleDetailService
             .set('lastmodifiedby', vehicleDetail.lastmodifiedby.toString())
             .set('method', 'unit_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

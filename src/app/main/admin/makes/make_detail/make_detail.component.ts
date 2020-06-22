@@ -62,7 +62,7 @@ export class MakeDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.make);
+      
       this.pageType = 'new';
     }
 
@@ -70,7 +70,7 @@ export class MakeDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.make);
+    
   
     this.makeForm = this._formBuilder.group({
       name               : [null, Validators.required],
@@ -135,17 +135,17 @@ export class MakeDetailComponent implements OnInit
   }
 
   saveMake(): void {
-    console.log("saveMake");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.makeDetail);
+    
 
     if (this.makeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/makes/makes']);
@@ -155,17 +155,17 @@ export class MakeDetailComponent implements OnInit
   }
 
   addMake(): void {
-    console.log("addMake");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.makeDetail);
+    
 
     if (this.makeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.makeDetailService.saveMakeDetail(this.userConncode, this.userID, this.makeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/makes/makes']);
@@ -191,10 +191,10 @@ export class MakeDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

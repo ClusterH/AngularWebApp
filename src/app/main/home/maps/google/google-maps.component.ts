@@ -59,7 +59,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 
                     
         this.user = JSON.parse(localStorage.getItem('user_info'));
-        console.log(this.user);
+        
 
         
         // Set the defaults
@@ -71,7 +71,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
     }
 
     ngOnInit(): void {
-        console.log("ngOnInit:");
+        
         // this.dataSource = new VehMarkersDataSource(this._adminVehMarkersService);
         // this.dataSource.loadVehicles("PolarixUSA", 2);
 
@@ -80,29 +80,29 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 
     ngAfterViewInit() {
 
-        console.log("ngAfterViewInit:");
-        console.log(this.zones);
+        
+        
 
         this._adminVehMarkersService.getVehMarkers("PolarixUSA",2).subscribe(
             (data)=>{
-                //  console.log("data");
-                // console.log(data.TrackingXLAPI.DATA);
+                //  
+                // 
                 this.vehmarkers = data.TrackingXLAPI.DATA;                
             }
         );
 
         this._adminZonesService.getZones("PolarixUSA",2).subscribe(
             (data)=>{
-                // console.log("data");
-                // console.log(data.TrackingXLAPI.DATA.paths);
+                // 
+                // 
                 this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
             }
         );
         
         this._adminRoutesService.getRoutes("PolarixUSA",2).subscribe(
             (data)=>{
-                // console.log("data");
-                // console.log(data.TrackingXLAPI.DATA.paths);
+                // 
+                // 
                 this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
             }
         );
@@ -112,29 +112,29 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
         //         tap(() => this.dataSource.loadVehicles("PolarixUSA", 2))
         //     )
         //     .subscribe((res: any) => {
-        //         console.log('veh Markers');
-        //         console.log(res);
+        //         
+        //         
         //     });
 
     }
 
     clickedMarker(label: string, index: number) {
-        console.log(`clicked the marker: ${label || index}`)
+        
     }
 
     mapClicked($event: MouseEvent) {
-      console.log("map clicked");
+      
     }
 
     markerDragEnd(m: marker, $event: MouseEvent) {
-        console.log('dragEnd', m, $event);
+        
     }
 
     onShowValChange(value){
-        console.log(value);
+        
         if (value == "showVehicles"){
             this.showVehicles =!this.showVehicles;
-            console.log(this.showVehicles);
+            
             if (this.showVehicles){
                 this.vehmarkers = Object.assign([], this.tmpVehmarkers);
                 //this.tmpVehmarkers.forEach(val => this.vehmarkers.push(Object.assign({}, val)));
@@ -148,7 +148,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
         }
         else if (value == "showZones"){
             this.showZones =!this.showZones;
-            console.log(this.showZones);
+            
             if (this.showZones){
                 this.zones = Object.assign([], this.tmpZones);
                 this.tmpZones.length = 0;
@@ -160,7 +160,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
         }
         else if (value == "showRoutes"){
             this.showRoutes =!this.showRoutes;
-            console.log(this.showRoutes);
+            
             if (this.showRoutes){
                 this.routes = Object.assign([], this.tmpRoutes);
                 this.tmpRoutes.length = 0;
@@ -198,18 +198,18 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
         this.addPolygonChangeEvent(this.polygon);
         google.maps.event.addListener(this.polygon, 'coordinates_changed', function (index, obj) {
           // Polygon object: yourPolygon
-          console.log('coordinates_changed');
+          
         });
     
       }
     
       getPaths() {
-        console.log("get path");
+        
         if (this.polygon) {
           const vertices = this.polygon.getPaths().getArray()[0];
           let paths = [];
           vertices.getArray().forEach(function (xy, i) {
-            // console.log(xy);
+            // 
             let latLng = {
               lat: xy.lat(),
               lng: xy.lng()

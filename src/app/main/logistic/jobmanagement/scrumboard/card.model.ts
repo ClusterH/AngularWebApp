@@ -5,7 +5,7 @@ export class Card
     id: string;
     name: string;
     description: string;
-    attachmentcoverid: string;
+    idattachmentcover: string;
     idmembers: string[];
     idlabels: string[];
     attachments: any[];
@@ -27,7 +27,7 @@ export class Card
         this.id = card.id || '';
         this.name = card.name || '';
         this.description = card.description || '';
-        this.attachmentcoverid = card.attachmentcoverid || '';
+        this.idattachmentcover = card.idattachmentcover || '';
         this.idmembers = card.idmembers || [];
         this.idlabels = card.idlabels || [];
         this.attachments = card.attachments || [];
@@ -37,6 +37,6 @@ export class Card
         this.checkitemchecked = card.checkitemchecked || 0;
         this.comments = card.comments || [];
         this.activities = card.activities || [];
-        this.due = card.due || '';
+        this.due = card.due || new Date();
     }
 }

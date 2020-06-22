@@ -31,7 +31,7 @@ export class EventDetailDataSource extends DataSource<any>
     }
 
     loadCompanyDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, method );
+        
         if (!name) {
             name = '';
         }
@@ -45,25 +45,25 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.eventsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            // console.log("unit_clist: ", this.eventDetailService.unit_clist_item);
+            // 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadGroupDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, companyid, method );
+        
         if (!name) {
             name = '';
         }
@@ -77,26 +77,26 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.eventsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            // console.log("unit_clist: ", this.eventDetailService.unit_clist_item);
+            // 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
 
     loadUnitDetail(conncode: string, userid: number, pageindex: number, pagesize: number, companyid: string, groupid: string, eventid: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, companyid, groupid, eventid);
+        
        
         this.loadingSubject.next(true);
        
@@ -108,10 +108,10 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", result);
+           
        
             this.eventsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.currentPage_unit_data = result.TrackingXLAPI.DATA;
           
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
@@ -119,13 +119,13 @@ export class EventDetailDataSource extends DataSource<any>
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadPoiZoneDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number, groupid: number, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, companyid, groupid, method);
+        
         if (!name) {
             name = '';
         }
@@ -139,10 +139,10 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", result);
+           
        
             this.eventsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
 
             // this.currentPage_unit_data = result.TrackingXLAPI.DATA;
@@ -152,13 +152,13 @@ export class EventDetailDataSource extends DataSource<any>
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadDigitalInputDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, method);
+        
         if (!name) {
             name = '';
         }
@@ -172,10 +172,10 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", result);
+           
        
             this.eventsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
 
             // this.currentPage_unit_data = result.TrackingXLAPI.DATA;
@@ -185,13 +185,13 @@ export class EventDetailDataSource extends DataSource<any>
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadEventCondition(conncode: string, userid: number, eventid: string) {
-        console.log("loadEvents:", conncode, userid, eventid);
+        
     
         this.loadingSubject.next(true);
         
@@ -203,9 +203,9 @@ export class EventDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
+            
             this.eventDetailService.eventConditionList = result.TrackingXLAPI.DATA;
-            console.log(this.eventDetailService.eventConditionList);
+            
 
             this.eventsSubject.next( this.eventDetailService.eventConditionList);
             
@@ -215,7 +215,7 @@ export class EventDetailDataSource extends DataSource<any>
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source");
+        
         return this.eventsSubject.asObservable();
     }
  

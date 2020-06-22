@@ -23,7 +23,7 @@ export class PoigroupsDataSource extends DataSource<any>
     }
 
     loadPoigroups(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadPoigroups:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -34,7 +34,7 @@ export class PoigroupsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
+            
             this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;

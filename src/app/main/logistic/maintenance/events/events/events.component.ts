@@ -177,7 +177,7 @@ export class EventsComponent implements OnInit
     
     deleteEvent(event): void
     {
-        console.log(event);
+        
 
         this.dialogRef = this._matDialog.open(CourseDialogComponent, {
             panelClass: 'delete-dialog',
@@ -190,7 +190,7 @@ export class EventsComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.eventsSubject.next(res);
 
         });

@@ -29,7 +29,7 @@ export class DevConfigDetailDataSource extends DataSource<any>
     }
 
     loadDevConfigDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadDevConfigs:", conncode, userid,  pageindex, pagesize, name, method );
+        
         if (!name) {
             name = '';
         }
@@ -43,25 +43,25 @@ export class DevConfigDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.devconfigsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.devconfigDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            console.log("unit_clist: ", this.devconfigDetailService.unit_clist_item);
+            
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
      }
 
     loadDevConfigCmd(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, filterstring: string, method: string) {
-        console.log("loadDevConfigs:", conncode, userid,  pagesize, pageindex, name, filterstring, method );
+        
         if (!name) {
             name = '';
         }
@@ -75,22 +75,22 @@ export class DevConfigDetailDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.devconfigsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source");
+        
         return this.devconfigsSubject.asObservable();
     }
  

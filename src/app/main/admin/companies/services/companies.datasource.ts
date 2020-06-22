@@ -38,7 +38,7 @@ export class CompaniesDataSource extends DataSource<any>
     }
 
     loadCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadCompanies:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -49,15 +49,15 @@ export class CompaniesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log("result", result);
-            console.log("page_size", pagesize);
+            
+            
            this.companiesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           console.log(this.total_page);
+           
 
-           console.log(this.totalLength);
+           
         //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );
@@ -65,7 +65,7 @@ export class CompaniesDataSource extends DataSource<any>
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source", collectionViewer);
+        
         return this.companiesSubject.asObservable();
     }
  

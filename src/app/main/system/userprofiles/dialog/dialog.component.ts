@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("userprofile_detail", JSON.stringify(this.userprofile));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("userprofile_detail")));
+            
     
             this.router.navigate(['admin/userprofiles/userprofile_detail']);
         } else if( this.flag == "delete") {

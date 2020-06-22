@@ -64,7 +64,7 @@ export class RouteDetailComponent implements OnInit {
       this.pageType = 'edit';
     }
     else {
-      console.log(this.route);
+      
       this.pageType = 'new';
     }
 
@@ -72,7 +72,7 @@ export class RouteDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.route);
+    
 
     this.routeForm = this._formBuilder.group({
       name: [null, Validators.required],
@@ -137,17 +137,17 @@ export class RouteDetailComponent implements OnInit {
   }
 
   saveRoute(): void {
-    console.log("saveRoute");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.routeDetail);
+    
 
     if (this.routeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/routes/routes']);
@@ -157,17 +157,17 @@ export class RouteDetailComponent implements OnInit {
   }
 
   addRoute(): void {
-    console.log("addRoute");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.routeDetail);
+    
 
     if (this.routeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/routes/routes']);
@@ -192,10 +192,10 @@ export class RouteDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
+        
 
       } else {
-        console.log("FAIL:", result);
+        
       }
     });
 

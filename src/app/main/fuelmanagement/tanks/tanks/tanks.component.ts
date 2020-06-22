@@ -84,7 +84,7 @@ export class TanksComponent implements OnInit
         this.animationDirection = 'none';
         this.currentStep = 0;
 
-        console.log(this.userConncode, this.userID, this.userObjectList);
+        
 
 
         //Load the translations
@@ -101,18 +101,18 @@ export class TanksComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new TanksDataSource(this.tanksService);
         this.dataSource.loadTanks(this.userConncode, this.userID, this.currentStep, 1, "id", "asc", this.selected, this.filter_string, "FuelTank_TList");
     }
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {

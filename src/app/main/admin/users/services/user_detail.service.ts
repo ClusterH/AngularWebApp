@@ -24,7 +24,7 @@ export class UserDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -60,7 +60,7 @@ export class UserDetailService
 
     saveUserDetail(conncode: string, userid: number, userDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        console.log(userDetail);
+        
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
@@ -88,7 +88,7 @@ export class UserDetailService
             .set('languageid', userDetail.languageid.toString())
             .set('method', 'user_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

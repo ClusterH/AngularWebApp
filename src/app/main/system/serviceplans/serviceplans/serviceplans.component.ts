@@ -95,7 +95,7 @@ export class ServiceplansComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).serviceplans;
 
-        console.log(this.userConncode, this.userID);
+        
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
@@ -111,7 +111,7 @@ export class ServiceplansComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -121,14 +121,14 @@ export class ServiceplansComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -137,18 +137,18 @@ export class ServiceplansComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new ServiceplansDataSource(this._systemServiceplansService);
         this.dataSource.loadServiceplans(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
     onRowClicked(serviceplan) {
-        console.log('Row Clicked:', serviceplan);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -158,7 +158,7 @@ export class ServiceplansComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadServiceplans(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
@@ -200,9 +200,9 @@ export class ServiceplansComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
@@ -223,9 +223,9 @@ export class ServiceplansComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }

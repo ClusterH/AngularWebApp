@@ -52,7 +52,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("device_detail", JSON.stringify(this.device));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("device_detail")));
+            
     
             this.router.navigate(['system/devices/device_detail']);
         } else if( this.flag == "delete") {

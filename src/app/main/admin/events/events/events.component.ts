@@ -82,7 +82,7 @@ export class EventsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).events;
 
-        console.log(this.userConncode, this.userID);
+        
 
 
         //Load the translations
@@ -99,7 +99,7 @@ export class EventsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -109,14 +109,14 @@ export class EventsComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadEvents(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Event_TList"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -125,18 +125,18 @@ export class EventsComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new EventsDataSource(this._adminEventsService);
         this.dataSource.loadEvents(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Event_TList");
     }
 
     onRowClicked(event) {
-        console.log('Row Clicked:', event);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -146,7 +146,7 @@ export class EventsComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadEvents(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Event_TList");
     }
 
@@ -188,9 +188,9 @@ export class EventsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
@@ -211,9 +211,9 @@ export class EventsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }

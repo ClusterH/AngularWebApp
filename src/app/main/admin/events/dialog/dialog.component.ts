@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("event_detail", JSON.stringify(this.event));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("event_detail")));
+            
     
             this.router.navigate(['admin/events/event_detail']);
         } else if( this.flag == "delete") {

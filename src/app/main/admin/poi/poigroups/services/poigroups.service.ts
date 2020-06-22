@@ -30,7 +30,7 @@ export class PoigroupsService
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -47,7 +47,7 @@ export class PoigroupsService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -69,7 +69,7 @@ export class PoigroupsService
                 .set('id', id.toString())
                 .set('method', "poigroup_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

@@ -83,7 +83,7 @@ export class ServiceitemsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).serviceitems;
 
-        console.log(this.userConncode, this.userID);
+        
 
 
         //Load the translations
@@ -100,7 +100,7 @@ export class ServiceitemsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:serviceitem");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -110,14 +110,14 @@ export class ServiceitemsComponent implements OnInit
         // when paginator serviceitem is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadServiceitems(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintserviceitem_TList"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -126,18 +126,18 @@ export class ServiceitemsComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new ServiceitemsDataSource(this._adminServiceitemsService);
         this.dataSource.loadServiceitems(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintserviceitem_TList");
     }
 
     onRowClicked(serviceitem) {
-        console.log('Row Clicked:', serviceitem);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -147,7 +147,7 @@ export class ServiceitemsComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadServiceitems(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintserviceitem_TList");
     }
 
@@ -172,14 +172,14 @@ export class ServiceitemsComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.serviceitemsSubject.next(res);
 
         });
     }
 
     editShowServiceitemDetail(serviceitem: any) {
-        console.log(serviceitem);
+        
 
         this.dialogRef = this._matDialog.open(ServiceItemDialogComponent, {
             panelClass: 'serviceitem-dialog',
@@ -192,14 +192,14 @@ export class ServiceitemsComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.serviceitemsSubject.next(res);
         });
     }
     
     deleteServiceitem(serviceitem): void
     {
-        console.log(serviceitem);
+        
 
         this.dialogRef = this._matDialog.open(DeleteDialogComponent, {
             panelClass: 'delete-dialog',
@@ -212,7 +212,7 @@ export class ServiceitemsComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.serviceitemsSubject.next(res);
 
         });
@@ -234,9 +234,9 @@ export class ServiceitemsComponent implements OnInit
     //     dialogRef.afterClosed().subscribe(result => {
     //         if ( result )
     //         { 
-    //             console.log(result);
+    //             
     //         } else {
-    //             console.log("FAIL:", result);
+    //             
     //         }
     //     });
     // }

@@ -102,7 +102,7 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.devconfig);
+    
 
     this.dataSourceDevConfigCmd = new DevConfigDetailDataSource(this.devconfigDetailService);
     this.dataSourceCommand      = new DevConfigDetailDataSource(this.devconfigDetailService);
@@ -130,7 +130,7 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     var node = $("div.page_index");
     var node_length = node.length;
@@ -144,7 +144,7 @@ export class DevConfigDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorCommand.page)
@@ -154,7 +154,7 @@ export class DevConfigDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorSysCommand.page)
@@ -164,7 +164,7 @@ export class DevConfigDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -200,7 +200,7 @@ export class DevConfigDetailComponent implements OnInit
     
       let selected_element_id = this.devconfigForm.get(`${this.method_string}`).value;
 
-      console.log(methodString, this.devconfigDetailService.unit_clist_item[methodString], selected_element_id );
+      
 
       let clist = this.devconfigDetailService.unit_clist_item[methodString];
 
@@ -250,13 +250,13 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   onKey(event: any) {
-    console.log(event);
+    
     this.filter_string = event.target.value;
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
       if (this.method_string == 'devconfigcmd') {
         this.managePageIndex(this.method_string);
-        console.log(this.filter_name, this.filter_string);
+        
         this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, this.filter_name, this.filter_string, "DevConfigCmd_TList");
       } else {
         this.managePageIndex(this.method_string);
@@ -264,11 +264,11 @@ export class DevConfigDetailComponent implements OnInit
       }
     }
 
-    console.log(this.filter_string);
+    
   }
 
   onClickSearch(name: any) {
-    console.log(name);
+    
     this.method_string = 'devconfigcmd';
 
     if (name == 'command') {
@@ -279,7 +279,7 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.devconfigForm.get('filterstring').setValue(this.filter_string);
 
@@ -290,7 +290,7 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   editCommand(devconfigcmd: any) {
-    console.log(devconfigcmd);
+    
     this.command_edit_flag = true;
     this.currentCmdid = devconfigcmd.id;
 
@@ -299,34 +299,34 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   saveNewCommand() {
-    console.log("addNew Command");
+    
 
     let selectedCommand = this.devconfigForm.get('command').value;
     let selectedSysCommand = this.devconfigForm.get('syscommand').value;
-    console.log(selectedSysCommand);
+    
     if (selectedCommand == null || selectedSysCommand == null) {
       alert("Please choose command detail!");
     } else {
       if (this.devconfigDetailService.devconfig_id == 0) {
-        console.log('add new command');
+        
         let today = new Date().toISOString();
         this.getValues(today, "add");
-        console.log(this.devconfigDetail);
+        
 
         this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
         .subscribe((result: any) => {
-          console.log(result);
+          
           if ((result.responseCode == 200)||(result.responseCode == 100)) {
             alert("Success!");
             this.devconfigDetailService.devconfig_id = result.TrackingXLAPI.DATA[0].id;
             this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, 0, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
             .subscribe((res: any) => {
-              console.log(res);
+              
               this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
               this.command_edit_flag = false;
               this.devconfigForm.get('command').setValue(0);
               this.devconfigForm.get('syscommand').setValue(0);
-              console.log(this.devconfigForm.get('command').value);
+              
             });
             // this.router.navigate(['system/devconfigs/devconfigs']);
           }
@@ -334,37 +334,37 @@ export class DevConfigDetailComponent implements OnInit
       } else {
         this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, 0, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
         .subscribe((res: any) => {
-          console.log(res);
+          
           this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
           this.command_edit_flag = false;
           this.devconfigForm.get('command').setValue(0);
           this.devconfigForm.get('syscommand').setValue(0);
-          console.log(this.devconfigForm.get('command').value);
+          
         });
       }
     }
   }
 
   saveCurrentCommand() {
-    console.log("add Current Command");
+    
     let selectedCommand = this.devconfigForm.get('command').value;
     let selectedSysCommand = this.devconfigForm.get('syscommand').value;
     this.devconfigDetailService.saveDevConfigCmd(this.userConncode, this.userID, this.currentCmdid, selectedCommand, selectedSysCommand, this.devconfigDetailService.devconfig_id)
     .subscribe((res: any) => {
-      console.log(res);
+      
       // this.dataSourceDevConfigCmd =  new DevConfigDetailDataSource(this.devconfigDetailService);
       this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, 0, 10, '', '', "DevConfigCmd_TList");
 
       this.command_edit_flag = false;
       this.devconfigForm.get('command').setValue(0);
       this.devconfigForm.get('syscommand').setValue(0);
-      console.log(this.devconfigForm.get('command').value);
+      
     })
   }
 
   deleteCurrentCommand(devconfig): void {
     const dialogConfig = new MatDialogConfig();
-    console.log(devconfig);
+    
 
     dialogConfig.disableClose = true;
     
@@ -377,9 +377,9 @@ export class DevConfigDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
       if ( result )
       { 
-          console.log(result);
+          
       } else {
-          console.log("FAIL:", result);
+          
       }
     });
   }
@@ -401,17 +401,17 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   saveDevConfig(): void {
-    console.log("saveDevConfig");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.devconfigDetail);
+    
 
     if (this.devconfigDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/devconfigs/devconfigs']);
@@ -421,17 +421,17 @@ export class DevConfigDetailComponent implements OnInit
   }
 
   addDevConfig(): void {
-    console.log("addDevConfig");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.devconfigDetail);
+    
 
     if (this.devconfigDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.devconfigDetailService.saveDevConfigDetail(this.userConncode, this.userID, this.devconfigDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/devconfigs/devconfigs']);
@@ -457,17 +457,17 @@ export class DevConfigDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
   }
 
   navigatePageEvent() {
-    console.log("pageEvent");
+    
     this.paginatorDevConfigCmd.pageIndex = this.dataSourceDevConfigCmd.page_index - 1;
     this.dataSourceDevConfigCmd.loadDevConfigCmd(this.userConncode, this.userID, this.paginatorDevConfigCmd.pageIndex, this.paginatorDevConfigCmd.pageSize,  this.filter_name, this.filter_string, "DevConfigCmd_TList");
   }

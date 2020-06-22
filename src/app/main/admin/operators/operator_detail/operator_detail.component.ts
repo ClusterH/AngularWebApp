@@ -89,7 +89,7 @@ export class OperatorDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.operator);
+      
       this.pageType = 'new';
     }
 
@@ -97,7 +97,7 @@ export class OperatorDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.operator);
+    
   
     this.dataSourceCompany        = new OperatorDetailDataSource(this.operatorDetailService);
     this.dataSourceGroup          = new OperatorDetailDataSource(this.operatorDetailService);
@@ -135,7 +135,7 @@ export class OperatorDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -144,7 +144,7 @@ export class OperatorDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorGroup.page)
@@ -154,7 +154,7 @@ export class OperatorDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorOperatorType.page)
@@ -164,7 +164,7 @@ export class OperatorDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -200,7 +200,7 @@ export class OperatorDetailComponent implements OnInit
    
     let selected_element_id = this.operatorForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.operatorDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.operatorDetailService.unit_clist_item[methodString];
 
@@ -216,7 +216,7 @@ export class OperatorDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.operatorForm.get('filterstring').setValue(this.filter_string);
 
@@ -233,7 +233,7 @@ export class OperatorDetailComponent implements OnInit
       this.loadOperatorDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -243,7 +243,7 @@ export class OperatorDetailComponent implements OnInit
       this.operatorForm.get('phonenumber').setValue(this.operator.phonenumber);
 
       this.operatorForm.get('operatortype').setValue(this.operator.operatortypeid);
-      console.log("setValueCompany",this.operator.companyid);
+      
       this.operatorForm.get('company').setValue(this.operator.companyid);
       this.operatorForm.get('group').setValue(this.operator.groupid);
 
@@ -255,7 +255,7 @@ export class OperatorDetailComponent implements OnInit
       let physicaltestexpirydate = this.operator? new Date(`${this.operator.physicaltestexpirydate}`) : new Date();
       let licenseexpirationdate  = this.operator? new Date(`${this.operator.licenseexpirationdate}`) : new Date();
 
-      console.log(birthdate);
+      
 
       this.operatorForm.get('created').setValue(this.dateFormat(created));
       this.operatorForm.get('createdbyname').setValue(this.operator.createdbyname);
@@ -301,7 +301,7 @@ export class OperatorDetailComponent implements OnInit
     this.operatorDetail.physicaltestexpirydate = new Date(this.operatorForm.get('physicaltestexpirydate').value).toISOString() || '';
     this.operatorDetail.licenseexpirationdate  = new Date(this.operatorForm.get('licenseexpirationdate').value).toISOString() || '';
     this.operatorDetail.driverlicensenumber    = this.operatorForm.get('driverlicensenumber').value || '';
-    console.log(this.operatorDetail.birthdate);
+    
 
     if( mode  == "save" ) {
       this.operatorDetail.id               = this.operator.id;
@@ -336,23 +336,23 @@ export class OperatorDetailComponent implements OnInit
 
   setDatePicker(date) {
     let str = new Date(date).toISOString().substring(0, 10);
-    console.log(str);
+    
     return str;
 
   }
 
   saveOperator(): void {
-    console.log("saveOperator");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(new Date(this.operatorDetail.birthdate));
+    
 
     if (this.operatorDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/operators/operators']);
@@ -362,17 +362,17 @@ export class OperatorDetailComponent implements OnInit
   }
 
   addOperator(): void {
-    console.log("addOperator");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.operatorDetail);
+    
 
     if (this.operatorDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.operatorDetailService.saveOperatorDetail(this.userConncode, this.userID, this.operatorDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/operators/operators']);
@@ -398,10 +398,10 @@ export class OperatorDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
@@ -446,7 +446,7 @@ export class OperatorDetailComponent implements OnInit
                 } else {
                     const imgBase64Path = e.target.result;
                     this.cardImageBase64 = imgBase64Path;
-                    console.log(this.cardImageBase64);
+                    
                     this.isImageSaved = true;
                     // this.previewImagePath = imgBase64Path;
                 }

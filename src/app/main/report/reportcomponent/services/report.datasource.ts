@@ -26,7 +26,7 @@ export class ReportDataSource extends DataSource<any>
     }
     
     loadReport(conncode: string, userid: number, pageindex: number, pagesize: number, categoryid: any, filterString: string, method: string) {
-        console.log("loadVehicles:", conncode, userid,  pagesize, pageindex, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -37,7 +37,7 @@ export class ReportDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
+            
             if (method == 'report_clist') {
                 this.reportService.report_cList = result.TrackingXLAPI.DATA;
             }
@@ -50,7 +50,7 @@ export class ReportDataSource extends DataSource<any>
     }
 
     loadGroup(conncode: string, userid: number, pageindex: number, pagesize: number, companyid: any, filterString: string, method: string) {
-        console.log("loadVehicles:", conncode, userid,  pagesize, pageindex, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -61,7 +61,7 @@ export class ReportDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
+            
 
             this.reportSubject.next(result.TrackingXLAPI.DATA);
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;

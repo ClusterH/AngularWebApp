@@ -63,7 +63,7 @@ export class DeleteDialogComponent {
         if (result) {
             this.maintservicesService.deleteMaintservice(this.maintservice.id)
             .subscribe((result: any) => {
-                console.log(result);
+                
                 
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     this.dataSource = new MaintservicesDataSource(this.maintservicesService);

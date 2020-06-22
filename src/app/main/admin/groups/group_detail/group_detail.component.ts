@@ -80,7 +80,7 @@ export class GroupDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.group);
+      
       this.pageType = 'new';
     }
 
@@ -88,7 +88,7 @@ export class GroupDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.group);
+    
   
     this.dataSourceCompany = new GroupDetailDataSource(this.groupDetailService);
     this.dataSourceAccount = new GroupDetailDataSource(this.groupDetailService);
@@ -119,7 +119,7 @@ export class GroupDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -128,7 +128,7 @@ export class GroupDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorAccount.page)
@@ -138,7 +138,7 @@ export class GroupDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -168,7 +168,7 @@ export class GroupDetailComponent implements OnInit
    
     let selected_element_id = this.groupForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.groupDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.groupDetailService.unit_clist_item[methodString];
 
@@ -184,7 +184,7 @@ export class GroupDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.groupForm.get('filterstring').setValue(this.filter_string);
 
@@ -201,7 +201,7 @@ export class GroupDetailComponent implements OnInit
       this.loadGroupDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -273,12 +273,12 @@ export class GroupDetailComponent implements OnInit
 
   setDatePicker(date) {
     let str = new Date(date).toISOString().substring(0, 10);
-    console.log(str);
+    
     return str;
   }
 
   saveGroup(): void {
-    console.log("saveGroup");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
 
@@ -287,7 +287,7 @@ export class GroupDetailComponent implements OnInit
     } else {
       this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/groups/groups']);
@@ -297,17 +297,17 @@ export class GroupDetailComponent implements OnInit
   }
 
   addGroup(): void {
-    console.log("addGroup");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.groupDetail);
+    
 
     if (this.groupDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.groupDetailService.saveGroupDetail(this.userConncode, this.userID, this.groupDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/groups/groups']);
@@ -333,10 +333,10 @@ export class GroupDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

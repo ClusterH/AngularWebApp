@@ -79,7 +79,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
 
     // this.insurancecompany = this.insurancecompanyDetailService.insurancecompany_detail;
     this.insurancecompany = localStorage.getItem("insurancecompany_detail")? JSON.parse(localStorage.getItem("insurancecompany_detail")) : '';
-    console.log(this.insurancecompany);
+    
       if ( this.insurancecompany != '' )
       {
         // this.insurancecompany = JSON.parse(localStorage.getItem("insurancecompany_detail"));
@@ -87,7 +87,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
       }
       else
       {
-        console.log(this.insurancecompany);
+        
         this.pageType = 'new';
       }
      
@@ -98,7 +98,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.insurancecompany);
+    
   
     this.dataSourceAccount        = new InsuranceCompanyDetailDataSource(this.insurancecompanyDetailService);
     this.dataSourceCompanyType       = new InsuranceCompanyDetailDataSource(this.insurancecompanyDetailService);
@@ -143,7 +143,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
         
     merge(this.paginatorAccount.page)
     .pipe(
@@ -152,7 +152,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorCompanyType.page)
@@ -162,7 +162,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorUserProfile.page)
@@ -172,7 +172,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
   }
@@ -208,7 +208,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.insurancecompanyForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.insurancecompanyDetailService.insurancecompany_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.insurancecompanyDetailService.insurancecompany_clist_item[methodString];
 
@@ -224,7 +224,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.insurancecompanyForm.get('filterstring').setValue(this.filter_string);
       // this.paginatorInsuranceCompany.pageIndex = 0;
@@ -240,7 +240,7 @@ export class InsuranceCompanyDetailComponent implements OnInit
       this.loadInsuranceCompanyDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -343,17 +343,17 @@ export class InsuranceCompanyDetailComponent implements OnInit
   }
 
   saveInsuranceCompany(): void {
-    console.log("saveInsuranceCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.insurancecompanyDetail);
+    
 
     if (this.insurancecompanyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
@@ -363,17 +363,17 @@ export class InsuranceCompanyDetailComponent implements OnInit
   }
 
   addInsuranceCompany(): void {
-    console.log("addInsuranceCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.insurancecompanyDetail);
+    
 
     if (this.insurancecompanyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.insurancecompanyDetailService.saveInsuranceCompanyDetail(this.userConncode, this.userID, this.insurancecompanyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/insurancecompanies/insurancecompanies']);
@@ -399,17 +399,17 @@ export class InsuranceCompanyDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
   }
 
    // navigatePageEvent() {
-  //   // console.log(this.index_number);
+  //   // 
   //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
   //   // this.dataSource.loadInsuranceCompanies(this.userconncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "insurancecompany_clist");
   // }

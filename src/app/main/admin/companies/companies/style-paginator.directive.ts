@@ -28,9 +28,9 @@ import {
   
     get showTotalPages(): number { return this._showTotalPages; }
     set showTotalPages(value: number) {
-      console.log(value);
+      
       this._showTotalPages = value % 2 == 0 ? value + 1 : value;
-      console.log(this._showTotalPages);
+      
     }
     private _showTotalPages = 2;
 
@@ -43,7 +43,7 @@ import {
     ) {
       //Sub to rerender buttons when next page and last page is used
       this.matPag.page.subscribe((v)=>{
-          console.log("V:", v);
+          
         this.switchPage(v.pageIndex);
       })
     }
@@ -68,7 +68,7 @@ import {
   
       //initialize next page and last page buttons
       if (this._buttons.length == 0) {
-          // console.log("VR: ", this.vr);
+          // 
         let nodeArray = this.vr.element.nativeElement.childNodes[0].childNodes[0]
           .childNodes[2].childNodes;
         setTimeout(() => {
@@ -97,7 +97,7 @@ import {
       }
   
       let dots = false;
-      // console.log("Get Number: ",this.matPag.getNumberOfPages())
+      // 
       if(this.matPag.getNumberOfPages() > 0) {
   
         for (let i = 0; i < this.matPag.getNumberOfPages(); i = i + 1) {
@@ -139,19 +139,19 @@ import {
         case pageIndex:
           this.ren.setAttribute(linkBtn, "disabled", "disabled");
           this.ren.listen(linkBtn, "click", () => {
-            console.log("paging_number", pageIndex);
+            
             this.switchPage(pageIndex);
         });
           break;
         case this._pageGapTxt:
           this.ren.listen(linkBtn, "click", () => {
-              console.log("pagGap");
+              
             this.switchPage(this._currentPage + this._showTotalPages);
           });
           break;
         default:
           this.ren.listen(linkBtn, "click", () => {
-              console.log("default:", i);
+              
             this.switchPage(i);
           });
           break;
@@ -167,12 +167,12 @@ import {
       this._rangeStart = this._currentPage - this._showTotalPages / 2;
       this._rangeEnd = this._currentPage + this._showTotalPages / 2;
       // this.dataSource = new CompaniesDataSource(this._adminCompaniesService);
-      // console.log("range_start", this.matPag.page);
+      // 
       this.buildPageNumbers();
     }
   
     private switchPage(i: number): void {
-        console.log("switchPage:", i);
+        
       this._currentPage = i;
       this.matPag.pageIndex = i;
       this.companyComponent.actionPageIndexbutton(i);

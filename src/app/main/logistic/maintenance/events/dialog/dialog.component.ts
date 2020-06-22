@@ -60,7 +60,7 @@ export class CourseDialogComponent implements OnInit {
         if (result) {
             this.eventsService.deleteEvent(this.event.id)
             .subscribe((result: any) => {
-                console.log(result);
+                
                 
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     this.dataSource = new EventsDataSource(this.eventsService);

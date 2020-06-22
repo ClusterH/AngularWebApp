@@ -28,7 +28,7 @@ export class ReportResultDataSource extends DataSource<any>
     }
     
     loadReportResult(conncode: string, userid: number, pageindex: number, pagesize: number) {
-        console.log("loadVehicles:", conncode, userid,  pagesize, pageindex );
+        
         this.displayedColumns = [];
 
         this.loadingSubject.next(true);
@@ -41,7 +41,7 @@ export class ReportResultDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log(result);
+            
 
             if (result.responseCode == 100) {
                 for(let column in result.TrackingXLAPI.DATA[0]) {
@@ -54,7 +54,7 @@ export class ReportResultDataSource extends DataSource<any>
                     }
                 }
     
-                console.log(this.displayedColumns);
+                
     
                 this.reportSubject.next(result.TrackingXLAPI.DATA);
                 this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;

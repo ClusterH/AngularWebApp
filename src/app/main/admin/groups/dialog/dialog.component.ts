@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("group_detail", JSON.stringify(this.group));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("group_detail")));
+            
     
             this.router.navigate(['admin/groups/group_detail']);
         } else if( this.flag == "delete") {

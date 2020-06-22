@@ -37,7 +37,7 @@ export class CompanyDetailService
             .set('pagesize', pagesize.toString())
             .set('method', method.toString());
             
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -52,7 +52,7 @@ export class CompanyDetailService
             .set('name', `^${name}^`) 
             .set('method', method.toString());
             
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -98,7 +98,7 @@ export class CompanyDetailService
             .set('hasprivatelabel', companyDetail.hasprivatelabel.toString())
             .set('method', 'company_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -136,7 +136,7 @@ export class CompanyDetailService
         //     'method': 'unit_save'
         // }
         // let objects = JSON.stringify(params_detail);
-        // console.log(objects);
+        // 
         // alert(objects);
 
        
@@ -148,13 +148,13 @@ export class CompanyDetailService
     //     return new Promise((resolve, reject) => {
     //         if ( this.routeParams.id === 'new' )
     //         {
-    //             console.log("new:", this.routeParams);
+    //             
     //             this.onProductChanged.next(false);
     //             resolve(false);
     //         }
     //         else
     //         {
-    //             console.log("edit:", this.routeParams);
+    //             
 
     //             // this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
     //             //     .subscribe((response: any) => {
@@ -195,7 +195,7 @@ export class CompanyDetailService
     //                     };
     //                     this.onProductChanged.next(this.company);
     //                     resolve(this.company);
-    //                     console.log(this.company);
+    //                     
     //                 // }, reject);
     //         }
     //     });

@@ -33,7 +33,7 @@ export class ServiceitemsService
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -50,7 +50,7 @@ export class ServiceitemsService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -61,7 +61,7 @@ export class ServiceitemsService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -96,7 +96,7 @@ export class ServiceitemsService
     }
 
     getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        console.log(pageindex, pagesize,  companyid);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
@@ -107,7 +107,7 @@ export class ServiceitemsService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -123,7 +123,7 @@ export class ServiceitemsService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -146,7 +146,7 @@ export class ServiceitemsService
             .set('isactive', serviceitemDetail.isactive.toString())
             .set('method', 'maintserviceitem_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -167,7 +167,7 @@ export class ServiceitemsService
                 .set('id', id.toString())
                 .set('method', "maintserviceitem_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

@@ -37,7 +37,7 @@ export class InsuranceCompanyDetailService
             .set('pagesize', pagesize.toString())
             .set('method', method.toString());
             
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -52,7 +52,7 @@ export class InsuranceCompanyDetailService
             .set('name', `^${name}^`) 
             .set('method', method.toString());
             
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -98,7 +98,7 @@ export class InsuranceCompanyDetailService
             .set('hasprivatelabel', insurancecompanyDetail.hasprivatelabel.toString())
             .set('method', 'company_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -113,13 +113,13 @@ export class InsuranceCompanyDetailService
     //     return new Promise((resolve, reject) => {
     //         if ( this.routeParams.id === 'new' )
     //         {
-    //             console.log("new:", this.routeParams);
+    //             
     //             this.onProductChanged.next(false);
     //             resolve(false);
     //         }
     //         else
     //         {
-    //             console.log("edit:", this.routeParams);
+    //             
 
     //             // this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
     //             //     .subscribe((response: any) => {
@@ -160,7 +160,7 @@ export class InsuranceCompanyDetailService
     //                     };
     //                     this.onProductChanged.next(this.insurancecompany);
     //                     resolve(this.insurancecompany);
-    //                     console.log(this.insurancecompany);
+    //                     
     //                 // }, reject);
     //         }
     //     });

@@ -83,7 +83,7 @@ export class SimcardDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.simcard);
+    
     
     this.dataSourceCarrier    = new SimcardDetailDataSource(this.simcardDetailService);
 
@@ -107,7 +107,7 @@ export class SimcardDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorCarrier.page)
     .pipe(
@@ -116,7 +116,7 @@ export class SimcardDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
     
   }
@@ -142,7 +142,7 @@ export class SimcardDetailComponent implements OnInit
    
     let selected_element_id = this.simcardForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.simcardDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.simcardDetailService.unit_clist_item[methodString];
 
@@ -158,7 +158,7 @@ export class SimcardDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.simcardForm.get('filterstring').setValue(this.filter_string);
   
@@ -175,7 +175,7 @@ export class SimcardDetailComponent implements OnInit
       this.loadSimcardDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -239,17 +239,17 @@ export class SimcardDetailComponent implements OnInit
   }
 
   saveSimcard(): void {
-    console.log("saveSimcard");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.simcardDetail);
+    
 
     if (this.simcardDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/simcards/simcards']);
@@ -259,17 +259,17 @@ export class SimcardDetailComponent implements OnInit
   }
 
   addSimcard(): void {
-    console.log("addSimcard");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.simcardDetail);
+    
 
     if (this.simcardDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.simcardDetailService.saveSimcardDetail(this.userConncode, this.userID, this.simcardDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/simcards/simcards']);
@@ -295,10 +295,10 @@ export class SimcardDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

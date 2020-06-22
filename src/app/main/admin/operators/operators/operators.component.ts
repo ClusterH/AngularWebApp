@@ -102,7 +102,7 @@ export class OperatorsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).operators;
 
-        console.log(this.userConncode, this.userID);
+        
 
 
         //Load the translations
@@ -119,7 +119,7 @@ export class OperatorsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -129,14 +129,14 @@ export class OperatorsComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadOperators(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -145,18 +145,18 @@ export class OperatorsComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new OperatorsDataSource(this._adminOperatorsService);
         this.dataSource.loadOperators(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Operator_Tlist");
     }
 
     onRowClicked(operator) {
-        console.log('Row Clicked:', operator);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -166,7 +166,7 @@ export class OperatorsComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadOperators(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Operator_Tlist");
     }
 
@@ -208,9 +208,9 @@ export class OperatorsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
@@ -231,9 +231,9 @@ export class OperatorsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }

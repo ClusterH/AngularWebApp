@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit
 
     ngOnInit(): void
     {
-        console.log("Login Component:");
+        
         this.loginForm = this._formBuilder.group({
             email   : ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit
         });
 
         if (localStorage.getItem('userInfo_email')) {
-            console.log(this.loginForm.get('email').setValue(JSON.parse(localStorage.getItem('userInfo_email'))))
+            
             this.loginForm.get('email').setValue(JSON.parse(localStorage.getItem('userInfo_email')));
             this.loginForm.get('password').setValue(JSON.parse(localStorage.getItem('userInfo_pwd')));
             this.loginForm.get('remember').setValue(true);
@@ -142,14 +142,14 @@ export class LoginComponent implements OnInit
             if (localStorage.getItem('userInfo_email')) {
                 localStorage.removeItem('userInfo_email');
                 localStorage.removeItem('userInfo_pwd');
-                console.log("removed");
+                
             }
         }
 
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(first())
             .subscribe((res: any) => {
-                console.log(res);
+                
                 if (res.responseCode == 100) {
                     this.isHideNaveItem(res.TrackingXLAPI.DATA.conncode, res.TrackingXLAPI.DATA.id);
                 }
@@ -163,7 +163,7 @@ export class LoginComponent implements OnInit
     isHideNaveItem(conncode: string, id: number) {
         this.authService.getUserObject(conncode, id)
         .subscribe((res: any) => {
-            console.log(res);
+            
             if (res.responseCode == 100) {
                 this.isHideNavList = res.TrackingXLAPI.DATA1;
                 this.userObjectList = res.TrackingXLAPI.DATA;

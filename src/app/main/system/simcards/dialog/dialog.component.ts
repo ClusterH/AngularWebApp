@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.simcard = simcard;
         this.flag = flag;
-        console.log(this.simcard);
+        
     }
 
     ngOnInit() {
@@ -51,7 +51,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("simcard_detail", JSON.stringify(this.simcard));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("simcard_detail")));
+            
     
             this.router.navigate(['system/simcards/simcard_detail']);
         } else if( this.flag == "delete") {

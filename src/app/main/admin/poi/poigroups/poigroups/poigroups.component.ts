@@ -100,7 +100,7 @@ export class PoigroupsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -123,18 +123,18 @@ export class PoigroupsComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new PoigroupsDataSource(this._adminPoigroupsService);
         this.dataSource.loadPoigroups(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poigroup_Tlist");
     }
 
     onRowClicked(poigroup) {
-        console.log('Row Clicked:', poigroup);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -184,16 +184,16 @@ export class PoigroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicatePoigroup(poigroup: any): void
     {
-        console.log("first:", poigroup)
+        
         
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -209,7 +209,7 @@ export class PoigroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
 
             }

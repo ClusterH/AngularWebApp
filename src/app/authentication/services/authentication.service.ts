@@ -31,14 +31,14 @@ export class AuthService
             .set('email', email)
             .set('password', password)
 
-        console.log('params', params);
+        
         // http://trackingxlapi.polarix.com/AuthenticateUser.ashx?{email:%22polarix@polarixusa.com%22,password:%22f0r3s1ght01!%22}
         return this._httpClient.get('http://trackingxlapi.polarix.com/AuthenticateUser.ashx',{
             headers: headers,   
             params: params
         })
         .pipe(map(user => {
-            console.log( user);
+            
             if (user) {
                 localStorage.setItem('user_info', JSON.stringify(user));
             }
@@ -49,7 +49,7 @@ export class AuthService
     }
 
     getUserObject(conncode: string, id: number) {
-        console.log(conncode, id)
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
        
@@ -58,7 +58,7 @@ export class AuthService
             .set('id', id.toString())
             .set('method', 'user_Object');
 
-        console.log('params', params);
+        
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
             params: params
@@ -67,7 +67,7 @@ export class AuthService
 
     logOut() {
         // remove user from local storage and set current user to null
-        console.log("logout");
+        
        
         localStorage.removeItem('user_info');
 

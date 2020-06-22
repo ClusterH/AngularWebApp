@@ -26,14 +26,14 @@ export class PoigroupDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log(this.current_CompanyID, name, method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         if(name == '') {
             if (method == "GetGroupIncludedPOIs" || method == "GetGroupExcludedPOIs") {
                 if (this.current_CompanyID > 0) {
-                    console.log(this.current_CompanyID);
+                    
                     let params = new HttpParams()
                         .set('conncode', conncode.toString())
                         .set('userid', userid.toString())
@@ -47,7 +47,7 @@ export class PoigroupDetailService
                         params:  params
                     });
                 } else if (this.current_poiGroupID > 0){
-                    console.log(method, this.current_poiGroupID);
+                    
                     let params = new HttpParams()
                         .set('conncode', conncode.toString())
                         .set('userid', userid.toString())
@@ -62,7 +62,7 @@ export class PoigroupDetailService
                     });
                 }
             } else {
-                console.log(name, method);
+                
                 let params = new HttpParams()
                     .set('conncode', conncode.toString())
                     .set('userid', userid.toString())
@@ -78,7 +78,7 @@ export class PoigroupDetailService
         } else {
             if (method == "GetGroupIncludedPOIs" || method == "GetGroupExcludedPOIs") {
                 if (this.current_CompanyID > 0) {
-                    console.log(this.current_CompanyID);
+                    
                     let params = new HttpParams()
                         .set('conncode', conncode.toString())
                         .set('userid', userid.toString())
@@ -150,7 +150,7 @@ export class PoigroupDetailService
     }
 
     addPoiToGroup(conncode: string, userid: number, poiArray: any = []): Observable<any> {
-        console.log(poiArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
@@ -166,7 +166,7 @@ export class PoigroupDetailService
     }
 
     deletePoiToGroup(conncode: string, userid: number, poiArray: any = []): Observable<any> {
-        console.log(poiArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {

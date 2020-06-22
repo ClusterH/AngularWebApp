@@ -23,7 +23,7 @@ export class DevicesDataSource extends DataSource<any>
     }
 
     loadDevices(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadDevices:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type

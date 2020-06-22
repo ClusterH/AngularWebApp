@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.account = account;
         this.flag = flag;
-        console.log(this.account);
+        
     }
 
     ngOnInit() {
@@ -54,7 +54,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("account_detail", JSON.stringify(this.account));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("account_detail")));
+            
     
             this.router.navigate(['system/accounts/account_detail']);
         } else if( this.flag == "delete") {

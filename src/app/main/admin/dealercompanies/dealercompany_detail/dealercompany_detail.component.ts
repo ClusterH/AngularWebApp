@@ -79,7 +79,7 @@ export class DealerCompanyDetailComponent implements OnInit
 
     // this.dealercompany = this.dealercompanyDetailService.dealercompany_detail;
     this.dealercompany = localStorage.getItem("dealercompany_detail")? JSON.parse(localStorage.getItem("dealercompany_detail")) : '';
-    console.log(this.dealercompany);
+    
       if ( this.dealercompany != '' )
       {
         // this.dealercompany = JSON.parse(localStorage.getItem("dealercompany_detail"));
@@ -87,7 +87,7 @@ export class DealerCompanyDetailComponent implements OnInit
       }
       else
       {
-        console.log(this.dealercompany);
+        
         this.pageType = 'new';
       }
 
@@ -98,7 +98,7 @@ export class DealerCompanyDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.dealercompany);
+    
   
     this.dataSourceAccount        = new DealerCompanyDetailDataSource(this.dealercompanyDetailService);
     this.dataSourceCompanyType       = new DealerCompanyDetailDataSource(this.dealercompanyDetailService);
@@ -143,7 +143,7 @@ export class DealerCompanyDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
         
     merge(this.paginatorAccount.page)
     .pipe(
@@ -152,7 +152,7 @@ export class DealerCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorCompanyType.page)
@@ -162,7 +162,7 @@ export class DealerCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorUserProfile.page)
@@ -172,7 +172,7 @@ export class DealerCompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
   }
@@ -208,7 +208,7 @@ export class DealerCompanyDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.dealercompanyForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.dealercompanyDetailService.dealercompany_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.dealercompanyDetailService.dealercompany_clist_item[methodString];
 
@@ -224,7 +224,7 @@ export class DealerCompanyDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.dealercompanyForm.get('filterstring').setValue(this.filter_string);
       // this.paginatorDealerCompany.pageIndex = 0;
@@ -240,7 +240,7 @@ export class DealerCompanyDetailComponent implements OnInit
       this.loadDealerCompanyDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -339,16 +339,16 @@ export class DealerCompanyDetailComponent implements OnInit
   }
 
   saveDealerCompany(): void {
-    console.log("saveDealerCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.dealercompanyDetail);
+    
     if (this.dealercompanyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/dealercompanies/dealercompanies']);
@@ -358,16 +358,16 @@ export class DealerCompanyDetailComponent implements OnInit
   }
 
   addDealerCompany(): void {
-    console.log("addDealerCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.dealercompanyDetail);
+    
     if (this.dealercompanyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.dealercompanyDetailService.saveDealerCompanyDetail(this.userConncode, this.userID, this.dealercompanyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/dealercompanies/dealercompanies']);
@@ -393,17 +393,17 @@ export class DealerCompanyDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
   }
 
    // navigatePageEvent() {
-  //   // console.log(this.index_number);
+  //   // 
   //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
   //   // this.dataSource.loadDealerCompanies(this.userConncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "dealercompany_clist");
   // }

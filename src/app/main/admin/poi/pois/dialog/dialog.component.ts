@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("poi_detail", JSON.stringify(this.poi));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("poi_detail")));
+            
     
             this.router.navigate(['admin/poi/pois/poi_detail']);
         } else if( this.flag == "delete") {

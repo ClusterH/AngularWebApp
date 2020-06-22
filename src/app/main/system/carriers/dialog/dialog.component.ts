@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.carrier = carrier;
         this.flag = flag;
-        console.log(this.carrier);
+        
     }
 
     ngOnInit() {
@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("carrier_detail", JSON.stringify(this.carrier));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("carrier_detail")));
+            
     
             this.router.navigate(['system/carriers/carrier_detail']);
         } else if( this.flag == "delete") {

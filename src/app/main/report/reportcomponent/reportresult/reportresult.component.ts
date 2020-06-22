@@ -76,17 +76,17 @@ export class ReportResultComponent implements OnInit
     {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        console.log(this.userConncode, this.userID);
+        
 
         this.entered_report_params = JSON.parse(localStorage.getItem('report_result'));
-        console.log(this.entered_report_params);
+        
 
         let reportName = this.entered_report_params.reportname.split('_');
         for (let i = 1; i < reportName.length; i++) {
             this.reportName += reportName[i] + ' ';
         }
         
-        console.log(this.reportName);
+        
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
@@ -101,7 +101,7 @@ export class ReportResultComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:user");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -111,18 +111,18 @@ export class ReportResultComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.paginator.page)
         .pipe(
            tap(() =>{
-               console.log("afterviewInit");
+               
                 this.dataSource = new ReportResultDataSource(this.reportResultService);
                 this.dataSource.loadReportResult(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize);
            })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -131,7 +131,7 @@ export class ReportResultComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new ReportResultDataSource(this.reportResultService);
         setTimeout(() => {
@@ -140,11 +140,11 @@ export class ReportResultComponent implements OnInit
     }
 
     onRowClicked(user) {
-        console.log('Row Clicked:', user);
+        
     }
 
     // selectedFilter() {
-    //     console.log(this.selected, this.filter_string);
+    //     
     //     if (this.selected == '') {
     //         alert("Please choose Field for filter!");
     //     } else {
@@ -154,7 +154,7 @@ export class ReportResultComponent implements OnInit
     // }
 
     // actionPageIndexbutton(pageIndex: number) {
-    //     console.log(pageIndex);
+    //     
     //     // this.dataSource.loadUsers(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
     // }
 

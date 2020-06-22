@@ -86,7 +86,7 @@ export class UserProfileDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.userprofile);
+    
 
     this.dataSourceCompany = new UserProfileDetailDataSource(this.userprofileDetailService);
     this.dataSourceCompany.loadUserProfileDetail(this.userConncode, this.userID, 0, 10, '', "company_clist");
@@ -107,7 +107,7 @@ export class UserProfileDetailComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.responseCode == 100) {
           this.get_module_access = res.TrackingXLAPI.DATA;
-          console.log(this.get_module_access);
+          
 
           for (let module in this.get_module_access) {
 
@@ -123,10 +123,10 @@ export class UserProfileDetailComponent implements OnInit {
 
       this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofileDetailService.current_userprofileID, 2)
       .subscribe((res: any) => {
-        console.log(res);
+        
         if (res.responseCode == 100) {
           this.get_report_access = res.TrackingXLAPI.DATA;
-          console.log(this.get_report_access);
+          
 
           for (let report in this.get_report_access) {
 
@@ -142,10 +142,10 @@ export class UserProfileDetailComponent implements OnInit {
 
       this.userprofileDetailService.getPrivilegeAccess(this.userConncode, this.userID, this.userprofileDetailService.current_userprofileID, 4)
       .subscribe((res: any) => {
-        console.log(res);
+        
         if (res.responseCode == 100) {
           this.get_command_access = res.TrackingXLAPI.DATA;
-          console.log(this.get_command_access);
+          
 
           for (let command in this.get_command_access) {
 
@@ -164,7 +164,7 @@ export class UserProfileDetailComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorCompany.page)
       .pipe(
@@ -173,7 +173,7 @@ export class UserProfileDetailComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log(res);
+        
       });
   }
 
@@ -186,11 +186,11 @@ export class UserProfileDetailComponent implements OnInit {
       this.loadUserProfileDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.userprofileForm.get('filterstring').setValue(this.filter_string);
 
@@ -218,7 +218,7 @@ export class UserProfileDetailComponent implements OnInit {
 
     let selected_element_id = this.userprofileForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.userprofileDetailService.unit_clist_item[methodString], selected_element_id);
+    
 
     let clist = this.userprofileDetailService.unit_clist_item[methodString];
 
@@ -234,7 +234,7 @@ export class UserProfileDetailComponent implements OnInit {
   }
 
    setValues() {
-    console.log("setValue");
+    
     this.userprofileForm.get('name').setValue(this.userprofile.name);
     this.userprofileForm.get('company').setValue(this.userprofile.companyid);
 
@@ -287,17 +287,17 @@ export class UserProfileDetailComponent implements OnInit {
   }
 
   saveUserProfile(): void {
-    console.log("saveUserProfile");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.userprofileDetail);
+    
 
     if (this.userprofileDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/userprofiles/userprofiles']);
@@ -307,17 +307,17 @@ export class UserProfileDetailComponent implements OnInit {
   }
 
   addUserProfile(): void {
-    console.log("addUserProfile");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.userprofileDetail);
+    
 
     if (this.userprofileDetail.name == '') {
       alert('Please enter Detail Name.')
     } else {
       this.userprofileDetailService.saveUserProfileDetail(this.userConncode, this.userID, this.userprofileDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/userprofiles/userprofiles']);
@@ -342,10 +342,10 @@ export class UserProfileDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
+        
 
       } else {
-        console.log("FAIL:", result);
+        
       }
     });
   }

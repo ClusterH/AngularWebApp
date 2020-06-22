@@ -26,7 +26,7 @@ export class DevConfigDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -38,7 +38,7 @@ export class DevConfigDetailService
             .set('pageindex', (pageindex + 1).toString())
             .set('pagesize', pagesize.toString())
             .set('method', method.toString());
-            console.log(params);
+            
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
                 params: params
@@ -52,7 +52,7 @@ export class DevConfigDetailService
             .set('pagesize', pagesize.toString())
             .set('name', `^${name}^`) 
             .set('method', method.toString());
-            console.log(params);
+            
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
                 params: params
@@ -63,7 +63,7 @@ export class DevConfigDetailService
 
     getDevConfigCmd(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, filterstring: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -76,7 +76,7 @@ export class DevConfigDetailService
             .set('pagesize', pagesize.toString())
             .set('method', method.toString());
 
-            console.log(params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -92,7 +92,7 @@ export class DevConfigDetailService
             .set(`${name}`, `^${filterstring}^`)
             .set('method', method.toString());
 
-            console.log(params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -118,7 +118,7 @@ export class DevConfigDetailService
             .set('lastmodifieddate', devconfigDetail.lastmodifieddate.toString())
             .set('method', 'devconfig_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -138,7 +138,7 @@ export class DevConfigDetailService
             .set('devconfigid', devconfigid.toString())
             .set('method', 'devconfigcmd_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

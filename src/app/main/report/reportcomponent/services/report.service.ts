@@ -31,7 +31,7 @@ export class ReportService
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
                 
-                console.log('params', params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -46,7 +46,7 @@ export class ReportService
                     .set('categoryid', categoryid.toString())
                     .set('method', method.toString());
                 
-                console.log('params', params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -63,7 +63,7 @@ export class ReportService
                 .set('name', `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-                console.log('params', params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -79,7 +79,7 @@ export class ReportService
                 .set('name', `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-                console.log('params', params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -103,7 +103,7 @@ export class ReportService
         .set('method', apimethod.toString())
         .set('requesttype', 'param');
        
-        console.log('params', params);
+        
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
@@ -125,7 +125,7 @@ export class ReportService
             .set('name', `^${filterString}^`.toString())
             .set('method', method.toString());
            
-            console.log('params', params);
+            
     
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -141,7 +141,7 @@ export class ReportService
             .set('name', `^${filterString}^`.toString())
             .set('method', method.toString());
            
-            console.log('params', params);
+            
     
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -170,7 +170,7 @@ export class ReportService
                 .set('id', id.toString())
                 .set('method', "unit_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

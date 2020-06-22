@@ -62,19 +62,18 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        console.log("card_dialog: ", this._data);
+        
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
-                console.log(this.board);
 
                 this.card = this.board.cards[0].find((_card) => {
-                    console.log("AAAAAAAAAAAAAA", this._data.cardId, _card.id);
+                    
                     return this._data.cardId === _card.id;
                 });
 
-                console.log(this.card);
+                this.dateConvert(this.card.due);
 
                 this.list = this.board.lists.find((_list) => {
                     return this._data.listId === _list.id;
@@ -102,7 +101,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     removeDueDate(): void
     {
         this.card.due = '';
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -112,7 +111,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     {
         this.card.subscribed = !this.card.subscribed;
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -131,7 +130,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
             this.card.idattachmentcover = attachmentId;
         }
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -148,7 +147,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
 
         this.card.attachments.splice(this.card.attachments.indexOf(attachment), 1);
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -160,7 +159,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     {
         this.card.checklists.splice(this.card.checklists.indexOf(checklist), 1);
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -194,7 +193,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         this.card.checkitems = allCheckItems;
         this.card.checkitemChecked = allCheckedItems;
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -209,7 +208,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
 
         this.updateCheckedCount(checklist);
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -238,7 +237,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
 
         form.setValue({checkItem: ''});
 
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -258,7 +257,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         form.setValue({checklistTitle: ''});
         form.resetForm();
         this.checklistMenu.closeMenu();
-        this.updateCard();
+        // this.updateCard();
     }
 
     /**
@@ -318,6 +317,38 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      */
     updateCard(): void
     {
+        console.log(this.card.due);
+      
+        this.card.due = this.dateFormat(new Date(this.card.due));
+        console.log(this.card.due);
+
         this._scrumboardService.updateCard(this.card, this.list.id, this.board.id);
     }
+
+    dateFormat(date: any) {
+        let str = '';
+
+        if (date != '') {
+            str = 
+              ("00" + (date.getMonth() + 1)).slice(-2) 
+              + "/" + ("00" + date.getDate()).slice(-2) 
+              + "/" + date.getFullYear() + " " 
+              + ("00" + date.getHours()).slice(-2) + ":" 
+              + ("00" + date.getMinutes()).slice(-2) 
+            }
+
+        return str;
+    }
+
+    dateConvert(date: string) {
+        let month = date.split(' ')[0];
+        let day = date.split(' ')[1];
+        let year = date.split(' ')[2];
+        let time = date.split("  ")[1];
+
+        console.log(year, month, day, time);
+
+
+    }
+
 }

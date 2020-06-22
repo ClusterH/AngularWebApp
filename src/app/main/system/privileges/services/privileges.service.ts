@@ -30,7 +30,7 @@ export class PrivilegesService
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -47,7 +47,7 @@ export class PrivilegesService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -68,7 +68,7 @@ export class PrivilegesService
                 .set('id', id.toString())
                 .set('method', "privilege_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

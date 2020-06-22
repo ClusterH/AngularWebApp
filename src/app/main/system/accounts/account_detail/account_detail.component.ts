@@ -84,7 +84,7 @@ export class AccountDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.account);
+    
     
     this.dataSourceBillingStatus = new AccountDetailDataSource(this.accountDetailService);
 
@@ -111,7 +111,7 @@ export class AccountDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorBillingStatus.page)
     .pipe(
@@ -120,7 +120,7 @@ export class AccountDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
     
   }
@@ -146,7 +146,7 @@ export class AccountDetailComponent implements OnInit
    
     let selected_element_id = this.accountForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.accountDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.accountDetailService.unit_clist_item[methodString];
 
@@ -227,17 +227,17 @@ export class AccountDetailComponent implements OnInit
   }
 
   saveAccount(): void {
-    console.log("saveAccount");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.accountDetail);
+    
 
     if (this.accountDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/accounts/accounts']);
@@ -247,17 +247,17 @@ export class AccountDetailComponent implements OnInit
   }
 
   addAccount(): void {
-    console.log("addAccount");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.accountDetail);
+    
 
     if (this.accountDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.accountDetailService.saveAccountDetail(this.userConncode, this.userID, this.accountDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/accounts/accounts']);
@@ -283,10 +283,10 @@ export class AccountDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

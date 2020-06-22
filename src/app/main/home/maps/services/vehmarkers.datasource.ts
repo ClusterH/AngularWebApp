@@ -35,7 +35,7 @@ export class VehMarkersDataSource extends DataSource<any>
     }
 
     loadVehicles(conncode: string, userid: number) {
-        console.log("loadVehicles:", conncode, userid );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -46,7 +46,7 @@ export class VehMarkersDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log("result", result);          
+            
            
             this.vehmarkersSubject.next(result.TrackingXLAPI.DATA); 
         });
@@ -54,7 +54,7 @@ export class VehMarkersDataSource extends DataSource<any>
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source", collectionViewer);
+        
         return this.vehmarkersSubject.asObservable();
     }
  

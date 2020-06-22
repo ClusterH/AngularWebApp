@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("make_detail", JSON.stringify(this.make));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("make_detail")));
+            
     
             this.router.navigate(['admin/makes/make_detail']);
         } else if( this.flag == "delete") {

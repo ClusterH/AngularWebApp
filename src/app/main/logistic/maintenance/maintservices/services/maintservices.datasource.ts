@@ -22,7 +22,7 @@ export class MaintservicesDataSource extends DataSource<any>
     }
 
     loadMaintservices(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadMaintservices:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -33,24 +33,24 @@ export class MaintservicesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log("result", result);
-            console.log("page_size", pagesize);
+            
+            
            this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
            this.maintservicesService.maintserviceList = result.TrackingXLAPI.DATA;
 
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           console.log(this.total_page);
+           
 
-           console.log(this.totalLength);
+           
         //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );
     }
 
     loadCompanyDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, method );
+        
         if (!name) {
             name = '';
         }
@@ -64,25 +64,25 @@ export class MaintservicesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            console.log("unit_clist: ", this.maintservicesService.unit_clist_item);
+            
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadGroupDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, companyid, method );
+        
         if (!name) {
             name = '';
         }
@@ -96,19 +96,19 @@ export class MaintservicesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            // console.log("unit_clist: ", this.eventDetailService.unit_clist_item);
+            // 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
@@ -128,7 +128,7 @@ export class MaintservicesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
            
-            console.log(method, result);
+            
 
             this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
             this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
@@ -141,7 +141,7 @@ export class MaintservicesDataSource extends DataSource<any>
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source", collectionViewer);
+        
         return this.maintservicesSubject.asObservable();
     }
  

@@ -78,7 +78,7 @@ export class ModelDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.model);
+      
 
       this.pageType = 'new';
     }
@@ -87,7 +87,7 @@ export class ModelDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.model);
+    
   
     this.dataSourceMake              = new ModelDetailDataSource(this.modelDetailService);
     this.dataSourceTireConfiguration = new ModelDetailDataSource(this.modelDetailService);
@@ -111,7 +111,7 @@ export class ModelDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorMake.page)
     .pipe(
@@ -120,7 +120,7 @@ export class ModelDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
    
     merge(this.paginatorTireConfiguration.page)
@@ -130,7 +130,7 @@ export class ModelDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -161,7 +161,7 @@ export class ModelDetailComponent implements OnInit
    
     let selected_element_id = this.modelForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.modelDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.modelDetailService.unit_clist_item[methodString];
 
@@ -177,7 +177,7 @@ export class ModelDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.modelForm.get('filterstring').setValue(this.filter_string);
   
@@ -194,7 +194,7 @@ export class ModelDetailComponent implements OnInit
       this.loadModelDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -252,17 +252,17 @@ export class ModelDetailComponent implements OnInit
   }
 
   saveModel(): void {
-    console.log("saveModel");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.modelDetail);
+    
 
     if (this.modelDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/models/models']);
@@ -272,17 +272,17 @@ export class ModelDetailComponent implements OnInit
   }
 
   addModel(): void {
-    console.log("addModel");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.modelDetail);
+    
 
     if (this.modelDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.modelDetailService.saveModelDetail(this.userConncode, this.userID, this.modelDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/models/models']);
@@ -308,10 +308,10 @@ export class ModelDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

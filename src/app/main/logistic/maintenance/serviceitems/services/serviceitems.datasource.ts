@@ -22,7 +22,7 @@ export class ServiceitemsDataSource extends DataSource<any>
     }
 
     loadServiceitems(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string,method: string) {
-        console.log("loadServiceitems:", conncode, userid,  pagesize, pageindex, orderdirection, orderby, filterItem, filterString, method );
+        
         this.loadingSubject.next(true);
    
         // use pipe operator to chain functions with Observable type
@@ -33,24 +33,24 @@ export class ServiceitemsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            console.log("result", result);
-            console.log("page_size", pagesize);
+            
+            
            this.serviceitemsSubject.next(result.TrackingXLAPI.DATA);
            this.serviceitemsService.serviceitemList = result.TrackingXLAPI.DATA;
 
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           console.log(this.total_page);
+           
 
-           console.log(this.totalLength);
+           
         //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );
     }
 
     loadCompanyDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, method );
+        
         if (!name) {
             name = '';
         }
@@ -64,25 +64,25 @@ export class ServiceitemsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.serviceitemsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.serviceitemsService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            console.log("unit_clist: ", this.serviceitemsService.unit_clist_item);
+            
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
 
     loadGroupDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid, method: string) {
-        console.log("loadEvents:", conncode, userid,  pagesize, pageindex, name, companyid, method );
+        
         if (!name) {
             name = '';
         }
@@ -96,26 +96,26 @@ export class ServiceitemsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-           console.log("method:", method, result);
+           
        
             this.serviceitemsSubject.next(result.TrackingXLAPI.DATA);
-            console.log(result.TrackingXLAPI.DATA);
+            
             this.serviceitemsService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
           
-            // console.log("unit_clist: ", this.eventDetailService.unit_clist_item);
+            // 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
 
             this.page_index = pageindex + 1;
             this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
 
-            console.log(this.totalLength);   
+            
           }
         );
     }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("Connecting data source", collectionViewer);
+        
         return this.serviceitemsSubject.asObservable();
     }
  

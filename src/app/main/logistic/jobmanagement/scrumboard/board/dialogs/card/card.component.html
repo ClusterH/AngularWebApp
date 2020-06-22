@@ -175,7 +175,8 @@
             <div class="card-name px-24" fxLayout="row" fxLayoutAlign="start center">
                 <mat-form-field appearance="outline" class="w-100-p">
                     <mat-label>Title</mat-label>
-                    <input matInput [(ngModel)]="card.name" required (change)="updateCard()">
+                    <!-- <input matInput [(ngModel)]="card.name" required (change)="updateCard()"> -->
+                    <input matInput [(ngModel)]="card.name" required>
                 </mat-form-field>
             </div>
             <!-- / NAME -->
@@ -198,7 +199,9 @@
             <mat-form-field appearance="outline" class="w-100-p">
                 <mat-label>Description</mat-label>
                 <textarea matInput [(ngModel)]="card.description" columns="1"
-                          mat-maxlength="150" max-rows="4" (change)="updateCard()"></textarea>
+                          mat-maxlength="150" max-rows="4"></textarea>
+                <!-- <textarea matInput [(ngModel)]="card.description" columns="1"
+                          mat-maxlength="150" max-rows="4" (change)="updateCard()"></textarea> -->
             </mat-form-field>
         </div>
         <!-- / DESCRIPTION -->

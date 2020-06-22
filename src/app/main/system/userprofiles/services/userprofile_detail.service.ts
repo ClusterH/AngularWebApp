@@ -25,7 +25,7 @@ export class UserProfileDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -70,7 +70,7 @@ export class UserProfileDetailService
             .set('typeid', typeid.toString())
             .set('method', 'get_privilege_access');
         
-            console.log(params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
@@ -93,7 +93,7 @@ export class UserProfileDetailService
             .set('lastmodifieddate', userprofileDetail.lastmodifieddate.toString())
             .set('method', 'userprofile_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

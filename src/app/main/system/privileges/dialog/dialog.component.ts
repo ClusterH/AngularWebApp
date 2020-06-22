@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.privilege = privilege;
         this.flag = flag;
-        console.log(this.privilege);
+        
     }
 
     ngOnInit() {
@@ -51,7 +51,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("privilege_detail", JSON.stringify(this.privilege));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("privilege_detail")));
+            
     
             this.router.navigate(['system/privileges/privilege_detail']);
         } else if( this.flag == "delete") {

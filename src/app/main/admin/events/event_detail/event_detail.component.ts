@@ -121,13 +121,13 @@ export class EventDetailComponent implements OnInit
 
     this.event = localStorage.getItem("event_detail")? JSON.parse(localStorage.getItem("event_detail")) : '';
    
-    console.log(this.event);
+    
 
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
     this.userObjectList = JSON.parse(localStorage.getItem('userObjectList'));
 
-    console.log(this.userObjectList);
+    
 
     if ( this.event != '' )
     {
@@ -135,7 +135,7 @@ export class EventDetailComponent implements OnInit
       this.eventDetailService.current_eventID = this.event.id;
       this.event_detail = this.event;
 
-      console.log('event_detail', this.event_detail);
+      
       this.event_detail.conncode = this.userConncode;
       this.event_detail.userid= this.userID.toString();
       
@@ -155,7 +155,7 @@ export class EventDetailComponent implements OnInit
 
       this.event = this.event_detail;
 
-      console.log(this.event_detail);
+      
     }
 
     this.filter_string = '';
@@ -213,15 +213,15 @@ export class EventDetailComponent implements OnInit
   }
 
   isCheckedRow(row: any): boolean {
-    // console.log(row);
+    // 
     const found = this.unitSelection.selected.find(el => el.id === row.id);
-    // console.log("found: " + found);
+    // 
     if (found) { return true; }
     return false;
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorCompany.page)
     .pipe(
@@ -230,7 +230,7 @@ export class EventDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorGroup.page)
@@ -240,7 +240,7 @@ export class EventDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -306,7 +306,7 @@ export class EventDetailComponent implements OnInit
     let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
 
    
-    console.log(methodString, this.eventDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.eventDetailService.unit_clist_item[methodString];
 
@@ -322,10 +322,10 @@ export class EventDetailComponent implements OnInit
   }
 
   onConditionChange(selected: any){
-    console.log(selected.value);
+    
 
     let checkedCondition =  this.eventDetailService.eventConditionList.find((event: any) => event.evcode == selected.value);
-    console.log(checkedCondition);
+    
 
     if (checkedCondition !== undefined) {
       alert("This Event already exist. Please choose another new one!");
@@ -360,13 +360,13 @@ export class EventDetailComponent implements OnInit
             count++;	
             if (count == 1){
               inputon1 = i + 1;
-              console.log(inputon1);
+              
               this.eventForm.get('digitalinput1').setValue(inputon1.toString());
 
             }
             else {
               inputon2 =i +1;
-              console.log(inputon2);
+              
               this.eventForm.get('digitalinput2').setValue(inputon2.toString());
 
               return true;
@@ -381,7 +381,7 @@ export class EventDetailComponent implements OnInit
   }
 
   editEvCondition(evcondition: any) {
-    console.log(evcondition);
+    
     this.disable_condition = false;
     this.evType = 'old';
 
@@ -389,20 +389,20 @@ export class EventDetailComponent implements OnInit
     this.ev_condition = evcondition.evcode;
 
     if (this.ev_condition == 'EV_POI') {
-      console.log('poi Edit');
+      
       this.dataSourcePoi = new EventDetailDataSource(this.eventDetailService);
       this.dataSourcePoi.loadPoiZoneDetail(this.userConncode, this.userID, 0, 10, this.event.poi, this.event.companyid, this.event.groupid, "poiandgroup_clist");
       this.eventForm.get('poiandgroup').setValue(this.event_detail.poiid);
 
     } else if (this.ev_condition == 'EV_ZONE') {
-      console.log('zone Edit');
+      
 
       this.dataSourceZone = new EventDetailDataSource(this.eventDetailService);
       this.dataSourceZone.loadPoiZoneDetail(this.userConncode, this.userID, 0, 10, this.event.zone, this.event.companyid, this.event.groupid, "zoneandgroup_clist");
       this.eventForm.get('zoneandgroup').setValue(this.event_detail.zoneid);
 
     } else if (this.ev_condition == 'EV_SENSOR') {
-      console.log('sensor Edit');
+      
 
       this.dataSourceDigitalInput1 = new EventDetailDataSource(this.eventDetailService);
       this.dataSourceDigitalInput2 = new EventDetailDataSource(this.eventDetailService);
@@ -419,14 +419,14 @@ export class EventDetailComponent implements OnInit
           count++;	
           if (count == 1){
             inputon1 = i + 1;
-            console.log(inputon1);
+            
 
             this.eventForm.get('digitalinput1').setValue(inputon1.toString());
 
           }
           else {
             inputon2 = i + 1;
-            console.log(inputon2);
+            
 
             this.eventForm.get('digitalinput2').setValue(inputon2.toString());
 
@@ -441,7 +441,7 @@ export class EventDetailComponent implements OnInit
 
   deleteEvCondition(evcondition: any) {
     let deleteCondition =  this.eventDetailService.eventConditionList.findIndex((event: any) => event.evcode == evcondition.evcode);
-    console.log(deleteCondition);
+    
 
     if (deleteCondition > -1) {
       this.eventDetailService.eventConditionList.splice(deleteCondition, 1);
@@ -556,7 +556,7 @@ export class EventDetailComponent implements OnInit
   }
 
   onCompanyChange(event: any) {
-    console.log(event);
+    
     let current_companyID = this.eventForm.get('company').value;
 
     this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
@@ -566,7 +566,7 @@ export class EventDetailComponent implements OnInit
   }
 
   onGroupChange(event: any) {
-    console.log(event);
+    
     let current_companyID = this.eventForm.get('company').value;
     let current_groupID = this.eventForm.get('group').value;
     
@@ -576,7 +576,7 @@ export class EventDetailComponent implements OnInit
   }
 
   selectWholeCompany(event: any) {
-    console.log(event.checked);
+    
     
     let current_companyID = this.eventForm.get('company').value;
     let current_groupID = this.eventForm.get('group').value;
@@ -589,7 +589,7 @@ export class EventDetailComponent implements OnInit
 
     } else {
        this.loadUnitList_flag = true;
-       console.log(current_groupID);
+       
 
        if (current_groupID > 0) {
         this.event_detail.isfullcompany = 'false';
@@ -606,7 +606,7 @@ export class EventDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.eventForm.get('filterstring').setValue(this.filter_string);
 
@@ -623,7 +623,7 @@ export class EventDetailComponent implements OnInit
       this.loadEventDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -711,7 +711,7 @@ export class EventDetailComponent implements OnInit
 
       //POI Condition
       if (this.event_detail.ispoi == 'true') {
-        console.log("poi");
+        
         this.poi_condition = this.event.poicondition;
         // this.dataSourcePoi = new EventDetailDataSource(this.eventDetailService);
         // this.dataSourcePoi.loadPoiZoneDetail(this.userConncode, this.userID, 0, 10, this.event.poi, this.event.companyid, this.event.groupid, "poiandgroup_clist");
@@ -735,7 +735,7 @@ export class EventDetailComponent implements OnInit
       this.eventForm.get('group').setValue(this.event.groupid);
       let wholeCompany = this.event.isfullcompany? this.event.isfullcompany : this.event.isfullgroup;
       if (wholeCompany == 'true') {
-        console.log(wholeCompany);
+        
 
         this.eventForm.get('wholeCompany').setValue(true);
       
@@ -745,12 +745,12 @@ export class EventDetailComponent implements OnInit
   }
 
   checkMinHourDayUnit(time: number, unit: string) {
-    console.log(unit);
+    
     if (unit == 'minute') {
       return time;
       
     } else if (unit == 'hour') {
-      console.log( time* 60);
+      
       return time * 60;
 
     } else if (unit == 'day'){
@@ -779,22 +779,22 @@ export class EventDetailComponent implements OnInit
     if (Number(hours) < 10 ) {hours = "0" + hours};
     if (Number(minutes) < 10 ) {minutes = "0" + minutes};
 
-    console.log(hours + ':' + minutes);
+    
 
     return hours + ':' + minutes;
     
   }
 
   convertTimeToNumber(input: string) {
-    console.log(input);
+    
     
     let time = Number(input.split(':')[0]) * 60 + Number(input.split(':')[1]);
-    console.log(time);
+    
     return time;
   }
 
   onSensor1Change(event: any) {
-    console.log(event);
+    
     let sensor2ID = this.eventForm.get('digitalinput2').value;
     if (sensor2ID && sensor2ID == event.value) {
       alert('Please choose another with sensor2');
@@ -805,7 +805,7 @@ export class EventDetailComponent implements OnInit
   }
 
   onSensor2Change(event: any) {
-    console.log(event);
+    
     let sensor1ID = this.eventForm.get('digitalinput1').value;
     if (sensor1ID && sensor1ID == event.value) {
       alert('Please choose another with sensor1');
@@ -816,7 +816,7 @@ export class EventDetailComponent implements OnInit
   }
 
   addNewCondition() {
-    console.log('add new condition: ');
+    
     this.disable_condition = false;
 
   }
@@ -855,16 +855,16 @@ export class EventDetailComponent implements OnInit
         this.saveEvCondition('EV_SPEED', param_speed, type);
        
         if(this.flag) {
-          console.log('OK?');
+          
           this.event_detail.isspeed = 'true';
           this.event_detail.speed = (this.eventForm.get('speedinput').value).toString();
           this.event_detail.speedcondition = this.speed_condition;
 
-          console.log(this.event_detail.speed);
+          
   
           this.evType = 'old';
         } else {
-          console.log("Fail????????????");
+          
         }
 
         break;
@@ -1022,11 +1022,11 @@ export class EventDetailComponent implements OnInit
 
       // EV_POI
       case 'EV_POI':
-        console.log(this.eventForm.get('poiandgroup').value);
+        
         // const poiname = (this.eventForm.get('poiandgroup').value).name;
         const poiid = (this.eventForm.get('poiandgroup').value);
         
-        console.log(poiid);
+        
 
         let param_poi = {
           'conncode': this.userConncode.toString(),
@@ -1049,11 +1049,11 @@ export class EventDetailComponent implements OnInit
 
       // EV_POI
       case 'EV_ZONE':
-        console.log(this.eventForm.get('zoneandgroup').value);
+        
         // const zonename = (this.eventForm.get('zoneandgroup').value).name;
         const zoneid = (this.eventForm.get('zoneandgroup').value);
         
-        console.log( zoneid);
+        
 
         let param_zone = {
           'conncode': this.userConncode.toString(),
@@ -1097,7 +1097,7 @@ export class EventDetailComponent implements OnInit
         let input1id = (this.eventForm.get('digitalinput1').value);
         let input2id = (this.eventForm.get('digitalinput2').value);
 
-        console.log(input1id, input2id);
+        
 
         if (input1id == null) {
           alert('Sensor1 should be selected!');
@@ -1192,7 +1192,7 @@ export class EventDetailComponent implements OnInit
     if(evcode != '') {
       this.eventDetailService.saveEvCondition(param)
       .subscribe((res: any) => {
-        console.log(res);
+        
         if (res.responseCode == 100 || res.responseCode == 200) {
 
           this.eventForm.get('ev_condition').setValue('none');
@@ -1204,16 +1204,16 @@ export class EventDetailComponent implements OnInit
             this.eventDetailService.eventConditionList = this.eventDetailService.eventConditionList.concat(res.TrackingXLAPI.DATA);
           } else if (type == 'old') {
             let selectedCondition =  this.eventDetailService.eventConditionList.findIndex((event: any) => event.evcode == evcode);
-            console.log(selectedCondition);
+            
     
             this.eventDetailService.eventConditionList[selectedCondition].description = res.TrackingXLAPI.DATA[0].description;
           }
     
-          console.log(this.eventDetailService.eventConditionList);
+          
           if (this.pageType == 'new') {
             this.event_detail.name = this.eventForm.get('name').value;
 
-            console.log(this.event_detail);
+            
             if (this.event_detail.name == '') {
               alert('Please enter Detail Name')
             } else {
@@ -1221,10 +1221,10 @@ export class EventDetailComponent implements OnInit
 
               this.eventDetailService.saveEventDetail(this.event_detail)
               .subscribe((result: any) => {
-                console.log(result);
+                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
 
-                  console.log(result.TrackingXLAPI.DATA);
+                  
                   this.dataSourceEvCondition.loadEventCondition(this.userConncode, this.userID, result.TrackingXLAPI.DATA[0].id);
 
                   this.dataSourceEvCondition.eventsSubject.next(this.eventDetailService.eventConditionList);
@@ -1252,7 +1252,7 @@ export class EventDetailComponent implements OnInit
   }
  
   saveEvent(): void {
-    console.log("saveEvent");
+    
     this.getValues("save");
 
     if (this.event_detail.name == '') {
@@ -1263,11 +1263,11 @@ export class EventDetailComponent implements OnInit
       this.event_detail.companyid = this.eventForm.get('company').value;
       this.event_detail.groupid = this.eventForm.get('group').value;
 
-      console.log(this.event_detail);
+      
 
       this.eventDetailService.saveEventDetail(this.event_detail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/events/events']);
@@ -1277,16 +1277,16 @@ export class EventDetailComponent implements OnInit
   }
 
   addEvent(): void {
-    console.log("addEvent");
+    
     this.getValues("add");
-    console.log(this.event_detail);
+    
 
     if (this.event_detail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.eventDetailService.saveEventDetail(this.event_detail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/events/events']);
@@ -1312,16 +1312,16 @@ export class EventDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
   }
 
   paginatorClick(paginator) {
-    console.log("paginatorclick: ", paginator, this.unitSelection.selected);
+    
    
     this.dataSourceUnit.loadUnitDetail(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, this.event.companyid, this.event.groupid, this.event.id);
   }

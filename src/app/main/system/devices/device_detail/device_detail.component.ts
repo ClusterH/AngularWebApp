@@ -78,7 +78,7 @@ export class DeviceDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(devicesEnglish, devicesSpanish, devicesFrench, devicesPortuguese);
 
     this.device = localStorage.getItem("device_detail")? JSON.parse(localStorage.getItem("device_detail")) : '';
-    console.log(this.device);
+    
     
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -96,7 +96,7 @@ export class DeviceDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.device);
+    
   
     this.dataSourceSimcard    = new DeviceDetailDataSource(this.deviceDetailService);
     this.dataSourceDeviceType = new DeviceDetailDataSource(this.deviceDetailService);
@@ -134,7 +134,7 @@ export class DeviceDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorSimcard.page)
     .pipe(
@@ -143,7 +143,7 @@ export class DeviceDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorDeviceType.page)
@@ -153,7 +153,7 @@ export class DeviceDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorConnIn.page)
@@ -163,7 +163,7 @@ export class DeviceDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorConnOut.page)
@@ -173,7 +173,7 @@ export class DeviceDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorConnSMS.page)
@@ -183,7 +183,7 @@ export class DeviceDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -232,7 +232,7 @@ export class DeviceDetailComponent implements OnInit
    
     let selected_element_id = this.deviceForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.deviceDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.deviceDetailService.unit_clist_item[methodString];
 
@@ -248,7 +248,7 @@ export class DeviceDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.deviceForm.get('filterstring').setValue(this.filter_string);
 
@@ -265,7 +265,7 @@ export class DeviceDetailComponent implements OnInit
       this.loadDeviceDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -339,17 +339,17 @@ export class DeviceDetailComponent implements OnInit
   }
 
   saveDevice(): void {
-    console.log("saveDevice");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.deviceDetail);
+    
 
     if (this.deviceDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.deviceDetailService.saveDeviceDetail(this.userConncode, this.userID, this.deviceDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/devices/devices']);
@@ -392,10 +392,10 @@ export class DeviceDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
   }

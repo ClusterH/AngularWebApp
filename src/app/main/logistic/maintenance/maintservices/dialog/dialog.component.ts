@@ -80,9 +80,9 @@ export class MaintserviceDialogComponent implements OnInit {
             // this.maintservice = _data.serviceDetail;
             this.maintservicesService.pageType = 'edit';
             this.maintservicesService.current_serviceID = this.maintservice.id;
-            console.log(this.maintservice);
+            
         } else {
-            console.log(this.maintservice);
+            
             this.maintservicesService.pageType = 'new';
 
             this.maintservicesService.current_serviceID = '0';
@@ -125,7 +125,7 @@ export class MaintserviceDialogComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
         
         merge(this.paginatorCompany.page)
         .pipe(
@@ -134,7 +134,7 @@ export class MaintserviceDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
     
         merge(this.paginatorGroup.page)
@@ -144,7 +144,7 @@ export class MaintserviceDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         merge(this.paginatorIncluded.page)
@@ -154,7 +154,7 @@ export class MaintserviceDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
     
         merge(this.paginatorExcluded.page)
@@ -164,7 +164,7 @@ export class MaintserviceDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-          console.log(res);
+          
         })
     }
 
@@ -179,7 +179,7 @@ export class MaintserviceDialogComponent implements OnInit {
     }
 
     getValue() {
-        console.log(this.maintservice.id);
+        
         this.serviceDetail.id = this.maintservice.id;
 
         this.serviceDetail.name = this.maintserviceForm.get('name').value;
@@ -188,7 +188,7 @@ export class MaintserviceDialogComponent implements OnInit {
         this.serviceDetail.isactive = this.maintservice.isactive? this.maintservice.isactive : 'true';
 
         let currentMaintservice =  this.maintservicesService.maintserviceList.findIndex((service: any) => service.id == this.maintservice.id);
-        console.log(currentMaintservice);
+        
 
         this.maintservicesService.maintserviceList[currentMaintservice].id = this.serviceDetail.id;
         this.maintservicesService.maintserviceList[currentMaintservice].name = this.serviceDetail.name;
@@ -237,7 +237,7 @@ export class MaintserviceDialogComponent implements OnInit {
             } else {
                 this.dataSourceIncluded.loadMaintenancegroupDetail(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.maintservice.id, this.filter_string, "GetServiceIncludedItems")
             }
-            console.log(this.includedSelection.selected);
+            
         
         } else if (method_string == 'excluded') {
             if (this.flag == 'new') {
@@ -247,7 +247,7 @@ export class MaintserviceDialogComponent implements OnInit {
                 this.dataSourceExcluded.loadMaintenancegroupDetail(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.maintservice.id, this.filter_string, "GetServiceExcludedItems")
             }
             
-            console.log(this.excludedSelection.selected.length);
+            
         }
     }
 
@@ -275,14 +275,14 @@ export class MaintserviceDialogComponent implements OnInit {
         let methodString = item;
         this.method_string = item.split('_')[0];
 
-        console.log(this.maintserviceForm.get('company').value);
+        
         if (this.flag == 'new') {
             if(this.method_string == 'group' && (this.maintserviceForm.get('company').value == '' || this.maintserviceForm.get('company').value == undefined) ) {
                 alert('Please choose company first');
             } else {
                 let selected_element_id = this.maintserviceForm.get(`${this.method_string}`).value;
             
-                console.log(methodString, this.maintservicesService.unit_clist_item[methodString], selected_element_id );
+                
              
                 let clist = this.maintservicesService.unit_clist_item[methodString];
              
@@ -300,7 +300,7 @@ export class MaintserviceDialogComponent implements OnInit {
             
             let selected_element_id = this.maintserviceForm.get(`${this.method_string}`).value;
     
-            console.log(methodString, this.maintservicesService.unit_clist_item[methodString], selected_element_id );
+            
         
             let clist = this.maintservicesService.unit_clist_item[methodString];
         
@@ -318,7 +318,7 @@ export class MaintserviceDialogComponent implements OnInit {
     }
 
     onCompanyChange(event: any) {
-        console.log(event);
+        
         let current_companyID = this.maintserviceForm.get('company').value;
         this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
 
@@ -329,7 +329,7 @@ export class MaintserviceDialogComponent implements OnInit {
     }
 
     clearFilter() {
-        console.log(this.filter_string);
+        
         this.filter_string = '';
         this.maintserviceForm.get('filterstring').setValue(this.filter_string);
     
@@ -346,14 +346,14 @@ export class MaintserviceDialogComponent implements OnInit {
             this.loadServiceDetail(this.method_string);
         }
 
-        console.log(this.filter_string);
+        
     }
 
     onIncludedFilter(event: any) {
         this.method_string = 'included';
         this.filter_string = event.target.value;
     
-        console.log(this.filter_string, this.method_string)
+        
     
         if(this.filter_string.length >= 3 || this.filter_string == '') {
          
@@ -361,7 +361,7 @@ export class MaintserviceDialogComponent implements OnInit {
           this.loadServiceDetail(this.method_string);
         }
     
-        console.log(this.filter_string);
+        
     }
     
     onExcludedFilter(event: any) {
@@ -374,7 +374,7 @@ export class MaintserviceDialogComponent implements OnInit {
           this.loadServiceDetail(this.method_string);
         }
     
-        console.log(this.filter_string);
+        
     }
 
     comapnyPagenation(paginator) {
@@ -403,7 +403,7 @@ export class MaintserviceDialogComponent implements OnInit {
                     this.maintservicesService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
                     .subscribe((res: any) => {
                         if (res.TrackingXLAPI.DATA) {
-                            console.log(res);
+                            
                             alert("MaintService added successfully!");
                             this.dataSourceIncluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.newserviceid, '', "GetServiceIncludedItems");
                             this.dataSourceExcluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.newserviceid, '', "GetServiceExcludedItems");
@@ -414,9 +414,9 @@ export class MaintserviceDialogComponent implements OnInit {
             
                     this.maintservicesService.saveMaintservice(this.userConncode, this.userID, this.serviceDetail)
                     .subscribe((result: any) => {
-                        console.log(result);
+                        
                         if (result.responseCode == 100) {
-                            console.log(result.TrackingXLAPI.DATA[0].id);
+                            
                             this.newserviceid = result.TrackingXLAPI.DATA[0].id;
                             this.maintservicesService.new_serviceID = result.TrackingXLAPI.DATA[0].id;
                     
@@ -428,11 +428,11 @@ export class MaintserviceDialogComponent implements OnInit {
                                 }
                             }
                             
-                            console.log(addData);
+                            
                             this.maintservicesService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
                             .subscribe((res: any) => {
                                 if (res.TrackingXLAPI.DATA) {
-                                    console.log(res);
+                                    
                                     alert("MaintService added successfully!");
                                     this.dataSourceIncluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.newserviceid, '', "GetServiceIncludedItems");
                                     this.dataSourceExcluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.newserviceid, '', "GetServiceExcludedItems");
@@ -443,7 +443,7 @@ export class MaintserviceDialogComponent implements OnInit {
                 }
                
             } else {
-                console.log(this.excludedSelection.selected, this.maintservice.id);
+                
                 let addData = [];
                 for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
                     addData[i] = {
@@ -452,11 +452,11 @@ export class MaintserviceDialogComponent implements OnInit {
                     }
                 }
                 
-                console.log(addData);
+                
                 this.maintservicesService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
                 .subscribe((res: any) => {
                     if (res.TrackingXLAPI.DATA) {
-                        console.log(res);
+                        
                         alert("Items added successfully!");
                         this.dataSourceIncluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.maintservice.id, '', "GetServiceIncludedItems");
                         this.dataSourceExcluded.loadMaintenancegroupDetail(this.userConncode, this.userID, 0, 10, this.maintservice.id, '', "GetServiceExcludedItems");
@@ -471,7 +471,7 @@ export class MaintserviceDialogComponent implements OnInit {
         if (this.includedSelection.selected.length == 0) {
             alert('Please choose items first!');
         } else {
-            console.log(this.includedSelection.selected, this.maintservice.id);
+            
             let deleteData = [];
             for (let i = 0; i < this.includedSelection.selected.length; i ++ ){
                 if (this.flag == 'new') {
@@ -487,7 +487,7 @@ export class MaintserviceDialogComponent implements OnInit {
                 }
             }
             
-            console.log(deleteData);
+            
             this.maintservicesService.deleteMaintServiceToGroup(this.userConncode, this.userID, deleteData)
             .subscribe((res: any) => {
                 if (res.TrackingXLAPI.DATA) {
@@ -515,7 +515,7 @@ export class MaintserviceDialogComponent implements OnInit {
             if (this.flagForSaving) {
                 this.maintservicesService.saveMaintservice(this.userConncode, this.userID, this.serviceDetail)
                 .subscribe((result: any) => {
-                    console.log(result);
+                    
                     if ((result.responseCode == 200)||(result.responseCode == 100)) {
                         alert("Success!");
 
@@ -549,13 +549,13 @@ export class MaintserviceDialogComponent implements OnInit {
                     }
                 });
             } else {
-                console.log("ERROE");
+                
             }
         }
     }
 
     getNewvalue() {
-        console.log(this.serviceDetail);
+        
         this.serviceDetail.id = (this.newserviceid == '')? '0' : this.newserviceid;
         this.serviceDetail.name = this.maintserviceForm.get('name').value;
         this.serviceDetail.companyid = this.maintserviceForm.get('company').value;
@@ -583,7 +583,7 @@ export class MaintserviceDialogComponent implements OnInit {
         }
         
         this.maintservicesService.maintserviceList = this.maintservicesService.maintserviceList.concat(this.serviceDetail);
-        console.log("Concat");
+        
 
         this.flagForSaving.next(true);
     }

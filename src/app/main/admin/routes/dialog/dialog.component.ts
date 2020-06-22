@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("route_detail", JSON.stringify(this.route));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("route_detail")));
+            
     
             this.router.navigate(['admin/routes/route_detail']);
         } else if( this.flag == "delete") {

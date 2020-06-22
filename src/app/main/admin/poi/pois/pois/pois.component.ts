@@ -106,7 +106,7 @@ export class PoisComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -129,18 +129,18 @@ export class PoisComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new PoisDataSource(this._adminPoisService);
         this.dataSource.loadPois(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poi_Tlist");
     }
 
     onRowClicked(poi) {
-        console.log('Row Clicked:', poi);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -190,16 +190,16 @@ export class PoisComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicatePoi(poi: any): void
     {
-        console.log("first:", poi)
+        
         
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -215,7 +215,7 @@ export class PoisComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
 
             }

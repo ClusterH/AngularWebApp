@@ -62,7 +62,7 @@ export class CommandDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.command);
+      
       this.pageType = 'new';
     }
 
@@ -70,7 +70,7 @@ export class CommandDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.command);
+    
   
     this.commandForm = this._formBuilder.group({
       name               : [null, Validators.required],
@@ -135,17 +135,17 @@ export class CommandDetailComponent implements OnInit
   }
 
   saveCommand(): void {
-    console.log("saveCommand");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.commandDetail);
+    
 
     if (this.commandDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/commands/commands']);
@@ -155,17 +155,17 @@ export class CommandDetailComponent implements OnInit
   }
 
   addCommand(): void {
-    console.log("addCommand");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.commandDetail);
+    
 
     if (this.commandDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.commandDetailService.saveCommandDetail(this.userConncode, this.userID, this.commandDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/commands/commands']);
@@ -191,10 +191,10 @@ export class CommandDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

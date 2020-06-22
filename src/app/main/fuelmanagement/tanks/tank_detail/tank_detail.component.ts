@@ -78,7 +78,7 @@ export class TankDetailComponent implements OnInit
         }
         else
         {
-            console.log(this.tank);
+            
             this.pageType = 'new';
         }
 
@@ -86,26 +86,26 @@ export class TankDetailComponent implements OnInit
     }
 
     ngOnInit(): void {
-        console.log(this.tank);
+        
         this.tankForm = this._formBuilder.group({
             date: [null],
         });
     }
 
     generateChartData(chart_data: any) {
-        console.log("generateChartData: ", chart_data);
+        
         let chartData = [];
         
         for (let i in chart_data) {
             // let truetime = new Date(chart_data[i].truetime);
-            // console.log((truetime.getDate() - 11));
+            // 
 
             chartData.push({
                 date:  new Date(chart_data[i].truetime),
                 level: chart_data[i].volume
             });
         }
-        console.log(chartData);
+        
 
         am4core.ready(() => {
 
@@ -178,11 +178,11 @@ export class TankDetailComponent implements OnInit
     }
 
     dateFormat(date: any) {
-        console.log(date);
+        
 
         let str = '';
 
-        console.log(date.getHours())
+        
 
         if (date != '') {
             str = 
@@ -208,17 +208,17 @@ export class TankDetailComponent implements OnInit
     }
     
     saveTank(): void {
-        console.log("saveTank");
+        
         let today = new Date().toISOString();
         this.getValues(today, "save");
-        console.log(this.tankDetail);
+        
 
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
             this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
             .subscribe((result: any) => {
-                console.log(result);
+                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     alert("Success!");
                     this.router.navigate(['admin/tanks/tanks']);
@@ -228,17 +228,17 @@ export class TankDetailComponent implements OnInit
     }
 
     addTank(): void {
-        console.log("addTank");
+        
         let today = new Date().toISOString();
         this.getValues(today, "add");
-        console.log(this.tankDetail);
+        
 
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
             this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
             .subscribe((result: any) => {
-                console.log(result);
+                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     alert("Success!");
                     this.router.navigate(['admin/tanks/tanks']);
@@ -264,10 +264,10 @@ export class TankDetailComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                    console.log(result);
+                    
 
             } else {
-                    console.log("FAIL:", result);
+                    
             }
         });
     }
@@ -352,7 +352,7 @@ export class TankDetailComponent implements OnInit
                 this.generateChartData(res);
             });
 
-            console.log(data);
+            
         } else if (date == 'yesterday') {
             let yesterdayDate = new Date();
 
@@ -415,12 +415,12 @@ export class TankDetailComponent implements OnInit
         
         this.tankDetailService.getTankHistory(this.userConncode, this.userID, this.tank.id, fromdate, todate)
         .subscribe((res: any) => {
-            console.log(res);
+            
             if (res.responseCode == 100) {
                 this.noData = true;
 
                 volume_data = res.TrackingXLAPI.DATA;
-                console.log(volume_data);
+                
                 subject.next(volume_data);
                
             } else {

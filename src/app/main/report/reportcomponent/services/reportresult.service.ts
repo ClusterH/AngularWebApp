@@ -30,11 +30,11 @@ export class ReportResultService
         .set('pagesize', pagesize.toString());
         
         let report_param = JSON.parse(localStorage.getItem('report_result'));
-        console.log(report_param);
+        
 
         for (let param in report_param) { 
            
-                console.log(`${param}`, report_param[param]);
+                
                 if (param == 'reportname') {
                     params = params.set('method', report_param[param].toString());
                 } else if (param != 'companyname' && param != 'groupname') {
@@ -42,9 +42,9 @@ export class ReportResultService
                 }
         }
         
-        console.log('params', params);
+        
 
-        console.log(report_param);
+        
        
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
@@ -64,11 +64,11 @@ export class ReportResultService
         .set('pagesize', pagesize.toString());
         
         let report_param = JSON.parse(localStorage.getItem('report_result'));
-        console.log(report_param);
+        
 
         for (let param in report_param) { 
            
-                console.log(`${param}`, report_param[param]);
+                
                 if (param == 'reportname') {
                     params = params.set('method', report_param[param].toString());
                 } else {
@@ -76,9 +76,9 @@ export class ReportResultService
                 }
         }
         
-        console.log('params', params);
+        
 
-        console.log(report_param);
+        
        
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

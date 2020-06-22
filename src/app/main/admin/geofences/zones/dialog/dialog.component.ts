@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("zone_detail", JSON.stringify(this.zone));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("zone_detail")));
+            
     
             this.router.navigate(['admin/geofences/zones/zone_detail']);
         } else if( this.flag == "delete") {

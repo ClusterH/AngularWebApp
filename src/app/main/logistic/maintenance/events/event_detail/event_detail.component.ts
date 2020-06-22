@@ -212,7 +212,7 @@ export class EventDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorExcluded.page)
@@ -222,7 +222,7 @@ export class EventDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-      console.log(res);
+      
     })
   }
 
@@ -258,7 +258,7 @@ export class EventDetailComponent implements OnInit
         } else {
             this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.event.id, '', this.filter_string, "GetMaintEventIncludedUnits")
         }
-        console.log(this.includedSelection.selected);
+        
   
     } else if (method_string == 'excluded' && this.eventForm.get('wholeCompany').value == false) {
       this.loadUnitList_flag = false;
@@ -271,7 +271,7 @@ export class EventDetailComponent implements OnInit
           this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.event.id, '', this.filter_string, "GetMaintEventExcludedUnits")
       }
       
-      console.log(this.excludedSelection.selected.length);
+      
   }
   }
 
@@ -313,7 +313,7 @@ export class EventDetailComponent implements OnInit
       } else {
           let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
       
-          console.log(methodString, this.eventDetailService.unit_clist_item[methodString], selected_element_id );
+          
        
           let clist = this.eventDetailService.unit_clist_item[methodString];
        
@@ -331,7 +331,7 @@ export class EventDetailComponent implements OnInit
       
       let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
 
-      console.log(methodString, this.eventDetailService.unit_clist_item[methodString], selected_element_id );
+      
   
       let clist = this.event.unit_clist_item[methodString];
   
@@ -470,7 +470,7 @@ export class EventDetailComponent implements OnInit
     this.method_string = 'included';
     this.filter_string = event.target.value;
 
-    console.log(this.filter_string, this.method_string)
+    
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
      
@@ -478,7 +478,7 @@ export class EventDetailComponent implements OnInit
       this.loadEventDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   onExcludedFilter(event: any) {
@@ -491,7 +491,7 @@ export class EventDetailComponent implements OnInit
       this.loadEventDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   onKey(event: any) {
@@ -647,7 +647,7 @@ export class EventDetailComponent implements OnInit
           this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
           .subscribe((res: any) => {
             if (res.TrackingXLAPI.DATA) {
-                console.log(res);
+                
                 alert("MaintService added successfully!");
                 this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '','', "GetMaintEventIncludedUnits");
                 this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventExcludedUnits");
@@ -658,9 +658,9 @@ export class EventDetailComponent implements OnInit
     
             this.eventDetailService.saveEventDetail(this.event_detail)
             .subscribe((result: any) => {
-              console.log(result);
+              
               if (result.responseCode == 100) {
-                  console.log(result.TrackingXLAPI.DATA[0].id);
+                  
                   this.neweventid = result.TrackingXLAPI.DATA[0].id;
                   this.eventDetailService.new_eventID = result.TrackingXLAPI.DATA[0].id;
           
@@ -672,11 +672,11 @@ export class EventDetailComponent implements OnInit
                       }
                   }
                   
-                  console.log(addData);
+                  
                   this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
                   .subscribe((res: any) => {
                     if (res.TrackingXLAPI.DATA) {
-                        console.log(res);
+                        
                         alert("MaintService added successfully!");
                         this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '','', "GetMaintEventIncludedUnits");
                         this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.neweventid, '', '', "GetMaintEventExcludedUnits");
@@ -686,7 +686,7 @@ export class EventDetailComponent implements OnInit
             });
           }
       } else {
-          console.log(this.excludedSelection.selected, this.event.id);
+          
           let addData = [];
           for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
             addData[i] = {
@@ -695,11 +695,11 @@ export class EventDetailComponent implements OnInit
             }
           }
           
-          console.log(addData);
+          
           this.eventDetailService.addMaintServiceToGroup(this.userConncode, this.userID, addData)
           .subscribe((res: any) => {
             if (res.TrackingXLAPI.DATA) {
-                console.log(res);
+                
                 alert("Items added successfully!");
                 this.dataSourceIncluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventIncludedUnits");
                 this.dataSourceExcluded.loadMaintEventUnits(this.userConncode, this.userID, 0, 10, this.event.id, '', '', "GetMaintEventExcludedUnits");
@@ -714,7 +714,7 @@ export class EventDetailComponent implements OnInit
     if (this.includedSelection.selected.length == 0) {
         alert('Please choose items first!');
     } else {
-        console.log(this.includedSelection.selected, this.event.id);
+        
         let deleteData = [];
         for (let i = 0; i < this.includedSelection.selected.length; i ++ ){
             if (this.pageType == 'new') {
@@ -730,7 +730,7 @@ export class EventDetailComponent implements OnInit
             }
         }
         
-        console.log(deleteData);
+        
         this.eventDetailService.deleteMaintServiceToGroup(this.userConncode, this.userID, deleteData)
         .subscribe((res: any) => {
           if (res.TrackingXLAPI.DATA) {
@@ -805,7 +805,7 @@ export class EventDetailComponent implements OnInit
     // }
     
     // this.maintservicesService.maintserviceList = this.maintservicesService.maintserviceList.concat(this.serviceDetail);
-    // console.log("Concat");
+    // 
 
     // this.flagForSaving.next(true);
   }

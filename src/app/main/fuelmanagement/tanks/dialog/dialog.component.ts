@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("tank_detail", JSON.stringify(this.tank));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("tank_detail")));
+            
     
             this.router.navigate(['fuelmanagement/tanks/tanks_detail']);
         } else if( this.flag == "delete") {

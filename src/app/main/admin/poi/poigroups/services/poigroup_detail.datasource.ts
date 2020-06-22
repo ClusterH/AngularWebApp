@@ -46,7 +46,7 @@ export class PoigroupDetailDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
            
-            console.log(method, result);
+            
 
             this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
             this.poigroupDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];

@@ -84,7 +84,7 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     deleteBoard(): void {
         this.scrumboardService.deleteBoard(this.board.id)
         .then((res: any) => {
-            console.log(res);
+            
             this._router.navigate(['logistic/scrumboard/boards']);
         })
     }

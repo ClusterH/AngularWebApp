@@ -83,7 +83,7 @@ export class ServiceplanDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.serviceplan);
+    
   
     this.dataSourceCarrierPlan = new ServiceplanDetailDataSource(this.serviceplanDetailService);
    
@@ -111,7 +111,7 @@ export class ServiceplanDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCarrierPlan.page)
     .pipe(
@@ -120,7 +120,7 @@ export class ServiceplanDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
    
   }
@@ -145,7 +145,7 @@ export class ServiceplanDetailComponent implements OnInit
    
     let selected_element_id = this.serviceplanForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.serviceplanDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.serviceplanDetailService.unit_clist_item[methodString];
 
@@ -230,17 +230,17 @@ export class ServiceplanDetailComponent implements OnInit
   }
 
   saveServiceplan(): void {
-    console.log("saveServiceplan");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.serviceplanDetail);
+    
 
     if (this.serviceplanDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/serviceplans/serviceplans']);
@@ -250,17 +250,17 @@ export class ServiceplanDetailComponent implements OnInit
   }
 
   addServiceplan(): void {
-    console.log("addServiceplan");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.serviceplanDetail);
+    
 
     if (this.serviceplanDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.serviceplanDetailService.saveServiceplanDetail(this.userConncode, this.userID, this.serviceplanDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/serviceplans/serviceplans']);
@@ -286,10 +286,10 @@ export class ServiceplanDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

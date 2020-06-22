@@ -83,7 +83,7 @@ export class ConnectionDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.connection);
+    
     
     this.dataSourceProtocol = new ConnectionDetailDataSource(this.connectionDetailService);
 
@@ -108,7 +108,7 @@ export class ConnectionDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorProtocol.page)
     .pipe(
@@ -117,7 +117,7 @@ export class ConnectionDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
     
   }
@@ -143,7 +143,7 @@ export class ConnectionDetailComponent implements OnInit
    
     let selected_element_id = this.connectionForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.connectionDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.connectionDetailService.unit_clist_item[methodString];
 
@@ -159,7 +159,7 @@ export class ConnectionDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.connectionForm.get('filterstring').setValue(this.filter_string);
   
@@ -176,7 +176,7 @@ export class ConnectionDetailComponent implements OnInit
       this.loadConnectionDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -240,17 +240,17 @@ export class ConnectionDetailComponent implements OnInit
   }
 
   saveConnection(): void {
-    console.log("saveConnection");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.connectionDetail);
+    
 
     if (this.connectionDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/connections/connections']);
@@ -260,17 +260,17 @@ export class ConnectionDetailComponent implements OnInit
   }
 
   addConnection(): void {
-    console.log("addConnection");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.connectionDetail);
+    
 
     if (this.connectionDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.connectionDetailService.saveConnectionDetail(this.userConncode, this.userID, this.connectionDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/connections/connections']);
@@ -296,10 +296,10 @@ export class ConnectionDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

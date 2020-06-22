@@ -87,7 +87,7 @@ export class HistoryComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         // this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).history;
 
-        console.log(this.userConncode, this.userID);
+        
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(historyEnglish, historySpanish, historyFrench, historyPortuguese);
@@ -103,7 +103,7 @@ export class HistoryComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -113,14 +113,14 @@ export class HistoryComponent implements OnInit
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -129,7 +129,7 @@ export class HistoryComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new HistoryDataSource(this.historyService);
         this.dataSource.loadHistory(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancehistory_TList");
@@ -140,7 +140,7 @@ export class HistoryComponent implements OnInit
     getDash() {
         this.historyService.getDashboard(this.userConncode, this.userID)
         .subscribe((res: any) => {
-            console.log(res);
+            
 
             this.dash_history = res.TrackingXLAPI.DATA[0].history;
             this.dash_created = res.TrackingXLAPI.DATA[0].created;
@@ -149,11 +149,11 @@ export class HistoryComponent implements OnInit
     }
 
     onRowClicked(history) {
-        console.log('Row Clicked:', history);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -163,7 +163,7 @@ export class HistoryComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadHistory(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
     }
 
@@ -176,7 +176,7 @@ export class HistoryComponent implements OnInit
     }
 
     attendDetail(history: any) {
-        console.log(history);
+        
 
         this.dialogRef = this._matDialog.open(AttendDialogComponent, {
             panelClass: 'attend-form-dialog',
@@ -187,7 +187,7 @@ export class HistoryComponent implements OnInit
 
         this.dialogRef.afterClosed()
             .subscribe(res => {
-                console.log(res);
+                
 
                 // if ( !res ) {
                 //     return;

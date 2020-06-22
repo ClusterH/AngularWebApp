@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.connection = connection;
         this.flag = flag;
-        console.log(this.connection);
+        
     }
 
     ngOnInit() {
@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("connection_detail", JSON.stringify(this.connection));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("connection_detail")));
+            
     
             this.router.navigate(['system/connections/connection_detail']);
         } else if( this.flag == "delete") {

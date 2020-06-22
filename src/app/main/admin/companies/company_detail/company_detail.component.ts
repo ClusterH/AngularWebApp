@@ -78,7 +78,7 @@ export class CompanyDetailComponent implements OnInit
 
     // this.company = this.companyDetailService.company_detail;
     this.company = localStorage.getItem("company_detail")? JSON.parse(localStorage.getItem("company_detail")) : '';
-    console.log(this.company);
+    
       if ( this.company != '' )
       {
         // this.company = JSON.parse(localStorage.getItem("company_detail"));
@@ -86,7 +86,7 @@ export class CompanyDetailComponent implements OnInit
       }
       else
       {
-        console.log(this.company);
+        
         this.pageType = 'new';
       }
  
@@ -97,7 +97,7 @@ export class CompanyDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.company);
+    
   
     this.dataSourceAccount        = new CompanyDetailDataSource(this.companyDetailService);
     this.dataSourceCompanyType       = new CompanyDetailDataSource(this.companyDetailService);
@@ -142,7 +142,7 @@ export class CompanyDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
         
     merge(this.paginatorAccount.page)
     .pipe(
@@ -151,7 +151,7 @@ export class CompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorCompanyType.page)
@@ -161,7 +161,7 @@ export class CompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorUserProfile.page)
@@ -171,7 +171,7 @@ export class CompanyDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
   }
@@ -207,7 +207,7 @@ export class CompanyDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.companyForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.companyDetailService.company_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.companyDetailService.company_clist_item[methodString];
 
@@ -223,7 +223,7 @@ export class CompanyDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.companyForm.get('filterstring').setValue(this.filter_string);
       // this.paginatorCompany.pageIndex = 0;
@@ -239,7 +239,7 @@ export class CompanyDetailComponent implements OnInit
       this.loadCompanyDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -342,16 +342,16 @@ export class CompanyDetailComponent implements OnInit
   }
 
   saveCompany(): void {
-    console.log("saveCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.companyDetail);
+    
     if (this.companyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/companies/companies']);
@@ -361,16 +361,16 @@ export class CompanyDetailComponent implements OnInit
   }
 
   addCompany(): void {
-    console.log("addCompany");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.companyDetail);
+    
     if (this.companyDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.companyDetailService.saveCompanyDetail(this.userConncode, this.userID, this.companyDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/companies/companies']);
@@ -396,17 +396,17 @@ export class CompanyDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
   }
 
    // navigatePageEvent() {
-  //   // console.log(this.index_number);
+  //   // 
   //   // this.paginator.pageIndex = this.dataSource.page_index - 1;
   //   // this.dataSource.loadCompanies(this.user_conncode, 1, this.paginator.pageIndex, this.paginator.pageSize, "company_clist");
   // }

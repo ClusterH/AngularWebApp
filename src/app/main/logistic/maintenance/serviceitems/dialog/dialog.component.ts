@@ -62,9 +62,9 @@ export class ServiceItemDialogComponent implements OnInit {
         
         if (this.flag == 'edit') {
             this.serviceitem = _data.serviceDetail;
-            console.log(this.serviceitem);
+            
         } else {
-            console.log(this.serviceitem);
+            
         }
 
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
@@ -93,7 +93,7 @@ export class ServiceItemDialogComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
         
         merge(this.paginatorCompany.page)
         .pipe(
@@ -102,7 +102,7 @@ export class ServiceItemDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
     
         merge(this.paginatorGroup.page)
@@ -112,7 +112,7 @@ export class ServiceItemDialogComponent implements OnInit {
           })
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
     }
 
@@ -124,7 +124,7 @@ export class ServiceItemDialogComponent implements OnInit {
     }
 
     getValue() {
-        console.log(this.serviceitem.id);
+        
         this.serviceDetail.id = this.serviceitem.id;
 
         this.serviceDetail.name = this.serviceitemForm.get('name').value;
@@ -133,7 +133,7 @@ export class ServiceItemDialogComponent implements OnInit {
         this.serviceDetail.isactive = this.serviceitem.isactive? this.serviceitem.isactive : 'true';
 
         let currentServiceItem =  this.serviceitemsService.serviceitemList.findIndex((service: any) => service.id == this.serviceitem.id);
-        console.log(currentServiceItem);
+        
 
         this.serviceitemsService.serviceitemList[currentServiceItem].id = this.serviceDetail.id;
         this.serviceitemsService.serviceitemList[currentServiceItem].name = this.serviceDetail.name;
@@ -187,14 +187,14 @@ export class ServiceItemDialogComponent implements OnInit {
         let methodString = item;
         this.method_string = item.split('_')[0];
 
-        console.log(this.serviceitemForm.get('company').value);
+        
 
         if(this.method_string == 'group' && this.serviceitemForm.get('company').value == '') {
            alert('Please choose company first');
         } else {
             let selected_element_id = this.serviceitemForm.get(`${this.method_string}`).value;
        
-            console.log(methodString, this.serviceitemsService.unit_clist_item[methodString], selected_element_id );
+            
         
             let clist = this.serviceitemsService.unit_clist_item[methodString];
         
@@ -211,13 +211,13 @@ export class ServiceItemDialogComponent implements OnInit {
     }
 
     onCompanyChange(event: any) {
-        console.log(event);
+        
         let current_companyID = this.serviceitemForm.get('company').value;
         this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
     }
 
     clearFilter() {
-        console.log(this.filter_string);
+        
         this.filter_string = '';
         this.serviceitemForm.get('filterstring').setValue(this.filter_string);
     
@@ -234,7 +234,7 @@ export class ServiceItemDialogComponent implements OnInit {
             this.loadServiceDetail(this.method_string);
         }
 
-        console.log(this.filter_string);
+        
     }
 
     comapnyPagenation(paginator) {
@@ -256,7 +256,7 @@ export class ServiceItemDialogComponent implements OnInit {
             if (this.flagForSaving) {
                 this.serviceitemsService.saveServiceitem(this.userConncode, this.userID, this.serviceDetail)
                 .subscribe((result: any) => {
-                    console.log(result);
+                    
                     if ((result.responseCode == 200)||(result.responseCode == 100)) {
                         alert("Success!");
 
@@ -290,13 +290,13 @@ export class ServiceItemDialogComponent implements OnInit {
                     }
                 });
             } else {
-                console.log("ERROE");
+                
             }
         }
     }
 
     getNewvalue() {
-        console.log(this.serviceDetail);
+        
         this.serviceDetail.id = '0';
         this.serviceDetail.name = this.serviceitemForm.get('name').value;
         this.serviceDetail.companyid = this.serviceitemForm.get('company').value;

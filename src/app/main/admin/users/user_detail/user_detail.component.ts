@@ -107,7 +107,7 @@ export class UserDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.user);
+    
   
     this.dataSourceCompany    = new UserDetailDataSource(this.userDetailService);
     this.dataSourceGroup      = new UserDetailDataSource(this.userDetailService);
@@ -154,7 +154,7 @@ export class UserDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -163,7 +163,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorGroup.page)
@@ -173,7 +173,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorLengthUnit.page)
@@ -183,7 +183,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorFuelUnit.page)
@@ -193,7 +193,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorWeightUnit.page)
@@ -203,7 +203,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorTempUnit.page)
@@ -213,7 +213,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorLanguage.page)
@@ -223,7 +223,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorTimeZone.page)
@@ -233,7 +233,7 @@ export class UserDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -299,7 +299,7 @@ export class UserDetailComponent implements OnInit
    
     let selected_element_id = this.userForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.userDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.userDetailService.unit_clist_item[methodString];
 
@@ -315,7 +315,7 @@ export class UserDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.userForm.get('filterstring').setValue(this.filter_string);
    
@@ -332,7 +332,7 @@ export class UserDetailComponent implements OnInit
       this.loadUserDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -412,17 +412,17 @@ export class UserDetailComponent implements OnInit
   }
 
   saveUser(): void {
-    console.log("saveUser");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.userDetail);
+    
 
     if (this.userDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if (result.responseCode == 100) {
           alert("Success!");
           this.router.navigate(['admin/users/users']);
@@ -432,17 +432,17 @@ export class UserDetailComponent implements OnInit
   }
 
   addUser(): void {
-    console.log("addUser");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.userDetail);
+    
 
     if (this.userDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if (result.responseCode == 100) {
           alert("Success!");
           this.router.navigate(['admin/users/users']);
@@ -468,10 +468,10 @@ export class UserDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

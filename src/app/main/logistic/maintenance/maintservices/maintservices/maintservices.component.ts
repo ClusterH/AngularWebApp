@@ -83,7 +83,7 @@ export class MaintservicesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).maintservices;
 
-        console.log(this.userConncode, this.userID);
+        
 
 
         //Load the translations
@@ -100,7 +100,7 @@ export class MaintservicesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:maintservice");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -110,14 +110,14 @@ export class MaintservicesComponent implements OnInit
         // when paginator maintservice is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        console.log(this.paginator.pageSize);
+        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
            tap(() => this.dataSource.loadMaintservices(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintservice_TList"))
         )
         .subscribe( (res: any) => {
-            console.log(res);
+            
         });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -126,18 +126,18 @@ export class MaintservicesComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new MaintservicesDataSource(this._adminMaintservicesService);
         this.dataSource.loadMaintservices(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintservice_TList");
     }
 
     onRowClicked(maintservice) {
-        console.log('Row Clicked:', maintservice);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -147,7 +147,7 @@ export class MaintservicesComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        console.log(pageIndex);
+        
         this.dataSource.loadMaintservices(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintservice_TList");
     }
 
@@ -172,14 +172,14 @@ export class MaintservicesComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.maintservicesSubject.next(res);
 
         });
     }
 
     editShowMaintserviceDetail(maintservice: any) {
-        console.log(maintservice);
+        
 
 
         this.dialogRef = this._matDialog.open(MaintserviceDialogComponent, {
@@ -193,14 +193,14 @@ export class MaintservicesComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.maintservicesSubject.next(res);
         });
     }
     
     deleteMaintservice(maintservice): void
     {
-        console.log(maintservice);
+        
 
         this.dialogRef = this._matDialog.open(DeleteDialogComponent, {
             panelClass: 'delete-dialog',
@@ -213,7 +213,7 @@ export class MaintservicesComponent implements OnInit
 
         this.dialogRef.afterClosed()
         .subscribe(res => {
-            console.log(res);
+            
             this.dataSource.maintservicesSubject.next(res);
 
         });
@@ -235,9 +235,9 @@ export class MaintservicesComponent implements OnInit
     //     dialogRef.afterClosed().subscribe(result => {
     //         if ( result )
     //         { 
-    //             console.log(result);
+    //             
     //         } else {
-    //             console.log("FAIL:", result);
+    //             
     //         }
     //     });
     // }

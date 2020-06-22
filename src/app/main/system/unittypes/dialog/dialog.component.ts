@@ -30,7 +30,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.unittype = unittype;
         this.flag = flag;
-        console.log(this.unittype);
+        
     }
 
     ngOnInit() {
@@ -50,7 +50,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("unittype_detail", JSON.stringify(this.unittype));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("unittype_detail")));
+            
     
             this.router.navigate(['system/unittypes/unittype_detail']);
         } else if( this.flag == "delete") {

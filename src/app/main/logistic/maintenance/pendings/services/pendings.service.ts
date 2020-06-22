@@ -32,7 +32,7 @@ export class PendingsService
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -49,7 +49,7 @@ export class PendingsService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -71,7 +71,7 @@ export class PendingsService
                 .set('id', id.toString())
                 .set('method', "pending_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
@@ -88,7 +88,7 @@ export class PendingsService
                 .set('userid', userID.toString())
                 .set('method', "maintenance_dashboard");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
@@ -109,7 +109,7 @@ export class PendingsService
                 .set('performdate', attend.performdate.toString())
                 .set('method', "maintevent_attend");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

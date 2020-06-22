@@ -46,7 +46,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("command_detail", JSON.stringify(this.command));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("command_detail")));
+            
     
             this.router.navigate(['system/commands/command_detail']);
         } else if( this.flag == "delete") {

@@ -66,7 +66,7 @@ export class ZoneDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(zonesEnglish, zonesSpanish, zonesFrench, zonesPortuguese);
 
     this.zone = localStorage.getItem("zone_detail")? JSON.parse(localStorage.getItem("zone_detail")) : '';
-    console.log(this.zone);
+    
     
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -77,7 +77,7 @@ export class ZoneDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.zone);
+      
 
       this.pageType = 'new';
     }
@@ -108,7 +108,7 @@ export class ZoneDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -117,7 +117,7 @@ export class ZoneDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -140,7 +140,7 @@ export class ZoneDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.zoneForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.zoneDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.zoneDetailService.unit_clist_item[methodString];
 
@@ -156,7 +156,7 @@ export class ZoneDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.zoneForm.get('filterstring').setValue(this.filter_string);
    
@@ -173,7 +173,7 @@ export class ZoneDetailComponent implements OnInit
       this.loadZoneDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -233,17 +233,17 @@ export class ZoneDetailComponent implements OnInit
   }
 
   saveZone(): void {
-    console.log("saveZone");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.zoneDetail);
+    
 
     if (this.zoneDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.zoneDetailService.saveZoneDetail(this.userConncode, this.userID, this.zoneDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/geofences/zones/zones']);
@@ -286,10 +286,10 @@ export class ZoneDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

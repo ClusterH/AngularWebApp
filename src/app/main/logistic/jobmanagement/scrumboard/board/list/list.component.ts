@@ -22,6 +22,9 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
     board: any;
     dialogRef: any;
 
+    draggedCardId: string = '';
+    destinationListId: string = '';
+
     @Input()
     list;
 
@@ -62,7 +65,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
-                console.log(board);
+                
                 this.board = board;
             });
     }
@@ -104,11 +107,30 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
             return;
         }
 
-        this._scrumboardService.addCard(this.board.id, this.list.id, new Card({name: newCardName}));
+        let due = this.dateFormat(new Date());
+        console.log(due);
+
+        this._scrumboardService.addCard(this.board.id, this.list.id, new Card({name: newCardName, due: due}));
 
         setTimeout(() => {
             this.listScroll.scrollToBottom(0, 400);
         });
+    }
+
+    dateFormat(date: any) {
+        let str = '';
+
+        if (date != '') {
+            str = 
+              ("00" + (date.getMonth() + 1)).slice(-2) 
+              + "/" + ("00" + date.getDate()).slice(-2) 
+              + "/" + date.getFullYear() + " " 
+              + ("00" + date.getHours()).slice(-2) + ":" 
+              + ("00" + date.getMinutes()).slice(-2) 
+          }
+      
+    
+        return str;
     }
 
     /**
@@ -139,7 +161,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      */
     openCardDialog(cardId): void
     {
-        console.log(cardId);
         this.dialogRef = this._matDialog.open(ScrumboardCardDialogComponent, {
             panelClass: 'scrumboard-card-dialog',
             data      : {
@@ -158,8 +179,46 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      *
      * @param ev
      */
-    onDrop(ev): void
+    // onDrop(ev, cardid, listid): void
+    // {
+    //     console.log("card: ", ev, cardid, listid);
+    //     // this._scrumboardService.updateBoard(this.board);
+    // }
+
+    onDropCard(ev, list): void
     {
-        this._scrumboardService.updateBoard(this.board);
+        console.log("drop card: ", ev, list.id);
+
+        this.destinationListId = list.id;
+
+        this._scrumboardService.draggedCardId
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(cardId => {
+                
+                this.draggedCardId = cardId;
+            });
+
+        console.log(this.draggedCardId, this.destinationListId);
+
+        this._scrumboardService.cardMove(this.draggedCardId, this.destinationListId);
+        // .subscribe((res: any) => {
+        //     console.log(res);
+        // });
+        // this._scrumboardService.updateBoard(this.board);
     }
+
+    onDragCard(ev, cardid, listid): void
+    {
+        console.log("drag card: ", ev, cardid, listid);
+
+        this._scrumboardService.draggedCardId.next(cardid);
+
+        // this._scrumboardService.updateBoard(this.board);
+    }
+
+    // onDrop(ev, list, cardid): void
+    // {
+    //     console.log("drag card: ", ev, list.id, cardid);
+    //     // this._scrumboardService.updateBoard(this.board);
+    // }
 }

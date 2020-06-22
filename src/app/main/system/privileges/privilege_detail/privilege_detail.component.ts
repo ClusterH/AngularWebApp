@@ -74,7 +74,7 @@ export class PrivilegeDetailComponent implements OnInit {
 
     if (this.privilege != '') {
       if (this.privilege.typeid != 0) {
-        console.log(this.privilege.typeid);
+        
 
         this.privilegeDetailService.current_typeID = this.privilege.typeid;
         this.privilegeObject_flag = true;
@@ -93,7 +93,7 @@ export class PrivilegeDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.privilege);
+    
 
     this.dataSourcePrivType = new PrivilegeDetailDataSource(this.privilegeDetailService);
     this.dataSourcePrivObject = new PrivilegeDetailDataSource(this.privilegeDetailService);
@@ -122,7 +122,7 @@ export class PrivilegeDetailComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorPrivType.page)
       .pipe(
@@ -131,7 +131,7 @@ export class PrivilegeDetailComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        console.log(res);
+        
       });
 
     if (this.privilegeObject_flag) {
@@ -143,14 +143,14 @@ export class PrivilegeDetailComponent implements OnInit {
           })
         )
         .subscribe((res: any) => {
-          console.log(res);
+          
         });
     }
 
   }
 
   loadPrivilegeDetail(method_string: string) {
-    console.log("loadPrivilegeDetail:" + method_string);
+    
     if (method_string == 'privtype') {
       this.dataSourcePrivType.loadPrivilegeDetail(this.userConncode, this.userID, this.paginatorPrivType.pageIndex, this.paginatorPrivType.pageSize, this.filter_string,  `${method_string}_clist`)
     }
@@ -179,7 +179,7 @@ export class PrivilegeDetailComponent implements OnInit {
     } else {
       let selected_element_id = this.privilegeForm.get(`${this.method_string}`).value;
 
-      console.log(methodString, this.privilegeDetailService.unit_clist_item[methodString], selected_element_id);
+      
 
       let clist = this.privilegeDetailService.unit_clist_item[methodString];
 
@@ -196,7 +196,7 @@ export class PrivilegeDetailComponent implements OnInit {
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.privilegeForm.get('filterstring').setValue(this.filter_string);
 
@@ -213,7 +213,7 @@ export class PrivilegeDetailComponent implements OnInit {
       this.loadPrivilegeDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -276,17 +276,17 @@ export class PrivilegeDetailComponent implements OnInit {
   }
 
   savePrivilege(): void {
-    console.log("savePrivilege");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.privilegeDetail);
+    
 
     if (this.privilegeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/privileges/privileges']);
@@ -296,17 +296,17 @@ export class PrivilegeDetailComponent implements OnInit {
   }
 
   addPrivilege(): void {
-    console.log("addPrivilege");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.privilegeDetail);
+    
 
     if (this.privilegeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.privilegeDetailService.savePrivilegeDetail(this.userConncode, this.userID, this.privilegeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200) || (result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/privileges/privileges']);
@@ -331,16 +331,16 @@ export class PrivilegeDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
+        
 
       } else {
-        console.log("FAIL:", result);
+        
       }
     });
 
   }
   onTypeChange(event: any) {
-    console.log(event);
+    
     this.privilegeDetailService.current_typeID = this.privilegeForm.get('privtype').value;
     this.privilegeObject_flag = true;
     this.dataSourcePrivObject.loadPrivilegeDetail(this.userConncode, this.userID, 0, 5, "",  "privobject_clist");

@@ -45,7 +45,7 @@ export class ZonegroupDetailDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
            
-            console.log(method, result);
+            
 
             this.zonegroupsSubject.next(result.TrackingXLAPI.DATA);
             this.zonegroupDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];

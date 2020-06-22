@@ -121,7 +121,7 @@ export class EventDetailService
 
     getEventUnits(conncode: string, userid: number, pageindex: number, pagesize: number, eventid: string, groupid: string,  name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
@@ -137,7 +137,7 @@ export class EventDetailService
                 .set(`${paramIdentity}`, eventid.toString())
                 .set('method', method.toString());
 
-                console.log(params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -152,7 +152,7 @@ export class EventDetailService
                 .set(`${paramIdentity}`, eventid.toString())
                 .set('method', method.toString());
 
-                console.log(params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -172,7 +172,7 @@ export class EventDetailService
                 .set('name', `^${name}^`) 
                 .set('method', method.toString());
 
-                console.log(params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -188,7 +188,7 @@ export class EventDetailService
                 .set('name', `^${name}^`) 
                 .set('method', method.toString());
 
-                console.log(params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -208,7 +208,7 @@ export class EventDetailService
     }
 
     addMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        console.log(maintserviceArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
@@ -224,7 +224,7 @@ export class EventDetailService
     }
 
     deleteMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        console.log(maintserviceArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {

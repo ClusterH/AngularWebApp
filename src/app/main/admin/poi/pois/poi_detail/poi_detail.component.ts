@@ -75,7 +75,7 @@ export class PoiDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(poisEnglish, poisSpanish, poisFrench, poisPortuguese);
 
     this.poi = localStorage.getItem("poi_detail")? JSON.parse(localStorage.getItem("poi_detail")) : '';
-    console.log(this.poi);
+    
     
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -86,7 +86,7 @@ export class PoiDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.poi);
+      
 
       this.pageType = 'new';
     }
@@ -131,7 +131,7 @@ export class PoiDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -140,7 +140,7 @@ export class PoiDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorGroup.page)
@@ -150,7 +150,7 @@ export class PoiDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorPoint.page)
@@ -160,7 +160,7 @@ export class PoiDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorPointType.page)
@@ -170,7 +170,7 @@ export class PoiDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -211,7 +211,7 @@ export class PoiDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.poiForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.poiDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.poiDetailService.unit_clist_item[methodString];
 
@@ -227,7 +227,7 @@ export class PoiDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.poiForm.get('filterstring').setValue(this.filter_string);
    
@@ -244,7 +244,7 @@ export class PoiDetailComponent implements OnInit
       this.loadPoiDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -320,14 +320,14 @@ export class PoiDetailComponent implements OnInit
   }
 
   savePoi(): void {
-    console.log("savePoi");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.poiDetail);
+    
 
     this.poiDetailService.savePoiDetail(this.userConncode, this.userID, this.poiDetail)
     .subscribe((result: any) => {
-      console.log(result);
+      
       if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/poi/pois/pois']);
@@ -365,10 +365,10 @@ export class PoiDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

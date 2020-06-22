@@ -25,7 +25,7 @@ export class PrivilegeDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string,  method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         // if (typeid == undefined) {
         //     typeid = 0;
         // }
@@ -43,7 +43,7 @@ export class PrivilegeDetailService
                 .set('typeid', this.current_typeID.toString())
                 .set('method', method.toString());
 
-                console.log(params);
+                
     
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -73,7 +73,7 @@ export class PrivilegeDetailService
                 .set('name', `^${name}^`) 
                 .set('method', method.toString());
 
-                console.log(params);
+                
 
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -110,7 +110,7 @@ export class PrivilegeDetailService
             .set('objectid', privilegeDetail.objectid.toString())
             .set('method', 'privilege_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

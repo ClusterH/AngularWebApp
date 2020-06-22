@@ -45,7 +45,7 @@ export class AttendDialogComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(historyEnglish, historySpanish, historyFrench, historyPortuguese);
 
         this.attend = _data.attend;
-        console.log(this.attend);
+        
     }
 
     ngOnInit() {
@@ -66,7 +66,7 @@ export class AttendDialogComponent implements OnInit {
   
         let date = this.attend.performdate? new Date(`${this.attend.performdate}`) : '';
 
-        console.log(date);
+        
   
         this.attendForm.get('performdate').setValue(this.dateFormat(date));
         this.attendForm.get('hour').setValue(this.timeFormat(date));
@@ -83,7 +83,7 @@ export class AttendDialogComponent implements OnInit {
         this.attendDetail.performdate = performdate + " " + hour;
 
         let currentHistory =  this.historyService.maintHistoryList.findIndex((history: any) => history.id == this.attend.id);
-        console.log(currentHistory);
+        
 
         this.historyService.maintHistoryList[currentHistory].id = this.attendDetail.id;
         this.historyService.maintHistoryList[currentHistory].status = this.attendDetail.action;
@@ -91,7 +91,7 @@ export class AttendDialogComponent implements OnInit {
         this.historyService.maintHistoryList[currentHistory].performdate = this.attendDetail.performdate;
         // this.historyService.maintHistoryList[currentHistory].performdate = (new Date(this.attendForm.get('performdate').value)).toISOString();
 
-        console.log(performdate, hour, this.historyService.maintHistoryList[currentHistory].performdate );
+        
 
         this.flag.next(true);
     }
@@ -102,7 +102,7 @@ export class AttendDialogComponent implements OnInit {
           str = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
         }
 
-        console.log(str);
+        
     
         return str;
     }
@@ -110,22 +110,22 @@ export class AttendDialogComponent implements OnInit {
     paramTimeFormat(time) {
         // Check correct time format and split into components
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-        console.log(time);
+        
         if (time.length > 1) { // If time format correct
           time = time.slice(1); // Remove full string match value
-          console.log(time);
+          
 
           time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
           time[0] = +(time[0] % 12) < 10 ? '0' +  time[0] % 12 : time[0] % 12 || 12; // Adjust hours
         }
-        console.log(time);
+        
 
         return time.join(''); // return adjusted time or original string
     }
 
     dateFormat(date: any) {
         let str = new Date(date).toISOString().substring(0, 10);
-        console.log(str);
+        
         return str;
     }
 
@@ -138,7 +138,7 @@ export class AttendDialogComponent implements OnInit {
             + ("00" + time.getMinutes()).slice(-2) 
         }
 
-        console.log(str);
+        
 
         return str;
     }

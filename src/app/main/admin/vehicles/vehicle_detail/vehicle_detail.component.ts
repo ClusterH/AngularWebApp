@@ -93,29 +93,29 @@ export class VehicleDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
     this.vehicle = localStorage.getItem("vehicle_detail")? JSON.parse(localStorage.getItem("vehicle_detail")) : '';
-    console.log(this.vehicle);
+    
     
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
     if ( this.vehicle != '' )
     {
-      console.log(this.vehicle.makeid);
+      
 
       if(this.vehicle.makeid != 0) {
-        console.log(this.vehicle.makeid);
+        
 
         this.vehicleDetailService.current_makeID = this.vehicle.makeid;
         this.vehicleModel_flag = true;
       } else {
         this.vehicleDetailService.current_makeID = 0;
       }
-      console.log("makeid: ", this.vehicleDetailService.current_makeID);
+      
       this.pageType = 'edit';
     }
     else
     {
-      console.log(this.vehicle);
+      
       this.vehicleDetailService.current_makeID = 0;
       this.vehicleModel_flag = false;
 
@@ -126,7 +126,7 @@ export class VehicleDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.vehicle);
+    
   
     this.dataSourceCompany        = new VehicleDetailDataSource(this.vehicleDetailService);
     this.dataSourceGroup          = new VehicleDetailDataSource(this.vehicleDetailService);
@@ -185,7 +185,7 @@ export class VehicleDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     
     merge(this.paginatorCompany.page)
     .pipe(
@@ -194,7 +194,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorGroup.page)
@@ -204,7 +204,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorAccount.page)
@@ -214,7 +214,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorOperator.page)
@@ -224,7 +224,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorUnitType.page)
@@ -234,7 +234,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorServicePlan.page)
@@ -244,7 +244,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorProductType.page)
@@ -254,7 +254,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorMake.page)
@@ -264,7 +264,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     if(this.vehicleModel_flag) {
@@ -276,7 +276,7 @@ export class VehicleDetailComponent implements OnInit
         })
       )
       .subscribe( (res: any) => {
-          console.log(res);
+          
       });
     }
 
@@ -287,7 +287,7 @@ export class VehicleDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
   }
 
@@ -296,7 +296,7 @@ export class VehicleDetailComponent implements OnInit
       this.dataSourceCompany.loadVehicleDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'group') {
         let companyid = this.vehicleForm.get('company').value;
-        console.log(companyid);
+        
         if (companyid == undefined) {
           this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, 0, `${method_string}_clist`)
         } else {
@@ -374,7 +374,7 @@ export class VehicleDetailComponent implements OnInit
     } else {
       let selected_element_id = this.vehicleForm.get(`${this.method_string}`).value;
 
-      console.log(methodString, this.vehicleDetailService.unit_clist_item[methodString], selected_element_id );
+      
 
       let clist = this.vehicleDetailService.unit_clist_item[methodString];
 
@@ -391,7 +391,7 @@ export class VehicleDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.vehicleForm.get('filterstring').setValue(this.filter_string);
 
@@ -410,7 +410,7 @@ export class VehicleDetailComponent implements OnInit
       this.loadVehicleDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -490,17 +490,17 @@ export class VehicleDetailComponent implements OnInit
   }
 
   saveVehicle(): void {
-    console.log("saveVehicle");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.vehicleDetail);
+    
 
     if (this.vehicleDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['admin/vehicles/vehicles']);
@@ -543,17 +543,17 @@ export class VehicleDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 
   }
 
   onMakeChange(event: any) {
-    console.log(event);
+    
     this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
     this.vehicleModel_flag = true;
 
@@ -561,7 +561,7 @@ export class VehicleDetailComponent implements OnInit
   }
 
   onCompanyChange(event: any) {
-    console.log(event);
+    
     let current_companyID = this.vehicleForm.get('company').value;
 
     this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");

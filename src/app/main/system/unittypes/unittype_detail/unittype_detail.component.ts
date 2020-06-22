@@ -75,12 +75,12 @@ export class UnittypeDetailComponent implements OnInit
     {
       this.unittypeDetailService.current_makeID = this.unittype.makeid;
       this.unittypeModel_flag = true;
-      console.log("makeid: ", this.unittypeDetailService.current_makeID);
+      
       this.pageType = 'edit';
     }
     else
     {
-      console.log(this.unittype);
+      
       this.unittypeDetailService.current_makeID = 0;
       this.unittypeModel_flag = false;
 
@@ -91,7 +91,7 @@ export class UnittypeDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.unittype);
+    
     
     this.dataSourceProductType    = new UnittypeDetailDataSource(this.unittypeDetailService);
 
@@ -114,7 +114,7 @@ export class UnittypeDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
 
     merge(this.paginatorProductType.page)
     .pipe(
@@ -123,7 +123,7 @@ export class UnittypeDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
     
   }
@@ -149,7 +149,7 @@ export class UnittypeDetailComponent implements OnInit
    
     let selected_element_id = this.unittypeForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.unittypeDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.unittypeDetailService.unit_clist_item[methodString];
 
@@ -165,7 +165,7 @@ export class UnittypeDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.unittypeForm.get('filterstring').setValue(this.filter_string);
   
@@ -182,7 +182,7 @@ export class UnittypeDetailComponent implements OnInit
       this.loadUnittypeDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -244,17 +244,17 @@ export class UnittypeDetailComponent implements OnInit
   }
 
   saveUnittype(): void {
-    console.log("saveUnittype");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.unittypeDetail);
+    
 
     if (this.unittypeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/unittypes/unittypes']);
@@ -264,17 +264,17 @@ export class UnittypeDetailComponent implements OnInit
   }
 
   addUnittype(): void {
-    console.log("addUnittype");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.unittypeDetail);
+    
 
     if (this.unittypeDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.unittypeDetailService.saveUnittypeDetail(this.userConncode, this.userID, this.unittypeDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/unittypes/unittypes']);
@@ -300,10 +300,10 @@ export class UnittypeDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

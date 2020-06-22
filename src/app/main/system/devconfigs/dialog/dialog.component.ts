@@ -29,7 +29,7 @@ export class CourseDialogComponent implements OnInit {
 
         this.devconfig = devconfig;
         this.flag = flag;
-        console.log(this.devconfig, this,flag);
+        
     }
 
     ngOnInit() {
@@ -47,7 +47,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("devconfig_detail", JSON.stringify(this.devconfig));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("devconfig_detail")));
+            
     
             this.router.navigate(['system/devconfigs/devconfig_detail']);
         } else if( this.flag == "delete") {
@@ -60,7 +60,7 @@ export class CourseDialogComponent implements OnInit {
         } else if (this.flag == "delete_cmd") {
             this.devconfigsService.deleteDevConfig(this.devconfig.id, 'devconfigcmd_delete')
             .subscribe((result: any) => {
-                console.log(result);
+                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     this.reloadDetailComponent();
                 }

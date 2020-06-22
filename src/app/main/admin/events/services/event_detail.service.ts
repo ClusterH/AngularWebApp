@@ -28,7 +28,7 @@ export class EventDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -63,7 +63,7 @@ export class EventDetailService
     }
 
     getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        console.log(pageindex, pagesize,  companyid);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
@@ -74,7 +74,7 @@ export class EventDetailService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -90,7 +90,7 @@ export class EventDetailService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -101,7 +101,7 @@ export class EventDetailService
     }
 
     getPoiZone(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number, groupid: number, method: string): Observable<any> {
-        console.log(pageindex, pagesize,  companyid, name, groupid, method);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
@@ -113,7 +113,7 @@ export class EventDetailService
             .set('groupid', groupid.toString())
             .set('method', `${method}`);
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -130,7 +130,7 @@ export class EventDetailService
             .set('groupid', groupid.toString())
             .set('method', `${method}`);
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -141,10 +141,10 @@ export class EventDetailService
     }
 
     getDigitalInput(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        console.log(pageindex, pagesize, name, method);
+        
         let substr1 = method.substring(0, 12);
         let substr2 = method.substring(13, method.length);
-        console.log(substr1 + substr2);
+        
 
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
@@ -155,7 +155,7 @@ export class EventDetailService
             .set('pagesize', pagesize.toString())
             .set('method', `${substr1 + substr2}`);
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -170,7 +170,7 @@ export class EventDetailService
             .set('name', `^${name}^`) 
             .set('method', `${substr1 + substr2}`);
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -181,7 +181,7 @@ export class EventDetailService
     }
 
     getUnits(conncode: string, userid: number, pageindex: number, pagesize: number, companyid: string, groupid: string, eventid: string): Observable<any> {
-        console.log(pageindex, pagesize, companyid, groupid, eventid);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
@@ -194,7 +194,7 @@ export class EventDetailService
             .set('eventid', eventid.toString())
             .set('method', 'Unit_CList');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -211,7 +211,7 @@ export class EventDetailService
             .set('id', eventid.toString())
             .set('method', 'GetEventCondition_TList');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -220,7 +220,7 @@ export class EventDetailService
     }
 
     saveEvCondition(param: any = {}): Observable<any> {
-        console.log(param);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(param), {
@@ -229,7 +229,7 @@ export class EventDetailService
     }
 
     saveEventDetail(eventDetail: any = {}): Observable<any> {
-        console.log(eventDetail);
+        
         
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
@@ -240,7 +240,7 @@ export class EventDetailService
         //     .set('name', eventDetail.name.toString())
         //     .set('method', 'event_save');
         
-        //     console.log(params_detail);
+        //     
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(eventDetail), {
             headers: header_detail,

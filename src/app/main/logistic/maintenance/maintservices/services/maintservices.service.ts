@@ -35,7 +35,7 @@ export class MaintservicesService
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -52,7 +52,7 @@ export class MaintservicesService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -63,7 +63,7 @@ export class MaintservicesService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -98,7 +98,7 @@ export class MaintservicesService
     }
 
     getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        console.log(pageindex, pagesize,  companyid);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
@@ -109,7 +109,7 @@ export class MaintservicesService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -125,7 +125,7 @@ export class MaintservicesService
             .set('companyid', companyid.toString())
             .set('method', 'group_CList');
         
-            console.log(params_detail);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
@@ -137,7 +137,7 @@ export class MaintservicesService
 
     getItemDetail(conncode: string, userid: number, pageindex: number, pagesize: number, serviceid: string,  name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let paramIdentity = (this.pageType == 'edit' || this.new_serviceID != '')? 'serviceid' : 'companyid';
@@ -151,7 +151,7 @@ export class MaintservicesService
             .set(`${paramIdentity}`, serviceid.toString())
             .set('method', method.toString());
 
-            console.log(params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
@@ -168,7 +168,7 @@ export class MaintservicesService
             .set('name', `^${name}^`) 
             .set('method', method.toString());
 
-            console.log(params);
+            
 
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
@@ -191,7 +191,7 @@ export class MaintservicesService
             .set('isactive', maintserviceDetail.isactive.toString())
             .set('method', 'maintservice_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -200,7 +200,7 @@ export class MaintservicesService
     }
 
     addMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        console.log(maintserviceArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
@@ -216,7 +216,7 @@ export class MaintservicesService
     }
 
     deleteMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        console.log(maintserviceArray);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
@@ -244,7 +244,7 @@ export class MaintservicesService
                 .set('id', id.toString())
                 .set('method', "maintservice_delete");
                
-            console.log('params', params);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

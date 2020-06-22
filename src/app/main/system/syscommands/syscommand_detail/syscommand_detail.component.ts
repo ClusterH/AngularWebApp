@@ -62,7 +62,7 @@ export class SysCommandDetailComponent implements OnInit
     }
     else
     {
-      console.log(this.syscommand);
+      
       this.pageType = 'new';
     }
 
@@ -70,7 +70,7 @@ export class SysCommandDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.syscommand);
+    
   
     this.syscommandForm = this._formBuilder.group({
       name               : [null, Validators.required],
@@ -135,17 +135,17 @@ export class SysCommandDetailComponent implements OnInit
   }
 
   saveSysCommand(): void {
-    console.log("saveSysCommand");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.syscommandDetail);
+    
 
     if (this.syscommandDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/syscommands/syscommands']);
@@ -155,17 +155,17 @@ export class SysCommandDetailComponent implements OnInit
   }
 
   addSysCommand(): void {
-    console.log("addSysCommand");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.syscommandDetail);
+    
 
     if (this.syscommandDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.syscommandDetailService.saveSysCommandDetail(this.userConncode, this.userID, this.syscommandDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/syscommands/syscommands']);
@@ -191,10 +191,10 @@ export class SysCommandDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

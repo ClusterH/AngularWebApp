@@ -31,7 +31,6 @@ export class ScrumboardBoardCardComponent implements OnInit
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _scrumboardService: ScrumboardService,
-
     )
     {
     }
@@ -45,37 +44,47 @@ export class ScrumboardBoardCardComponent implements OnInit
      */
     ngOnInit(): void
     {
-        console.log(this.cardId);
+        
         this.board = this._activatedRoute.snapshot.data.board;
-        console.log(this.board);
+        
         this.card = this.board.cards[0].filter((card) => {
-            // console.log(card);
+            // 
             return this.cardId === card.id;
         })[0];
+
+        console.log(this.card);
+
+        // this.card.due = this.dateFormat(new Date(this.card.due));
+
 
         // this._scrumboardService.onBoardChanged
         //     .pipe(takeUntil(this._unsubscribeAll))
         //     .subscribe(board => {
-        //         console.log(board);
+        //         
         //         this.board = board;
-        //         console.log(this.board);
+        //         
         //         this.card = this.board.cards[0].filter((card) => {
-        //             console.log(card);
+        //             
         //             return this.cardId === card.id;
         //         })[0];
         //     });
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    dateFormat(date: any) {
+        let str = '';
 
-    /**
-     * Is the card overdue?
-     *
-     * @param cardDate
-     * @returns {boolean}
-     */
+        if (date != '') {
+            str = 
+              ("00" + (date.getMonth() + 1)).slice(-2) 
+              + "/" + ("00" + date.getDate()).slice(-2) 
+              + "/" + date.getFullYear() + " " 
+              + ("00" + date.getHours()).slice(-2) + ":" 
+              + ("00" + date.getMinutes()).slice(-2) 
+          }
+    
+        return str;
+      }
+
     isOverdue(cardDate): boolean
     {
         return moment() > moment(new Date(cardDate));

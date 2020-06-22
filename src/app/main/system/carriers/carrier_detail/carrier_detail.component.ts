@@ -75,7 +75,7 @@ export class CarrierDetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log(this.carrier);
+    
 
     this.carrierForm = this._formBuilder.group({
       name               : [null, Validators.required],
@@ -92,7 +92,7 @@ export class CarrierDetailComponent implements OnInit
 }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
   }
 
   setValues() {
@@ -150,17 +150,17 @@ export class CarrierDetailComponent implements OnInit
   }
 
   saveCarrier(): void {
-    console.log("saveCarrier");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.carrierDetail);
+    
 
     if (this.carrierDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/carriers/carriers']);
@@ -170,17 +170,17 @@ export class CarrierDetailComponent implements OnInit
   }
 
   addCarrier(): void {
-    console.log("addCarrier");
+    
     let today = new Date().toISOString();
     this.getValues(today, "add");
-    console.log(this.carrierDetail);
+    
 
     if (this.carrierDetail.name == '') {
       alert('Please enter Detail Name')
     } else {
       this.carrierDetailService.saveCarrierDetail(this.userConncode, this.userID, this.carrierDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if ((result.responseCode == 200)||(result.responseCode == 100)) {
           alert("Success!");
           this.router.navigate(['system/carriers/carriers']);
@@ -206,10 +206,10 @@ export class CarrierDetailComponent implements OnInit
     dialogRef.afterClosed().subscribe(result => {
         if ( result )
         { 
-            console.log(result);
+            
 
         } else {
-            console.log("FAIL:", result);
+            
         }
     });
 

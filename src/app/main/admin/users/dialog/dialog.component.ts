@@ -52,7 +52,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("user_detail", JSON.stringify(this.user));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("user_detail")));
+            
     
             this.router.navigate(['admin/users/user_detail']);
         } else if( this.flag == "delete") {

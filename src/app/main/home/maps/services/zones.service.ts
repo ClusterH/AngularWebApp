@@ -25,7 +25,7 @@ export class ZonesService
                 .set('userid', userid.toString())
                 .set('method', "GetZonesForMap");
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   

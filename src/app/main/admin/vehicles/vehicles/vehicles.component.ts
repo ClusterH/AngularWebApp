@@ -97,7 +97,7 @@ export class VehiclesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).vehicles;
 
-        console.log(this.restrictValue);
+        
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
@@ -113,7 +113,7 @@ export class VehiclesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -136,18 +136,18 @@ export class VehiclesComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
         this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
     onRowClicked(vehicle) {
-        console.log('Row Clicked:', vehicle);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -197,16 +197,16 @@ export class VehiclesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicateVehicle(vehicle: any): void
     {
-        console.log("first:", vehicle)
+        
         
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -222,7 +222,7 @@ export class VehiclesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
 
             }

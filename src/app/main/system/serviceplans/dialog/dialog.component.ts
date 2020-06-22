@@ -48,7 +48,7 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("serviceplan_detail", JSON.stringify(this.serviceplan));
     
-            console.log("localstorage:", JSON.parse(localStorage.getItem("serviceplan_detail")));
+            
     
             this.router.navigate(['system/serviceplans/serviceplan_detail']);
         } else if( this.flag == "delete") {

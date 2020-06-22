@@ -37,7 +37,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'));
-        console.log(this.userObject);
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ export class ScrumboardComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(boards => {
                 this.boards =boards;
-                console.log(this.boards);
+                
 
             });
     }

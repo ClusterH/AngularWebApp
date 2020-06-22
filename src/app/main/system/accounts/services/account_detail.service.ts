@@ -25,13 +25,13 @@ export class AccountDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
         if(name == '') {
             if(method == 'model_clist') {
-                console.log(this.current_makeID);
+                
 
                 let params = new HttpParams()
                 .set('conncode', conncode.toString())
@@ -62,7 +62,7 @@ export class AccountDetailService
         } else {
 
             if(method == 'model_clist') {
-                console.log(this.current_makeID);
+                
 
                 let params = new HttpParams()
                 .set('conncode', conncode.toString())
@@ -73,7 +73,7 @@ export class AccountDetailService
                 .set('name', `^${name}^`) 
                 .set('method', method.toString());
 
-                console.log(params);
+                
     
                 return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                     headers: headers,   
@@ -120,7 +120,7 @@ export class AccountDetailService
             .set('lastmodifiedby', accountDetail.lastmodifiedby.toString())
             .set('method', 'account_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

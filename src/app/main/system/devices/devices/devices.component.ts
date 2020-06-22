@@ -107,7 +107,7 @@ export class DevicesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -130,18 +130,18 @@ export class DevicesComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new DevicesDataSource(this._systemDevicesService);
         this.dataSource.loadDevices(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Device_Tlist");
     }
 
     onRowClicked(device) {
-        console.log('Row Clicked:', device);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -191,16 +191,16 @@ export class DevicesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicateDevice(device: any): void
     {
-        console.log("first:", device)
+        
         
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -216,7 +216,7 @@ export class DevicesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
 
             }

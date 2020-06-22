@@ -25,7 +25,7 @@ export class TankDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -75,7 +75,7 @@ export class TankDetailService
             .set('lastmodifieddate', tankDetail.lastmodifieddate.toString())
             .set('method', 'tank_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -94,7 +94,7 @@ export class TankDetailService
             .set('totime', totime.toString())
             .set('method', 'fueltank_history');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

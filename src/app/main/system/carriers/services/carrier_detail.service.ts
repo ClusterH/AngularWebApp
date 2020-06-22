@@ -40,7 +40,7 @@ export class CarrierDetailService
             .set('lastmodifiedby', carrierDetail.lastmodifiedby.toString())
             .set('method', 'carrier_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

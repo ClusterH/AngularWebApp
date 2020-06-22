@@ -173,13 +173,13 @@ export class ReportComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.activatedRoute.params.subscribe(routeParams => {
-            console.log(routeParams);
+            
             // this.reloadComponent(routeParams.id);
             this.currentCategory = routeParams.id;
             this.currentCategoryID = this.currentCategory.split('_')[0];
             this.currentCategoryName = this.currentCategory.split('_')[1];
             this.initBehaviorSubjects();
-            console.log(this.currentCategoryID, this.currentCategoryName);
+            
 
             this.dataSourceReport  = new ReportDataSource(this.reportService);
             this.dataSourceCompany = new ReportDataSource(this.reportService);
@@ -268,7 +268,7 @@ export class ReportComponent implements OnInit, OnDestroy
 
     selectWholeCompany() {
         this.isWholeCompany = this.companyStep.get('wholeCompany').value;
-        console.log(this.isWholeCompany);
+        
 
         if (this.isWholeCompany) {
             this.loadingSubjectGroup.next(false);
@@ -289,7 +289,7 @@ export class ReportComponent implements OnInit, OnDestroy
 
     selectWholeGroup() {
         this.isWholeGroup = this.groupStep.get('wholeGroup').value;
-        console.log(this.isWholeGroup);
+        
 
         if (this.isWholeGroup) {
             this.loadingSubjectUnit.next(false);
@@ -311,7 +311,7 @@ export class ReportComponent implements OnInit, OnDestroy
         } else {
             if (!this.isWholeCompany) {
                 this.dataSourceGroup = new ReportDataSource(this.reportService);
-                console.log(JSON.parse(JSON.stringify(this.companySelection.selected[0])).name);
+                
                 this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, this.companySelection.selected[0].id, '', 'group_clist' )
                 this.myStepper.selected.completed = true; 
             }
@@ -327,7 +327,7 @@ export class ReportComponent implements OnInit, OnDestroy
         } else {
             if(!this.isWholeGroup) {
                 this.dataSourceUnit = new ReportDataSource(this.reportService);
-                console.log(this.groupSelection.selected[0].id);
+                
                 this.dataSourceUnit.loadGroup(this.userConncode, this.userID, 0, 5, this.groupSelection.selected[0].id, '', 'unit_clist' )
                 this.myStepper.selected.completed = true;
             }
@@ -339,7 +339,7 @@ export class ReportComponent implements OnInit, OnDestroy
     checkDateTime() {
         let fromDate = this.dateStep.get('start');
         let endDate = this.dateStep.get('end');
-        console.log(fromDate, endDate);
+        
 
         if(this.loadingSubjectDateRange.getValue() && (fromDate.value == null || endDate.value == null) ) {
             alert("Please choose Date correctly");
@@ -349,7 +349,7 @@ export class ReportComponent implements OnInit, OnDestroy
     }
 
     isCheckedRow(row: any): boolean {
-        // console.log(row);
+        // 
         if(this.method_string == 'company') {
             const found = this.companySelection.selected.find(el => el.id === row.id);
             if (found) { return true; }
@@ -375,7 +375,7 @@ export class ReportComponent implements OnInit, OnDestroy
      }
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
         setTimeout(() => {
             merge(this.paginatorReport.page)
             .pipe(
@@ -384,7 +384,7 @@ export class ReportComponent implements OnInit, OnDestroy
               })
             )
             .subscribe( (res: any) => {
-                console.log(res);
+                
             });
         })
     }
@@ -444,7 +444,7 @@ export class ReportComponent implements OnInit, OnDestroy
         this.filter_string = event.target.value;
         this.method_string = method;
     
-        console.log(this.filter_string, this.method_string)
+        
     
         if(this.filter_string.length >= 3 || this.filter_string == '') {
          
@@ -452,11 +452,11 @@ export class ReportComponent implements OnInit, OnDestroy
           this.loadReport(this.method_string);
         }
     
-        console.log(this.filter_string);
+        
     }
 
     clearFilter(method: string) {
-        console.log(this.filter_string);
+        
         this.filter_string = '';
         switch(method) {
             case 'report':
@@ -493,15 +493,15 @@ export class ReportComponent implements OnInit, OnDestroy
             alert("Please select one Report!");
             this.initBehaviorSubjects();
         } else {
-            console.log(this.reportSelection.selected[0], this.reportService.report_cList);
+            
 
             let selectedReportid = Number(this.reportSelection.selected[0]);
             this.selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
-            console.log(this.selectedReport);
+            
 
             this.reportService.getReportParams(this.userConncode, this.userID, selectedReportid, this.selectedReport.apimethod)
             .subscribe((res: any) => {
-                console.log(res);
+                
                 for (let i = 0; i< res.TrackingXLAPI.DATA.length; i++){
                     this.loadingReport.next(res.TrackingXLAPI.DATA[i].Data);
                 }
@@ -513,7 +513,7 @@ export class ReportComponent implements OnInit, OnDestroy
                     this.dataSourceCompany = new ReportDataSource(this.reportService);
                     this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, this.filter_string, 'company_clist');
 
-                    console.log('loadingsubjectCompany: ', this.loadingSubjectCompany.value);
+                    
 
                 } else if (params == 'groupids') {
                     this.loadingSubjectGroup.next(true);
@@ -561,7 +561,7 @@ export class ReportComponent implements OnInit, OnDestroy
     }
 
     selectionChange($event: StepperSelectionEvent): void {
-        console.log($event, "selected index", $event.selectedIndex);
+        
         if ($event.selectedIndex == 1) {
             this.method_string = 'company';
             // this.paginatorCompany.pageIndex = 0;
@@ -574,7 +574,7 @@ export class ReportComponent implements OnInit, OnDestroy
         } else if ($event.selectedIndex == 6) {
             this.method_string = 'event'
         }
-        // console.log($event.selectedStep.stepControl.value);
+        // 
     }
 
     initBehaviorSubjects() {
@@ -605,7 +605,7 @@ export class ReportComponent implements OnInit, OnDestroy
     }
 
     paginatorClick(paginator) {
-        console.log("paginatorclick: ", paginator, this.companySelection.selected);
+        
        
         if (this.method_string == 'company') {
             this.dataSourceCompany.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
@@ -633,7 +633,7 @@ export class ReportComponent implements OnInit, OnDestroy
             + ":" + ("00" + date.getSeconds()).slice(-2); 
         }
 
-        console.log(str);
+        
     
         return str;
     }
@@ -644,7 +644,7 @@ export class ReportComponent implements OnInit, OnDestroy
           str = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
         }
 
-        console.log(str);
+        
     
         return str;
     }
@@ -652,15 +652,15 @@ export class ReportComponent implements OnInit, OnDestroy
     paramTimeFormat(time) {
         // Check correct time format and split into components
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-        console.log(time);
+        
         if (time.length > 1) { // If time format correct
           time = time.slice(1); // Remove full string match value
-          console.log(time);
+          
 
           time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
           time[0] = +(time[0] % 12) < 10 ? '0' +  time[0] % 12 : time[0] % 12 || 12; // Adjust hours
         }
-        console.log(time);
+        
 
         return time.join(''); // return adjusted time or original string
     }
@@ -671,14 +671,14 @@ export class ReportComponent implements OnInit, OnDestroy
           str = ("00" + date.getHours()).slice(-2) + ":"  + ("00" + date.getMinutes()).slice(-2); 
         }
 
-        console.log(str);
+        
     
         return this.paramTimeFormat(str);
     }
 
 
     onDateRangeChange($event) {
-        console.log(this.selectedRange, "event: ", $event);
+        
         if (this.selectedRange == 'daterange') {
             this.showRangePicker = true;
             this.loadingSubjectDateRange.next(true);
@@ -690,8 +690,8 @@ export class ReportComponent implements OnInit, OnDestroy
 
     finishVerticalStepper(): void
     {
-        console.log('You have finished the vertical stepper!');
-        console.log(this.paramDateFormat(new Date(this.dateStep.get('start').value)));
+        
+        
         this.entered_report_param.reportname = this.selectedReport.apimethod || null;
         this.entered_report_param.runondate = this.paramDateFormat(new Date()) + " " + this.currentTimeFormat(new Date());
         this.entered_report_param.companyid = this.companySelection.selected[0]? this.companySelection.selected[0].id : null
@@ -717,19 +717,19 @@ export class ReportComponent implements OnInit, OnDestroy
         this.entered_report_param.maxtime = this.timeStep.get('maxtime').value? Number(this.timeStep.get('maxtime').value.split(':')[0])*60 + Number(this.timeStep.get('maxtime').value.split(':')[1]) : null;
         this.entered_report_param.mintime = this.timeStep.get('mintime').value? Number(this.timeStep.get('mintime').value.split(':')[0])*60 + Number(this.timeStep.get('mintime').value.split(':')[1]) : null;
 
-        console.log(this.entered_report_param);
+        
 
         for (let param in this.entered_report_param) { 
             if (this.entered_report_param[param] === null) {
               delete this.entered_report_param[param];
             } else {
-                console.log(`${param}`, this.entered_report_param[param]);
+                
             }
         }
 
         localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));
 
-        console.log(this.entered_report_param);
+        
 
         this.router.navigate(['report/reportresult']);
 
@@ -737,7 +737,7 @@ export class ReportComponent implements OnInit, OnDestroy
 
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {
-        console.log("connection");
+        
         return this.loadingReport.asObservable();
     }
  
@@ -746,7 +746,7 @@ export class ReportComponent implements OnInit, OnDestroy
      */
     disconnect(): void
     {
-        console.log("disconnect");
+        
         this.loadingReport.complete();
         this.loadingSubjectCompany.complete();
         this.loadingSubjectGroup.complete();

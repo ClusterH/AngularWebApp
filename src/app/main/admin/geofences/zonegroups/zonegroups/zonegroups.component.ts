@@ -100,7 +100,7 @@ export class ZonegroupsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit:");
+        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -123,18 +123,18 @@ export class ZonegroupsComponent implements OnInit
    
     ngOnInit(): void
     {
-        console.log(this.pageSize, this.pageIndex);
+        
 
         this.dataSource = new ZonegroupsDataSource(this._adminZonegroupsService);
         this.dataSource.loadZonegroups(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Zonegroup_Tlist");
     }
 
     onRowClicked(zonegroup) {
-        console.log('Row Clicked:', zonegroup);
+        
     }
 
     selectedFilter() {
-        console.log(this.selected, this.filter_string);
+        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -184,16 +184,16 @@ export class ZonegroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
-                console.log("FAIL:", result);
+                
             }
         });
     }
 
     duplicateZonegroup(zonegroup: any): void
     {
-        console.log("first:", zonegroup)
+        
         
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
@@ -209,7 +209,7 @@ export class ZonegroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                console.log(result);
+                
             } else {
 
             }

@@ -81,7 +81,7 @@ export class ZonegroupDetailComponent implements OnInit
     this._fuseTranslationLoaderService.loadTranslations(zonegroupsEnglish, zonegroupsSpanish, zonegroupsFrench, zonegroupsPortuguese);
 
     this.zonegroup = localStorage.getItem("zonegroup_detail")? JSON.parse(localStorage.getItem("zonegroup_detail")) : '';
-    console.log(this.zonegroup);
+    
     
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -136,7 +136,7 @@ export class ZonegroupDetailComponent implements OnInit
   }
  
   ngAfterViewInit() {
-    console.log("ngAfterViewInit:");
+    
     if (this,this.pageType == 'new') {
       merge(this.paginatorCompany.page)
       .pipe(
@@ -145,7 +145,7 @@ export class ZonegroupDetailComponent implements OnInit
         })
       )
       .subscribe( (res: any) => {
-          console.log(res);
+          
       });
     }
 
@@ -156,7 +156,7 @@ export class ZonegroupDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-        console.log(res);
+        
     });
 
     merge(this.paginatorExcluded.page)
@@ -166,7 +166,7 @@ export class ZonegroupDetailComponent implements OnInit
       })
     )
     .subscribe( (res: any) => {
-      console.log(res);
+      
     })
 
   }
@@ -176,10 +176,10 @@ export class ZonegroupDetailComponent implements OnInit
       this.dataSourceCompany.loadZonegroupDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
     } else if (method_string == 'included') {
       this.dataSourceIncluded.loadZonegroupDetail(this.userConncode, this.userID, this.paginatorIncluded.pageIndex, this.paginatorIncluded.pageSize, this.filter_string, "GetGroupIncludedZONEs")
-      console.log(this.includedSelection.selected);
+      
     } else if (method_string == 'excluded') {
       this.dataSourceExcluded.loadZonegroupDetail(this.userConncode, this.userID, this.paginatorExcluded.pageIndex, this.paginatorExcluded.pageSize, this.filter_string, "GetGroupExcludedZONEs");
-      console.log(this.excludedSelection.selected);
+      
     }
   }
 
@@ -204,7 +204,7 @@ export class ZonegroupDetailComponent implements OnInit
     this.method_string = item.split('_')[0];
     let selected_element_id = this.zonegroupForm.get(`${this.method_string}`).value;
 
-    console.log(methodString, this.zonegroupDetailService.unit_clist_item[methodString], selected_element_id );
+    
 
     let clist = this.zonegroupDetailService.unit_clist_item[methodString];
 
@@ -220,7 +220,7 @@ export class ZonegroupDetailComponent implements OnInit
   }
 
   clearFilter() {
-    console.log(this.filter_string);
+    
     this.filter_string = '';
     this.zonegroupForm.get('filterstring').setValue(this.filter_string);
    
@@ -237,14 +237,14 @@ export class ZonegroupDetailComponent implements OnInit
       this.loadZonegroupDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   onIncludedFilter(event: any) {
     this.method_string = 'included';
     this.filter_string = event.target.value;
 
-    console.log(this.filter_string, this.method_string)
+    
 
     if(this.filter_string.length >= 3 || this.filter_string == '') {
      
@@ -252,7 +252,7 @@ export class ZonegroupDetailComponent implements OnInit
       this.loadZonegroupDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   onExcludedFilter(event: any) {
@@ -265,7 +265,7 @@ export class ZonegroupDetailComponent implements OnInit
       this.loadZonegroupDetail(this.method_string);
     }
 
-    console.log(this.filter_string);
+    
   }
 
   setValues() {
@@ -328,14 +328,14 @@ export class ZonegroupDetailComponent implements OnInit
   }
 
   saveZonegroup(): void {
-    console.log("saveZonegroup");
+    
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    console.log(this.zonegroupDetail);
+    
 
     this.zonegroupDetailService.saveZonegroupDetail(this.userConncode, this.userID, this.zonegroupDetail)
     .subscribe((result: any) => {
-      console.log(result);
+      
       if ((result.responseCode == 200)||(result.responseCode == 100)) {
         alert("Success!");
         this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
@@ -363,9 +363,9 @@ export class ZonegroupDetailComponent implements OnInit
 
       this.zonegroupDetailService.saveZonegroupDetail(this.userConncode, this.userID, this.zonegroupDetail)
       .subscribe((result: any) => {
-        console.log(result);
+        
         if (result.responseCode == 100) {
-          console.log(result.TrackingXLAPI.DATA[0].id);
+          
 
           let addData = [];
           for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
@@ -375,11 +375,11 @@ export class ZonegroupDetailComponent implements OnInit
             }
           }
           
-          console.log(addData);
+          
           this.zonegroupDetailService.addZoneToGroup(this.userConncode, this.userID, addData)
           .subscribe((res: any) => {
             if (res.TrackingXLAPI.DATA) {
-              console.log(res);
+              
               alert("ZONEGroup added successfully!")
               this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
             }
@@ -387,7 +387,7 @@ export class ZonegroupDetailComponent implements OnInit
         }
       });
     } else {
-      console.log(this.excludedSelection.selected, this.zonegroup.id);
+      
       let addData = [];
       for (let i = 0; i < this.excludedSelection.selected.length; i ++ ){
         addData[i] = {
@@ -396,11 +396,11 @@ export class ZonegroupDetailComponent implements OnInit
         }
       }
       
-      console.log(addData);
+      
       this.zonegroupDetailService.addZoneToGroup(this.userConncode, this.userID, addData)
       .subscribe((res: any) => {
         if (res.TrackingXLAPI.DATA) {
-          console.log(res);
+          
           alert("ZONEs added successfully!");
           this.dataSourceIncluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedZONEs");
           this.dataSourceExcluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedZONEs");
@@ -410,7 +410,7 @@ export class ZonegroupDetailComponent implements OnInit
   }
 
   deleteZONEs() {
-    console.log(this.includedSelection.selected, this.zonegroup.id);
+    
     let deleteData = [];
     for (let i = 0; i < this.includedSelection.selected.length; i ++ ){
       deleteData[i] = {
@@ -419,11 +419,11 @@ export class ZonegroupDetailComponent implements OnInit
       }
     }
     
-    console.log(deleteData);
+    
     this.zonegroupDetailService.deleteZoneToGroup(this.userConncode, this.userID, deleteData)
     .subscribe((res: any) => {
       if (res.TrackingXLAPI.DATA) {
-        console.log(res);
+        
         alert("ZONEs deleted successfully!");
         this.dataSourceIncluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedZONEs");
         this.dataSourceExcluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedZONEs");
@@ -446,7 +446,7 @@ export class ZonegroupDetailComponent implements OnInit
         this.reloadComponent();
 
       } else {
-        console.log(this.zonegroupDetailService.current_CompanyID);
+        
 
         this.dataSourceIncluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupIncludedZONEs");
         this.dataSourceExcluded.loadZonegroupDetail(this.userConncode, this.userID, 0, 10, '', "GetGroupExcludedZONEs");

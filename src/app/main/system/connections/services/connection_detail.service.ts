@@ -25,7 +25,7 @@ export class ConnectionDetailService
 
     getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
-        console.log("SERVICE-getCompanies() :", method);
+        
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
@@ -60,7 +60,7 @@ export class ConnectionDetailService
     }
 
     saveConnectionDetail(conncode: string, userid: number, connectionDetail: any = {}): Observable<any> {
-        console.log(connectionDetail);
+        
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
@@ -80,7 +80,7 @@ export class ConnectionDetailService
             .set('lastmodifiedby', connectionDetail.lastmodifiedby.toString())
             .set('method', 'connection_save');
         
-            console.log(params_detail);
+            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

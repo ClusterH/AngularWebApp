@@ -25,7 +25,7 @@ export class VehMarkersService
                 .set('userid', userid.toString())
                 .set('method', "GetVehicleLocations");
                
-            console.log('params', params);
+            
 
             return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
                 headers: headers,   
