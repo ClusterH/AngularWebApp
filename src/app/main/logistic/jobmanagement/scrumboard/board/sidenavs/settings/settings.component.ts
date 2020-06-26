@@ -69,8 +69,8 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
      */
     toggleCardCover(): void
     {
-        this.board.settings.cardCoverImages = !this.board.settings.cardCoverImages;
-        this.scrumboardService.updateBoard(this.board);
+        this.board.settings.cardcoverimages = !this.board.settings.cardcoverimages;
+        // this.scrumboardService.updateBoard(this.board);
     }
 
     /**
@@ -79,13 +79,21 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     toggleSubscription(): void
     {
         this.board.settings.subscribed = !this.board.settings.subscribed;
-        this.scrumboardService.updateBoard(this.board);
+        // this.scrumboardService.updateBoard(this.board);
     }
     deleteBoard(): void {
         this.scrumboardService.deleteBoard(this.board.id)
         .then((res: any) => {
             
             this._router.navigate(['logistic/scrumboard/boards']);
+        })
+    }
+
+    setting_save() {
+        console.log(this.board.settings);
+        this.scrumboardService.saveBoardSetting(this.board.settings.color, this.board.settings.subscribed, this.board.settings.cardcoverimages)
+        .then(res => {
+            console.log(res);
         })
     }
 }

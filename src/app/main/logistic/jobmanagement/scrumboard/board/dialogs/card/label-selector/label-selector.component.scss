@@ -3,6 +3,10 @@
     .mat-menu-content {
         padding-bottom: 0;
 
+        min-width: 240px !important;
+        width: fit-content !important;
+        max-width: unset;
+
         .mat-checkbox-layout,
         .mat-checkbox-label {
             display: flex;
@@ -14,14 +18,14 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            width: 240px;
+            width: fit-content;
             min-width: 240px;
-            max-width: 240px;
+            max-width: unset;
             min-height: 240px;
 
             .view {
                 position: absolute;
-                width: 240px;
+                width: fit-content;
                 height: 100%;
                 bottom: 0;
                 left: 0;
@@ -72,3 +76,9 @@
         }
     }
 }
+
+// .mat-menu-panel {
+//     max-width: unset !important;
+//     max-height: calc(100vh - 250px) !important;
+// }
+

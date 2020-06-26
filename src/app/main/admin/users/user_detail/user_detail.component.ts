@@ -1,29 +1,20 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-
-import { UserDetail } from 'app/main/admin/users/model/user.model';
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
-import * as $ from 'jquery';
-
-import { Subject, merge, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { UserDetailService } from 'app/main/admin/users/services/user_detail.service';
-import { UserDetailDataSource } from "app/main/admin/users/services/user_detail.datasource";
-import { AuthService } from 'app/authentication/services/authentication.service';
-
 import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
-import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
 import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
+import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
+import { UserDetail } from 'app/main/admin/users/model/user.model';
+import { UserDetailDataSource } from "app/main/admin/users/services/user_detail.datasource";
+import { UserDetailService } from 'app/main/admin/users/services/user_detail.service';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
   selector: 'app-user-detail',
@@ -162,7 +153,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("company")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -172,7 +163,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("group")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -182,7 +173,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("lengthunit")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -192,7 +183,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("fuelunit")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -202,7 +193,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("weightunit")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -212,7 +203,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("tempunit")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -222,7 +213,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("language")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
 
@@ -232,7 +223,7 @@ export class UserDetailComponent implements OnInit
         this.loadUserDetail("timezone")
       })
     )
-    .subscribe( (res: any) => {
+    .subscribe( () => {
         
     });
   }

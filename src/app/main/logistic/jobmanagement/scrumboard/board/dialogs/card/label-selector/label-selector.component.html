@@ -19,12 +19,16 @@
 
                 <mat-checkbox fxFlex fxLayout="row" fxLayoutAlign="start center"
                               [checked]="card.idlabels.indexOf(label.id) > -1"
-                              (change)="toggleInArray(label.id, card.idlabels);onCardLabelsChanged()">
+                              (change)="toggleInArray(label.id, card.idlabels);onCardLabelsChanged(label)">
                     {{label.name}}
                 </mat-checkbox>
 
                 <button mat-icon-button>
                     <mat-icon class="s-16" (click)="labelsMenuView ='edit';selectedLabel = label">mode_edit</mat-icon>
+                </button>
+
+                <button mat-icon-button>
+                    <mat-icon class="s-16" (click)="deleteLabel(label)">delete</mat-icon>
                 </button>
 
             </div>
@@ -44,13 +48,17 @@
 
         <div class="content" fxLayout="row" fxLayoutAlign="start center">
             <mat-form-field>
-                <input matInput placeholder="Name" [(ngModel)]="selectedLabel.name" (change)="onLabelChange()">
+                <!-- <input matInput placeholder="Name" [(ngModel)]="selectedLabel.name" (change)="onLabelChange()"> -->
+                <input matInput placeholder="Name" [(ngModel)]="selectedLabel.name">
             </mat-form-field>
 
             <fuse-material-color-picker [(ngModel)]="selectedLabel.color" class="ml-8"
-                                        (colorChanged)="$event.preventDefault;onLabelChange()"></fuse-material-color-picker>
+                                        (colorChanged)="$event.preventDefault;"></fuse-material-color-picker>
         </div>
 
+        <div fxLayout="row" fxLayoutAlign="end">
+            <button mat-raised-button class="mat-accent mt-16 mr-12 w-60-p" (click)="editLabel(selectedLabel)">Save Change</button>
+        </div>
     </div>
 
     <div class="view add" *ngSwitchCase="'add'" fxFlex fxLayout="column">
@@ -62,21 +70,18 @@
             <div>Add Label</div>
         </div>
 
-        <form (submit)="addNewLabel()" #newLabelForm="ngForm" fxFlex fxLayout="column" fxLayoutAlign="start end">
+        <div class="content" fxLayout="row" fxLayoutAlign="start center">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="newLabel.name">
+            </mat-form-field>
 
-            <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-form-field fxFlex>
-                    <input matInput placeholder="Name" [(ngModel)]="newLabel.name" name="labelName" required>
-                </mat-form-field>
+            <fuse-material-color-picker [(ngModel)]="newLabel.color" class="ml-8"
+                                        (colorChanged)="$event.preventDefault;"></fuse-material-color-picker>
+        </div>
 
-                <fuse-material-color-picker class="ml-8" [(ngModel)]="newLabel.color"
-                                            name="labelColor"></fuse-material-color-picker>
-            </div>
-
-            <button mat-raised-button class="mat-accent mt-16" [disabled]="!newLabelForm.valid">ADD NEW LABEL</button>
-
-        </form>
-
+        <div fxLayout="row" fxLayoutAlign="end">
+            <button mat-raised-button class="mat-accent mt-16 mr-12 w-60-p" (click)="addNewLabel()">ADD NEW LABEL</button>
+        </div>
     </div>
 
 </div>

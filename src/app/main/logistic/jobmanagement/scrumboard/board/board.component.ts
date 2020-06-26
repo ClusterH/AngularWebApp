@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { fuseAnimations } from '@fuse/animations';
+import { List } from 'app/main/logistic/jobmanagement/scrumboard/list.model';
+import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { fuseAnimations } from '@fuse/animations';
-
-import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
-import { List } from 'app/main/logistic/jobmanagement/scrumboard/list.model';
 
 @Component({
     selector     : 'scrumboard-board',
@@ -46,6 +44,15 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
+
+                this._scrumboardService.getBoardMembers()
+                .then((res: any) => {
+                    console.log(res);
+                    this.board.members = res.TrackingXLAPI.DATA;
+
+                });
+
+                console.log(this.board);
                 
             });
     }
@@ -97,6 +104,6 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      */
     onDrop(ev): void
     {
-        this._scrumboardService.updateBoard(this.board);
+        // this._scrumboardService.updateBoard(this.board);
     }
 }

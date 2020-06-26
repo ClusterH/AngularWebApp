@@ -35,8 +35,8 @@
 
                     <mat-menu #labelsMenu="matMenu" [overlapTrigger]="false" class="scrumboard-labels-menu">
 
-                        <scrumboard-label-selector [card]="card"
-                                                   (cardLabelsChanged)="updateCard()"></scrumboard-label-selector>
+                        <!-- <scrumboard-label-selector [card]="card" (cardLabelsChanged)="updateCard()"></scrumboard-label-selector> -->
+                        <scrumboard-label-selector [card]="card"></scrumboard-label-selector>
 
                     </mat-menu>
 
@@ -55,9 +55,10 @@
                              (click)="$event.stopPropagation()">
                             <mat-checkbox class="member px-16" [checked]="card.idmembers.indexOf(member.id) > -1"
                                           *ngFor="let member of board.members"
-                                          (change)="toggleInArray(member.id, card.idmembers);updateCard()">
+                                          (change)="toggleInArray(member.id, card.idmembers);onMemberCheckStatus(member)">
                                 <div fxLayout="row" fxLayoutAlign="start center">
-                                    <img [alt]="member.name" [src]=" member.avatar" class="avatar"/>
+                                    <img [alt]="member.name" src="assets/images/avatars/profile.jpg" class="avatar"/>
+                                    <!-- <img [alt]="member.name" [src]=" member.avatar" class="avatar"/> -->
                                     <p class="member-name">{{ member.name }}</p>
                                 </div>
                             </mat-checkbox>
@@ -244,7 +245,7 @@
                         <div class="member-chips" fxLayout="row" fxLayoutWrap>
                             <div class="member-chip mb-4" *ngFor="let memberId of card.idmembers"
                                  fxLayout="row" fxLayoutAlign="start center">
-                                <img class="member-chip-avatar" [src]="board.members | getById:memberId:'avatar'"
+                                <img class="member-chip-avatar" src="assets/images/avatars/profile.jpg"
                                      [matTooltip]="board.members | getById:memberId:'name'">
                             </div>
                         </div>
@@ -373,11 +374,11 @@
                         <div class="checklist-progress" fxLayout="row" fxLayoutAlign="start center">
 
                             <span class="checklist-progress-value">
-                                {{checklist.checkitemchecked}} / {{checklist.checkitems.length}}
+                                {{checklist.checkitemschecked}} / {{checklist.checkitems.length}}
                             </span>
 
                             <mat-progress-bar color="accent" class="checklist-progressbar" mode="determinate"
-                                              value="{{100 * checklist.checkitemchecked / checklist.checkitems.length}}">
+                                              value="{{100 * checklist.checkitemschecked / checklist.checkitems.length}}">
                             </mat-progress-bar>
 
                         </div>
@@ -392,13 +393,20 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <input matInput [(ngModel)]="checkItem.name">
                                         <mat-checkbox matPrefix [(ngModel)]="checkItem.checked"
-                                                      (change)="updateCheckedCount(checklist)"
+                                                      (change)="updateCheckedCount(checklist);saveCheckStatus(checkItem, checklist.id)"
                                                       aria-label="{{checkItem.name}}">
                                         </mat-checkbox>
-                                        <button mat-icon-button matSuffix class="checklist-actions-button"
-                                                (click)="removeChecklistItem(checkItem, checklist)">
-                                            <mat-icon class="secondary-text">delete</mat-icon>
-                                        </button>
+                                        <div matSuffix fxLayout="row">
+                                            <button mat-icon-button matSuffix class="checklist-actions-button"
+                                                    (click)="saveCheckStatus(checkItem, checklist.id)">
+                                                <mat-icon class="secondary-text">save</mat-icon>
+                                            </button>
+                                            <button mat-icon-button matSuffix class="checklist-actions-button"
+                                                    (click)="removeChecklistItem(checkItem, checklist)">
+                                                <mat-icon class="secondary-text">delete</mat-icon>
+                                            </button>
+                                        </div>
+                                        
                                     </mat-form-field>
 
                                 </div>
@@ -444,8 +452,7 @@
 
                     <div class="section-content">
 
-                        <form name="cardCommentForm"
-                              #newCommentForm="ngForm" (submit)="addNewComment(newCommentForm)"
+                        <form [formGroup]="cardCommentForm"
                               class="comment new-comment" fxLayout="column" fxLayoutAlign="start" no-validate>
 
                             <div fxLayout="row" fxLayoutAlign="center center">
@@ -454,13 +461,15 @@
 
                                 <mat-form-field class="mr-12" appearance="outline" fxFlex>
                                     <mat-label>Comment</mat-label>
-                                    <input matInput name="newComment" ngModel #newComment="ngModel" required>
+                                    <input matInput name="newComment" formControlName="newComment" required>
                                 </mat-form-field>
 
-                                <button mat-mini-fab class="mat-accent"
-                                        [disabled]="!newCommentForm.valid || newCommentForm.pristine"
-                                        aria-label="Add">
+                                <button  *ngIf="!flagEditComment" mat-mini-fab class="mat-accent" aria-label="Add" (click)="addNewComment()">
                                     <mat-icon>add</mat-icon>
+                                </button>
+
+                                <button *ngIf="flagEditComment" mat-mini-fab class="mat-accent" aria-label="Edit" (click)="addNewComment()">
+                                    <mat-icon>save</mat-icon>
                                 </button>
 
                             </div>
@@ -471,7 +480,7 @@
                              *ngFor="let comment of card.comments">
 
                             <img class="comment-member-avatar"
-                                 [src]="board.members | getById: comment.idmember:'avatar'">
+                            src="assets/images/avatars/profile.jpg">
 
                             <div fxLayout="column">
                                 <div class="comment-member-name">

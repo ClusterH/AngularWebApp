@@ -139,8 +139,6 @@ export class ScrumboardService implements Resolve<any>
                         this.board = this.boards.find(i => i.id == boardId);
                     }
 
-                    
-
                     this.onBoardChanged.next(this.board);
                     resolve(this.board);
                 }
@@ -182,7 +180,7 @@ export class ScrumboardService implements Resolve<any>
                         .set('idattachmentcover', newCard.idattachmentcover)
                         .set('subscribed', newCard.subscribed.toString())
                         .set('checkitems', newCard.checkitems.toString())
-                        .set('checkitemchecked', newCard.checkitemchecked.toString())
+                        .set('checkitemschecked', newCard.checkitemschecked.toString())
                         .set('due', newCard.due.toString())
                         .set('listid', listId.toString())
                         .set('boardid', boardId.toString())
@@ -427,13 +425,11 @@ export class ScrumboardService implements Resolve<any>
                         .set('attachmentcoverid', card.idattachmentcover.toString())
                         .set('subscribed', card.subscribed.toString())
                         .set('checkitems', card.checkitems.toString())
-                        .set('checkitemchecked', card.checkitemchecked.toString())
+                        .set('checkitemschecked', card.checkitemschecked.toString())
                         .set('due', card.due.toString())
                         .set('listid', listId.toString())
                         .set('boardid', boardId.toString())
                         .set('method', "boardcard_save");
-                        
-                    
                     
                     this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,   
@@ -547,14 +543,14 @@ export class ScrumboardService implements Resolve<any>
                 .set('uri', board.uri)
                 .set('companyid', company_id.toString())
                 .set('method', "board_save");
-                
-            
 
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,   
                 params: params
             })
             .subscribe((response: any) => {
+
+                console.log(response);
                 
                 this.board = board;
                 
@@ -590,8 +586,38 @@ export class ScrumboardService implements Resolve<any>
 
     }
 
+    saveBoardSetting(color, subscribed, cardcoverimages):Promise<any> {
+        return new Promise((resolve, reject) => {
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('boardid', this.board.id.toString())
+                .set('color', color.toString())
+                .set('subscribed', subscribed.toString())
+                .set('cardcoverimages', cardcoverimages.toString())
+                .set('method', "board_settings_save");
+           
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            })
+            .subscribe((response: any) => {
+                console.log(response);
+                this.board.settings.color = color;
+                this.board.settings.subscribed = subscribed;
+                this.board.settings.cardcoverimages = cardcoverimages;
+                
+                resolve(this.board);
+            }, reject);
+        });
+    }
+
     cardMove(cardId, listId): void {
-        // return new Promise((resolve, reject) => {
         let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userid = 345;
 
@@ -610,6 +636,364 @@ export class ScrumboardService implements Resolve<any>
             params: params
         }).subscribe((res: any) => {
             console.log(res);
+        });
+    }
+
+    saveBoardLabel(label, boardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(label, boardId);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            if (label.id == '') {
+                console.log("new label? : ", label.id)
+                label.id = '0';
+            }
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', label.id.toString())
+                .set('name', label.name)
+                .set('color', label.color)
+                .set('boardid', boardId.toString())
+                .set('method', "boardlabel_save");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    deleteBoardLabel(labelId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(labelId);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', labelId)
+                .set('method', "boardlabel_delete");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    assignLabelToCard(labelId, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(labelId);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('labelid', labelId)
+                .set('cardid', cardId)
+                .set('method', "Assign_Label_To_Card");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    removeCardLabel(labelId, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(labelId);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('labelid', labelId)
+                .set('cardid', cardId)
+                .set('method', "Remove_card_label");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    addNewComment(id, comment, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(comment, cardId);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', id)
+                .set('message', comment.message)
+                .set('comtime', comment.time)
+                .set('cardid', cardId)
+                .set('method', "boardcardcomment_Save");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    saveBoardCardChecklist(checklist): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(checklist);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', checklist.id.toString())
+                .set('name', checklist.name.toString())
+                .set('checkitemschecked', checklist.checkitemschecked.toString())
+                .set('cardid', checklist.cardid.toString())
+                .set('method', "boardcardchecklist_Save");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    deleteBoardCardChecklist(id, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(id);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', id.toString())
+                .set('cardid', cardId.toString())
+                .set('method', "boardcardchecklist_delete");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    saveBoardCardCheckItem(checkitem): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(checkitem);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', checkitem.id.toString())
+                .set('name', checkitem.name.toString())
+                .set('checked', checkitem.checked.toString())
+                .set('checklistid', checkitem.checklistid.toString())
+                .set('method', "boardcardcheckitem_Save");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    deleteBoardCardCheckItem(id, checklistId, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            console.log(id);
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('id', id.toString())
+                .set('checklistid', checklistId.toString())
+                .set('cardid', cardId.toString())
+                .set('method', "boardcardcheckitem_delete");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    getBoardMembers(): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+            let companyid = 115;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', '1'.toString())
+                .set('pagesize', '1000'.toString())
+                .set('companyid', companyid.toString())
+                .set('method', "user_cList");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    insertCardUser(carduserId, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', carduserId.toString())
+                .set('cardid', cardId.toString())
+                .set('method', "Insert_card_User");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
+        });
+    }
+
+    deleteCardUser(carduserId, cardId): Promise<any> {
+        return new Promise((resolve, reject) => {
+
+            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+            let userid = 345;
+
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', carduserId.toString())
+                .set('cardid', cardId.toString())
+                .set('method', "delete_card_User");
+
+            console.log(params);
+
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,   
+                params: params
+            }).subscribe((res: any) => {
+                console.log(res);
+
+                resolve(res);
+            }, reject);
         });
     }
 }

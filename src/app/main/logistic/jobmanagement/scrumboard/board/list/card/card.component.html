@@ -38,8 +38,8 @@
               [ngClass]="{'overdue': isOverdue(card.due)}"
               *ngIf="card.due" fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="s-16">access_time</mat-icon>
-            <!-- <span>{{card.due | date:'mediumDate'}}</span> -->
-            <span>{{card.due}}</span>
+            <span>{{card.due | date:'mediumDate'}}</span>
+            <!-- <span>{{card.due}}</span> -->
 
         </span>
         <!-- / CARD DUE -->
@@ -50,7 +50,7 @@
               [ngClass]="{'completed': card.checkitemschecked === card.checkitems}"
               fxLayout="row" fxLayoutAlign="start center">
             <mat-icon class="s-16">check_circle</mat-icon>
-            <span>{{card.checkitemchecked}}</span>
+            <span>{{card.checkitemschecked}}</span>
             <span>/</span>
             <span>{{card.checkitems}}</span>
         </span>
@@ -67,7 +67,7 @@
              *ngFor="let memberId of card.idmembers">
 
             <img class="list-card-member-avatar"
-                 [src]="board.members | getById:memberId:'avatar'"
+                src="assets/images/avatars/profile.jpg"
                  [matTooltip]="board.members | getById:memberId:'name'">
         </div>
 

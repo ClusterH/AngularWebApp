@@ -52,7 +52,7 @@ export class UsersComponent implements OnInit
     user: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

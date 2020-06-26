@@ -354,7 +354,9 @@
 }
 
 .scrumboard-members-menu {
-    width: 240px;
+    width: fit-content !important;
+    min-width: 240px !important;
+    max-width: 100% !important;
     .mat-checkbox-layout,
     .mat-checkbox-label {
         display: flex;
@@ -363,9 +365,15 @@
 }
 
 .scrumboard-labels-menu {
-
+    min-width: 240px !important;
+    max-width: 100% !important;
+    width: fit-content !important;
     .mat-menu-content {
         padding-bottom: 0;
+
+        min-width: 240px !important;
+        max-width: 100% !important;
+        width: fit-content !important;
 
         .mat-checkbox-layout,
         .mat-checkbox-label {
@@ -378,14 +386,14 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            width: 240px;
+            width: fit-content !important;
             min-width: 240px;
-            max-width: 240px;
+            max-width: unset;
             min-height: 240px;
 
             .view {
                 position: absolute;
-                width: 240px;
+                width: fit-content !important;
                 height: 100%;
                 bottom: 0;
                 left: 0;
@@ -398,4 +406,9 @@
             }
         }
     }
+}
+
+.mat-menu-panel {
+    max-width: unset !important;
+    max-height: calc(100vh - 250px) !important;
 }

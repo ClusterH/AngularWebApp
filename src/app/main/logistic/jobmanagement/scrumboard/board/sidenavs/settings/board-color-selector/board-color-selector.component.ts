@@ -74,6 +74,6 @@ export class ScrumboardBoardColorSelectorComponent implements OnInit, OnDestroy
     setColor(color): void
     {
         this.board.settings.color = color;
-        this._scrumboardService.updateBoard(this.board);
+        // this._scrumboardService.updateBoard(this.board);
     }
 }

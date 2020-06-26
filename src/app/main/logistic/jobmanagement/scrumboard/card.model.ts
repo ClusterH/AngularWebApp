@@ -12,7 +12,7 @@ export class Card
     subscribed: boolean;
     checklists: any[];
     checkitems: number;
-    checkitemchecked: number;
+    checkitemschecked: number;
     comments: any[];
     activities: any[];
     due: string;
@@ -34,7 +34,7 @@ export class Card
         this.subscribed = card.subscribed || true;
         this.checklists = card.checklists || [];
         this.checkitems = card.checkitems || 0;
-        this.checkitemchecked = card.checkitemchecked || 0;
+        this.checkitemschecked = card.checkitemschecked || 0;
         this.comments = card.comments || [];
         this.activities = card.activities || [];
         this.due = card.due || new Date();

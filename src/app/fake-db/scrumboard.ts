@@ -8,7 +8,7 @@ export class ScrumboardFakeDb
             'settings': {
                 'color'          : 'fuse-dark',
                 'subscribed'     : false,
-                'cardCoverImages': true
+                'cardcoverimages': true
             },
             'lists'   : [
                 {
@@ -591,7 +591,7 @@ export class ScrumboardFakeDb
             'settings': {
                 'color'          : 'blue-grey',
                 'subscribed'     : false,
-                'cardCoverImages': true
+                'cardcoverimages': true
             },
             'lists'   : [
                 {
