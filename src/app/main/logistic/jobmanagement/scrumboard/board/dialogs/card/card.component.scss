@@ -189,9 +189,6 @@
                                 white-space: nowrap;
                                 font-size: 14px;
                             }
-
-                            .checklist-progressbar {
-                            }
                         }
 
                         .editable-wrap {
@@ -365,15 +362,13 @@
 }
 
 .scrumboard-labels-menu {
-    min-width: 240px !important;
-    max-width: 100% !important;
-    width: fit-content !important;
+   
     .mat-menu-content {
         padding-bottom: 0;
 
-        min-width: 240px !important;
-        max-width: 100% !important;
-        width: fit-content !important;
+        // min-width: 240px !important;
+        // max-width: 100% !important;
+        // width: fit-content !important;
 
         .mat-checkbox-layout,
         .mat-checkbox-label {
@@ -386,14 +381,14 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            width: fit-content !important;
-            min-width: 240px;
-            max-width: unset;
+            width: 280px !important;
+            min-width: 280px;
+            max-width: 280px;
             min-height: 240px;
 
             .view {
                 position: absolute;
-                width: fit-content !important;
+                width: 280px !important;
                 height: 100%;
                 bottom: 0;
                 left: 0;

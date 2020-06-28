@@ -1,0 +1,197 @@
+<div id="fuelregistries" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'FUELREGISTRIES.FUELREGISTRIES' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'FUELREGISTRIES.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="datetime">{{'FUELREGISTRIES.DATETIME' | translate}}</mat-option>
+                            <mat-option value="amount">{{'FUELREGISTRIES.AMOUNT' | translate}}</mat-option>
+                            <mat-option value="cost">{{'FUELREGISTRIES.COST' | translate}}</mat-option>
+                            <mat-option value="fromtank">{{'FUELREGISTRIES.FROMTANK' | translate}}</mat-option>
+                            <mat-option value="totank">{{'FUELREGISTRIES.TOTANK' | translate}}</mat-option>
+                            <mat-option value="tounit">{{'FUELREGISTRIES.TOUNIT' | translate}}</mat-option>
+                            <mat-option value="operator">{{'FUELREGISTRIES.OPERATOR' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'FUELREGISTRIES.SEARCHFORFUELREGISTRY' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab
+                    [routerLink]="'/fuelmanagement/fuelregistries/fuelregistry_detail'"
+                    class="accent  mt-24 mt-md-0"
+                    (click)="addNewFuelregistry()">
+               <mat-icon>add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;" >
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner
+                        color="accent" 
+                        mode="indeterminate"
+                        diameter="50"
+                        style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="fuelregistries-table font-size-10"
+                        #table [dataSource]="dataSource"
+                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
+                        [@animateStagger]="{value:'50'}"
+                        fusePerfectScrollbar style="width: 100%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry">
+                        <button (click) = "editShowFuelregistryDetail(fuelregistry)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteFuelregistry(fuelregistry)">delete</mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateFuelregistry(fuelregistry)">file_copy</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Date&Time Column -->
+                <ng-container matColumnDef="datentime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.DATETIME' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry">
+                        <p class="datentime text-truncate">{{fuelregistry.datentime}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Amount Column -->
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.AMOUNT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry">
+                        <p class="amount text-truncate">{{fuelregistry.amount}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Cost Column -->
+                <ng-container matColumnDef="cost">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.COST' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry" >
+                        <p class="cost text-truncate">
+                            {{fuelregistry.cost}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- FromTank Column -->
+                <ng-container matColumnDef="fromtank">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'FUELREGISTRIES.FROMTANK' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry" fxHide fxShow.gt-md>
+                        <p class="fromtank text-truncate">
+                            {{fuelregistry.fromtank}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ToTank Column -->
+                <ng-container matColumnDef="totank">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.TOTANK' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry" >
+                        <p class="totank text-truncate">
+                            {{fuelregistry.totank}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ToUnit Column -->
+                <ng-container matColumnDef="tounit">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.TOUNIT' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry" >
+                        <p class="tounit text-truncate">
+                            {{fuelregistry.tounit}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Operator Column -->
+                <ng-container matColumnDef="operator">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'FUELREGISTRIES.OPERATOR' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let fuelregistry" >
+                        <p class="operator text-truncate">
+                            {{fuelregistry.operator}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row  *matRowDef="let fuelregistry; columns: displayedColumns;"
+                            class="fuelregistry font-size-10"
+                            matRipple >
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field > 
+                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator
+                            showFirstLastButtons
+                            class="table_paginator"
+                            [length]="dataSource.totalLength"
+                            [pageIndex] = "pageIndex"
+                            [pageSize]="pageSize"
+                            [pageSizeOptions]="pageSizeOptions"
+                            (page) ="pageEvent = $event">
+            </mat-paginator>
+        </div>
+           
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

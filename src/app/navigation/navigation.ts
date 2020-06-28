@@ -391,11 +391,11 @@ export const navigation: FuseNavigation[] = [
                 url      : 'fuelmanagement/tanks/tanks'
             },
             {
-                id       : 'fueling_registry',
+                id       : 'fuel_registry',
                 title    : 'Fueling Registry',
                 translate: 'NAV.FUELINGREGISTRY',
                 type     : 'item',
-                url      : 'pages/fuel_management/fueling_registry'
+                url      : 'fuelmanagement/fuelregistries/fuelregistries'
             },
         ]
     },

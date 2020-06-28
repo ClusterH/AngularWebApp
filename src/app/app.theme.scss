@@ -159,6 +159,8 @@ $typography: mat-typography-config(
 //Fuel Management
 @import "src/app/main/fuelmanagement/tanks/tanks/tanks.theme";
 @import "src/app/main/fuelmanagement/tanks/tank_detail/tank_detail.theme";
+@import "src/app/main/fuelmanagement/fuelregistries/fuelregistries/fuelregistries.theme";
+@import "src/app/main/fuelmanagement/fuelregistries/fuelregistry_detail/fuelregistry_detail.theme";
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
@@ -241,6 +243,8 @@ $typography: mat-typography-config(
     //Fuel Management
     @include fuelmanagement-tanks-theme($theme);
     @include fuelmanagement-tank-theme($theme);
+    @include fuelmanagement-fuelregistries-theme($theme);
+    @include fuelmanagement-fuelregistry-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------

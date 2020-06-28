@@ -15,22 +15,25 @@
             <div class="label" *ngFor="let label of board.labels" fxFlex="0 0 auto" fxLayout="row"
                  fxLayoutAlign="space-between center">
 
-                <div class="label-color" [ngClass]="label.color"></div>
+                <!-- <div class="label-text-color" fxFlex fxLayout="row" fxLayoutAlign="start center" fxFlex="80"> -->
+                    <div class="label-color" [ngClass]="label.color"></div>
 
-                <mat-checkbox fxFlex fxLayout="row" fxLayoutAlign="start center"
-                              [checked]="card.idlabels.indexOf(label.id) > -1"
-                              (change)="toggleInArray(label.id, card.idlabels);onCardLabelsChanged(label)">
-                    {{label.name}}
-                </mat-checkbox>
+                    <mat-checkbox fxFlex fxLayout="row" fxLayoutAlign="start center"
+                                [checked]="card.idlabels.indexOf(label.id) > -1"
+                                (change)="toggleInArray(label.id, card.idlabels);onCardLabelsChanged(label)">
+                        {{label.name}}
+                    </mat-checkbox>
+                <!-- </div> -->
 
-                <button mat-icon-button>
-                    <mat-icon class="s-16" (click)="labelsMenuView ='edit';selectedLabel = label">mode_edit</mat-icon>
-                </button>
+                <!-- <div class="label-edit-delete-btn" fxFlex fxLayout="row" fxLayoutAlign="start center" fxFlex="20"> -->
+                    <button mat-icon-button>
+                        <mat-icon class="s-16" (click)="labelsMenuView ='edit';selectedLabel = label">mode_edit</mat-icon>
+                    </button>
 
-                <button mat-icon-button>
-                    <mat-icon class="s-16" (click)="deleteLabel(label)">delete</mat-icon>
-                </button>
-
+                    <button mat-icon-button>
+                        <mat-icon class="s-16" (click)="deleteLabel(label)">delete</mat-icon>
+                    </button>
+                <!-- </div> -->
             </div>
 
         </div>
@@ -80,7 +83,7 @@
         </div>
 
         <div fxLayout="row" fxLayoutAlign="end">
-            <button mat-raised-button class="mat-accent mt-16 mr-12 w-60-p" (click)="addNewLabel()">ADD NEW LABEL</button>
+            <button mat-raised-button class="mat-accent mt-16 mr-12 w-60-p" [disabled]="newLabel.name == ''" (click)="addNewLabel()">ADD NEW LABEL</button>
         </div>
     </div>
 
