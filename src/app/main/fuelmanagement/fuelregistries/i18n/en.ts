@@ -9,7 +9,8 @@ export const locale = {
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
-
+            
+            "FUELREGISTRYTYPE": "Registry Type",
             "DATETIME": "Date & Time",
             "AMOUNT": "Amount",               
             "COST": "Cost",

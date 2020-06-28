@@ -1,16 +1,16 @@
 <div id="dialog_table">
 <div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'USERS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'FUELREGISTRIES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'USERS.DUPLICATE' | translate}}
+                {{'FUELREGISTRIES.DUPLICATE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'USERS.NO' | translate}}
+                    {{'FUELREGISTRIES.NO' | translate}}
             </button>
         </div>
 
@@ -19,17 +19,17 @@
 
 
 <div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'USERS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'FUELREGISTRIES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'USERS.DELETE' | translate}}
+                {{'FUELREGISTRIES.DELETE' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()">
-                    {{'USERS.NO' | translate}}
+                    {{'FUELREGISTRIES.NO' | translate}}
             </button>
         </div>
 
@@ -37,17 +37,17 @@
 </div>
 
 <div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'USERS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <h2 mat-dialog-title>{{'FUELREGISTRIES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
     <mat-dialog-actions>
         <div class="confirm_buttons">
             <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'USERS.YES' | translate}}
+                {{'FUELREGISTRIES.YES' | translate}}
             </button>
         
             <button class="mat-raised-button"
                     (click)="close()" fxFlex="30">
-                    {{'USERS.NO' | translate}}
+                    {{'FUELREGISTRIES.NO' | translate}}
             </button>
         </div>
 

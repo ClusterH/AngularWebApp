@@ -60,21 +60,28 @@
                         <mat-tab label="{{ 'FUELREGISTRIES.GENERAL' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-label class="h3">{{ 'FUELREGISTRIES.FUELREGISTRYTYPE' | translate }}: </mat-label>
+
+                                <mat-radio-group aria-label="Select an option" formControlName="registrytype" class="mb-32 m-12 pl-24" (change)="onChangeRegistryType($event)">
+                                    <mat-radio-button value="vehicle">Vehicle</mat-radio-button>
+                                    <mat-radio-button value="tank" class="ml-24">Tank</mat-radio-button>
+                                </mat-radio-group>
+
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list" >
                                         <mat-label>{{ 'FUELREGISTRIES.TOUNIT' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('unit_clist')" formControlName="tounit" required>
+                                        <mat-select  (click)="showCompanyList('unit_clist')" formControlName="tounit">
                                             <div class="filter_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
 
-                                            <div  style="width: 100%; overflow: auto;" >
-                                                <mat-table [dataSource]="dataSourceToUnit"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceToUnit" class="FUELREGISTRIES-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
                                                         <td mat-cell *matCellDef="let tounit;"  style="border: 0px;">
-                                                            <mat-option  [value]="tounit.id">{{tounit.name}}</mat-option>
+                                                            <mat-option [value]="tounit.id">{{tounit.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="tounit_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -94,18 +101,18 @@
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'FUELREGISTRIES.FROMTANK' | translate }}</mat-label>
-                                        <mat-select formControlName="fromtank"  (click)="showCompanyList('fueltank_clist')" required>
+                                        <mat-label>{{ 'FUELREGISTRIES.TOTANK' | translate }}</mat-label>
+                                        <mat-select formControlName="totank"  (click)="showCompanyList('totank_clist')" required>
                                             <div class="filter_input" >
                                                 <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
 
                                             <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceFromTank"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
+                                                <mat-table [dataSource]="dataSourceToTank"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let fromtank"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="fromtank.id">{{fromtank.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let totank"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="totank.id">{{totank.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
                                                     <tr  class="fromtank_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
@@ -113,9 +120,9 @@
                                             </div>
                                         
                                             <mat-paginator style=" height: 40px;"
-                                                #paginatorFromTank
+                                                #paginatorToTank
                                                 class="table_paginator"
-                                                [length]="dataSourceFromTank.totalLength"
+                                                [length]="dataSourceToTank.totalLength"
                                                 [pageSize]="10"
                                                 [hidePageSize]="true"
                                                 showFirstLastButtons
@@ -127,7 +134,7 @@
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'FUELREGISTRIES.FROMTANK' | translate }}</mat-label>
-                                        <mat-select formControlName="fromtank"  (click)="showCompanyList('fueltank_clist')" required>
+                                        <mat-select formControlName="fromtank"  (click)="showCompanyList('fromtank_clist')" required>
                                             <div class="filter_input" >
                                                 <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>

@@ -77,13 +77,13 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("fuelregistry_detail");
 
-        this.router.navigate(['admin/fuelregistries/fuelregistries']);
+        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
     }
 
     reloadComponent() {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/fuelregistries/fuelregistries']);
+        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
     }
 
 }

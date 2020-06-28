@@ -25,6 +25,10 @@ export class FuelregistryDetailService
     getDetails(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
     {
         console.log(conncode, userid, pageindex, pagesize, name, method);
+
+        if (method == 'totank_clist' || method == 'fromtank_clist') {
+            method = 'fueltank_clist';
+        }
         
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
@@ -64,34 +68,22 @@ export class FuelregistryDetailService
     saveFuelregistryDetail(conncode: string, userid: number, fuelregistryDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         
+        console.log(fuelregistryDetail);
 
         const params_detail = new HttpParams()
             .set('conncode', conncode.toString())
             .set('userid', userid.toString())
             .set('id', fuelregistryDetail.id.toString())
-            .set('name', fuelregistryDetail.name.toString())
-            .set('email', fuelregistryDetail.email.toString())
-            // .set('password', fuelregistryDetail.password.toString())
-            .set('fuelregistryprofileid', fuelregistryDetail.fuelregistryprofileid.toString())
-            .set('timezoneid', fuelregistryDetail.timezoneid.toString())
-            .set('lengthunitid', fuelregistryDetail.lengthunitid.toString())
-            .set('fuelunitid', fuelregistryDetail.fuelunitid.toString())
-            .set('weightunitid', fuelregistryDetail.weightunitid.toString())
-            .set('tempunitid', fuelregistryDetail.tempunitid.toString())
-            .set('isactive', fuelregistryDetail.isactive.toString())
-            .set('companyid', fuelregistryDetail.companyid.toString())
-            .set('groupid', fuelregistryDetail.groupid.toString())
-            .set('subgroup', fuelregistryDetail.subgroup.toString())
-            .set('created', fuelregistryDetail.created.toString())
-            .set('createdby', fuelregistryDetail.createdby.toString())
-            .set('deletedwhen', fuelregistryDetail.deletedwhen.toString())
-            .set('deletedby', fuelregistryDetail.deletedby.toString())
-            .set('lastmodifieddate', fuelregistryDetail.lastmodifieddate.toString())
-            .set('lastmodifiedby', fuelregistryDetail.lastmodifiedby.toString())
-            .set('languageid', fuelregistryDetail.languageid.toString())
+            .set('datentime', fuelregistryDetail.datentime.toString())
+            .set('amount', fuelregistryDetail.amount.toString())
+            .set('cost', fuelregistryDetail.cost.toString())
+            .set('fromtankid', fuelregistryDetail.fromtankid.toString())
+            .set('totankid', fuelregistryDetail.totankid.toString())
+            .set('tounitid', fuelregistryDetail.tounitid.toString())
+            .set('operatorid', fuelregistryDetail.operatorid.toString())
             .set('method', 'fuelregistry_save');
-        
-            
+
+        console.log(params_detail);
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

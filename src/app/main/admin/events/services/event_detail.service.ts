@@ -194,7 +194,7 @@ export class EventDetailService
             .set('eventid', eventid.toString())
             .set('method', 'Unit_CList');
         
-            
+        console.log(params_detail);
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
