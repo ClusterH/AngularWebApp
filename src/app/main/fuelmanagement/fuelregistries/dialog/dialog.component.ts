@@ -1,14 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
-
-
 import { locale as fuelregistriesEnglish } from 'app/main/fuelmanagement/fuelregistries/i18n/en';
-import { locale as fuelregistriesSpanish } from 'app/main/fuelmanagement/fuelregistries/i18n/sp';
 import { locale as fuelregistriesFrench } from 'app/main/fuelmanagement/fuelregistries/i18n/fr';
 import { locale as fuelregistriesPortuguese } from 'app/main/fuelmanagement/fuelregistries/i18n/pt';
+import { locale as fuelregistriesSpanish } from 'app/main/fuelmanagement/fuelregistries/i18n/sp';
+import { FuelregistriesDataSource } from "app/main/fuelmanagement/fuelregistries/services/fuelregistries.datasource";
+import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
 
 @Component({
     selector: 'fuelregistry-dialog',
@@ -19,6 +18,7 @@ export class CourseDialogComponent implements OnInit {
 
    fuelregistry: any;
    flag: any;
+   dataSource: FuelregistriesDataSource;
 
     constructor(
         private router: Router,
@@ -40,32 +40,25 @@ export class CourseDialogComponent implements OnInit {
         if(this.flag == "duplicate") {
         
             this.fuelregistry.id = 0;
-            this.fuelregistry.name = '';
-            this.fuelregistry.email = '';
-            this.fuelregistry.password = '';
-            this.fuelregistry.created = '';
-            this.fuelregistry.createdbyname = '';
-            this.fuelregistry.deletedwhen = '';
-            this.fuelregistry.deletedbyname = '';
-            this.fuelregistry.lastmodifieddate = '';
-            this.fuelregistry.lastmodifiedbyname = '';
+            this.fuelregistry.datentime = '';
     
             localStorage.setItem("fuelregistry_detail", JSON.stringify(this.fuelregistry));
+
+            this.dialogRef.close();
     
-            
-    
-            this.router.navigate(['admin/fuelregistries/fuelregistry_detail']);
+            this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail']);
         } else if( this.flag == "delete") {
+            // this.reloadComponent();
+
             this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    console.log(result);
+                    
+                    this.dialogRef.close(result);
                 }
-              });
+            });
         }
-
-
-        this.dialogRef.close();
     }
 
     close() {
@@ -79,11 +72,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
-    }
-
 }

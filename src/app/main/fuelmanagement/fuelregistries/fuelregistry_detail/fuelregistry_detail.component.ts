@@ -254,7 +254,7 @@ export class FuelregistryDetailComponent implements OnInit
     this.fuelregistryForm.get('fromtank').setValue(this.fuelregistry.fromtankid);
     this.fuelregistryForm.get('amount').setValue(this.fuelregistry.amount || 0);
     this.fuelregistryForm.get('fuelunit').setValue(this.fuelregistry.fuelunit || 'liters');
-    this.fuelregistryForm.get('datentime').setValue(this.fuelregistry.datentime.slice(0, 16) || new Date().toISOString().slice(0, 16));
+    this.fuelregistryForm.get('datentime').setValue((this.fuelregistry.datentime != '')? this.fuelregistry.datentime.slice(0, 16) : new Date().toISOString().slice(0, 16));
     this.fuelregistryForm.get('odometer').setValue(this.fuelregistry.odometer);
     this.fuelregistryForm.get('cost').setValue(this.fuelregistry.cost || 0);
     this.fuelregistryForm.get('operator').setValue(this.fuelregistry.operatorid);
@@ -287,23 +287,22 @@ export class FuelregistryDetailComponent implements OnInit
     console.log(date);
     let str = '';
 
-        if (date != '') {
-            str = 
-              ("00" + (date.getMonth() + 1)).slice(-2) 
-              + "/" + ("00" + date.getDate()).slice(-2) 
-              + "/" + date.getFullYear() + " " 
-              + ("00" + date.getHours()).slice(-2) + ":" 
-              + ("00" + date.getMinutes()).slice(-2) 
-            }
+    if (date != '') {
+        str = 
+          ("00" + (date.getMonth() + 1)).slice(-2) 
+          + "/" + ("00" + date.getDate()).slice(-2) 
+          + "/" + date.getFullYear() + " " 
+          + ("00" + date.getHours()).slice(-2) + ":" 
+          + ("00" + date.getMinutes()).slice(-2) 
+        }
 
-        return str;
+    return str;
   }
 
   savefuelregistry(): void {
     
     let today = new Date().toISOString();
     this.getValues(today, "save");
-    
 
     if ((this.fuelregistryDetail.tounitid == '0' && this.registrytype == 'vehicle') || this.fuelregistryDetail.fromtankid == '0') {
       alert('Please Choose ToUnit or FromTank')
@@ -359,14 +358,13 @@ export class FuelregistryDetailComponent implements OnInit
     const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-        if ( result )
-        { 
+      if ( result )
+      { 
 
-        } else {
-            
-        }
+      } else {
+          
+      }
     });
-
   }
 
   onChangeRegistryType(event: any) {

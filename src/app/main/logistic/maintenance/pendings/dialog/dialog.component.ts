@@ -91,8 +91,6 @@ export class AttendDialogComponent implements OnInit {
         this.pendingsService.maintPendingList[currentPending].performdate = this.attendDetail.performdate;
         // this.pendingsService.maintPendingList[currentPending].performdate = (new Date(this.attendForm.get('performdate').value)).toISOString();
 
-        
-
         this.flag.next(true);
     }
 

@@ -72,7 +72,6 @@ export class FuelregistriesComponent implements OnInit
     constructor(
         private _adminFuelregistriesService: FuelregistriesService,
         private fuelregistryDetailService: FuelregistryDetailService,
-        private authService: AuthService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -121,10 +120,6 @@ export class FuelregistriesComponent implements OnInit
     {
         this.dataSource = new FuelregistriesDataSource(this._adminFuelregistriesService);
         this.dataSource.loadFuelregistries(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Fuelregistry_TList");
-    }
-
-    onRowClicked(fuelregistry) {
-        
     }
 
     selectedFilter() {
@@ -178,9 +173,20 @@ export class FuelregistriesComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
+            console.log(result);
+
             if ( result )
-            { 
-                
+            {
+                let deleteRegistry =  this._adminFuelregistriesService.fuelregistryList.findIndex((registry: any) => registry.id == fuelregistry.id);
+                console.log(deleteRegistry);
+        
+                if (deleteRegistry > -1) {
+                    this._adminFuelregistriesService.fuelregistryList.splice(deleteRegistry, 1);
+                    console.log(this._adminFuelregistriesService.fuelregistryList);
+        
+                    this.dataSource.fuelregistriesSubject.next(this._adminFuelregistriesService.fuelregistryList);
+                }  
+
             } else {
                 
             }

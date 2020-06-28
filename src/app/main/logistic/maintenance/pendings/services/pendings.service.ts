@@ -108,8 +108,6 @@ export class PendingsService
                 .set('cost', attend.cost.toString())
                 .set('performdate', attend.performdate.toString())
                 .set('method', "maintevent_attend");
-               
-            
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   
