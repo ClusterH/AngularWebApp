@@ -14,7 +14,7 @@ import { RoutesComponent } from "app/main/admin/routes/routes/routes.component";
 
 export class RoutesDataSource extends DataSource<any>
 {
-    private routesSubject = new BehaviorSubject<any>([]);
+    public routesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,14 +43,11 @@ export class RoutesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
-           this.routesSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           
-
-           
+            this._adminRoutesService.routeList = result.TrackingXLAPI.DATA;
+            this.routesSubject.next(this._adminRoutesService.routeList);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
         //    this.countSubject.next(result.TrackingXLAPI.DATA1);
           }
         );

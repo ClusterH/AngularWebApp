@@ -87,9 +87,6 @@ export class MakesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).makes;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(makesEnglish, makesSpanish, makesFrench, makesPortuguese);
 
@@ -104,7 +101,6 @@ export class MakesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -113,8 +109,6 @@ export class MakesComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -130,14 +124,8 @@ export class MakesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new MakesDataSource(this._adminMakesService);
         this.dataSource.loadMakes(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Make_TList");
-    }
-
-    onRowClicked(make) {
-        
     }
 
     selectedFilter() {
@@ -193,7 +181,13 @@ export class MakesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteMake =  this._adminMakesService.makeList.findIndex((deletedmake: any) => deletedmake.id == make.id);
+        
+                if (deleteMake > -1) {
+                    this._adminMakesService.makeList.splice(deleteMake, 1);
+                    this.dataSource.makesSubject.next(this._adminMakesService.makeList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

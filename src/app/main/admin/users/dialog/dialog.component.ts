@@ -52,20 +52,15 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("user_detail", JSON.stringify(this.user));
     
-            
-    
             this.router.navigate(['admin/users/user_detail']);
         } else if( this.flag == "delete") {
             this.usersService.deleteUser(this.user.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
               });
         }
-
-
-        this.dialogRef.close();
     }
 
     close() {
@@ -79,11 +74,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['admin/users/users']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/users/users']);
-    }
-
 }

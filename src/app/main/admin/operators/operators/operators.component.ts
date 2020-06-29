@@ -145,14 +145,8 @@ export class OperatorsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new OperatorsDataSource(this._adminOperatorsService);
         this.dataSource.loadOperators(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Operator_Tlist");
-    }
-
-    onRowClicked(operator) {
-        
     }
 
     selectedFilter() {
@@ -208,7 +202,12 @@ export class OperatorsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteVehicle =  this._adminOperatorsService.operatorList.findIndex((deletedoperator: any) => deletedoperator.id == operator.id);
+        
+                if (deleteVehicle > -1) {
+                    this._adminOperatorsService.operatorList.splice(deleteVehicle, 1);
+                    this.dataSource.operatorsSubject.next(this._adminOperatorsService.operatorList);
+                }  
             } else {
                 
             }

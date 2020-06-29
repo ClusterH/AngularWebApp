@@ -46,19 +46,16 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("make_detail", JSON.stringify(this.make));
     
-            
-    
             this.router.navigate(['admin/makes/make_detail']);
         } else if( this.flag == "delete") {
             this.makesService.deleteMake(this.make.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {

@@ -14,7 +14,7 @@ import { OperatorsComponent } from "app/main/admin/operators/operators/operators
 
 export class OperatorsDataSource extends DataSource<any>
 {
-    private operatorsSubject = new BehaviorSubject<any>([]);
+    public operatorsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,18 +42,12 @@ export class OperatorsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            
-            
-           this.operatorsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           
-
-           
-        //    this.countSubject.next(result.TrackingXLAPI.DATA1);
-          }
-        );
+            this._adminOperatorsService.operatorList = result.TrackingXLAPI.DATA;
+            this.operatorsSubject.next(this._adminOperatorsService.operatorList);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+        });
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>

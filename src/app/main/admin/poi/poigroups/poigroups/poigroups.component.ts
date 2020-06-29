@@ -184,7 +184,13 @@ export class PoigroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deletePoigroup =  this._adminPoigroupsService.poigroupList.findIndex((deletedpoigroup: any) => deletedpoigroup.id == poigroup.id);
+        
+                if (deletePoigroup > -1) {
+                    this._adminPoigroupsService.poigroupList.splice(deletePoigroup, 1);
+                    this.dataSource.poigroupsSubject.next(this._adminPoigroupsService.poigroupList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

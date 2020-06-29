@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class OperatorsService
 {
     operators: any[];
+    operatorList: any;
 
     /**
      * Constructor

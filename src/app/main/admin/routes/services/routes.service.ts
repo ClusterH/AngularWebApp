@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class RoutesService
 {
     routes: any[];
+    routeList: any;
 
     /**
      * Constructor

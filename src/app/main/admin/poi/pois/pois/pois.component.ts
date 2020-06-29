@@ -190,7 +190,13 @@ export class PoisComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deletePoi =  this._adminPoisService.poiList.findIndex((deletedpoi: any) => deletedpoi.id == poi.id);
+        
+                if (deletePoi > -1) {
+                    this._adminPoisService.poiList.splice(deletePoi, 1);
+                    this.dataSource.poisSubject.next(this._adminPoisService.poiList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

@@ -49,22 +49,16 @@ export class CourseDialogComponent implements OnInit {
             this.poi.lastmodifiedbyname = '';
     
             localStorage.setItem("poi_detail", JSON.stringify(this.poi));
-    
-            
-    
             this.router.navigate(['admin/poi/pois/poi_detail']);
         } else if( this.flag == "delete") {
            
             this.poisService.deletePoi(this.poi.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
-
-        this.dialogRef.close();
-
     }
 
     close() {

@@ -1,30 +1,23 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
-
-import { OperatorDetail } from 'app/main/admin/operators/model/operator.model';
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
-// import * as $ from 'jquery';
-import * as _ from 'lodash';
-
-import { Subject, merge, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { OperatorDetailService } from 'app/main/admin/operators/services/operator_detail.service';
-import { OperatorDetailDataSource } from "app/main/admin/operators/services/operator_detail.datasource";
 import { AuthService } from 'app/authentication/services/authentication.service';
-
 import { locale as operatorsEnglish } from 'app/main/admin/operators/i18n/en';
-import { locale as operatorsSpanish } from 'app/main/admin/operators/i18n/sp';
 import { locale as operatorsFrench } from 'app/main/admin/operators/i18n/fr';
 import { locale as operatorsPortuguese } from 'app/main/admin/operators/i18n/pt';
+import { locale as operatorsSpanish } from 'app/main/admin/operators/i18n/sp';
+import { OperatorDetail } from 'app/main/admin/operators/model/operator.model';
+import { OperatorDetailDataSource } from "app/main/admin/operators/services/operator_detail.datasource";
+import { OperatorDetailService } from 'app/main/admin/operators/services/operator_detail.service';
+// import * as $ from 'jquery';
+import * as _ from 'lodash';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
   selector: 'app-operator-detail',

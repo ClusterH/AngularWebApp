@@ -1,31 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { ModelsService } from 'app/main/admin/models/services/models.service';
-import { ModelsDataSource } from "app/main/admin/models/services/models.datasource";
-import { ModelDetailService } from 'app/main/admin/models/services/model_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as modelsEnglish } from 'app/main/admin/models/i18n/en';
-import { locale as modelsSpanish } from 'app/main/admin/models/i18n/sp';
 import { locale as modelsFrench } from 'app/main/admin/models/i18n/fr';
 import { locale as modelsPortuguese } from 'app/main/admin/models/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as modelsSpanish } from 'app/main/admin/models/i18n/sp';
+import { ModelsDataSource } from "app/main/admin/models/services/models.datasource";
+import { ModelsService } from 'app/main/admin/models/services/models.service';
+import { ModelDetailService } from 'app/main/admin/models/services/model_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'admin-models',
@@ -91,10 +82,6 @@ export class ModelsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).models;
 
-        
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(modelsEnglish, modelsSpanish, modelsFrench, modelsPortuguese);
 
@@ -109,7 +96,6 @@ export class ModelsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -118,8 +104,6 @@ export class ModelsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -135,14 +119,8 @@ export class ModelsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new ModelsDataSource(this._adminModelsService);
         this.dataSource.loadModels(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Model_TList");
-    }
-
-    onRowClicked(model) {
-        
     }
 
     selectedFilter() {
@@ -198,7 +176,13 @@ export class ModelsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteModel =  this._adminModelsService.modelList.findIndex((deletedmodel: any) => deletedmodel.id == model.id);
+        
+                if (deleteModel > -1) {
+                    this._adminModelsService.modelList.splice(deleteModel, 1);
+                    this.dataSource.modelsSubject.next(this._adminModelsService.modelList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

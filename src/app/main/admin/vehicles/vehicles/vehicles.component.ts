@@ -136,14 +136,8 @@ export class VehiclesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
         this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
-    }
-
-    onRowClicked(vehicle) {
-        
     }
 
     selectedFilter() {
@@ -181,8 +175,9 @@ export class VehiclesComponent implements OnInit
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
     
-    deleteVehicle(vehicle): void
+    deleteVehicle(vehicle: any): void
     {
+        console.log(vehicle)
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
 
@@ -197,7 +192,12 @@ export class VehiclesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteVehicle =  this._adminVehiclesService.vehicleList.findIndex((deletedvehicle: any) => deletedvehicle.id == vehicle.id);
+        
+                if (deleteVehicle > -1) {
+                    this._adminVehiclesService.vehicleList.splice(deleteVehicle, 1);
+                    this.dataSource.vehiclesSubject.next(this._adminVehiclesService.vehicleList);
+                }  
             } else {
                 
             }

@@ -14,7 +14,7 @@ import { ModelsComponent } from "app/main/admin/models/models/models.component";
 
 export class ModelsDataSource extends DataSource<any>
 {
-    private modelsSubject = new BehaviorSubject<any>([]);
+    public modelsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class ModelsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._adminModelsService.modelList = result.TrackingXLAPI.DATA;
            this.modelsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

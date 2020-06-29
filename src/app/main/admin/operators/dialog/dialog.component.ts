@@ -51,19 +51,15 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("operator_detail", JSON.stringify(this.operator));
     
-            
-    
             this.router.navigate(['admin/operators/operator_detail']);
         } else if( this.flag == "delete") {
             this.operatorsService.deleteOperator(this.operator.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
-
-        this.dialogRef.close();
     }
 
     close() {
@@ -77,11 +73,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['admin/operators/operators']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/operators/operators']);
-    }
-
 }

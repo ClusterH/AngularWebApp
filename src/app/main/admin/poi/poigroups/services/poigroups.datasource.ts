@@ -6,7 +6,7 @@ import { PoigroupsService } from 'app/main/admin/poi/poigroups/services/poigroup
 
 export class PoigroupsDataSource extends DataSource<any>
 {
-    private poigroupsSubject = new BehaviorSubject<any>([]);
+    public poigroupsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -34,7 +34,7 @@ export class PoigroupsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            
+            this._adminPoigroupsService.poigroupList = result.TrackingXLAPI.DATA;
             this.poigroupsSubject.next(result.TrackingXLAPI.DATA);
 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;

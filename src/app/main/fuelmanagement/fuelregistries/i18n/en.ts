@@ -21,7 +21,6 @@ export const locale = {
             "UNIT": "Units",
 
             "GENERAL": "General",
-            "REGIONALIZATION": "Regionalization",
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
