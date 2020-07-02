@@ -50,21 +50,16 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("zone_detail", JSON.stringify(this.zone));
     
-            
-    
             this.router.navigate(['admin/geofences/zones/zone_detail']);
         } else if( this.flag == "delete") {
            
             this.zonesService.deleteZone(this.zone.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
-
-        this.dialogRef.close();
-
     }
 
     close() {

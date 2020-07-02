@@ -46,19 +46,15 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("event_detail", JSON.stringify(this.event));
     
-            
-    
             this.router.navigate(['admin/events/event_detail']);
         } else if( this.flag == "delete") {
             this.eventsService.deleteEvent(this.event.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
-
-        this.dialogRef.close();
     }
 
     close() {
@@ -72,11 +68,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['admin/events/events']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/events/events']);
-    }
-
 }

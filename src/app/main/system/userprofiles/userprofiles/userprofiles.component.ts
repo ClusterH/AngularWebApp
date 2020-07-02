@@ -1,31 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { UserProfilesService } from 'app/main/system/userprofiles/services/userprofiles.service';
-import { UserProfilesDataSource } from "app/main/system/userprofiles/services/userprofiles.datasource";
-import { UserProfileDetailService } from 'app/main/system/userprofiles/services/userprofile_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as userprofilesEnglish } from 'app/main/system/userprofiles/i18n/en';
-import { locale as userprofilesSpanish } from 'app/main/system/userprofiles/i18n/sp';
 import { locale as userprofilesFrench } from 'app/main/system/userprofiles/i18n/fr';
 import { locale as userprofilesPortuguese } from 'app/main/system/userprofiles/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as userprofilesSpanish } from 'app/main/system/userprofiles/i18n/sp';
+import { UserProfilesDataSource } from "app/main/system/userprofiles/services/userprofiles.datasource";
+import { UserProfilesService } from 'app/main/system/userprofiles/services/userprofiles.service';
+import { UserProfileDetailService } from 'app/main/system/userprofiles/services/userprofile_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-userprofiles',
@@ -87,8 +78,6 @@ export class UserProfilesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).userprofiles;
 
-        
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(userprofilesEnglish, userprofilesSpanish, userprofilesFrench, userprofilesPortuguese);
 
@@ -103,7 +92,6 @@ export class UserProfilesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -112,8 +100,6 @@ export class UserProfilesComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -133,10 +119,6 @@ export class UserProfilesComponent implements OnInit
 
         this.dataSource = new UserProfilesDataSource(this._adminUserProfilesService);
         this.dataSource.loadUserProfiles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "UserProfile_TList");
-    }
-
-    onRowClicked(userprofile) {
-        
     }
 
     selectedFilter() {
@@ -192,7 +174,13 @@ export class UserProfilesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteUserProfile =  this._adminUserProfilesService.userprofileList.findIndex((deleteduserprofile: any) => deleteduserprofile.id == userprofile.id);
+        
+                if (deleteUserProfile > -1) {
+                    this._adminUserProfilesService.userprofileList.splice(deleteUserProfile, 1);
+                    this.dataSource.userprofilesSubject.next(this._adminUserProfilesService.userprofileList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

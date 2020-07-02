@@ -6,7 +6,7 @@ import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.serv
 
 export class ZonesDataSource extends DataSource<any>
 {
-    private zonesSubject = new BehaviorSubject<any>([]);
+    public zonesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -34,6 +34,7 @@ export class ZonesDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
+            this._adminZonesService.zoneList = result.TrackingXLAPI.DATA;
            this.zonesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

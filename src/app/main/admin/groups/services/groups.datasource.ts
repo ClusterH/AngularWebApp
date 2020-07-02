@@ -14,7 +14,7 @@ import { GroupsComponent } from "app/main/admin/groups/groups/groups.component";
 
 export class GroupsDataSource extends DataSource<any>
 {
-    private groupsSubject = new BehaviorSubject<any>([]);
+    public groupsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,18 +42,12 @@ export class GroupsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            
-            
-           this.groupsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           
-
-           
-        //    this.countSubject.next(result.TrackingXLAPI.DATA1);
-          }
-        );
+            this._adminGroupsService.groupList = result.TrackingXLAPI.DATA;
+            this.groupsSubject.next(result.TrackingXLAPI.DATA);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+        });
      }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>

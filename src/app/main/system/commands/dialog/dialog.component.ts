@@ -46,19 +46,17 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("command_detail", JSON.stringify(this.command));
     
-            
-    
             this.router.navigate(['system/commands/command_detail']);
         } else if( this.flag == "delete") {
+            console.log(this.flag, this.command.id);
             this.commandsService.deleteCommand(this.command.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {
@@ -72,11 +70,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['system/commands/commands']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['system/commands/commands']);
-    }
-
 }

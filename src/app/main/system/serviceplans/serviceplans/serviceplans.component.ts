@@ -1,30 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { ServiceplansService } from 'app/main/system/serviceplans/services/serviceplans.service';
-import { ServiceplansDataSource } from "app/main/system/serviceplans/services/serviceplans.datasource";
-import { ServiceplanDetailService } from 'app/main/system/serviceplans/services/serviceplan_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as serviceplansEnglish } from 'app/main/system/serviceplans/i18n/en';
-import { locale as serviceplansSpanish } from 'app/main/system/serviceplans/i18n/sp';
 import { locale as serviceplansFrench } from 'app/main/system/serviceplans/i18n/fr';
 import { locale as serviceplansPortuguese } from 'app/main/system/serviceplans/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as serviceplansSpanish } from 'app/main/system/serviceplans/i18n/sp';
+import { ServiceplansDataSource } from "app/main/system/serviceplans/services/serviceplans.datasource";
+import { ServiceplansService } from 'app/main/system/serviceplans/services/serviceplans.service';
+import { ServiceplanDetailService } from 'app/main/system/serviceplans/services/serviceplan_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-serviceplans',
@@ -200,7 +192,13 @@ export class ServiceplansComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteServiceplan =  this._systemServiceplansService.serviceplanList.findIndex((deletedserviceplan: any) => deletedserviceplan.id == serviceplan.id);
+        
+                if (deleteServiceplan > -1) {
+                    this._systemServiceplansService.serviceplanList.splice(deleteServiceplan, 1);
+                    this.dataSource.serviceplansSubject.next(this._systemServiceplansService.serviceplanList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

@@ -1,30 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { UnittypesService } from 'app/main/system/unittypes/services/unittypes.service';
-import { UnittypesDataSource } from "app/main/system/unittypes/services/unittypes.datasource";
-import { UnittypeDetailService } from 'app/main/system/unittypes/services/unittype_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as unittypesEnglish } from 'app/main/system/unittypes/i18n/en';
-import { locale as unittypesSpanish } from 'app/main/system/unittypes/i18n/sp';
 import { locale as unittypesFrench } from 'app/main/system/unittypes/i18n/fr';
 import { locale as unittypesPortuguese } from 'app/main/system/unittypes/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as unittypesSpanish } from 'app/main/system/unittypes/i18n/sp';
+import { UnittypesDataSource } from "app/main/system/unittypes/services/unittypes.datasource";
+import { UnittypesService } from 'app/main/system/unittypes/services/unittypes.service';
+import { UnittypeDetailService } from 'app/main/system/unittypes/services/unittype_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-unittypes',
@@ -89,9 +81,6 @@ export class UnittypesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).unittypes;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(unittypesEnglish, unittypesSpanish, unittypesFrench, unittypesPortuguese);
 
@@ -106,7 +95,6 @@ export class UnittypesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -132,14 +120,8 @@ export class UnittypesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new UnittypesDataSource(this._systemUnittypesService);
         this.dataSource.loadUnittypes(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unittype_Tlist");
-    }
-
-    onRowClicked(unittype) {
-        
     }
 
     selectedFilter() {
@@ -195,7 +177,13 @@ export class UnittypesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteUnittype =  this._systemUnittypesService.unittypeList.findIndex((deletedunittype: any) => deletedunittype.id == unittype.id);
+        
+                if (deleteUnittype > -1) {
+                    this._systemUnittypesService.unittypeList.splice(deleteUnittype, 1);
+                    this.dataSource.unittypesSubject.next(this._systemUnittypesService.unittypeList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }    
             } else {
                 
             }

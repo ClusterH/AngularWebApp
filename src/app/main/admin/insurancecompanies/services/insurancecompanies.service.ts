@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class InsuranceCompaniesService
 {
     insurancecompanies: any[];
+    insurancecompanyList: any;
 
     /**
      * Constructor

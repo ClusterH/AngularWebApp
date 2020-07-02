@@ -14,7 +14,7 @@ import { SimcardsComponent } from "app/main/system/simcards/simcards/simcards.co
 
 export class SimcardsDataSource extends DataSource<any>
 {
-    private simcardsSubject = new BehaviorSubject<any>([]);
+    public simcardsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class SimcardsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemSimcardsService.simcardList = result.TrackingXLAPI.DATA;
            this.simcardsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

@@ -57,12 +57,11 @@ export class CourseDialogComponent implements OnInit {
             this.unittypesService.deleteUnittype(this.unittype.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {

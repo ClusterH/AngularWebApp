@@ -1,29 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { PrivilegesService } from 'app/main/system/privileges/services/privileges.service';
-import { PrivilegesDataSource } from "app/main/system/privileges/services/privileges.datasource";
-import { PrivilegeDetailService } from 'app/main/system/privileges/services/privilege_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { locale as privilegesEnglish } from 'app/main/system/privileges/i18n/en';
-import { locale as privilegesSpanish } from 'app/main/system/privileges/i18n/sp';
 import { locale as privilegesFrench } from 'app/main/system/privileges/i18n/fr';
 import { locale as privilegesPortuguese } from 'app/main/system/privileges/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as privilegesSpanish } from 'app/main/system/privileges/i18n/sp';
+import { PrivilegesDataSource } from "app/main/system/privileges/services/privileges.datasource";
+import { PrivilegesService } from 'app/main/system/privileges/services/privileges.service';
+import { PrivilegeDetailService } from 'app/main/system/privileges/services/privilege_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-privileges',
@@ -89,9 +82,6 @@ export class PrivilegesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).privileges;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(privilegesEnglish, privilegesSpanish, privilegesFrench, privilegesPortuguese);
 
@@ -106,8 +96,6 @@ export class PrivilegesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -115,8 +103,6 @@ export class PrivilegesComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -132,14 +118,8 @@ export class PrivilegesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new PrivilegesDataSource(this._systemPrivilegesService);
         this.dataSource.loadPrivileges(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Privilege_Tlist");
-    }
-
-    onRowClicked(privilege) {
-        
     }
 
     selectedFilter() {
@@ -195,7 +175,13 @@ export class PrivilegesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deletePrivilege =  this._systemPrivilegesService.privilegeList.findIndex((deletedprivilege: any) => deletedprivilege.id == privilege.id);
+        
+                if (deletePrivilege > -1) {
+                    this._systemPrivilegesService.privilegeList.splice(deletePrivilege, 1);
+                    this.dataSource.privilegesSubject.next(this._systemPrivilegesService.privilegeList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

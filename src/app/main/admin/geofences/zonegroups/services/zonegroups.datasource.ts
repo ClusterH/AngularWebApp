@@ -6,7 +6,7 @@ import { ZonegroupsService } from 'app/main/admin/geofences/zonegroups/services/
 
 export class ZonegroupsDataSource extends DataSource<any>
 {
-    private zonegroupsSubject = new BehaviorSubject<any>([]);
+    public zonegroupsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -34,7 +34,7 @@ export class ZonegroupsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            
+            this._adminZonegroupsService.zonegroupList = result.TrackingXLAPI.DATA;
             this.zonegroupsSubject.next(result.TrackingXLAPI.DATA);
 
             this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;

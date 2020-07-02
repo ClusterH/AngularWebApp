@@ -14,7 +14,7 @@ import { ServiceplansComponent } from "app/main/system/serviceplans/serviceplans
 
 export class ServiceplansDataSource extends DataSource<any>
 {
-    private serviceplansSubject = new BehaviorSubject<any>([]);
+    public serviceplansSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class ServiceplansDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemServiceplansService.serviceplanList = result.TrackingXLAPI.DATA;
            this.serviceplansSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

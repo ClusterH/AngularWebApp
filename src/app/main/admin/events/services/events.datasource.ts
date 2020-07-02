@@ -14,7 +14,7 @@ import { EventsComponent } from "app/main/admin/events/events/events.component";
 
 export class EventsDataSource extends DataSource<any>
 {
-    private eventsSubject = new BehaviorSubject<any>([]);
+    public eventsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -42,18 +42,13 @@ export class EventsDataSource extends DataSource<any>
         )
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
-            
-            
-           this.eventsSubject.next(result.TrackingXLAPI.DATA);
-           this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
-           this.page_index = pageindex + 1;
-           this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
-           
-
-           
-          }
-        );
-     }
+            this._adminEventsService.eventList = result.TrackingXLAPI.DATA;
+            this.eventsSubject.next(result.TrackingXLAPI.DATA);
+            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+            this.page_index = pageindex + 1;
+            this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength/pagesize + 1);
+        });
+    }
    
     connect(collectionViewer: CollectionViewer): Observable<any[]>
     {

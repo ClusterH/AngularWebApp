@@ -14,7 +14,7 @@ import { AccountsComponent } from "app/main/system/accounts/accounts/accounts.co
 
 export class AccountsDataSource extends DataSource<any>
 {
-    private accountsSubject = new BehaviorSubject<any>([]);
+    public accountsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class AccountsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemAccountsService.accountList = result.TrackingXLAPI.DATA;
            this.accountsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

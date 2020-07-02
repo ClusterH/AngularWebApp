@@ -1,30 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { CarriersService } from 'app/main/system/carriers/services/carriers.service';
-import { CarriersDataSource } from "app/main/system/carriers/services/carriers.datasource";
-import { CarrierDetailService } from 'app/main/system/carriers/services/carrier_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as carriersEnglish } from 'app/main/system/carriers/i18n/en';
-import { locale as carriersSpanish } from 'app/main/system/carriers/i18n/sp';
 import { locale as carriersFrench } from 'app/main/system/carriers/i18n/fr';
 import { locale as carriersPortuguese } from 'app/main/system/carriers/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as carriersSpanish } from 'app/main/system/carriers/i18n/sp';
+import { CarriersDataSource } from "app/main/system/carriers/services/carriers.datasource";
+import { CarriersService } from 'app/main/system/carriers/services/carriers.service';
+import { CarrierDetailService } from 'app/main/system/carriers/services/carrier_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-carriers',
@@ -88,9 +80,6 @@ export class CarriersComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).carriers;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(carriersEnglish, carriersSpanish, carriersFrench, carriersPortuguese);
 
@@ -105,8 +94,6 @@ export class CarriersComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -114,8 +101,6 @@ export class CarriersComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -131,14 +116,8 @@ export class CarriersComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new CarriersDataSource(this._systemCarriersService);
         this.dataSource.loadCarriers(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Carrier_Tlist");
-    }
-
-    onRowClicked(carrier) {
-        
     }
 
     selectedFilter() {
@@ -194,7 +173,13 @@ export class CarriersComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteCarrier =  this._systemCarriersService.carrierList.findIndex((deletedcarrier: any) => deletedcarrier.id == carrier.id);
+        
+                if (deleteCarrier > -1) {
+                    this._systemCarriersService.carrierList.splice(deleteCarrier, 1);
+                    this.dataSource.carriersSubject.next(this._systemCarriersService.carrierList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

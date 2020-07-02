@@ -1,29 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { SimcardsService } from 'app/main/system/simcards/services/simcards.service';
-import { SimcardsDataSource } from "app/main/system/simcards/services/simcards.datasource";
-import { SimcardDetailService } from 'app/main/system/simcards/services/simcard_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { locale as simcardsEnglish } from 'app/main/system/simcards/i18n/en';
-import { locale as simcardsSpanish } from 'app/main/system/simcards/i18n/sp';
 import { locale as simcardsFrench } from 'app/main/system/simcards/i18n/fr';
 import { locale as simcardsPortuguese } from 'app/main/system/simcards/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as simcardsSpanish } from 'app/main/system/simcards/i18n/sp';
+import { SimcardsDataSource } from "app/main/system/simcards/services/simcards.datasource";
+import { SimcardsService } from 'app/main/system/simcards/services/simcards.service';
+import { SimcardDetailService } from 'app/main/system/simcards/services/simcard_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-simcards',
@@ -89,9 +82,6 @@ export class SimcardsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).sims;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(simcardsEnglish, simcardsSpanish, simcardsFrench, simcardsPortuguese);
 
@@ -106,7 +96,6 @@ export class SimcardsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -115,8 +104,6 @@ export class SimcardsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -132,14 +119,8 @@ export class SimcardsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new SimcardsDataSource(this._systemSimcardsService);
         this.dataSource.loadSimcards(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Simcard_Tlist");
-    }
-
-    onRowClicked(simcard) {
-        
     }
 
     selectedFilter() {
@@ -195,7 +176,13 @@ export class SimcardsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteSimcard =  this._systemSimcardsService.simcardList.findIndex((deletedsimcard: any) => deletedsimcard.id == simcard.id);
+        
+                if (deleteSimcard > -1) {
+                    this._systemSimcardsService.simcardList.splice(deleteSimcard, 1);
+                    this.dataSource.simcardsSubject.next(this._systemSimcardsService.simcardList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

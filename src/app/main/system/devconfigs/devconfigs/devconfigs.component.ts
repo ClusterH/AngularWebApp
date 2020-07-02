@@ -1,31 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { DevConfigsService } from 'app/main/system/devconfigs/services/devconfigs.service';
-import { DevConfigsDataSource } from "app/main/system/devconfigs/services/devconfigs.datasource";
-import { DevConfigDetailService } from 'app/main/system/devconfigs/services/devconfig_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as devconfigsEnglish } from 'app/main/system/devconfigs/i18n/en';
-import { locale as devconfigsSpanish } from 'app/main/system/devconfigs/i18n/sp';
 import { locale as devconfigsFrench } from 'app/main/system/devconfigs/i18n/fr';
 import { locale as devconfigsPortuguese } from 'app/main/system/devconfigs/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as devconfigsSpanish } from 'app/main/system/devconfigs/i18n/sp';
+import { DevConfigsDataSource } from "app/main/system/devconfigs/services/devconfigs.datasource";
+import { DevConfigsService } from 'app/main/system/devconfigs/services/devconfigs.service';
+import { DevConfigDetailService } from 'app/main/system/devconfigs/services/devconfig_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-devconfigs',
@@ -87,9 +78,6 @@ export class DevConfigsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).devconfigs;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(devconfigsEnglish, devconfigsSpanish, devconfigsFrench, devconfigsPortuguese);
 
@@ -104,8 +92,6 @@ export class DevConfigsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -113,8 +99,6 @@ export class DevConfigsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -130,14 +114,8 @@ export class DevConfigsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new DevConfigsDataSource(this._systemDevConfigsService);
         this.dataSource.loadDevConfigs(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "DevConfig_TList");
-    }
-
-    onRowClicked(devconfig) {
-        
     }
 
     selectedFilter() {
@@ -193,7 +171,13 @@ export class DevConfigsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteDevConfig =  this._systemDevConfigsService.devconfigList.findIndex((deletedevconfig: any) => deletedevconfig.id == devconfig.id);
+        
+                if (deleteDevConfig > -1) {
+                    this._systemDevConfigsService.devconfigList.splice(deleteDevConfig, 1);
+                    this.dataSource.devconfigsSubject.next(this._systemDevConfigsService.devconfigList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

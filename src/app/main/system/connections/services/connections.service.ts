@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class ConnectionsService
 {
     connections: any[];
+    connectionList: any;
 
     /**
      * Constructor

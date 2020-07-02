@@ -58,12 +58,11 @@ export class CourseDialogComponent implements OnInit {
             this.privilegesService.deletePrivilege(this.privilege.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close();
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {
@@ -77,11 +76,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['system/privileges/privileges']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['system/privileges/privileges']);
-    }
-
 }

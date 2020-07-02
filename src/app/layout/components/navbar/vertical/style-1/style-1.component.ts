@@ -18,6 +18,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+    userInfo: any;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -40,6 +41,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this.userInfo = JSON.parse(localStorage.getItem('userObjectList'))[0];
     }
 
     // -----------------------------------------------------------------------------------------------------

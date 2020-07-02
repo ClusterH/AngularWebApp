@@ -57,12 +57,10 @@ export class CourseDialogComponent implements OnInit {
             this.groupsService.deleteGroup(this.group.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
-
-        this.dialogRef.close();
     }
 
     close() {
@@ -76,11 +74,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['admin/groups/groups']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/groups/groups']);
-    }
-
 }

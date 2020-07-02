@@ -1,14 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { UsersService } from 'app/main/admin/users/services/users.service';
-
-
 import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
-import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
 import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
+import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
+import { UsersService } from 'app/main/admin/users/services/users.service';
 
 @Component({
     selector: 'user-dialog',

@@ -14,7 +14,7 @@ import { PrivilegesComponent } from "app/main/system/privileges/privileges/privi
 
 export class PrivilegesDataSource extends DataSource<any>
 {
-    private privilegesSubject = new BehaviorSubject<any>([]);
+    public privilegesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class PrivilegesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemPrivilegesService.privilegeList = result.TrackingXLAPI.DATA;
            this.privilegesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

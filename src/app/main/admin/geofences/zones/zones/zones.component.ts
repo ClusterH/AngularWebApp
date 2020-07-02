@@ -100,8 +100,6 @@ export class ZonesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -123,14 +121,8 @@ export class ZonesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new ZonesDataSource(this._adminZonesService);
         this.dataSource.loadZones(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Zone_Tlist");
-    }
-
-    onRowClicked(zone) {
-        
     }
 
     selectedFilter() {
@@ -184,7 +176,13 @@ export class ZonesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteZone =  this._adminZonesService.zoneList.findIndex((deletedzone: any) => deletedzone.id == zone.id);
+        
+                if (deleteZone > -1) {
+                    this._adminZonesService.zoneList.splice(deleteZone, 1);
+                    this.dataSource.zonesSubject.next(this._adminZonesService.zoneList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

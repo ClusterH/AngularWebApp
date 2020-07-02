@@ -100,8 +100,6 @@ export class ZonegroupsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -123,14 +121,8 @@ export class ZonegroupsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new ZonegroupsDataSource(this._adminZonegroupsService);
         this.dataSource.loadZonegroups(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Zonegroup_Tlist");
-    }
-
-    onRowClicked(zonegroup) {
-        
     }
 
     selectedFilter() {
@@ -184,7 +176,13 @@ export class ZonegroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteZonegroup =  this._adminZonegroupsService.zonegroupList.findIndex((deletedzonegroup: any) => deletedzonegroup.id == zonegroup.id);
+        
+                if (deleteZonegroup > -1) {
+                    this._adminZonegroupsService.zonegroupList.splice(deleteZonegroup, 1);
+                    this.dataSource.zonegroupsSubject.next(this._adminZonegroupsService.zonegroupList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

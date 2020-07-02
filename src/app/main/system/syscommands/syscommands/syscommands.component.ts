@@ -1,31 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { SysCommandsService } from 'app/main/system/syscommands/services/syscommands.service';
-import { SysCommandsDataSource } from "app/main/system/syscommands/services/syscommands.datasource";
-import { SysCommandDetailService } from 'app/main/system/syscommands/services/syscommand_detail.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
-
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as syscommandsEnglish } from 'app/main/system/syscommands/i18n/en';
-import { locale as syscommandsSpanish } from 'app/main/system/syscommands/i18n/sp';
 import { locale as syscommandsFrench } from 'app/main/system/syscommands/i18n/fr';
 import { locale as syscommandsPortuguese } from 'app/main/system/syscommands/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as syscommandsSpanish } from 'app/main/system/syscommands/i18n/sp';
+import { SysCommandsDataSource } from "app/main/system/syscommands/services/syscommands.datasource";
+import { SysCommandsService } from 'app/main/system/syscommands/services/syscommands.service';
+import { SysCommandDetailService } from 'app/main/system/syscommands/services/syscommand_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-syscommands',
@@ -87,9 +78,6 @@ export class SysCommandsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).syscommands;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(syscommandsEnglish, syscommandsSpanish, syscommandsFrench, syscommandsPortuguese);
 
@@ -104,8 +92,6 @@ export class SysCommandsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
@@ -113,8 +99,6 @@ export class SysCommandsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -130,14 +114,8 @@ export class SysCommandsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new SysCommandsDataSource(this._systemSysCommandsService);
         this.dataSource.loadSysCommands(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "SysCommand_TList");
-    }
-
-    onRowClicked(syscommand) {
-        
     }
 
     selectedFilter() {
@@ -193,7 +171,13 @@ export class SysCommandsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteSysCommand =  this._systemSysCommandsService.syscommandList.findIndex((deletedsyscommand: any) => deletedsyscommand.id == syscommand.id);
+        
+                if (deleteSysCommand > -1) {
+                    this._systemSysCommandsService.syscommandList.splice(deleteSysCommand, 1);
+                    this.dataSource.syscommandsSubject.next(this._systemSysCommandsService.syscommandList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

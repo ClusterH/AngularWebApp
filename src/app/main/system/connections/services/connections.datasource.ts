@@ -1,20 +1,11 @@
-import {CollectionViewer, DataSource} from "@angular/cdk/collections";
-// import { MatPaginator, PageEvent } from '@angular/material/paginator';
-// import { MatSort } from '@angular/material/sort';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import {catchError, finalize} from "rxjs/operators";
-
-// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
-import { ConnectionsService } from 'app/main/system/connections/services/connections.service'
-import { ConnectionsComponent } from "app/main/system/connections/connections/connections.component";
-
-// import { FuseUtils } from '@fuse/utils';
-
+import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { ConnectionsService } from 'app/main/system/connections/services/connections.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, finalize } from "rxjs/operators";
 
 export class ConnectionsDataSource extends DataSource<any>
 {
-    private connectionsSubject = new BehaviorSubject<any>([]);
+    public connectionsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +34,7 @@ export class ConnectionsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemConnectionsService.connectionList = result.TrackingXLAPI.DATA;
            this.connectionsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

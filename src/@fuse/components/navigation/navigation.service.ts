@@ -187,7 +187,6 @@ export class FuseNavigationService
             if ( item.type === 'item' )
             {
                 flatNavigation.push(item);
-
                 continue;
             }
 

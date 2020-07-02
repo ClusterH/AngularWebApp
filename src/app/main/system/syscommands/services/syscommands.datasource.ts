@@ -14,7 +14,7 @@ import { SysCommandsComponent } from "app/main/system/syscommands/syscommands/sy
 
 export class SysCommandsDataSource extends DataSource<any>
 {
-    private syscommandsSubject = new BehaviorSubject<any>([]);
+    public syscommandsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class SysCommandsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemSysCommandsService.syscommandList = result.TrackingXLAPI.DATA;
            this.syscommandsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

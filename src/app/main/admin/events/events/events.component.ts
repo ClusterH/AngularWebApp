@@ -1,27 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { merge } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { EventsService } from 'app/main/admin/events/services/events.service';
-import { EventsDataSource } from "app/main/admin/events/services/events.datasource";
-import { EventDetailService } from 'app/main/admin/events/services/event_detail.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { locale as eventsEnglish } from 'app/main/admin/events/i18n/en';
-import { locale as eventsSpanish } from 'app/main/admin/events/i18n/sp';
 import { locale as eventsFrench } from 'app/main/admin/events/i18n/fr';
 import { locale as eventsPortuguese } from 'app/main/admin/events/i18n/pt';
+import { locale as eventsSpanish } from 'app/main/admin/events/i18n/sp';
+import { EventsDataSource } from "app/main/admin/events/services/events.datasource";
+import { EventsService } from 'app/main/admin/events/services/events.service';
+import { EventDetailService } from 'app/main/admin/events/services/event_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'admin-events',
@@ -82,9 +77,6 @@ export class EventsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).events;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
 
@@ -99,7 +91,6 @@ export class EventsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -108,8 +99,6 @@ export class EventsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -125,14 +114,8 @@ export class EventsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new EventsDataSource(this._adminEventsService);
         this.dataSource.loadEvents(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Event_TList");
-    }
-
-    onRowClicked(event) {
-        
     }
 
     selectedFilter() {
@@ -188,7 +171,13 @@ export class EventsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteEvent =  this._adminEventsService.eventList.findIndex((deletedevent: any) => deletedevent.id == event.id);
+        
+                if (deleteEvent > -1) {
+                    this._adminEventsService.eventList.splice(deleteEvent, 1);
+                    this.dataSource.eventsSubject.next(this._adminEventsService.eventList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

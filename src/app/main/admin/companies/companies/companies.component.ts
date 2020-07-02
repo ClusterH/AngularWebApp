@@ -103,8 +103,6 @@ export class CompaniesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).companies;
 
-        
-
         this.pageIndex= 0;
         this.pageSize = 25;
         this.selected = '';
@@ -117,16 +115,12 @@ export class CompaniesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -142,14 +136,8 @@ export class CompaniesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new CompaniesDataSource(this._adminCompaniesService);
         this.dataSource.loadCompanies(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
-    }
-
-    onRowClicked(company) {
-        
     }
 
     selectedFilter() {
@@ -205,7 +193,13 @@ export class CompaniesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteCompany =  this._adminCompaniesService.companyList.findIndex((deletedcompany: any) => deletedcompany.id == company.id);
+        
+                if (deleteCompany > -1) {
+                    this._adminCompaniesService.companyList.splice(deleteCompany, 1);
+                    this.dataSource.companiesSubject.next(this._adminCompaniesService.companyList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

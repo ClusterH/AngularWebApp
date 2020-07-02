@@ -53,12 +53,11 @@ export class CourseDialogComponent implements OnInit {
             this.syscommandsService.deleteSysCommand(this.syscommand.id)
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {
@@ -70,12 +69,6 @@ export class CourseDialogComponent implements OnInit {
         this.dialogRef.close();
         localStorage.removeItem("syscommand_detail");
 
-        this.router.navigate(['system/syscommands/syscommands']);
-    }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['system/syscommands/syscommands']);
     }
 

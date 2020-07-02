@@ -93,8 +93,6 @@ export class GroupsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).groups;
 
-        
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(groupsEnglish, groupsSpanish, groupsFrench, groupsPortuguese);
 
@@ -109,7 +107,6 @@ export class GroupsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -118,8 +115,6 @@ export class GroupsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -135,14 +130,8 @@ export class GroupsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new GroupsDataSource(this._adminGroupsService);
         this.dataSource.loadGroups(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Group_Tlist");
-    }
-
-    onRowClicked(group) {
-        
     }
 
     selectedFilter() {
@@ -198,7 +187,13 @@ export class GroupsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteGroup =  this._adminGroupsService.groupList.findIndex((deletedgroup: any) => deletedgroup.id == group.id);
+        
+                if (deleteGroup > -1) {
+                    this._adminGroupsService.groupList.splice(deleteGroup, 1);
+                    this.dataSource.groupsSubject.next(this._adminGroupsService.groupList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

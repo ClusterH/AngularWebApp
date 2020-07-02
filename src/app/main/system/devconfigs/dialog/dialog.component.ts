@@ -47,14 +47,12 @@ export class CourseDialogComponent implements OnInit {
     
             localStorage.setItem("devconfig_detail", JSON.stringify(this.devconfig));
     
-            
-    
             this.router.navigate(['system/devconfigs/devconfig_detail']);
         } else if( this.flag == "delete") {
             this.devconfigsService.deleteDevConfig(this.devconfig.id, 'devconfig_delete')
             .subscribe((result: any) => {
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
+                    this.dialogRef.close(result);
                 }
             });
         } else if (this.flag == "delete_cmd") {
@@ -62,12 +60,11 @@ export class CourseDialogComponent implements OnInit {
             .subscribe((result: any) => {
                 
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadDetailComponent();
+                    this.dialogRef.close(result);
                 }
             });
         }
 
-        this.dialogRef.close();
     }
 
     close() {
@@ -81,17 +78,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['system/devconfigs/devconfigs']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['system/devconfigs/devconfigs']);
-    }
-
-    reloadDetailComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['system/devconfigs/devconfig_detail']);
-    }
-
 }

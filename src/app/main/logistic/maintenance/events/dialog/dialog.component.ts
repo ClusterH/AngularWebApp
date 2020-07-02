@@ -60,8 +60,6 @@ export class CourseDialogComponent implements OnInit {
         if (result) {
             this.eventsService.deleteEvent(this.event.id)
             .subscribe((result: any) => {
-                
-                
                 if ((result.responseCode == 200)||(result.responseCode == 100)) {
                     this.dataSource = new EventsDataSource(this.eventsService);
                     this.dataSource.eventsSubject.next(this.eventsService.mainteventList);
@@ -82,11 +80,4 @@ export class CourseDialogComponent implements OnInit {
 
         this.router.navigate(['logistic/events/events']);
     }
-
-    // reloadComponent() {
-    //     this.router.routeReuseStrategy.shouldReeventoute = () => false;
-    //     this.router.onSameUrlNavigation = 'reload';
-    //     this.router.navigate(['logistic/events/events']);
-    // }
-
 }

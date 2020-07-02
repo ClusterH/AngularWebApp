@@ -1,29 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { InsuranceCompaniesService } from 'app/main/admin/insurancecompanies/services/insurancecompanies.service';
-import { InsuranceCompaniesDataSource } from "app/main/admin/insurancecompanies/services/insurancecompanies.datasource";
-import { InsuranceCompanyDetailService } from 'app/main/admin/insurancecompanies/services/insurancecompany_detail.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as companiesEnglish } from 'app/main/admin/insurancecompanies/i18n/en';
-import { locale as companiesSpanish } from 'app/main/admin/insurancecompanies/i18n/sp';
 import { locale as companiesFrench } from 'app/main/admin/insurancecompanies/i18n/fr';
 import { locale as companiesPortuguese } from 'app/main/admin/insurancecompanies/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as companiesSpanish } from 'app/main/admin/insurancecompanies/i18n/sp';
+import { InsuranceCompaniesDataSource } from "app/main/admin/insurancecompanies/services/insurancecompanies.datasource";
+import { InsuranceCompaniesService } from 'app/main/admin/insurancecompanies/services/insurancecompanies.service';
+import { InsuranceCompanyDetailService } from 'app/main/admin/insurancecompanies/services/insurancecompany_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'admin-insurancecompanies',
@@ -115,16 +108,12 @@ export class InsuranceCompaniesComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -140,14 +129,8 @@ export class InsuranceCompaniesComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new InsuranceCompaniesDataSource(this._adminInsuranceCompaniesService);
         this.dataSource.loadInsuranceCompanies(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
-    }
-
-    onRowClicked(insurancecompany) {
-        
     }
 
     selectedFilter() {

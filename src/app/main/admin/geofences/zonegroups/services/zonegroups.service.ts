@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class ZonegroupsService
 {
     zonegroups: any[];
+    zonegroupList: any;
 
     /**
      * Constructor

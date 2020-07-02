@@ -3,6 +3,7 @@ export const locale = {
     data: {
         FUELREGISTRIES: {
             "FUELREGISTRIES": "Registros de combustible",
+            "FUELREGISTRY": "Registro de combustible",
             "SEARCHFORFUELREGISTRY": "Buscar un FuelRegistry",
             "NEWFUELREGISTRY": "Nuevo registro de combustible",
             "FUELREGISTRYDETAIL": "Detalle de registro de combustible",
@@ -11,6 +12,7 @@ export const locale = {
             "ADD": "ADD",
            
             "FUELREGISTRYTYPE": "Tipo de registro",
+            "REGISTEREDBY": "Registrado por",
             "DATETIME": "Fecha y hora",
             "AMOUNT": "Cantidad",
             "COST": "Costo",

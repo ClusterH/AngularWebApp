@@ -14,7 +14,7 @@ import { CompaniesComponent } from "app/main/admin/companies/companies/companies
 
 export class CompaniesDataSource extends DataSource<any>
 {
-    private companiesSubject = new BehaviorSubject<any>([]);
+    public companiesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -50,7 +50,7 @@ export class CompaniesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._adminCompaniesService.companyList = result.TrackingXLAPI.DATA;
            this.companiesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

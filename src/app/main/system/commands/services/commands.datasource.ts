@@ -1,20 +1,11 @@
-import {CollectionViewer, DataSource} from "@angular/cdk/collections";
-// import { MatPaginator, PageEvent } from '@angular/material/paginator';
-// import { MatSort } from '@angular/material/sort';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import {catchError, finalize} from "rxjs/operators";
-
-// import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
-import { CommandsService } from 'app/main/system/commands/services/commands.service'
-import { CommandsComponent } from "app/main/system/commands/commands/commands.component";
-
-// import { FuseUtils } from '@fuse/utils';
-
+import { CollectionViewer, DataSource } from "@angular/cdk/collections";
+import { CommandsService } from 'app/main/system/commands/services/commands.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, finalize } from "rxjs/operators";
 
 export class CommandsDataSource extends DataSource<any>
 {
-    private commandsSubject = new BehaviorSubject<any>([]);
+    public commandsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +34,7 @@ export class CommandsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemCommandsService.commandList = result.TrackingXLAPI.DATA;
            this.commandsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

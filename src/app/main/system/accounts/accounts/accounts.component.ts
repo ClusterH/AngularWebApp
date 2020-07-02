@@ -94,9 +94,6 @@ export class AccountsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).accounts;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(accountsEnglish, accountsSpanish, accountsFrench, accountsPortuguese);
 
@@ -111,7 +108,6 @@ export class AccountsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -120,8 +116,6 @@ export class AccountsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -137,14 +131,8 @@ export class AccountsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new AccountsDataSource(this._systemAccountsService);
         this.dataSource.loadAccounts(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Account_Tlist");
-    }
-
-    onRowClicked(account) {
-        
     }
 
     selectedFilter() {
@@ -200,7 +188,13 @@ export class AccountsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteAccount =  this._systemAccountsService.accountList.findIndex((deletedaccount: any) => deletedaccount.id == account.id);
+        
+                if (deleteAccount > -1) {
+                    this._systemAccountsService.accountList.splice(deleteAccount, 1);
+                    this.dataSource.accountsSubject.next(this._systemAccountsService.accountList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

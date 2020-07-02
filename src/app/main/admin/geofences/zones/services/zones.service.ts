@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class ZonesService
 {
     zones: any[];
+    zoneList: any;
 
     /**
      * Constructor

@@ -14,7 +14,7 @@ import { UserProfilesComponent } from "app/main/system/userprofiles/userprofiles
 
 export class UserProfilesDataSource extends DataSource<any>
 {
-    private userprofilesSubject = new BehaviorSubject<any>([]);
+    public userprofilesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class UserProfilesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._adminUserProfilesService.userprofileList = result.TrackingXLAPI.DATA;
            this.userprofilesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

@@ -1,28 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { ConnectionsService } from 'app/main/system/connections/services/connections.service';
-import { ConnectionsDataSource } from "app/main/system/connections/services/connections.datasource";
-import { ConnectionDetailService } from 'app/main/system/connections/services/connection_detail.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { locale as connectionsEnglish } from 'app/main/system/connections/i18n/en';
-import { locale as connectionsSpanish } from 'app/main/system/connections/i18n/sp';
 import { locale as connectionsFrench } from 'app/main/system/connections/i18n/fr';
 import { locale as connectionsPortuguese } from 'app/main/system/connections/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as connectionsSpanish } from 'app/main/system/connections/i18n/sp';
+import { ConnectionsDataSource } from "app/main/system/connections/services/connections.datasource";
+import { ConnectionsService } from 'app/main/system/connections/services/connections.service';
+import { ConnectionDetailService } from 'app/main/system/connections/services/connection_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-connections',
@@ -89,9 +83,6 @@ export class ConnectionsComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).connections;
 
-        
-
-
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(connectionsEnglish, connectionsSpanish, connectionsFrench, connectionsPortuguese);
 
@@ -106,7 +97,6 @@ export class ConnectionsComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
 
         var node = $("div.page_index");
         var node_length = node.length;
@@ -115,8 +105,6 @@ export class ConnectionsComponent implements OnInit
    
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
 
         merge(this.sort.sortChange, this.paginator.page)
         .pipe(
@@ -132,14 +120,8 @@ export class ConnectionsComponent implements OnInit
    
     ngOnInit(): void
     {
-        
-
         this.dataSource = new ConnectionsDataSource(this._systemConnectionsService);
         this.dataSource.loadConnections(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Connection_Tlist");
-    }
-
-    onRowClicked(connection) {
-        
     }
 
     selectedFilter() {
@@ -195,7 +177,13 @@ export class ConnectionsComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteConnection =  this._systemConnectionsService.connectionList.findIndex((deletedconnection: any) => deletedconnection.id == connection.id);
+        
+                if (deleteConnection > -1) {
+                    this._systemConnectionsService.connectionList.splice(deleteConnection, 1);
+                    this.dataSource.connectionsSubject.next(this._systemConnectionsService.connectionList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class CommandsService
 {
     commands: any[];
+    commandList: any;
 
     /**
      * Constructor
@@ -68,8 +69,8 @@ export class CommandsService
                 .set('userid', userID.toString())
                 .set('id', id.toString())
                 .set('method', "command_delete");
-               
-            
+
+        console.log(params);
 
         return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
             headers: headers,   

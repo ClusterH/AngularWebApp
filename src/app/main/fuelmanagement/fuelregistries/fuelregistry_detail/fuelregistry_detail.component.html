@@ -21,7 +21,7 @@
                 <div fxLayout="column" fxLayoutAlign="start start"
                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
-                        {{fuelregistry.name}}
+                        {{ 'FUELREGISTRIES.FUELREGISTRY' | translate }}
                     </div>
                     <div class="h2" *ngIf="pageType ==='new'">
                         {{ 'FUELREGISTRIES.NEWFUELREGISTRY' | translate }}
@@ -67,9 +67,11 @@
                                     <mat-radio-button value="tank" class="ml-24">Tank</mat-radio-button>
                                 </mat-radio-group>
 
-                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list" >
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list"
+                                            [ngStyle]="{'display': registrytype == 'tank'? 'none' : 'block' }">
+
                                         <mat-label>{{ 'FUELREGISTRIES.TOUNIT' | translate }}</mat-label>
                                         <mat-select  (click)="showCompanyList('unit_clist')" formControlName="tounit">
                                             <div class="filter_input" >
@@ -100,7 +102,7 @@
                                         </mat-select>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" [ngStyle]="{'display': registrytype == 'vehicle'? 'none' : 'block' }">
                                         <mat-label>{{ 'FUELREGISTRIES.TOTANK' | translate }}</mat-label>
                                         <mat-select formControlName="totank"  (click)="showCompanyList('totank_clist')" required>
                                             <div class="filter_input" >
@@ -129,6 +131,8 @@
                                             ></mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
+
+                                    <div class="h2 pl-24 mb-32" fxFlex="48">{{ 'FUELREGISTRIES.REGISTEREDBY' | translate }}: &nbsp;&nbsp; {{userObject.name}}</div>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
@@ -201,35 +205,61 @@
                                     </mat-form-field>
                                 </div>
 
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'FUELREGISTRIES.OPERATOR' | translate }}</mat-label>
-                                    <mat-select formControlName="operator"  (click)="showCompanyList('operator_clist')">
-                                        <div class="filter_input" >
-                                            <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
-                                            <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                        </div>
+                                <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" [ngStyle]="{'display': registrytype == 'tank'? 'none' : 'flex' }">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="42">
+                                        <mat-label>{{ 'FUELREGISTRIES.OPERATOR' | translate }}</mat-label>
+                                        <mat-select formControlName="operator"  (click)="showCompanyList('operator_clist')">
+                                            <div class="filter_input" >
+                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                            </div>
 
-                                        <div  style="width: 100%; overflow: auto;">
-                                            <mat-table [dataSource]="dataSourceOperator"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
-                                                <ng-container matColumnDef="name">
-                                                    <td mat-cell *matCellDef="let operator"  style="border: 0px;">
-                                                        <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.id">{{operator.name}}</mat-option>
-                                                    </td>
-                                                </ng-container>
-                                                <tr  class="fromtank_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
-                                            </mat-table>
-                                        </div>
-                                    
-                                        <mat-paginator style=" height: 40px;"
-                                            #paginatorOperator
-                                            class="table_paginator"
-                                            [length]="dataSourceOperator.totalLength"
-                                            [pageSize]="10"
-                                            [hidePageSize]="true"
-                                            showFirstLastButtons
-                                        ></mat-paginator>
-                                    </mat-select>
-                                </mat-form-field>
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceOperator"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let operator"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="operator.id">{{operator.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="fromtank_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        
+                                            <mat-paginator style=" height: 40px;"
+                                                #paginatorOperator
+                                                class="table_paginator"
+                                                [length]="dataSourceOperator.totalLength"
+                                                [pageSize]="10"
+                                                [hidePageSize]="true"
+                                                showFirstLastButtons
+                                            ></mat-paginator>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="40">
+                                        <mat-label>{{ 'FUELREGISTRIES.ODOMETER' | translate }}</mat-label>
+                                        <input matInput placeholder="Odometer"
+                                            name="odometer"
+                                            formControlName="odometer"
+                                            type="number"
+                                            required>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="16">
+                                        <mat-select formControlName="odometerunit">
+                                            <div  style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceOdometerUnit"  class="FUELREGISTRIES-table font-size-10 mat-elevation-z8" >
+                                                    <ng-container matColumnDef="name">
+                                                        <td mat-cell *matCellDef="let lengthunit"  style="border: 0px;">
+                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="lengthunit.id">{{lengthunit.name}}</mat-option>
+                                                        </td>
+                                                    </ng-container>
+                                                    <tr  class="fromtank_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                </mat-table>
+                                            </div>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div> 
                             </div>
                         </mat-tab>
                     </mat-tab-group>

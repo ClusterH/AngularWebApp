@@ -1,27 +1,24 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
 import { AgmCoreModule } from '@agm/core';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmDrawingModule } from '@agm/drawing';
-import {MatToolbarModule} from '@angular/material/toolbar'; 
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 
-
-
-import { FuseSharedModule } from '@fuse/shared.module';
+import { RouterModule } from '@angular/router';
 import { FuseHighlightModule } from '@fuse/components/index';
-
-import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
-
+import { FuseShortcutsModule } from '@fuse/components';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
-import { RoutesService } from 'app/main/home/maps/services/routes.service';
+import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
 
 const routes = [
     {
@@ -39,7 +36,8 @@ const routes = [
 
         MatButtonModule,
         MatIconModule,
-
+        MatMenuModule,
+        TranslateModule,
         AgmJsMarkerClustererModule,
         AgmDrawingModule,
         MatToolbarModule,
@@ -53,7 +51,8 @@ const routes = [
         }),
 
         FuseSharedModule,
-        FuseHighlightModule
+        FuseHighlightModule,
+        FuseShortcutsModule
     ],
     providers :[
         VehMarkersService,

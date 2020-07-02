@@ -1,27 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { merge } from 'rxjs';
-import { tap,} from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { DevicesService } from 'app/main/system/devices/services/devices.service';
-import { DevicesDataSource } from "app/main/system/devices/services/devices.datasource";
-import { DeviceDetailService } from 'app/main/system/devices/services/device_detail.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-
 import { locale as devicesEnglish } from 'app/main/system/devices/i18n/en';
-import { locale as devicesSpanish } from 'app/main/system/devices/i18n/sp';
 import { locale as devicesFrench } from 'app/main/system/devices/i18n/fr';
 import { locale as devicesPortuguese } from 'app/main/system/devices/i18n/pt';
+import { locale as devicesSpanish } from 'app/main/system/devices/i18n/sp';
+import { DevicesDataSource } from "app/main/system/devices/services/devices.datasource";
+import { DevicesService } from 'app/main/system/devices/services/devices.service';
+import { DeviceDetailService } from 'app/main/system/devices/services/device_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector     : 'system-devices',
@@ -191,7 +186,13 @@ export class DevicesComponent implements OnInit
         dialogRef.afterClosed().subscribe(result => {
             if ( result )
             { 
-                
+                let deleteDevice =  this._systemDevicesService.deviceList.findIndex((deleteddevice: any) => deleteddevice.id == device.id);
+        
+                if (deleteDevice > -1) {
+                    this._systemDevicesService.deviceList.splice(deleteDevice, 1);
+                    this.dataSource.devicesSubject.next(this._systemDevicesService.deviceList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }  
             } else {
                 
             }

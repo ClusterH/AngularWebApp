@@ -14,7 +14,7 @@ import { DevConfigsComponent } from "app/main/system/devconfigs/devconfigs/devco
 
 export class DevConfigsDataSource extends DataSource<any>
 {
-    private devconfigsSubject = new BehaviorSubject<any>([]);
+    public devconfigsSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class DevConfigsDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemDevConfigsService.devconfigList = result.TrackingXLAPI.DATA;
            this.devconfigsSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;

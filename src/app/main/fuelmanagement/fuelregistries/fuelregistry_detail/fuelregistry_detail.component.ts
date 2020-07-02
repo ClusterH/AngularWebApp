@@ -31,6 +31,7 @@ export class FuelregistryDetailComponent implements OnInit
   pageType: string;
   userConncode: string;
   userID: number;
+  userObject: any;
 
   fuelregistryModel_flag: boolean;
 
@@ -45,6 +46,7 @@ export class FuelregistryDetailComponent implements OnInit
   dataSourceToTank: FuelregistryDetailDataSource;
   dataSourceFromTank: FuelregistryDetailDataSource;
   dataSourceOperator: FuelregistryDetailDataSource;
+  dataSourceOdometerUnit: FuelregistryDetailDataSource;
  
   filter_string: string = '';
   method_string: string = '';
@@ -75,6 +77,10 @@ export class FuelregistryDetailComponent implements OnInit
     this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
     this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
+    this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
+
+    console.log(this.userObject);
+
     if ( this.fuelregistry != '' )
     {
       this.pageType = 'edit';
@@ -89,18 +95,20 @@ export class FuelregistryDetailComponent implements OnInit
 
   ngOnInit(): void {
 
-    this.registrytype = 'tank';
+    this.registrytype = 'vehicle';
     let disabled = (this.registrytype == 'tank')? true : false;
   
     this.dataSourceToUnit   = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
     this.dataSourceToTank   = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
     this.dataSourceFromTank = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
     this.dataSourceOperator = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
+    this.dataSourceOdometerUnit = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
    
     this.dataSourceToUnit.loadFuelregistryDetail(this.userConncode, this.userID, 0, 10, this.fuelregistry.tounit, "unit_clist");
     this.dataSourceToTank.loadFuelregistryDetail(this.userConncode, this.userID, 0, 10, this.fuelregistry.totank, "totank_clist");
     this.dataSourceFromTank.loadFuelregistryDetail(this.userConncode, this.userID, 0, 10, this.fuelregistry.fromtank, "fromtank_clist");
     this.dataSourceOperator.loadFuelregistryDetail(this.userConncode, this.userID, 0, 10, this.fuelregistry.operator, "operator_clist");
+    this.dataSourceOdometerUnit.loadFuelregistryDetail(this.userConncode, this.userID, 0, 10, '', "lengthunit_clist");
 
     this.fuelregistryForm = this._formBuilder.group({
       registrytype: [this.registrytype, Validators.required],
@@ -111,6 +119,7 @@ export class FuelregistryDetailComponent implements OnInit
       fuelunit    : [null, Validators.required],
       datentime   : [null, Validators.required],
       odometer    : [null, Validators.required],
+      odometerunit: [null, Validators.required],
       cost        : [null, Validators.required],
       operator    : [null, Validators.required],
       filterstring: [null, Validators.required],
@@ -256,6 +265,7 @@ export class FuelregistryDetailComponent implements OnInit
     this.fuelregistryForm.get('fuelunit').setValue(this.fuelregistry.fuelunit || 'liters');
     this.fuelregistryForm.get('datentime').setValue((this.fuelregistry.datentime != '')? this.fuelregistry.datentime.slice(0, 16) : new Date().toISOString().slice(0, 16));
     this.fuelregistryForm.get('odometer').setValue(this.fuelregistry.odometer);
+    this.fuelregistryForm.get('odometerunit').setValue(this.userObject.lengthunitid);
     this.fuelregistryForm.get('cost').setValue(this.fuelregistry.cost || 0);
     this.fuelregistryForm.get('operator').setValue(this.fuelregistry.operatorid);
     this.fuelregistryForm.get('filterstring').setValue(this.filter_string);

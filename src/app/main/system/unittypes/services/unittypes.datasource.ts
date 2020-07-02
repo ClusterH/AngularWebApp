@@ -14,7 +14,7 @@ import { UnittypesComponent } from "app/main/system/unittypes/unittypes/unittype
 
 export class UnittypesDataSource extends DataSource<any>
 {
-    private unittypesSubject = new BehaviorSubject<any>([]);
+    public unittypesSubject = new BehaviorSubject<any>([]);
 
     // to show the total number of records
     private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -43,7 +43,7 @@ export class UnittypesDataSource extends DataSource<any>
         // subscribe method to receive Observable type data when it is ready
         .subscribe((result : any) => {
             
-            
+            this._systemUnittypesService.unittypeList = result.TrackingXLAPI.DATA;
            this.unittypesSubject.next(result.TrackingXLAPI.DATA);
            this.totalLength = result.TrackingXLAPI.DATA1? Number(result.TrackingXLAPI.DATA1.Total) : 0;
            this.page_index = pageindex + 1;
