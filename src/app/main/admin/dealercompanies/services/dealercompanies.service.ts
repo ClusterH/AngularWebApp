@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-// import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class DealerCompaniesService
-{
+export class DealerCompaniesService {
     dealercompanies: any[];
 
     /**
@@ -16,9 +14,8 @@ export class DealerCompaniesService
     constructor(
         private _httpClient: HttpClient,
     ) { }
-    
-    getDealerCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
-    {
+
+    getDealerCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
@@ -28,14 +25,14 @@ export class DealerCompaniesService
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
-                .set('orderdirection', orderdirection.toString())                
+                .set('orderdirection', orderdirection.toString())
                 .set('companytypeid', '2')
                 .set('method', method.toString());
-               
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
@@ -46,20 +43,20 @@ export class DealerCompaniesService
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
-                .set('orderdirection', orderdirection.toString())              
+                .set('orderdirection', orderdirection.toString())
                 .set('companytypeid', '2')
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
-    
+
     /**
      * Delete contact
      *

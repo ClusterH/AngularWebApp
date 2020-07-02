@@ -1,29 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { DealerCompaniesService } from 'app/main/admin/dealercompanies/services/dealercompanies.service';
-import { DealerCompaniesDataSource } from "app/main/admin/dealercompanies/services/dealercompanies.datasource";
-import { DealerCompanyDetailService } from 'app/main/admin/dealercompanies/services/dealercompany_detail.service';
-
-import { CourseDialogComponent } from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as companiesEnglish } from 'app/main/admin/dealercompanies/i18n/en';
-import { locale as companiesSpanish } from 'app/main/admin/dealercompanies/i18n/sp';
 import { locale as companiesFrench } from 'app/main/admin/dealercompanies/i18n/fr';
 import { locale as companiesPortuguese } from 'app/main/admin/dealercompanies/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as companiesSpanish } from 'app/main/admin/dealercompanies/i18n/sp';
+import { DealerCompaniesDataSource } from "app/main/admin/dealercompanies/services/dealercompanies.datasource";
+import { DealerCompaniesService } from 'app/main/admin/dealercompanies/services/dealercompanies.service';
+import { DealerCompanyDetailService } from 'app/main/admin/dealercompanies/services/dealercompany_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'admin-dealercompanies',
@@ -48,8 +41,8 @@ export class DealerCompaniesComponent implements OnInit {
     dealercompany: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
-    
+    restrictValue: any;
+
     flag: string = '';
     displayedColumns = [
         'id',
@@ -113,8 +106,6 @@ export class DealerCompaniesComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
@@ -122,14 +113,12 @@ export class DealerCompaniesComponent implements OnInit {
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        
-
         merge(this.sort.sortChange, this.paginator.page)
             .pipe(
                 tap(() => this.dataSource.loadDealerCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList"))
             )
             .subscribe((res: any) => {
-                
+
             });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -137,18 +126,14 @@ export class DealerCompaniesComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
+
 
         this.dataSource = new DealerCompaniesDataSource(this._adminDealerCompaniesService);
         this.dataSource.loadDealerCompanies(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
     }
 
-    onRowClicked(dealercompany) {
-        
-    }
-
     selectedFilter() {
-        
+
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -158,7 +143,7 @@ export class DealerCompaniesComponent implements OnInit {
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
+
         this.dataSource.loadDealerCompanies(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
     }
 
@@ -198,9 +183,9 @@ export class DealerCompaniesComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                
+
             } else {
-                
+
             }
         });
     }
@@ -219,9 +204,9 @@ export class DealerCompaniesComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                
+
             } else {
-                
+
             }
         });
     }

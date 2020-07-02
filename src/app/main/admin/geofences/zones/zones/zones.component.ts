@@ -48,7 +48,7 @@ export class ZonesComponent implements OnInit
     zone: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

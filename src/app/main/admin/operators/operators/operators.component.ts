@@ -52,7 +52,7 @@ export class OperatorsComponent implements OnInit
     operator: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

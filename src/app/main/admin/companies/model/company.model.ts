@@ -28,5 +28,4 @@ export interface CompanyDetail
     webstartlat?: number;
     webstartlong?: number;
     hasprivatelabel?: boolean;
-
 }

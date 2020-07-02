@@ -28,5 +28,4 @@ export interface DealerCompanyDetail
     webstartlat?: number;
     webstartlong?: number;
     hasprivatelabel?: boolean;
-
 }

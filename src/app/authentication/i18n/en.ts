@@ -4,7 +4,7 @@ export const locale = {
         AUTHENTICATION: {
             "WELCOME": "Welcome to the Polarix!",
             "DETAIL": "Polarix specializes in delivering GPS Tracking and Fleet Management Solutions to individuals and companies with vehicles, personnel and assets on the field. Our solution combines GPS with wireless communication technologies like GSM, CDMA and Satellite to deliver a unique tool for increased productivity and security.",
-            
+
             "LOGINACCOUNT": "LOGIN TO YOUR ACCOUNT",
             "EMAIL": "Email",
             "EMAILVALIDATE": "Email is required",

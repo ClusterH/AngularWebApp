@@ -43,7 +43,7 @@ export class UnittypesComponent implements OnInit
     unittype: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

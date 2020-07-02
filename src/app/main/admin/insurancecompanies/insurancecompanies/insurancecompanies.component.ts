@@ -42,7 +42,7 @@ export class InsuranceCompaniesComponent implements OnInit
     insurancecompany: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

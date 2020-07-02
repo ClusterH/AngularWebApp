@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-
+import { RouterModule } from '@angular/router';
 import { FuseSharedModule } from '@fuse/shared.module';
-
 import { MailConfirmComponent } from 'app/authentication/mail-confirm/mail-confirm.component';
 
 const routes = [
     {
-        path     : 'auth/mail-confirm',
+        path: 'auth/mail-confirm',
         component: MailConfirmComponent
     }
 ];
@@ -17,7 +15,7 @@ const routes = [
     declarations: [
         MailConfirmComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatIconModule,
@@ -25,6 +23,5 @@ const routes = [
         FuseSharedModule
     ]
 })
-export class MailConfirmModule
-{
+export class MailConfirmModule {
 }

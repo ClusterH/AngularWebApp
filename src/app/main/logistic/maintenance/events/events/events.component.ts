@@ -49,7 +49,7 @@ export class EventsComponent implements OnInit
     event: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

@@ -49,7 +49,7 @@ export class GroupsComponent implements OnInit
     group: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

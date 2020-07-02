@@ -49,7 +49,7 @@ export class MaintservicesComponent implements OnInit
     maintservice: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

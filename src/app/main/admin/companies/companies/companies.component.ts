@@ -1,55 +1,52 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { CompaniesService } from 'app/main/admin/companies/services/companies.service';
-import { CompaniesDataSource } from "app/main/admin/companies/services/companies.datasource";
-import { CompanyDetailService } from 'app/main/admin/companies/services/company_detail.service';
-
-import {CourseDialogComponent} from "../dialog/dialog.component";
-import { takeUntil } from 'rxjs/internal/operators';
-
 import { locale as companiesEnglish } from 'app/main/admin/companies/i18n/en';
-import { locale as companiesSpanish } from 'app/main/admin/companies/i18n/sp';
 import { locale as companiesFrench } from 'app/main/admin/companies/i18n/fr';
 import { locale as companiesPortuguese } from 'app/main/admin/companies/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as companiesSpanish } from 'app/main/admin/companies/i18n/sp';
+import { CompaniesDataSource } from "app/main/admin/companies/services/companies.datasource";
+import { CompaniesService } from 'app/main/admin/companies/services/companies.service';
+import { CompanyDetailService } from 'app/main/admin/companies/services/company_detail.service';
+import * as $ from 'jquery';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
+
+
+
+
+
 
 @Component({
-    selector     : 'admin-companies',
-    templateUrl  : './companies.component.html',
-    styleUrls    : ['./companies.component.scss'],
-    animations   : fuseAnimations,
+    selector: 'admin-companies',
+    templateUrl: './companies.component.html',
+    styleUrls: ['./companies.component.scss'],
+    animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class CompaniesComponent implements OnInit
-{
+export class CompaniesComponent implements OnInit {
     dataSource: CompaniesDataSource;
 
     @Output()
     pageEvent: PageEvent;
-   
-    pageIndex= 0;
+
+    pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
 
-    company: any;   
+    company: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [
@@ -70,32 +67,31 @@ export class CompaniesComponent implements OnInit
         'created',
         'createdbyname',
         'deletedwhen',
-        'deletedbyname', 
+        'deletedbyname',
         'lastmodifieddate',
         'lastmodifiedbyname'
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    @ViewChild(MatPaginator, {static: true})
+    @ViewChild(MatPaginator, { static: true })
     paginator: MatPaginator;
 
-    @ViewChild(MatSort, {static: true})
+    @ViewChild(MatSort, { static: true })
     sort: MatSort;
 
-    @ViewChild('filter', {static: true})
+    @ViewChild('filter', { static: true })
     filter: ElementRef;
-    
+
     constructor(
         private _adminCompaniesService: CompaniesService,
         private companyDetailService: CompanyDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private renderer : Renderer2,
+        private renderer: Renderer2,
         private elmRef: ElementRef
-    )
-    {
+    ) {
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
 
@@ -103,7 +99,7 @@ export class CompaniesComponent implements OnInit
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).companies;
 
-        this.pageIndex= 0;
+        this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
@@ -118,30 +114,29 @@ export class CompaniesComponent implements OnInit
         var node = $("div.page_index");
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
-   
+
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
         merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-           tap(() => this.dataSource.loadCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList"))
-        )
-        .subscribe( (res: any) => {
-            
-        });
+            .pipe(
+                tap(() => this.dataSource.loadCompanies(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList"))
+            )
+            .subscribe((res: any) => {
+
+            });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
-   
-    ngOnInit(): void
-    {
+
+    ngOnInit(): void {
         this.dataSource = new CompaniesDataSource(this._adminCompaniesService);
         this.dataSource.loadCompanies(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Company_TList");
     }
 
     selectedFilter() {
-        
+
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -151,7 +146,7 @@ export class CompaniesComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
+
         this.dataSource.loadCompanies(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Company_TList");
     }
 
@@ -176,14 +171,13 @@ export class CompaniesComponent implements OnInit
 
         this.router.navigate(['admin/companies/company_detail']);
     }
-    
-    deleteCompany(company): void
-    {
+
+    deleteCompany(company): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
 
         dialogConfig.disableClose = true;
-        
+
         dialogConfig.data = {
             company, flag: this.flag
         };
@@ -191,28 +185,26 @@ export class CompaniesComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                let deleteCompany =  this._adminCompaniesService.companyList.findIndex((deletedcompany: any) => deletedcompany.id == company.id);
-        
+            if (result) {
+                let deleteCompany = this._adminCompaniesService.companyList.findIndex((deletedcompany: any) => deletedcompany.id == company.id);
+
                 if (deleteCompany > -1) {
                     this._adminCompaniesService.companyList.splice(deleteCompany, 1);
                     this.dataSource.companiesSubject.next(this._adminCompaniesService.companyList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
-                }  
+                }
             } else {
-                
+
             }
         });
     }
 
-    duplicateCompany(company): void
-    {
+    duplicateCompany(company): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
 
         dialogConfig.disableClose = true;
-        
+
         dialogConfig.data = {
             company, flag: this.flag
         };
@@ -220,11 +212,10 @@ export class CompaniesComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                
+            if (result) {
+
             } else {
-                
+
             }
         });
     }

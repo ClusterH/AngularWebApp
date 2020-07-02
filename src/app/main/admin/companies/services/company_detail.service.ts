@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class CompanyDetailService 
-{
+export class CompanyDetailService {
     routeParams: any;
     company: any;
     public company_detail: any;
@@ -19,47 +16,40 @@ export class CompanyDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the defaults
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
+    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
-            
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+        if (name == '') {
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
-            
-            
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
-        
     }
 
     saveCompanyDetail(conncode: string, userid: number, companyDetail: any = {}): Observable<any> {
@@ -73,7 +63,7 @@ export class CompanyDetailService
             .set('orgno', companyDetail.orgno.toString())
             .set('accountid', companyDetail.accountid.toString())
             .set('companytypeid', companyDetail.companytypeid.toString())
-            .set('userprofileid', companyDetail.userprofileid.toString())          
+            .set('userprofileid', companyDetail.userprofileid.toString())
             .set('isactive', companyDetail.isactive.toString())
             .set('created', companyDetail.created.toString())
             .set('createdby', companyDetail.createdby.toString())
@@ -84,7 +74,7 @@ export class CompanyDetailService
             .set('emailserver', companyDetail.emailserver.toString())
             .set('emailsender', companyDetail.emailsender.toString())
             .set('emailuser', companyDetail.emailuser.toString())
-            .set('emailpassword', companyDetail.emailpassword.toString())            
+            .set('emailpassword', companyDetail.emailpassword.toString())
             .set('logofile', companyDetail.logofile.toString())
             .set('address', companyDetail.address.toString())
             .set('country', companyDetail.country.toString())
@@ -97,14 +87,12 @@ export class CompanyDetailService
             .set('webstartlong', companyDetail.webstartlong.toString())
             .set('hasprivatelabel', companyDetail.hasprivatelabel.toString())
             .set('method', 'company_save');
-        
-            
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
-        
+
         // companyDetail["method"] = "unit_save";
         // companyDetail["conncode"] = "PolarixUSA";
         // companyDetail["userid"] = "2";
@@ -139,7 +127,7 @@ export class CompanyDetailService
         // 
         // alert(objects);
 
-       
+
     }
 
 
@@ -200,8 +188,4 @@ export class CompanyDetailService
     //         }
     //     });
     // }
-
-   
-   
-   
 }

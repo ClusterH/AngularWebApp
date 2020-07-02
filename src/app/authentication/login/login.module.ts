@@ -14,7 +14,7 @@ import { AuthService } from 'app/authentication/services/authentication.service'
 const routes = [
     {
         // path     : 'auth/login',
-        path     : '**',
+        path: '**',
         component: LoginComponent
     }
 ];
@@ -23,7 +23,7 @@ const routes = [
     declarations: [
         LoginComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
 
         MatButtonModule,
@@ -36,10 +36,9 @@ const routes = [
 
         FuseSharedModule
     ],
-    providers   : [
+    providers: [
         AuthService
     ]
 })
-export class LoginModule
-{
+export class LoginModule {
 }

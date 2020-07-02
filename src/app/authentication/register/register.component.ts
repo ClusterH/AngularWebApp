@@ -1,28 +1,25 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
-
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
-
+import { FuseConfigService } from '@fuse/services/config.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { TranslateService } from '@ngx-translate/core';
 import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
-import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
+import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector     : 'register',
-    templateUrl  : './register.component.html',
-    styleUrls    : ['./register.component.scss'],
+    selector: 'register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class RegisterComponent implements OnInit, OnDestroy
-{
+export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
     selectedLanguage: any;
     languages: any;
@@ -37,20 +34,19 @@ export class RegisterComponent implements OnInit, OnDestroy
         private _formBuilder: FormBuilder,
         private _translateService: TranslateService,
 
-    )
-    {
+    ) {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar   : {
+                navbar: {
                     hidden: true
                 },
-                toolbar  : {
+                toolbar: {
                     hidden: true
                 },
-                footer   : {
+                footer: {
                     hidden: true
                 },
                 sidepanel: {
@@ -61,24 +57,24 @@ export class RegisterComponent implements OnInit, OnDestroy
 
         this.languages = [
             {
-                id   : 'en',
+                id: 'en',
                 title: 'English',
-                flag : 'us'
+                flag: 'us'
             },
             {
-                id   : 'sp',
+                id: 'sp',
                 title: 'Spanish',
-                flag : 'sp'
+                flag: 'sp'
             },
             {
-                id   : 'fr',
+                id: 'fr',
                 title: 'French',
-                flag : 'fr'
+                flag: 'fr'
             },
             {
-                id   : 'pt',
+                id: 'pt',
                 title: 'Portuguese',
-                flag : 'pt'
+                flag: 'pt'
             },
         ];
 
@@ -93,12 +89,11 @@ export class RegisterComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.registerForm = this._formBuilder.group({
-            name           : ['', Validators.required],
-            email          : ['', [Validators.required, Validators.email]],
-            password       : ['', Validators.required],
+            name: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
             passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
         });
 
@@ -110,22 +105,20 @@ export class RegisterComponent implements OnInit, OnDestroy
                 this.registerForm.get('passwordConfirm').updateValueAndValidity();
             });
 
-        this.selectedLanguage = _.find(this.languages, {id: this._translateService.currentLang});
+        this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
 
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
 
-    setLanguage(lang): void
-    {
+    setLanguage(lang): void {
         // Set the selected language for the toolbar
         this.selectedLanguage = lang;
 
@@ -142,28 +135,24 @@ export class RegisterComponent implements OnInit, OnDestroy
  */
 export const confirmPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
 
-    if ( !control.parent || !control )
-    {
+    if (!control.parent || !control) {
         return null;
     }
 
     const password = control.parent.get('password');
     const passwordConfirm = control.parent.get('passwordConfirm');
 
-    if ( !password || !passwordConfirm )
-    {
+    if (!password || !passwordConfirm) {
         return null;
     }
 
-    if ( passwordConfirm.value === '' )
-    {
+    if (passwordConfirm.value === '') {
         return null;
     }
 
-    if ( password.value === passwordConfirm.value )
-    {
+    if (password.value === passwordConfirm.value) {
         return null;
     }
 
-    return {passwordsNotMatching: true};
+    return { passwordsNotMatching: true };
 };

@@ -43,7 +43,7 @@ export class CarriersComponent implements OnInit
     carrier: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

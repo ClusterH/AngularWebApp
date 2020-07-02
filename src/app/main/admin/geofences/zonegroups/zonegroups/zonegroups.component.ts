@@ -48,7 +48,7 @@ export class ZonegroupsComponent implements OnInit
     zonegroup: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

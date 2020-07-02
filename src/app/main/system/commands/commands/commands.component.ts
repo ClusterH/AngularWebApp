@@ -43,7 +43,7 @@ export class CommandsComponent implements OnInit
     command: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

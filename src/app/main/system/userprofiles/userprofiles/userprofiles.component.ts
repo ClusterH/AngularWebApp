@@ -43,7 +43,7 @@ export class UserProfilesComponent implements OnInit
     userprofile: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

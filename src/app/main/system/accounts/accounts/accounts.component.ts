@@ -51,7 +51,7 @@ export class AccountsComponent implements OnInit
     account: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

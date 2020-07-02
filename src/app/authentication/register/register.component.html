@@ -16,14 +16,13 @@
 
     </div>
 
-    <div id="register-form-wrapper" fusePerfectScrollbar
-         [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+    <div id="register-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
 
-        <div class="select_language mt-20 ml-20" style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+        <div class="select_language mt-20 ml-20"
+            style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
             <mat-icon color="accent">language</mat-icon>
-            <button mat-button fxHide fxShow.gt-xs
-                    class="language-button"
-                    [matMenuTriggerFor]="languageMenu" style="padding-left: 5px;">
+            <button mat-button fxHide fxShow.gt-xs class="language-button" [matMenuTriggerFor]="languageMenu"
+                style="padding-left: 5px;">
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
                     <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
@@ -71,7 +70,7 @@
                     <mat-error *ngIf="registerForm.get('email').hasError('email')">
                         {{'AUTHENTICATION.EMAILVALIDATETEXT' | translate}}
                     </mat-error>
-                </mat-form-field>   
+                </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>{{'AUTHENTICATION.PASSWORD' | translate}}</mat-label>
@@ -96,8 +95,8 @@
                 </mat-form-field>
 
                 <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
-                        [disabled]="registerForm.invalid" [routerLink]="'/login'">
-                        {{'AUTHENTICATION.CREATEACCOUNT' | translate}}
+                    [disabled]="registerForm.invalid" [routerLink]="'/login'">
+                    {{'AUTHENTICATION.CREATEACCOUNT' | translate}}
                 </button>
 
             </form>

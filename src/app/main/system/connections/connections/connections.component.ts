@@ -43,7 +43,7 @@ export class ConnectionsComponent implements OnInit
     connection: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

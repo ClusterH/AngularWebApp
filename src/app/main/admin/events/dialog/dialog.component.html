@@ -1,57 +1,52 @@
 <div id="dialog_table">
-<div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'EVENTS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'duplicate'">
+        <h2 mat-dialog-title>{{'EVENTS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'EVENTS.DUPLICATE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'EVENTS.DUPLICATE' | translate}}
+                </button>
+
+                <button class="mat-raised-button" (click)="close()">
                     {{'EVENTS.NO' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
-</div>
+        </mat-dialog-actions>
+    </div>
 
+    <div *ngIf="flag == 'delete'">
+        <h2 mat-dialog-title>{{'EVENTS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
-<div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'EVENTS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'EVENTS.DELETE' | translate}}
+                </button>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'EVENTS.DELETE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+                <button class="mat-raised-button" (click)="close()">
                     {{'EVENTS.NO' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
-</div>
+        </mat-dialog-actions>
+    </div>
 
-<div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'EVENTS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'goback'">
+        <h2 mat-dialog-title>{{'EVENTS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'EVENTS.YES' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()" fxFlex="30">
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="goback()" fxFlex="30">
+                    {{'EVENTS.YES' | translate}}
+                </button>
+
+                <button class="mat-raised-button" (click)="close()" fxFlex="30">
                     {{'EVENTS.NO' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
+        </mat-dialog-actions>
+    </div>
 </div>
-</div>
-

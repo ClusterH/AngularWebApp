@@ -48,7 +48,7 @@ export class PoigroupsComponent implements OnInit
     poigroup: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

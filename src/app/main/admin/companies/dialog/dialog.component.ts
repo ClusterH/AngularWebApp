@@ -1,18 +1,13 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-// import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
-import * as moment from 'moment';
-import { CompaniesService } from 'app/main/admin/companies/services/companies.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
 import { locale as companiesEnglish } from 'app/main/admin/companies/i18n/en';
-import { locale as companiesSpanish } from 'app/main/admin/companies/i18n/sp';
 import { locale as companiesFrench } from 'app/main/admin/companies/i18n/fr';
 import { locale as companiesPortuguese } from 'app/main/admin/companies/i18n/pt';
-
-
+import { locale as companiesSpanish } from 'app/main/admin/companies/i18n/sp';
+import { CompaniesService } from 'app/main/admin/companies/services/companies.service';
 
 @Component({
     selector: 'company-dialog',
@@ -21,8 +16,8 @@ import { locale as companiesPortuguese } from 'app/main/admin/companies/i18n/pt'
 })
 export class CourseDialogComponent implements OnInit {
 
-   company: any;
-   flag: any;
+    company: any;
+    flag: any;
 
     constructor(
         private fb: FormBuilder,
@@ -31,7 +26,7 @@ export class CourseDialogComponent implements OnInit {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {company, flag} 
+        @Inject(MAT_DIALOG_DATA) { company, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
 

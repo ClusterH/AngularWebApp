@@ -47,7 +47,7 @@ export class PendingsComponent implements OnInit
     pending: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     dash_pending: string = '';
     dash_created: string = '';

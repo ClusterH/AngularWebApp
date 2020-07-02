@@ -8,13 +8,11 @@
     <div class="center_table center">
 
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -24,7 +22,7 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'COMPANIES.SELECTFIELD' | translate}}:</mat-label>
 
@@ -48,8 +46,10 @@
                             <mat-option value="created">{{'COMPANIES.CREATEDBYNAME' | translate}}</mat-option>
                             <mat-option value="deletedwhen">{{'COMPANIES.DELETEDWHEN' | translate}}</mat-option>
                             <mat-option value="deletedwhen">{{'COMPANIES.DELETEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'COMPANIES.LASTMODIFIEDDATE' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'COMPANIES.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="lastmodifieddate">{{'COMPANIES.LASTMODIFIEDDATE' | translate}}
+                            </mat-option>
+                            <mat-option value="lastmodifieddate">{{'COMPANIES.LASTMODIFIEDBYNAME' | translate}}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -57,19 +57,17 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'COMPANIES.SEARCHFORCOMPANY' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'COMPANIES.SEARCHFORCOMPANY' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <button mat-fab
-                    [routerLink]="'/admin/companies/company_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue != 3"
-                    (click)="addNewCompany()">
-               <mat-icon>add</mat-icon>
+            <button mat-fab [routerLink]="'/admin/companies/company_detail'" class="accent  mt-24 mt-md-0"
+                [disabled]="restrictValue != 3" (click)="addNewCompany()">
+                <mat-icon>add</mat-icon>
 
             </button>
             <!-- / ADD BUTTON -->
@@ -78,56 +76,59 @@
         <!-- / HEADER -->
 
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                <mat-spinner
-                color="accent"
-                mode="indeterminate"
-                diameter="50"
-                style="margin:0 auto;">
-                </mat-spinner>
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                    </mat-spinner>
                 </div>
             </div>
-            <mat-table class="companies-table font-size-10"
-                        #table [dataSource]="dataSource"
-                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 100%;">
+            <mat-table class="companies-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
+                matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+                style="width: 100%;">
 
                 <!-- ID Column -->
-                <ng-container matColumnDef="id" >
+                <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let company">
-                        <button (click) = "editShowCompanyDetail(company)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteCompany(company)">delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateCompany(company)">file_copy</mat-icon>
+                        <button (click)="editShowCompanyDetail(company)" [disabled]="restrictValue == '1'"
+                            style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteCompany(company)">delete
+                        </mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateCompany(company)">file_copy
+                        </mat-icon>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.NAME' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.NAME' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let company">
                         <p class="name text-truncate">{{company.name}}</p>
                     </mat-cell>
                 </ng-container>
 
-                               
+
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="created text-truncate">
                             {{company.created}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- CreatedByName Column -->
-                 <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                <!-- CreatedByName Column -->
+                <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.CREATEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="created text-truncate">
                             {{company.createdbyname}}
                         </p>
@@ -136,8 +137,9 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.DELETEDWHEN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="deletedwhen text-truncate">
                             {{company.deletedwhen}}
                         </p>
@@ -146,8 +148,9 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.DELETEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="deletedbyname text-truncate">
                             {{company.deletedbyname}}
                         </p>
@@ -156,8 +159,9 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="lastmodifieddate text-truncate">
                             {{company.lastmodifieddate}}
                         </p>
@@ -166,8 +170,9 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let company" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMPANIES.LASTMODIFIEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let company">
                         <p class="lastmodifiedbyname text-truncate">
                             {{company.lastmodifiedbyname}}
                         </p>
@@ -176,9 +181,7 @@
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
-                <mat-row  *matRowDef="let company; columns: displayedColumns;"
-                            class="company font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let company; columns: displayedColumns;" class="company font-size-10" matRipple>
                 </mat-row>
 
             </mat-table>
@@ -188,24 +191,20 @@
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
 
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
+
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

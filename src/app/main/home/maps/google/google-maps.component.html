@@ -2,35 +2,37 @@
     <mat-toolbar class="p-0 mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
 
-            <div  fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center">
 
-                <button mat-icon-button class="navbar-toggle-button"
-                        *ngIf="!hiddenNavbar && !rightNavbar" (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar"
+                    (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
                     <mat-icon class="secondary-text">menu</mat-icon>
                 </button>
-    
+
                 <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
-    
+
                 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="horizontalNavbar">
                     <div class="logo ml-16">
                         <img class="logo-icon" src="assets/images/logos/fuse.svg">
                     </div>
                 </div>
-    
+
                 <div class="px-8 px-md-16">
                     <fuse-shortcuts [navigation]="navigation"></fuse-shortcuts>
                 </div>
-    
+
             </div>
 
             <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
                 <div fxFlex="0 1 auto">
-                    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple fxLayoutAlign="start center">
+                    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple
+                        fxLayoutAlign="start center">
                         <mat-button-toggle value="showVehicles" #showVehicles (change)="onShowValChange($event.value)"
                             matTooltip="Show/Hide Vehicles">
                             <mat-icon class="blue-600-fg">directions_car</mat-icon>
                         </mat-button-toggle>
-                        <mat-button-toggle value="showPOIs" (change)="onShowValChange($event.value)" matTooltip="Show/Hide Points">
+                        <mat-button-toggle value="showPOIs" (change)="onShowValChange($event.value)"
+                            matTooltip="Show/Hide Points">
                             <mat-icon class="blue-600-fg">place</mat-icon>
                         </mat-button-toggle>
                         <mat-button-toggle value="showZones" #showZones (change)="onShowValChange($event.value)"
@@ -45,7 +47,8 @@
                 </div>
 
                 <div fxFlex fxLayout="row" fxLayoutAlign="space-between" class="ml-24">
-                    <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country"  appearance="outline" fxFlex="48">
+                    <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country"
+                        appearance="outline" fxFlex="48">
                         <mat-option [value]="'GB'">Great Britain</mat-option>
                         <mat-option [value]="'US'">United States</mat-option>
                         <mat-option [value]="'CA'">Canada</mat-option>
@@ -56,13 +59,12 @@
                         <mat-option [value]="'CA'">Canada</mat-option>
                     </mat-select>
                 </div>
-                    
+
             </div>
 
             <div class="mr-12" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
 
-                <button mat-button [matMenuTriggerFor]="userMenu"
-                        class="user-button">
+                <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <img class="avatar mr-0 mr-sm-16" src="assets/images/avatars/Velazquez.jpg">
                         <span class="username mr-12" fxHide fxShow.gt-sm>{{userObject.name}}</span>
@@ -91,9 +93,7 @@
 
                 <div class="toolbar-separator"></div>
 
-                <button mat-button fxHide fxShow.gt-xs
-                        class="language-button"
-                        [matMenuTriggerFor]="languageMenu">
+                <button mat-button fxHide fxShow.gt-xs class="language-button" [matMenuTriggerFor]="languageMenu">
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
                         <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
@@ -154,7 +154,7 @@
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
                 <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.label, i)"
-                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
+                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable == 'true'"
                     [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
 
                     <agm-info-window>

@@ -19,20 +19,19 @@ import { tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
-    selector     : 'admin-events',
-    templateUrl  : './events.component.html',
-    styleUrls    : ['./events.component.scss'],
-    animations   : fuseAnimations,
+    selector: 'admin-events',
+    templateUrl: './events.component.html',
+    styleUrls: ['./events.component.scss'],
+    animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class EventsComponent implements OnInit
-{
+export class EventsComponent implements OnInit {
     dataSource: EventsDataSource;
 
     @Output()
     pageEvent: PageEvent;
-   
-    pageIndex= 0;
+
+    pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
@@ -43,7 +42,7 @@ export class EventsComponent implements OnInit
     event: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [
@@ -56,23 +55,22 @@ export class EventsComponent implements OnInit
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    @ViewChild(MatPaginator, {static: true})
+    @ViewChild(MatPaginator, { static: true })
     paginator: MatPaginator;
 
-    @ViewChild(MatSort, {static: true})
+    @ViewChild(MatSort, { static: true })
     sort: MatSort;
 
-    @ViewChild('filter', {static: true})
+    @ViewChild('filter', { static: true })
     filter: ElementRef;
-    
+
     constructor(
         private _adminEventsService: EventsService,
         private eventDetailService: EventDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    )
-    {
+    ) {
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).events;
@@ -80,7 +78,7 @@ export class EventsComponent implements OnInit
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
 
-        this.pageIndex= 0;
+        this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
@@ -96,30 +94,29 @@ export class EventsComponent implements OnInit
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-   
+
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
         merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-           tap(() => this.dataSource.loadEvents(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Event_TList"))
-        )
-        .subscribe( (res: any) => {
-            
-        });
+            .pipe(
+                tap(() => this.dataSource.loadEvents(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Event_TList"))
+            )
+            .subscribe((res: any) => {
+
+            });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
-   
-    ngOnInit(): void
-    {
+
+    ngOnInit(): void {
         this.dataSource = new EventsDataSource(this._adminEventsService);
         this.dataSource.loadEvents(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Event_TList");
     }
 
     selectedFilter() {
-        
+
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -129,7 +126,7 @@ export class EventsComponent implements OnInit
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
+
         this.dataSource.loadEvents(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Event_TList");
     }
 
@@ -154,14 +151,13 @@ export class EventsComponent implements OnInit
 
         this.router.navigate(['admin/events/event_detail']);
     }
-    
-    deleteEvent(event): void
-    {
+
+    deleteEvent(event): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
 
         dialogConfig.disableClose = true;
-        
+
         dialogConfig.data = {
             event, flag: this.flag
         };
@@ -169,28 +165,26 @@ export class EventsComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                let deleteEvent =  this._adminEventsService.eventList.findIndex((deletedevent: any) => deletedevent.id == event.id);
-        
+            if (result) {
+                let deleteEvent = this._adminEventsService.eventList.findIndex((deletedevent: any) => deletedevent.id == event.id);
+
                 if (deleteEvent > -1) {
                     this._adminEventsService.eventList.splice(deleteEvent, 1);
                     this.dataSource.eventsSubject.next(this._adminEventsService.eventList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
-                }  
+                }
             } else {
-                
+
             }
         });
     }
 
-    duplicateEvent(event): void
-    {
+    duplicateEvent(event): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
 
         dialogConfig.disableClose = true;
-        
+
         dialogConfig.data = {
             event, flag: this.flag
         };
@@ -198,11 +192,10 @@ export class EventsComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                
+            if (result) {
+
             } else {
-                
+
             }
         });
     }

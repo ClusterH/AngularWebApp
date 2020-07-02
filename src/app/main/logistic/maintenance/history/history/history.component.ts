@@ -47,7 +47,7 @@ export class HistoryComponent implements OnInit
     history: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     dash_history: string = '';
     dash_created: string = '';

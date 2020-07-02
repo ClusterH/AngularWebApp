@@ -1,26 +1,23 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import * as _ from 'lodash';
-
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
-
+import { FuseConfigService } from '@fuse/services/config.service';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { TranslateService } from '@ngx-translate/core';
 import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
-import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
+import * as _ from 'lodash';
 
 @Component({
-    selector     : 'forgot-password',
-    templateUrl  : './forgot-password.component.html',
-    styleUrls    : ['./forgot-password.component.scss'],
+    selector: 'forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class ForgotPasswordComponent implements OnInit
-{
+export class ForgotPasswordComponent implements OnInit {
     forgotPasswordForm: FormGroup;
     selectedLanguage: any;
     languages: any;
@@ -36,20 +33,19 @@ export class ForgotPasswordComponent implements OnInit
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private _translateService: TranslateService,
-    )
-    {
+    ) {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar   : {
+                navbar: {
                     hidden: true
                 },
-                toolbar  : {
+                toolbar: {
                     hidden: true
                 },
-                footer   : {
+                footer: {
                     hidden: true
                 },
                 sidepanel: {
@@ -60,24 +56,24 @@ export class ForgotPasswordComponent implements OnInit
 
         this.languages = [
             {
-                id   : 'en',
+                id: 'en',
                 title: 'English',
-                flag : 'us'
+                flag: 'us'
             },
             {
-                id   : 'sp',
+                id: 'sp',
                 title: 'Spanish',
-                flag : 'sp'
+                flag: 'sp'
             },
             {
-                id   : 'fr',
+                id: 'fr',
                 title: 'French',
-                flag : 'fr'
+                flag: 'fr'
             },
             {
-                id   : 'pt',
+                id: 'pt',
                 title: 'Portuguese',
-                flag : 'pt'
+                flag: 'pt'
             },
         ];
     }
@@ -89,17 +85,15 @@ export class ForgotPasswordComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.forgotPasswordForm = this._formBuilder.group({
             email: ['', [Validators.required, Validators.email]]
         });
 
-        this.selectedLanguage = _.find(this.languages, {id: this._translateService.currentLang});
+        this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
     }
 
-    setLanguage(lang): void
-    {
+    setLanguage(lang): void {
         // Set the selected language for the toolbar
         this.selectedLanguage = lang;
 

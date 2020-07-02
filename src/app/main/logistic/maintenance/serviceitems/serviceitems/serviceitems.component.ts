@@ -49,7 +49,7 @@ export class ServiceitemsComponent implements OnInit
     serviceitem: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

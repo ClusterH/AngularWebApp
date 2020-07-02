@@ -43,7 +43,7 @@ export class PrivilegesComponent implements OnInit
     privilege: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

@@ -43,7 +43,7 @@ export class DevConfigsComponent implements OnInit
     devconfig: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

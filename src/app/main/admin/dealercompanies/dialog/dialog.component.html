@@ -1,57 +1,53 @@
 <div id="dialog_table">
-<div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'DEALERCOMPANIES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'duplicate'">
+        <h2 mat-dialog-title>{{'DEALERCOMPANIES.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'DEALERCOMPANIES.DUPLICATE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'DEALERCOMPANIES.DUPLICATE' | translate}}
+                </button>
+
+                <button class="mat-raised-button" (click)="close()">
                     {{'DEALERCOMPANIES.CANCEL' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
-</div>
+        </mat-dialog-actions>
+    </div>
 
 
-<div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'DEALERCOMPANIES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'delete'">
+        <h2 mat-dialog-title>{{'DEALERCOMPANIES.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'DEALERCOMPANIES.DELETE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'DEALERCOMPANIES.DELETE' | translate}}
+                </button>
+
+                <button class="mat-raised-button" (click)="close()">
                     {{'DEALERCOMPANIES.CANCEL' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
-</div>
+        </mat-dialog-actions>
+    </div>
 
-<div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'DEALERCOMPANIES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'goback'">
+        <h2 mat-dialog-title>{{'DEALERCOMPANIES.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="goback()">
-                {{'DEALERCOMPANIES.OK' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="goback()">
+                    {{'DEALERCOMPANIES.OK' | translate}}
+                </button>
+
+                <button class="mat-raised-button" (click)="close()">
                     {{'DEALERCOMPANIES.CANCEL' | translate}}
-            </button>
-        </div>
+                </button>
+            </div>
 
-    </mat-dialog-actions>
+        </mat-dialog-actions>
+    </div>
 </div>
-</div>
-

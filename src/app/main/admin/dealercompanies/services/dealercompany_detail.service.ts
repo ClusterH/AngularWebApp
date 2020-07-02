@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class DealerCompanyDetailService 
-{
+export class DealerCompanyDetailService {
     routeParams: any;
     dealercompany: any;
     public dealercompany_detail: any;
@@ -19,47 +16,41 @@ export class DealerCompanyDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the defaults
     }
 
-    getDealerCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
+    getDealerCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
-            
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+        if (name == '') {
+            let params = new HttpParams()
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
-            
-            
+                .set('conncode', conncode.toString())
+                .set('userid', userid.toString())
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
-        
+
     }
 
     saveDealerCompanyDetail(conncode: string, userid: number, dealercompanyDetail: any = {}): Observable<any> {
@@ -73,7 +64,7 @@ export class DealerCompanyDetailService
             .set('orgno', dealercompanyDetail.orgno.toString())
             .set('accountid', dealercompanyDetail.accountid.toString())
             .set('companytypeid', dealercompanyDetail.companytypeid.toString())
-            .set('userprofileid', dealercompanyDetail.userprofileid.toString())          
+            .set('userprofileid', dealercompanyDetail.userprofileid.toString())
             .set('isactive', dealercompanyDetail.isactive.toString())
             .set('created', dealercompanyDetail.created.toString())
             .set('createdby', dealercompanyDetail.createdby.toString())
@@ -84,7 +75,7 @@ export class DealerCompanyDetailService
             .set('emailserver', dealercompanyDetail.emailserver.toString())
             .set('emailsender', dealercompanyDetail.emailsender.toString())
             .set('emailuser', dealercompanyDetail.emailuser.toString())
-            .set('emailpassword', dealercompanyDetail.emailpassword.toString())            
+            .set('emailpassword', dealercompanyDetail.emailpassword.toString())
             .set('logofile', dealercompanyDetail.logofile.toString())
             .set('address', dealercompanyDetail.address.toString())
             .set('country', dealercompanyDetail.country.toString())
@@ -97,14 +88,12 @@ export class DealerCompanyDetailService
             .set('webstartlong', dealercompanyDetail.webstartlong.toString())
             .set('hasprivatelabel', dealercompanyDetail.hasprivatelabel.toString())
             .set('method', 'company_save');
-        
-            
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
-        
+
         // dealercompanyDetail["method"] = "unit_save";
         // dealercompanyDetail["conncode"] = "PolarixUSA";
         // dealercompanyDetail["userid"] = "2";
@@ -139,7 +128,7 @@ export class DealerCompanyDetailService
         // 
         // alert(objects);
 
-       
+
     }
 
 
@@ -201,7 +190,7 @@ export class DealerCompanyDetailService
     //     });
     // }
 
-   
-   
-   
+
+
+
 }

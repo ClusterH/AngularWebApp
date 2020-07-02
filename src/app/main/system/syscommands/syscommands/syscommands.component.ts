@@ -43,7 +43,7 @@ export class SysCommandsComponent implements OnInit
     syscommand: any;
     userConncode: string;
     userID: number;
-    restrictValue: number;
+    restrictValue: any;
 
     flag: string = '';
     displayedColumns = [

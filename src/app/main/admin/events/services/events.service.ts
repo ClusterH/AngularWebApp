@@ -1,10 +1,9 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class EventsService
-{
+export class EventsService {
     events: any[];
     eventList: any;
 
@@ -16,9 +15,8 @@ export class EventsService
     constructor(
         private _httpClient: HttpClient,
     ) { }
-    
-    getEvents(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
-    {
+
+    getEvents(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
@@ -30,11 +28,9 @@ export class EventsService
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-               
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
@@ -48,32 +44,27 @@ export class EventsService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
-    
-    deleteEvent(id: number): Observable<any>
-    {
+
+    deleteEvent(id: number): Observable<any> {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-                .set('conncode', userConncode.toString())
-                .set('userid', userID.toString())
-                .set('id', id.toString())
-                .set('method', "event_delete");
-               
-            
+            .set('conncode', userConncode.toString())
+            .set('userid', userID.toString())
+            .set('id', id.toString())
+            .set('method', "event_delete");
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-            headers: headers,   
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
             params: params
         });
     }
