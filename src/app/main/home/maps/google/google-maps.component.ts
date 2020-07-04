@@ -198,12 +198,11 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 	}
 
 	toggleSidebarOpen(key): void {
-		console.log(this._fuseSidebarService.getSidebar('navbar'));
-		this._fuseSidebarService.getSidebar('navbar').toggleOpen();
+		this._fuseSidebarService.getSidebar(key).toggleOpen();
 	}
 
 	clickedMarker(label: string, index: number) {
-		
+		this.toggleSidebarOpen('quickPanel');
 	}
 
 	mapClicked($event: MouseEvent) {

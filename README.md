@@ -1,4 +1,4 @@
-# Angular Web Application
+# TrackingXL - Angular Web App
 
 Material Design Admin Template with Angular 8 and Angular Material
 
