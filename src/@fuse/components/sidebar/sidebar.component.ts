@@ -566,7 +566,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
      *
      * @private
      */
-    private _enableAnimations(): void
+    public _enableAnimations(): void
     {
         // Return if animations already enabled
         if ( this._animationsEnabled )
@@ -693,6 +693,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
      */
     fold(): void
     {
+        console.log(this.folded);
         // Only work if the sidebar is not folded
         if ( this.folded )
         {
@@ -735,6 +736,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy
      */
     toggleFold(): void
     {
+        console.log(this.folded);
         if ( this.folded )
         {
             this.unfold();

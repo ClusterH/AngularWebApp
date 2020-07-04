@@ -16,6 +16,7 @@ import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
+
 declare const google: any;
 
 @Component({
@@ -31,6 +32,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 	rightNavbar: boolean;
 	hiddenNavbar: boolean;
 	navigation: any
+
 
 	private _unsubscribeAll: Subject<any>;
 
@@ -89,6 +91,9 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 			layout: {
 				toolbar: {
 					hidden: true
+				},
+				navbar: {
+					folded: true
 				}
 			}
 		};
@@ -138,6 +143,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 
 		// this.dataSource = new VehMarkersDataSource(this._adminVehMarkersService);
 		// this.dataSource.loadVehicles("PolarixUSA", 2);
+
 
 		this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
 
@@ -192,11 +198,12 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 	}
 
 	toggleSidebarOpen(key): void {
-		this._fuseSidebarService.getSidebar(key).toggleOpen();
+		console.log(this._fuseSidebarService.getSidebar('navbar'));
+		this._fuseSidebarService.getSidebar('navbar').toggleOpen();
 	}
 
 	clickedMarker(label: string, index: number) {
-
+		
 	}
 
 	mapClicked($event: MouseEvent) {

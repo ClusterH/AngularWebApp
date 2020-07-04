@@ -8,6 +8,7 @@
     <div class="buttons">
 
         <button mat-icon-button class="toggle-sidebar-folded"
+                [ngClass]="{'disableMenu': isDisabledMenu}"
                 (click)="toggleSidebarFolded()" fxHide.lt-lg>
             <mat-icon class="secondary-text">menu</mat-icon>
         </button>

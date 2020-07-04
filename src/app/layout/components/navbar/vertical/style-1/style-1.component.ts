@@ -19,6 +19,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     fuseConfig: any;
     navigation: any;
     userInfo: any;
+    currentNavItem: any;
+    isDisabledMenu: boolean;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -42,6 +44,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         // Set the private defaults
         this._unsubscribeAll = new Subject();
         this.userInfo = JSON.parse(localStorage.getItem('userObjectList'))[0];
+        this.isDisabledMenu = false;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -97,11 +100,24 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this._unsubscribeAll)
             )
-            .subscribe(() => {
-                    if ( this._fuseSidebarService.getSidebar('navbar') )
-                    {
-                        this._fuseSidebarService.getSidebar('navbar').close();
-                    }
+            .subscribe((res: any) => {
+                console.log(res.url);
+                let pos = res.url.lastIndexOf('/');
+                console.log(pos);
+                let currentNavItem = res.url.slice(pos + 1);
+                console.log(currentNavItem);
+
+                if (currentNavItem == 'google' || currentNavItem == 'osm') {
+                    console.log(currentNavItem);
+                    this.isDisabledMenu = true;
+                } else {
+                    this.isDisabledMenu = false;
+                }
+
+                if ( this._fuseSidebarService.getSidebar('navbar') )
+                {
+                    this._fuseSidebarService.getSidebar('navbar').close();
+                }
                 }
             );
 
@@ -118,7 +134,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 filter(value => value !== null),
                 takeUntil(this._unsubscribeAll)
             )
-            .subscribe(() => {
+            .subscribe((res: any) => {
+                console.log(res);
                 this.navigation = this._fuseNavigationService.getCurrentNavigation();
             });
     }

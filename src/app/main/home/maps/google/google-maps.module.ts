@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { FuseHighlightModule } from '@fuse/components/index';
 import { FuseShortcutsModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
+import { FuseSidebarComponent } from '@fuse/components/sidebar/sidebar.component'
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
@@ -57,7 +58,8 @@ const routes = [
     providers :[
         VehMarkersService,
         ZonesService,
-        RoutesService
+        RoutesService,
+        FuseSidebarComponent
     ]
 })
 export class GoogleMapsModule

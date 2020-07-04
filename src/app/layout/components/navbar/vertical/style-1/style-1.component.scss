@@ -147,6 +147,10 @@ navbar {
                 display: flex;
                 align-items: center;
             }
+            .disableMenu {
+                // pointer-events: none;         
+                display: none;         
+            }
         }
 
         .navbar-scroll-container {
