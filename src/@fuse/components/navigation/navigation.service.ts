@@ -119,6 +119,7 @@ export class FuseNavigationService
      */
     register(key, navigation): void
     {
+        console.log(key, navigation);
         // Check if the key already being used
         if ( this._registry[key] )
         {
@@ -140,6 +141,7 @@ export class FuseNavigationService
      */
     unregister(key): void
     {
+        console.log(key);
         // Check if the navigation exists
         if ( !this._registry[key] )
         {

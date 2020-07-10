@@ -15,9 +15,13 @@ import { RouterModule } from '@angular/router';
 import { FuseHighlightModule } from '@fuse/components/index';
 import { FuseShortcutsModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseSidebarComponent } from '@fuse/components/sidebar/sidebar.component'
+import { FuseSidebarModule } from 'app/main/home/maps/sidebar/sidebar.module'
+import { UnitInfoPanelModule } from 'app/main/home/maps/unitInfo-panel/unitInfo-panel.module'
+// import { FuseSidebarComponent } from 'app/main/home/maps/sidebar/sidebar.component'
+// import { QuickPanelComponent } from 'app/main/home/maps/quick-panel/quick-panel.component'
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
+import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
 
@@ -47,21 +51,25 @@ const routes = [
         MatSelectModule,
 
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ',
-            libraries: ['places', 'drawing', 'geometry'],
+            apiKey: 'AIzaSyDO1lOoJtxmSRni0mkXGGrqmcn3TqLP8t4',
+            libraries: ['places', 'drawing', 'geometry'],   
         }),
 
         FuseSharedModule,
         FuseHighlightModule,
-        FuseShortcutsModule
+        FuseShortcutsModule,
+        FuseSidebarModule,
+        UnitInfoPanelModule
     ],
     providers :[
         VehMarkersService,
+        UnitInfoService,
         ZonesService,
         RoutesService,
-        FuseSidebarComponent
     ]
 })
 export class GoogleMapsModule
 {
 }
+
+// AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ

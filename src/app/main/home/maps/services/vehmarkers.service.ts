@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 // import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class VehMarkersService
 {
+    onVehMarkerClickChanged: BehaviorSubject<any>;
+
 
     /**
      * Constructor
@@ -14,7 +16,9 @@ export class VehMarkersService
      */
     constructor(
         private _httpClient: HttpClient,
-    ) { }
+    ) {
+        this.onVehMarkerClickChanged = new BehaviorSubject([]);
+    }
     
     getVehMarkers(conncode: string, userid: number): Observable<any>
     {

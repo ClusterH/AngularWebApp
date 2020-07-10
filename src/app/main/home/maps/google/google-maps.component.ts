@@ -1,6 +1,6 @@
 import { MouseEvent } from '@agm/core';
 import { Component } from '@angular/core';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { FuseSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,10 +12,11 @@ import { AuthService } from 'app/authentication/services/authentication.service'
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { VehMarkersDataSource } from "app/main/home/maps/services/vehmarkers.datasource";
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
+import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 declare const google: any;
 
@@ -35,6 +36,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 
 
 	private _unsubscribeAll: Subject<any>;
+	onVehMarkerClickChanged: BehaviorSubject<any>;
 
 	lat: number;
 	lng: number;
@@ -74,7 +76,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 	constructor(
 		private _adminVehMarkersService: VehMarkersService
 		, private _adminZonesService: ZonesService
-		, private _adminRoutesService: RoutesService
+		, private _adminRoutesService: RoutesService,
+		private unitInfoService: UnitInfoService
 		, private _fuseConfigService: FuseConfigService
 		, private _fuseSidebarService: FuseSidebarService
 		, private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -157,7 +160,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 			(data) => {
 				// 
 				// 
+				console.log(data.TrackingXLAPI.DATA[0]);
+
 				this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
+				console.log(this.zones);
 			}
 		);
 
@@ -166,6 +172,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 				// 
 				// 
 				this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
+				console.log(this.routes);
 			}
 		);
 
@@ -197,12 +204,14 @@ export class DocsComponentsThirdPartyGoogleMapsComponent {
 		this._authService.logOut();
 	}
 
-	toggleSidebarOpen(key): void {
+	toggleSidebarOpen(key, label, index): void {
 		this._fuseSidebarService.getSidebar(key).toggleOpen();
+		this.unitInfoService.onVehMarkerClickChanged = label;
 	}
 
 	clickedMarker(label: string, index: number) {
-		this.toggleSidebarOpen('quickPanel');
+		this.toggleSidebarOpen('unitInfoPanel', label, index);
+
 	}
 
 	mapClicked($event: MouseEvent) {
