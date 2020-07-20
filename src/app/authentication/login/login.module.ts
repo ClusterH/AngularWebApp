@@ -12,20 +12,13 @@ import { LoginComponent } from 'app/authentication/login/login.component';
 import { AuthService } from 'app/authentication/services/authentication.service';
 
 const routes = [
-    {
-        // path     : 'auth/login',
-        path: '**',
-        component: LoginComponent
-    }
+    { path: '**', component: LoginComponent }
 ];
 
 @NgModule({
-    declarations: [
-        LoginComponent
-    ],
+    declarations: [LoginComponent],
     imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
@@ -33,12 +26,8 @@ const routes = [
         MatInputModule,
         MatMenuModule,
         TranslateModule,
-
         FuseSharedModule
     ],
-    providers: [
-        AuthService
-    ]
+    providers: [AuthService]
 })
-export class LoginModule {
-}
+export class LoginModule { }

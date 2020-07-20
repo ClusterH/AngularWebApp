@@ -1,84 +1,117 @@
-<div fxLayout="column" fxFlex fusePerfectScrollbar>
-
-    <mat-list class="date" cdkFocusRegionStart>
-
-        <h3 matSubheader cdkFocusInit>
-            <span>Today, {{unitInfoService.onVehMarkerClickChanged}}</span>
-        </h3>
-
-        <div class="secondary-text mat-display-1 mb-0 p-16">
-            <div class="mb-12">
-                {{date | date:'EEEE'}}
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start start">
-                <span> {{date | date:'d'}}</span>
-                <span class="mat-subheading-1">th</span>
-                <span> {{date | date:'MMMM'}}</span>
-            </div>
+<div fxLayout="column" fxFlex fusePerfectScrollbar class="unitInfo-panel">
+    <div class="unitInfo-panel-header mat-elevation-z12 primary py-16 px-8 mb-12" fxLayout="row"
+        fxLayoutAlign="space-between center">
+        <div class="panel-title h2 ml-8">
+            <span *ngIf="!currentUnit">Unit Info</span>
+            <span *ngIf="currentUnit" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="mr-12">directions_car</mat-icon>{{currentUnit.name}}
+            </span>
         </div>
-    </mat-list>
-
-    <mat-divider cdkFocusRegionEnd></mat-divider>
-
-    <mat-list>
-        <h3 matSubheader>
-            <span>Events</span>
-        </h3>
-
-        <mat-list-item *ngFor="let event of events">
-            <h3 matLine>{{event.title}}</h3>
-            <p matLine class="secondary-text">{{event.detail}}</p>
-        </mat-list-item>
-    </mat-list>
-
-    <mat-divider></mat-divider>
-
-    <mat-list>
-        <h3 matSubheader>
-            <span>Notes</span>
-        </h3>
-
-        <mat-list-item *ngFor="let note of notes">
-            <h3 matLine>{{note.title}}</h3>
-            <p matLine class="secondary-text">{{note.detail}}</p>
-        </mat-list-item>
-    </mat-list>
-
-    <mat-divider></mat-divider>
-
-    <mat-list>
-        <h3 matSubheader>
-            <span>Quick Settingssssssssss</span>
-        </h3>
-
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-primary" [(ngModel)]="settings.notify" aria-label="Notifications"
-                              labelPosition="before">
-                <h3>Notifications</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
-
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-accent" [(ngModel)]="settings.cloud" aria-label="Cloud"
-                              labelPosition="before">
-                <h3>Cloud Sync</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
-
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-warn" [(ngModel)]="settings.retro" aria-label="Retro Thrusters"
-                              labelPosition="before">
-                <h3>Retro Thrusters</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
-
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-primary" [(ngModel)]="settings.showVehicles" aria-label="Show Vehicles"
-                              labelPosition="before">
-                <h3>Show Vehicles</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
-
-    </mat-list>
-
+    </div>
+    <mat-accordion *ngIf="currentUnit">
+        <!-- Unit panel -->
+        <mat-expansion-panel class="unit-panel">
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Unit
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="unit-panel-body">
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Name : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Plate : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Company : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.company}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">SubGroup : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Group : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.group}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Latitude : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.latitude}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Longitude : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.longitude}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Status : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.status}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Last Report : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.lastreport}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Location : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.location}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Passengers : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Speed : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.speed}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Device : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.device}}</div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <!-- Driver panel -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Driver
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <!-- Events Panel -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Events
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <!-- Sensors panel -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Sensors
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <!-- Passengers panel -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Passengers
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>

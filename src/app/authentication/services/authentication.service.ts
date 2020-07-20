@@ -28,7 +28,6 @@ export class AuthService {
             .set('email', email)
             .set('password', password)
 
-
         // http://trackingxlapi.polarix.com/AuthenticateUser.ashx?{email:%22polarix@polarixusa.com%22,password:%22f0r3s1ght01!%22}
         return this._httpClient.get('http://trackingxlapi.polarix.com/AuthenticateUser.ashx', {
             headers: headers,

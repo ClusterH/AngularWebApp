@@ -1,6 +1,6 @@
 @import "src/@fuse/scss/fuse";
 
-fuse-sidebar {
+unitinfo-sidebar {
     display: flex;
     flex-direction: column;
     flex: 1 0 auto;
@@ -15,8 +15,10 @@ fuse-sidebar {
     max-width: 280px;
     z-index: 1000;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35);
+    background-color: white;
+    color: black;
 
-    @include media-breakpoint('xs') {
+    @include media-breakpoint("xs") {
         min-width: 0 !important;
         max-width: 80vw !important;
         width: 80vw !important;
@@ -54,7 +56,7 @@ fuse-sidebar {
     }
 }
 
-.fuse-sidebar-overlay {
+.unitinfo-sidebar-overlay {
     position: absolute;
     top: 0;
     bottom: 0;

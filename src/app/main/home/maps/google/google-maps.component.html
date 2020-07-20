@@ -5,7 +5,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar"
-                    (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                    (click)="toggleFuseSidebarOpen('navbar')" fxHide.gt-md>
                     <mat-icon class="secondary-text">menu</mat-icon>
                 </button>
 
@@ -42,6 +42,12 @@
                         <mat-button-toggle value="showRoutes" #showRoutes (change)="onShowValChange($event.value)"
                             matTooltip="Show/Hide Routes">
                             <mat-icon class="blue-600-fg">gesture</mat-icon>
+                        </mat-button-toggle>
+                        <mat-button-toggle value="showFilters" #filter [checked]="showFilters"
+                            (change)="showFilters = $event.source.checked; onShowValChange($event.value)"
+                            matTooltip="Show/Hide Filters">
+                            <mat-icon *ngIf="!showFilters" class="blue-600-fg">layers</mat-icon>
+                            <mat-icon *ngIf="showFilters" class="blue-600-fg">layers_clear</mat-icon>
                         </mat-button-toggle>
                     </mat-button-toggle-group>
                 </div>
@@ -113,12 +119,10 @@
 
                 <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
 
-                <!-- <button mat-icon-button
-                        class="quick-panel-toggle-button"
-                        (click)="toggleSidebarOpen('quickPanel')"
-                        aria-label="Toggle quick panel">
+                <button mat-icon-button class="quick-panel-toggle-button" (click)="toggleFuseSidebarOpen('quickPanel')"
+                    aria-label="Toggle quick panel">
                     <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
-                </button> -->
+                </button>
             </div>
         </div>
 
@@ -160,7 +164,7 @@
             <agm-marker-cluster [minimumClusterSize]="minClusterSize"
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
-                <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.label, i)"
+                <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.id)"
                     [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable == 'true'"
                     [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
 
@@ -208,7 +212,7 @@
                     </agm-map>
                 </textarea>
             </fuse-highlight>
-        </p> 
+        </p>
         <div class="section-title">Inputs</div>
         <p class="py-8">
             Checkout the component api docs for detail:
@@ -218,7 +222,16 @@
     </div>
 
     <!-- <fuse-sidebar name="quickPanel" class="quickPanel-sidebar" position="right" [invisibleOverlay]="true"> -->
-    <fuse-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right" >
-        <unitInfo-panel></unitInfo-panel>
-    </fuse-sidebar>
+    <button *ngIf="showFilters" mat-icon-button class="warn mat-elevation-z2 filter-panel-button"
+        (click)="toggleSidebarOpen('filterPanel')">
+        <mat-icon>layers</mat-icon>
+    </button>
+
+    <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
+        <unitInfo-panel [currentUnit]="currentUnit"></unitInfo-panel>
+    </unitinfo-sidebar>
+
+    <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">
+        <filter-panel (filterPanelCloseEmitter)="filterToggleOff($event)"></filter-panel>
+    </unitinfo-sidebar>
 </div>

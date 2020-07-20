@@ -1,18 +1,15 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
 import { fuseAnimations } from '@fuse/animations';
-
 import { AnalyticsDashboardService } from 'app/main/home/analytics/analytics.service';
 
 @Component({
-    selector     : 'analytics-dashboard',
-    templateUrl  : './analytics.component.html',
-    styleUrls    : ['./analytics.component.scss'],
+    selector: 'analytics-dashboard',
+    templateUrl: './analytics.component.html',
+    styleUrls: ['./analytics.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class AnalyticsDashboardComponent implements OnInit
-{
+export class AnalyticsDashboardComponent implements OnInit {
     widgets: any;
     widget1SelectedYear = '2016';
     widget5SelectedDay = 'today';
@@ -24,8 +21,7 @@ export class AnalyticsDashboardComponent implements OnInit
      */
     constructor(
         private _analyticsDashboardService: AnalyticsDashboardService
-    )
-    {
+    ) {
         // Register the custom chart.js plugin
         this._registerCustomChartJSPlugin();
     }
@@ -37,8 +33,7 @@ export class AnalyticsDashboardComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Get the widgets from the service
         this.widgets = this._analyticsDashboardService.widgets;
     }
@@ -50,28 +45,25 @@ export class AnalyticsDashboardComponent implements OnInit
     /**
      * Register a custom plugin
      */
-    private _registerCustomChartJSPlugin(): void
-    {
+    private _registerCustomChartJSPlugin(): void {
         (window as any).Chart.plugins.register({
-            afterDatasetsDraw: function(chart, easing): any {
+            afterDatasetsDraw: function (chart, easing): any {
                 // Only activate the plugin if it's made available
                 // in the options
                 if (
                     !chart.options.plugins.xLabelsOnTop ||
                     (chart.options.plugins.xLabelsOnTop && chart.options.plugins.xLabelsOnTop.active === false)
-                )
-                {
+                ) {
                     return;
                 }
 
                 // To only draw at the end of animation, check for easing === 1
                 const ctx = chart.ctx;
 
-                chart.data.datasets.forEach(function(dataset, i): any {
+                chart.data.datasets.forEach(function (dataset, i): any {
                     const meta = chart.getDatasetMeta(i);
-                    if ( !meta.hidden )
-                    {
-                        meta.data.forEach(function(element, index): any {
+                    if (!meta.hidden) {
+                        meta.data.forEach(function (element, index): any {
 
                             // Draw the text in black, with the specified font
                             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';

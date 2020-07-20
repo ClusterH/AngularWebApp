@@ -23,72 +23,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
     selectedLanguage: any;
     languages: any;
-
     // Private
     private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private _translateService: TranslateService,
-
     ) {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
-
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar: {
-                    hidden: true
-                },
-                toolbar: {
-                    hidden: true
-                },
-                footer: {
-                    hidden: true
-                },
-                sidepanel: {
-                    hidden: true
-                }
+                navbar: { hidden: true },
+                toolbar: { hidden: true },
+                footer: { hidden: true },
+                sidepanel: { hidden: true }
             }
         };
-
         this.languages = [
-            {
-                id: 'en',
-                title: 'English',
-                flag: 'us'
-            },
-            {
-                id: 'sp',
-                title: 'Spanish',
-                flag: 'sp'
-            },
-            {
-                id: 'fr',
-                title: 'French',
-                flag: 'fr'
-            },
-            {
-                id: 'pt',
-                title: 'Portuguese',
-                flag: 'pt'
-            },
+            { id: 'en', title: 'English', flag: 'us' },
+            { id: 'sp', title: 'Spanish', flag: 'sp' },
+            { id: 'fr', title: 'French', flag: 'fr' },
+            { id: 'pt', title: 'Portuguese', flag: 'pt' }
         ];
-
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
         this.registerForm = this._formBuilder.group({
             name: ['', Validators.required],
@@ -96,7 +59,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             password: ['', Validators.required],
             passwordConfirm: ['', [Validators.required, confirmPasswordValidator]]
         });
-
         // Update the validity of the 'passwordConfirm' field
         // when the 'password' field changes
         this.registerForm.get('password').valueChanges
@@ -104,14 +66,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.registerForm.get('passwordConfirm').updateValueAndValidity();
             });
-
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
-
     }
 
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
@@ -121,38 +78,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     setLanguage(lang): void {
         // Set the selected language for the toolbar
         this.selectedLanguage = lang;
-
         // Use the selected language for translations
         this._translateService.use(lang.id);
     }
 }
 
-/**
- * Confirm password validator
- *
- * @param {AbstractControl} control
- * @returns {ValidationErrors | null}
- */
 export const confirmPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-
-    if (!control.parent || !control) {
-        return null;
-    }
-
+    if (!control.parent || !control) { return null; }
     const password = control.parent.get('password');
     const passwordConfirm = control.parent.get('passwordConfirm');
-
-    if (!password || !passwordConfirm) {
-        return null;
-    }
-
-    if (passwordConfirm.value === '') {
-        return null;
-    }
-
-    if (password.value === passwordConfirm.value) {
-        return null;
-    }
-
+    if (!password || !passwordConfirm) { return null; }
+    if (passwordConfirm.value === '') { return null; }
+    if (password.value === passwordConfirm.value) { return null; }
     return { passwordsNotMatching: true };
 };

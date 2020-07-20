@@ -1,21 +1,28 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit } from '@angular/core';
-import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
+import { Component, ViewEncapsulation, OnDestroy, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChange } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
+import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
+import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 
+export interface Task {
+    name: string;
+    completed: boolean;
+    subtasks?: Task[];
+}
 @Component({
-    selector     : 'unitInfo-panel',
-    templateUrl  : './unitInfo-panel.component.html',
-    styleUrls    : ['./unitInfo-panel.component.scss'],
+    selector: 'unitInfo-panel',
+    templateUrl: './unitInfo-panel.component.html',
+    styleUrls: ['./unitInfo-panel.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class UnitInfoPanelComponent implements OnInit, OnDestroy
-{
-    date: Date;
-    events: any[];
-    notes: any[];
-    settings: any;
-    clickedMarkerInfo: any;
+export class UnitInfoPanelComponent implements OnInit, OnDestroy {
+    userID: number;
+    userConncode: string;
+
+    @Input() currentUnit: any = {};
 
     private _unsubscribeAll: Subject<any>;
 
@@ -24,45 +31,25 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(
-        public unitInfoService: UnitInfoService
-    )
-    {
-        // Set the defaults
-        this.date = new Date();
-        this.settings = {
-            notify: true,
-            cloud : false,
-            retro : true,
-            showVehicles: true
-        };
+        public unitInfoService: UnitInfoService,
+        private unitInfoSideBarService: UnitInfoSidebarService,
+        private fb: FormBuilder) {
+        this._unsubscribeAll = new Subject();
+        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
+        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
     }
 
-    ngOnInit(): void
-    {
-        // this.unitInfoService.onVehMarkerClickChanged
-            // .pipe(takeUntil(this._unsubscribeAll))
-            // .subscribe((res: any) => {
-            //     this.clickedMarkerInfo = res;
-
-            //     // this._adminVehMarkersService.getBoardMembers()
-            //     // .then((res: any) => {
-            //     //     console.log(res);
-            //     //     this.board.members = res.TrackingXLAPI.DATA;
-
-            //     // });
-
-            //     console.log(this.clickedMarkerInfo);
-                
-            // });
+    ngOnInit(): void {
+        console.log('aaaaaaaaaa');
     }
 
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void
-    {
+    ngOnChanges() {
+        console.log(this.currentUnit);
+    }
+
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
-        // this._unsubscribeAll.next();
-        // this._unsubscribeAll.complete();
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }

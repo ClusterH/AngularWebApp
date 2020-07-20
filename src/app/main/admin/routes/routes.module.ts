@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { AgmCoreModule } from '@agm/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,8 +42,6 @@ import { RouteDetailComponent} from 'app/main/admin/routes/route_detail/route_de
 import { RouteDetailService } from 'app/main/admin/routes/services/route_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/routes/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
-import { AgmCoreModule } from '@agm/core';
 
 const routes = [
     {
@@ -61,7 +61,7 @@ const routes = [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,

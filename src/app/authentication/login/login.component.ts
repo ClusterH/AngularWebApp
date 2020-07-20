@@ -26,10 +26,8 @@ export class LoginComponent implements OnInit {
     userEmail: string;
     userPassword: string;
     userRemember: boolean;
-
     userConncode: string;
     userID: number;
-
     selectedLanguage: any;
     languages: any;
 
@@ -41,15 +39,12 @@ export class LoginComponent implements OnInit {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseConfigService: FuseConfigService,
         private _fuseNavigationService: FuseNavigationService,
-
         private _formBuilder: FormBuilder,
         private router: Router,
-
         private authService: AuthService,
         private _translateService: TranslateService,
     ) {
         // this.hiddenNavItem = false;
-
         if (localStorage.getItem('user_info')) {
             this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
             this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -58,64 +53,35 @@ export class LoginComponent implements OnInit {
         }
 
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
-
         // Configure the layout
         this._fuseConfigService.config = {
             layout: {
-                navbar: {
-                    hidden: true
-                },
-                toolbar: {
-                    hidden: true
-                },
-                footer: {
-                    hidden: true
-                },
-                sidepanel: {
-                    hidden: true
-                }
+                navbar: { hidden: true },
+                toolbar: { hidden: true },
+                footer: { hidden: true },
+                sidepanel: { hidden: true }
             }
         };
 
         this.languages = [
-            {
-                id: 'en',
-                title: 'English',
-                flag: 'us'
-            },
-            {
-                id: 'sp',
-                title: 'Spanish',
-                flag: 'sp'
-            },
-            {
-                id: 'fr',
-                title: 'French',
-                flag: 'fr'
-            },
-            {
-                id: 'pt',
-                title: 'Portuguese',
-                flag: 'pt'
-            },
+            { id: 'en', title: 'English', flag: 'us' },
+            { id: 'sp', title: 'Spanish', flag: 'sp' },
+            { id: 'fr', title: 'French', flag: 'fr' },
+            { id: 'pt', title: 'Portuguese', flag: 'pt' },
         ];
     }
 
     ngOnInit(): void {
-
         this.loginForm = this._formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
             remember: null
         });
-
         if (localStorage.getItem('userInfo_email')) {
-
             this.loginForm.get('email').setValue(JSON.parse(localStorage.getItem('userInfo_email')));
             this.loginForm.get('password').setValue(JSON.parse(localStorage.getItem('userInfo_pwd')));
             this.loginForm.get('remember').setValue(true);
         }
-
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
     }
 
@@ -136,51 +102,44 @@ export class LoginComponent implements OnInit {
             if (localStorage.getItem('userInfo_email')) {
                 localStorage.removeItem('userInfo_email');
                 localStorage.removeItem('userInfo_pwd');
-
             }
         }
 
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(first())
             .subscribe((res: any) => {
-
                 if (res.responseCode == 100) {
                     this.isHideNaveItem(res.TrackingXLAPI.DATA.conncode, res.TrackingXLAPI.DATA.id);
                 }
                 this.router.navigate(['/home/analytics']);
-            },
-                error => {
-                    alert(error);
-                });
+            }, error => {
+                alert(error);
+            });
     }
 
     isHideNaveItem(conncode: string, id: number) {
         this.authService.getUserObject(conncode, id)
             .subscribe((res: any) => {
-
                 if (res.responseCode == 100) {
                     this.isHideNavList = res.TrackingXLAPI.DATA1;
                     this.userObjectList = res.TrackingXLAPI.DATA;
+                    console.log(this.userObjectList);
 
                     localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
                     localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
 
                     for (let item in this.isHideNavList) {
                         if (Number(this.isHideNavList[item]) == 0) {
-                            this._fuseNavigationService.updateNavigationItem(`${item}`, {
-                                hidden: true
-                            });
+                            this._fuseNavigationService.updateNavigationItem(`${item}`, { hidden: true });
                         }
                     }
                 }
-
-            })
+            });
     }
 
     setLanguage(lang): void {
         // Set the selected language for the toolbar
         this.selectedLanguage = lang;
-
         // Use the selected language for translations
         this._translateService.use(lang.id);
     }

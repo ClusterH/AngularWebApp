@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { FuseSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { TranslateService } from '@ngx-translate/core';
 import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
 import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
@@ -9,334 +10,331 @@ import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
 import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { AuthService } from 'app/authentication/services/authentication.service';
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
-import { VehMarkersDataSource } from "app/main/home/maps/services/vehmarkers.datasource";
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
 import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
-import { Subject, BehaviorSubject } from 'rxjs';
 
-import Map from 'ol/Map';
-import View from 'ol/View';
-import VectorLayer from 'ol/layer/Vector';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
-import OSM from 'ol/source/OSM';
-import * as olProj from 'ol/proj';
-import TileLayer from 'ol/layer/Tile';
+// import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Map, Control, DomUtil, ZoomAnimEvent, Layer, MapOptions, tileLayer, latLng, Marker, icon, Polygon, Polyline } from 'leaflet';
+import { MarkerClusterGroup } from 'leaflet.markercluster'
+
+// import { Subject, BehaviorSubject } from 'rxjs';
+
+// import Map from 'ol/Map';
+// import View from 'ol/View';
+// import VectorLayer from 'ol/layer/Vector';
+// import Style from 'ol/style/Style';
+// import Icon from 'ol/style/Icon';
+// import OSM from 'ol/source/OSM';
+// import * as olProj from 'ol/proj';
+// import TileLayer from 'ol/layer/Tile';
 
 @Component({
-	selector: 'docs-components-third-party-google-maps',
-	templateUrl: './osm.component.html',
-	styleUrls: ['./osm.component.scss']
+    selector: 'docs-components-third-party-google-maps',
+    templateUrl: './osm.component.html',
+    styleUrls: ['./osm.component.scss']
 })
 
-export class OpenStreetMapComponent {
-	selectedLanguage: any;
-	languages: any;
-	userObject: any;
-	horizontalNavbar: boolean;
-	rightNavbar: boolean;
-	hiddenNavbar: boolean;
-	navigation: any
+export class OpenStreetMapComponent implements OnInit, OnDestroy {
+    selectedLanguage: any;
+    languages: any;
+    userObject: any;
+    horizontalNavbar: boolean;
+    rightNavbar: boolean;
+    hiddenNavbar: boolean;
+    navigation: any
 
-	lat: number;
-	lng: number;
+    lat: number;
+    lng: number;
 
-	map: Map;
+    map: Map;
 
-	dataSource: VehMarkersDataSource;
-	vehmarkers: marker[];
-	tmpVehmarkers: marker[];
-	zones: marker[];
-	routes: marker[];
-	tmpZones: marker[];
-	tmpRoutes: marker[];
-	zoom: number = 8;
-	minClusterSize = 2;
-	polygon: any;
-	showVehicles: boolean = true;
-	showZones: boolean = true;
-	showPOIs: boolean = true;
-	showRoutes: boolean = true;
-	selectedCountry: string;
-	user: any;
+    options: MapOptions;
+
+    vehmarkers: marker[];
+    tmpVehmarkers: marker[];
+    zones: marker[];
+    routes: marker[];
+    tmpZones: marker[];
+    tmpRoutes: marker[];
+    polygon: any;
+    polyline: any;
+    markers: any;
+    showVehicles: boolean = true;
+    showZones: boolean = true;
+    showPOIs: boolean = true;
+    showRoutes: boolean = true;
+    selectedCountry: string;
+    user: any;
 
     /**
      * Constructor
      */
-	constructor(
-		private _adminVehMarkersService: VehMarkersService,
-		private _adminZonesService: ZonesService,
-		private _adminRoutesService: RoutesService,
-		private unitInfoService: UnitInfoService,
-		private _fuseConfigService: FuseConfigService,
-		private _fuseSidebarService: FuseSidebarService,
-		private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-		private _translateService: TranslateService,
-		private _authService: AuthService
-	) {
-		this.user = JSON.parse(localStorage.getItem('user_info'));
-		this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
+    constructor(
+        private _adminVehMarkersService: VehMarkersService,
+        private _adminZonesService: ZonesService,
+        private _adminRoutesService: RoutesService,
+        private unitInfoService: UnitInfoService,
+        private _fuseConfigService: FuseConfigService,
+        private _fuseSidebarService: FuseSidebarService,
+        private _unitInfoSidebarService: UnitInfoSidebarService,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private _translateService: TranslateService,
+        private _authService: AuthService
+    ) {
+        this.user = JSON.parse(localStorage.getItem('user_info'));
+        this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
 
-		this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
-		this._fuseConfigService.config = {
-			layout: {
-				toolbar: {
-					hidden: true
-				},
-				navbar: {
-					folded: true
-				}
-			}
-		};
+        this._fuseConfigService.config = {
+            layout: {
+                toolbar: {
+                    hidden: true
+                },
+                navbar: {
+                    folded: true
+                }
+            }
+        };
 
-		this.languages = [
-			{
-				id: 'en',
-				title: 'English',
-				flag: 'us'
-			},
-			{
-				id: 'sp',
-				title: 'Spanish',
-				flag: 'sp'
-			},
-			{
-				id: 'fr',
-				title: 'French',
-				flag: 'fr'
-			},
-			{
-				id: 'pt',
-				title: 'Portuguese',
-				flag: 'pt'
-			},
-		];
+        this.languages = [
+            {
+                id: 'en',
+                title: 'English',
+                flag: 'us'
+            },
+            {
+                id: 'sp',
+                title: 'Spanish',
+                flag: 'sp'
+            },
+            {
+                id: 'fr',
+                title: 'French',
+                flag: 'fr'
+            },
+            {
+                id: 'pt',
+                title: 'Portuguese',
+                flag: 'pt'
+            },
+        ];
 
-		this.navigation = navigation;
+        this.navigation = navigation;
 
-		// Set the defaults
-		this.lat = 25.7959;
-		this.lng = -80.2871;
-		this.tmpVehmarkers = [];
-		this.tmpZones = [];
-		this.tmpRoutes = [];
-	}
+        // Set the defaults
+        this.lat = 25.7959;
+        this.lng = -80.2871;
+        this.tmpVehmarkers = [];
+        this.tmpZones = [];
+        this.tmpRoutes = [];
+    }
 
-	ngOnInit() {
-		// this.map = new Map({
-		// 	target: 'osm_map',
-		// 	layers: [
-		// 		new TileLayer({
-		// 			source: new OSM()
-		// 		})
-		// 	],
-		// 	view: new View({
-		// 		center: olProj.fromLonLat([-80.2871, 25.7959]),
-		// 		zoom: 12
-		// 	})
-		// });
+    ngOnInit() {
 
-		this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
+        this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
 
-		// this._adminVehMarkersService.getVehMarkers("PolarixUSA", 2).subscribe(
-		// 	(data) => {
-		// 		this.vehmarkers = data.TrackingXLAPI.DATA;
-		// 	}
-		// );
+        this.intializeMapOptions();
 
-		// this._adminZonesService.getZones("PolarixUSA", 2).subscribe(
-		// 	(data) => {
-		// 		// 
-		// 		// 
-		// 		this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
-		// 	}
-		// );
+        this._adminVehMarkersService.getVehMarkers("PolarixUSA", 2).subscribe(
+            (data) => {
+                this.vehmarkers = data.TrackingXLAPI.DATA;
+                this.getMarkerCluster(this.vehmarkers);
+            }
+        );
 
-		// this._adminRoutesService.getRoutes("PolarixUSA", 2).subscribe(
-		// 	(data) => {
-		// 		// 
-		// 		// 
-		// 		this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
-		// 	}
-		// );
-	}
+        this._adminZonesService.getZones("PolarixUSA", 2).subscribe(
+            (data) => {
+                this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
+                this.getPolygon(this.zones);
+            }
+        );
 
-	setLanguage(lang): void {
-		// Set the selected language for the toolbar
-		this.selectedLanguage = lang;
+        this._adminRoutesService.getRoutes("PolarixUSA", 2).subscribe(
+            (data) => {
+                this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
+                this.getPolyline(this.routes);
+            }
+        );
+    }
 
-		// Use the selected language for translations
-		this._translateService.use(lang.id);
-	}
+    onMapReady(map: Map) {
+        this.map = map;
+    }
 
-	receiveMap(map: Map) {
-		this.map = map;
-	}
-	
-	receiveZoom(zoom: number) {
-		this.zoom = zoom;
-	}
+    private intializeMapOptions() {
+        this.options = {
+            layers: [tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                opacity: 1,
+                maxZoom: 19,
+                tileSize: 512,
+                zoomOffset: -1,
+                detectRetina: true,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            })],
+            zoom: 12,
+            center: latLng(25.7959, -80.2871)
+        };
+    }
 
-	logOut() {
-		this._authService.logOut();
-	}
+    setLanguage(lang): void {
+        // Set the selected language for the toolbar
+        this.selectedLanguage = lang;
 
-	toggleSidebarOpen(key, label, index): void {
-		this._fuseSidebarService.getSidebar(key).toggleOpen();
-		this.unitInfoService.onVehMarkerClickChanged = label;
-	}
+        // Use the selected language for translations
+        this._translateService.use(lang.id);
+    }
 
-	clickedMarker(label: string, index: number) {
-		this.toggleSidebarOpen('unitInfoPanel', label, index);
+    getMarkerCluster(vehmarkers) {
+        if (vehmarkers.length == 0) {
+            this.map.removeLayer(this.markers);
+        } else {
 
-	}
+            this.markers = new MarkerClusterGroup();
 
-	mapClicked($event: MouseEvent) {
+            for (let i = 0; i < vehmarkers.length; i++) {
+                let m = new Marker(latLng(vehmarkers[i].lat, vehmarkers[i].lng), {
+                    draggable: vehmarkers[i].draggable,
+                    icon: icon({
+                        iconSize: [25, 41],
+                        iconAnchor: [13, 41],
+                        iconUrl: 'leaflet/marker-icon.png',
+                        shadowUrl: 'leaflet/marker-shadow.png'
+                    }),
+                    title: vehmarkers[i].label
+                });
+                // m.bindTooltip(vehmarkers[i].label).openTooltip();
+                // m.bindPopup(vehmarkers[i].label).openPopup();
+                this.markers.addLayer(m)
+            }
 
-	}
+            this.markers.on('click', (a: any) => {
+                this.toggleSidebarOpen('unitInfoPanel', a.layer.options.title);
+            });
 
-	markerDragEnd(m: marker, $event: MouseEvent) {
+            this.map.addLayer(this.markers);
+        }
+    }
 
-	}
+    getPolygon(zones: any) {
+        if (zones.length == 0) {
+            this.polygon.remove();
+        } else {
+            this.polygon = new Polygon(zones, { color: 'red', opacity: 0.3, fillColor: 'red', fillOpacity: 0.1 }).addTo(this.map);
+        }
+    }
 
-	onShowValChange(value) {
+    getPolyline(routes: any) {
+        if (routes.length == 0) {
+            this.polyline.remove();
+        } else {
+            this.polyline = new Polyline(routes, { color: 'blue', opacity: 1 }).addTo(this.map);
+        }
+    }
 
-		if (value == "showVehicles") {
-			this.showVehicles = !this.showVehicles;
+    toggleSidebarOpen(key, label): void {
+        this._unitInfoSidebarService.getSidebar(key).toggleOpen();
+        // this.unitInfoService.onVehMarkerClickChanged = label;
+    }
 
-			if (this.showVehicles) {
-				this.vehmarkers = Object.assign([], this.tmpVehmarkers);
-				//this.tmpVehmarkers.forEach(val => this.vehmarkers.push(Object.assign({}, val)));
-				this.tmpVehmarkers.length = 0;
-			}
-			else {
-				this.tmpVehmarkers = Object.assign([], this.vehmarkers);
-				//this.vehmarkers.forEach(val => this.tmpVehmarkers.push(Object.assign({}, val)));
-				this.vehmarkers.length = 0;
-			}
-		}
-		else if (value == "showZones") {
-			this.showZones = !this.showZones;
+    toggleFuseSidebarOpen(key): void {
+        this._fuseSidebarService.getSidebar(key).toggleOpen();
+    }
 
-			if (this.showZones) {
-				this.zones = Object.assign([], this.tmpZones);
-				this.tmpZones.length = 0;
-			}
-			else {
-				this.tmpZones = Object.assign([], this.zones);
-				this.zones.length = 0;
-			}
-		}
-		else if (value == "showRoutes") {
-			this.showRoutes = !this.showRoutes;
+    // mapClicked($event: MouseEvent) {
 
-			if (this.showRoutes) {
-				this.routes = Object.assign([], this.tmpRoutes);
-				this.tmpRoutes.length = 0;
-			}
-			else {
-				this.tmpRoutes = Object.assign([], this.routes);
-				this.routes.length = 0;
-			}
-		}
+    // }
 
-	}
+    // markerDragEnd(m: marker, $event: MouseEvent) {
 
-	setVisible(value) {
-		for (var i = 0; i < this.vehmarkers.length; i++) {
-			this.vehmarkers[i].visible = value;
-		}
-	}
+    // }
 
-	options: any = {
-		lat: 33.5362475,
-		lng: -111.9267386,
-		zoom: 10,
-		fillColor: '#DC143C',
-		draggable: true,
-		editable: true,
-		visible: true
-	};
+    onShowValChange(value) {
 
-	// polygonCreated($event) {
+        if (value == "showVehicles") {
+            this.showVehicles = !this.showVehicles;
 
-	// 	if (this.polygon) {
-	// 		this.polygon.setMap(null);
-	// 	}
-	// 	this.polygon = $event;
-	// 	this.addPolygonChangeEvent(this.polygon);
-	// 	google.maps.event.addListener(this.polygon, 'coordinates_changed', function (index, obj) {
-	// 		// Polygon object: yourPolygon
+            if (this.showVehicles) {
+                this.vehmarkers = Object.assign([], this.tmpVehmarkers);
+                this.tmpVehmarkers.length = 0;
+            }
+            else {
+                this.tmpVehmarkers = Object.assign([], this.vehmarkers);
+                this.vehmarkers.length = 0;
+            }
+            this.getMarkerCluster(this.vehmarkers);
+        }
+        else if (value == "showZones") {
+            this.showZones = !this.showZones;
 
-	// 	});
+            if (this.showZones) {
+                this.zones = Object.assign([], this.tmpZones);
+                this.tmpZones.length = 0;
+            }
+            else {
+                this.tmpZones = Object.assign([], this.zones);
+                this.zones.length = 0;
+            }
+            this.map.removeLayer;
 
-	// }
+            this.getPolygon(this.zones);
+        }
+        else if (value == "showRoutes") {
+            this.showRoutes = !this.showRoutes;
 
-	getPaths() {
+            if (this.showRoutes) {
+                this.routes = Object.assign([], this.tmpRoutes);
+                this.tmpRoutes.length = 0;
+            }
+            else {
+                this.tmpRoutes = Object.assign([], this.routes);
+                this.routes.length = 0;
+            }
+            this.getPolyline(this.routes);
+        }
+    }
 
-		if (this.polygon) {
-			const vertices = this.polygon.getPaths().getArray()[0];
-			let paths = [];
-			vertices.getArray().forEach(function (xy, i) {
-				// 
-				let latLng = {
-					lat: xy.lat(),
-					lng: xy.lng()
-				};
-				paths.push(JSON.stringify(latLng));
-			});
-			return paths;
-		}
-		return [];
-	}
+    // setVisible(value) {
+    // 	for (var i = 0; i < this.vehmarkers.length; i++) {
+    // 		this.vehmarkers[i].visible = value;
+    // 	}
+    // }
 
-	// addPolygonChangeEvent(polygon) {
-	// 	var me = polygon,
-	// 		isBeingDragged = false,
-	// 		triggerCoordinatesChanged = function () {
-	// 			// Broadcast normalized event
-	// 			google.maps.event.trigger(me, 'coordinates_changed');
-	// 		};
+    // getPaths() {
 
-	// 	// If  the overlay is being dragged, set_at gets called repeatedly,
-	// 	// so either we can debounce that or igore while dragging,
-	// 	// ignoring is more efficient
-	// 	google.maps.event.addListener(me, 'dragstart', function () {
-	// 		isBeingDragged = true;
-	// 	});
+    // 	if (this.polygon) {
+    // 		const vertices = this.polygon.getPaths().getArray()[0];
+    // 		let paths = [];
+    // 		vertices.getArray().forEach(function (xy, i) {
+    // 			//
+    // 			let latLng = {
+    // 				lat: xy.lat(),
+    // 				lng: xy.lng()
+    // 			};
+    // 			paths.push(JSON.stringify(latLng));
+    // 		});
+    // 		return paths;
+    // 	}
+    // 	return [];
+    // }
 
-	// 	// If the overlay is dragged
-	// 	google.maps.event.addListener(me, 'dragend', function () {
-	// 		triggerCoordinatesChanged();
-	// 		isBeingDragged = false;
-	// 	});
+    logOut() {
+        this._authService.logOut();
+    }
 
-	// 	// Or vertices are added to any of the possible paths, or deleted
-	// 	var paths = me.getPaths();
-	// 	paths.forEach(function (path, i) {
-	// 		google.maps.event.addListener(path, "insert_at", function () {
-	// 			triggerCoordinatesChanged();
-	// 		});
-	// 		google.maps.event.addListener(path, "set_at", function () {
-	// 			if (!isBeingDragged) {
-	// 				triggerCoordinatesChanged();
-	// 			}
-	// 		});
-	// 		google.maps.event.addListener(path, "remove_at", function () {
-	// 			triggerCoordinatesChanged();
-	// 		});
-	// 	});
-	// };
+    ngOnDestroy() {
+        this.map.clearAllEventListeners;
+        this.map.remove();
+    };
 }
 
 interface marker {
-	lat: number;
-	lng: number;
-	label?: string;
-	draggable: string;
-	visible: boolean;
+    lat: number;
+    lng: number;
+    label?: string;
+    draggable: string;
+    visible: boolean;
 }

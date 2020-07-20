@@ -1,5 +1,4 @@
-export interface VehicleDetail
-{
+export interface VehicleDetail {
     id?: number;
     name?: string;
     companyid?: number;

@@ -1,24 +1,14 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class VehiclesService
-{
-    vehicles: any[];
+export class VehiclesService {
     vehicleList: any;
 
-    /**
-     * Constructor
-     *
-     * @param {HttpClient} _httpClient
-     */
-    constructor(
-        private _httpClient: HttpClient,
-    ) { }
-    
-    getVehicles(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
-    {
+    constructor(private _httpClient: HttpClient) { }
+
+    getVehicles(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
@@ -30,11 +20,8 @@ export class VehiclesService
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-               
-            
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
@@ -47,36 +34,26 @@ export class VehiclesService
                 .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-
-            
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
-   
-    deleteVehicle(id: number): Observable<any>
-    {
+
+    deleteVehicle(id: number): Observable<any> {
         let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-                .set('conncode', userConncode.toString())
-                .set('userid', userID.toString())
-                .set('id', id.toString())
-                .set('method', "unit_delete");
-               
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-            headers: headers,   
+            .set('conncode', userConncode.toString())
+            .set('userid', userID.toString())
+            .set('id', id.toString())
+            .set('method', "unit_delete");
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
             params: params
         });
     }
-
-    
 }

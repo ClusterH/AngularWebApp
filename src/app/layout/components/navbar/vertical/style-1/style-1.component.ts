@@ -9,13 +9,12 @@ import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scr
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 
 @Component({
-    selector     : 'navbar-vertical-style-1',
-    templateUrl  : './style-1.component.html',
-    styleUrls    : ['./style-1.component.scss'],
+    selector: 'navbar-vertical-style-1',
+    templateUrl: './style-1.component.html',
+    styleUrls: ['./style-1.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
-{
+export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
     userInfo: any;
@@ -39,11 +38,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
         private _fuseNavigationService: FuseNavigationService,
         private _fuseSidebarService: FuseSidebarService,
         private _router: Router
-    )
-    {
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        this.userInfo = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this.isDisabledMenu = false;
     }
 
@@ -52,11 +49,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
 
     // Directive
-    @ViewChild(FusePerfectScrollbarDirective, {static: true})
-    set directive(theDirective: FusePerfectScrollbarDirective)
-    {
-        if ( !theDirective )
-        {
+    @ViewChild(FusePerfectScrollbarDirective, { static: true })
+    set directive(theDirective: FusePerfectScrollbarDirective) {
+        if (!theDirective) {
             return;
         }
 
@@ -79,10 +74,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 take(1)
             )
             .subscribe(() => {
-                    setTimeout(() => {
-                        this._fusePerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
-                    });
-                }
+                setTimeout(() => {
+                    this._fusePerfectScrollbar.scrollToElement('navbar .nav-link.active', -120);
+                });
+            }
             );
     }
 
@@ -93,19 +88,17 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
+        this.userInfo = JSON.parse(localStorage.getItem('userObjectList')) ? JSON.parse(localStorage.getItem('userObjectList'))[0] : '';
+
         this._router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
                 takeUntil(this._unsubscribeAll)
             )
             .subscribe((res: any) => {
-                console.log(res.url);
                 let pos = res.url.lastIndexOf('/');
-                console.log(pos);
                 let currentNavItem = res.url.slice(pos + 1);
-                console.log(currentNavItem);
 
                 if (currentNavItem == 'google' || currentNavItem == 'osm') {
                     console.log(currentNavItem);
@@ -114,11 +107,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                     this.isDisabledMenu = false;
                 }
 
-                if ( this._fuseSidebarService.getSidebar('navbar') )
-                {
+                if (this._fuseSidebarService.getSidebar('navbar')) {
                     this._fuseSidebarService.getSidebar('navbar').close();
                 }
-                }
+            }
             );
 
         // Subscribe to the config changes
@@ -135,7 +127,6 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 takeUntil(this._unsubscribeAll)
             )
             .subscribe((res: any) => {
-                console.log(res);
                 this.navigation = this._fuseNavigationService.getCurrentNavigation();
             });
     }
@@ -143,8 +134,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -157,16 +147,14 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     /**
      * Toggle sidebar opened status
      */
-    toggleSidebarOpened(): void
-    {
+    toggleSidebarOpened(): void {
         this._fuseSidebarService.getSidebar('navbar').toggleOpen();
     }
 
     /**
      * Toggle sidebar folded status
      */
-    toggleSidebarFolded(): void
-    {
+    toggleSidebarFolded(): void {
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
     }
 }

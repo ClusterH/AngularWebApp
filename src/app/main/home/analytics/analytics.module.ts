@@ -7,54 +7,36 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AgmCoreModule } from '@agm/core';
-import { ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
-import { FuseSharedModule } from '@fuse/shared.module';
+import { ChartsModule } from 'ng2-charts';
 import { FuseWidgetModule } from '@fuse/components/widget/widget.module';
-
+import { FuseSharedModule } from '@fuse/shared.module';
 import { AnalyticsDashboardComponent } from 'app/main/home/analytics/analytics.component';
 import { AnalyticsDashboardService } from 'app/main/home/analytics/analytics.service';
 
 const routes: Routes = [
-    {
-        path     : '**',
-        component: AnalyticsDashboardComponent,
-        resolve  : {
-            data: AnalyticsDashboardService
-        }
-    }
+    { path: '**', component: AnalyticsDashboardComponent, resolve: { data: AnalyticsDashboardService } }
 ];
 
 @NgModule({
-    declarations: [
-        AnalyticsDashboardComponent
-    ],
-    imports     : [
+    declarations: [AnalyticsDashboardComponent],
+    imports: [
         RouterModule.forChild(routes),
-
         MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatMenuModule,
         MatSelectModule,
         MatTabsModule,
-
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ',
+            apiKey: 'AIzaSyDO1lOoJtxmSRni0mkXGGrqmcn3TqLP8t4',
             libraries: ['places', 'geometry']
         }),
         ChartsModule,
         NgxChartsModule,
-
         FuseSharedModule,
         FuseWidgetModule
     ],
-    providers   : [
-        AnalyticsDashboardService
-    ]
+    providers: [AnalyticsDashboardService]
 })
-export class AnalyticsDashboardModule
-{
-}
-
+export class AnalyticsDashboardModule { }

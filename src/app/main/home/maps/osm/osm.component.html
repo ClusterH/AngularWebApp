@@ -5,7 +5,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
 
                 <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar"
-                    (click)="toggleSidebarOpen('navbar')" fxHide.gt-md>
+                    (click)="toggleFuseSidebarOpen('navbar')" fxHide.gt-md>
                     <mat-icon class="secondary-text">menu</mat-icon>
                 </button>
 
@@ -113,28 +113,26 @@
 
                 <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
 
-                <!-- <button mat-icon-button
-                        class="quick-panel-toggle-button"
-                        (click)="toggleSidebarOpen('quickPanel')"
-                        aria-label="Toggle quick panel">
+                <button mat-icon-button class="quick-panel-toggle-button" (click)="toggleFuseSidebarOpen('quickPanel')"
+                    aria-label="Toggle quick panel">
                     <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
-                </button> -->
+                </button>
             </div>
         </div>
 
     </mat-toolbar>
-   
+
     <div class="content p-0">
-        <app-osm-map 
+        <!-- <app-osm-map
             (map$)="receiveMap($event)"
             (zoom$)="receiveZoom($event)"
             id='main-map'
-        ></app-osm-map>
+        ></app-osm-map> -->
+        <div class="map-container" leaflet id='main-map' [leafletOptions]="options"
+            (leafletMapReady)="onMapReady($event)"></div>
     </div>
 
-    <fuse-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right" >
+    <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel></unitInfo-panel>
-    </fuse-sidebar>
-
+    </unitinfo-sidebar>
 </div>
-

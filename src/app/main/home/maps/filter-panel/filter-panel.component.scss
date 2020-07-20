@@ -1,0 +1,107 @@
+.filter-panel {
+    .filter-panel-header {
+        background-color: #3c4252;
+        color: whitesmoke;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+
+    .unit-panel-body {
+        .mat-expansion-panel-body {
+            padding: 16px 0 16px 24px !important;
+            font-size: medium !important;
+            font-weight: 600 !important;
+            background-color: #3c4252 !important;
+            color: whitesmoke !important;
+        }
+        mat-panel-title {
+            color: whitesmoke !important;
+        }
+        .item-panel-header {
+            margin-bottom: 1px;
+            .mat-expansion-indicator:after {
+                color: whitesmoke !important;
+            }
+        }
+
+        .item-panel-body label {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .item-panel-body label input {
+            margin-right: 16px;
+        }
+        .unit-panel-body label input {
+            margin-right: 4px !important;
+        }
+        .unitClist_icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .custom-pagination {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .custom-pagination .page-number {
+            background: transparent;
+            margin: 0px 4px;
+            border-radius: 25px;
+        }
+
+        .custom-pagination .page-number:hover {
+            color: #2d323e;
+        }
+
+        .page-number.current {
+            color: #2d323e !important;
+        }
+
+        .page-number span {
+            display: block;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .pagination-previous,
+        .pagination-next {
+            display: inline-block;
+            font-weight: bold;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            padding: 0 4px;
+            cursor: pointer;
+        }
+        .pagination-previous:hover {
+            color: #2d323e;
+        }
+        .pagination-next:hover {
+            color: #2d323e;
+        }
+    }
+
+    .search-Input {
+        background-color: whitesmoke;
+        border-radius: 4px !important;
+        height: 24px !important;
+        // padding-left: 10px !important;
+        margin-right: 16px !important;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #b3b1b1 !important;
+    }
+}
