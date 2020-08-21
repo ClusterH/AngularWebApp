@@ -7,7 +7,12 @@
         </div>
         <mat-divider></mat-divider>
         <div class="autocomplete-address my-8 mb-16" fxLayout="row" fxFlexAlign="space-between center">
-            <div class="h3 w-40" fxLayout="column" fxFlexAlign="start center">
+            <div class="h3 w-40" fxLayout="column" fxFlexAlign="center center">
+                <!-- <span class="w-8 h-8">&#9673;</span>
+                <span class="w-4 h-4">&#9679;</span>
+                <span class="w-4 h-4">&#9679;</span>
+                <span class="w-4 h-4">&#9679;</span>
+                <span><i class="material-icons w-8">place</i></span> -->
                 <span>From:</span>
                 <span>To:</span>
             </div>
@@ -18,11 +23,9 @@
                 <div class="autocomplete-poi-address" [ngClass]="[isChange? 'from-origin': 'to-destination']">
                     <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
                         type="text" class="h4 px-4" #search [(ngModel)]="filter_string">
-                    <mat-icon class="cancel_close_icon" (click)="clearFilter()">clear</mat-icon>
+                    <mat-icon class="cancel_close_icon" (click)="clearAutoComplete()">clear</mat-icon>
                 </div>
-
             </div>
-
         </div>
         <mat-divider></mat-divider>
 
@@ -38,7 +41,7 @@
                 <label>
                     <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
                         (change)="$event ? poiSelection.toggle(data.id) : null;"
-                        [checked]="poiSelection.isSelected(data.id)" />
+                        [checked]="poiSelection.isSelected(data.id)" [disabled]="isChange && latitude" />
                     <span>{{data.name}}</span>
                 </label>
             </div>
@@ -73,13 +76,16 @@
     <agm-map class="unitMap" #unitMap [latitude]="unit.latitude" [longitude]="unit.longitude" [zoom]="12"
         [disableDefaultUI]="false" [zoomControl]="false">
         <agm-overlay *ngIf="!isDirection" [latitude]="unit.latitude" [longitude]="unit.longitude">
-            <div class="unit_marker_div"><img class="event_marker_img" src="assets/icons/map_unitInfo/locate_now.png"
-                    height="30" width="30"></div>
+            <div class="unit_marker_div"><img class="event_marker_img"
+                    src="assets/icons/map_unitInfo/residential-places.png" height="30"></div>
         </agm-overlay>
         <div *ngIf="isDirection">
-            <agm-direction *ngFor="let direction of dir" [origin]="direction.origin"
+            <!-- <agm-direction *ngFor="let direction of dir" [origin]="direction.origin"
                 [destination]="direction.destination" [markerOptions]="direction.markerOptions"
-                [renderOptions]="direction.renderOptions">
+                [renderOptions]="direction.renderOptions", [waypoints]="direction.waypoints">
+            </agm-direction> -->
+            <agm-direction [origin]="origin" [destination]="destination" [markerOptions]="markerOptions"
+                [renderOptions]="renderOptions" [waypoints]="waypoints">
             </agm-direction>
         </div>
 
