@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { SimcardsComponent} from 'app/main/system/simcards/simcards/simcards.component';
+import { SimcardsComponent } from 'app/main/system/simcards/simcards/simcards.component';
 import { SimcardsService } from 'app/main/system/simcards/services/simcards.service';
-import { SimcardDetailComponent} from 'app/main/system/simcards/simcard_detail/simcard_detail.component';
+import { SimcardDetailComponent } from 'app/main/system/simcards/simcard_detail/simcard_detail.component';
 import { SimcardDetailService } from 'app/main/system/simcards/services/simcard_detail.service';
 import { CourseDialogComponent } from 'app/main/system/simcards/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'simcards',
+        path: 'simcards',
         component: SimcardsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'simcard_detail',
+        path: 'simcard_detail',
         component: SimcardDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        SimcardsService, SimcardDetailService
+        SimcardsService, SimcardDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class SimcardsModule{ }
+export class SimcardsModule { }

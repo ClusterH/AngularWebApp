@@ -1,25 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { FuseSharedModule } from '@fuse/shared.module';
+// import { FuseSharedModule } from '@fuse/shared.module';
+import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
     {
-        path        : 'tanks',
+        path: 'tanks',
         loadChildren: () => import('./tanks/tanks.module').then(m => m.TanksModule)
     },
 
     {
-        path        : 'fuelregistries',
+        path: 'fuelregistries',
         loadChildren: () => import('./fuelregistries/fuelregistries.module').then(m => m.FuelregistriesModule)
     },
-   
+
 ];
 
 @NgModule({
-    imports     : [
-        FuseSharedModule,
+    imports: [
+        SharedModule,
         RouterModule.forChild(routes),
     ]
 })
-export class FuelmanagementModule{ }
+export class FuelmanagementModule { }

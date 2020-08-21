@@ -21,6 +21,8 @@ import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { UnitInfoSidebarModule } from 'app/main/home/maps/sidebar/sidebar.module';
 import { UnitInfoPanelModule } from 'app/main/home/maps/unitInfo-panel/unitInfo-panel.module';
 import { OpenStreetMapComponent } from './osm.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     { path: '**', component: OpenStreetMapComponent }
@@ -45,13 +47,15 @@ const routes = [
         FuseHighlightModule,
         FuseShortcutsModule,
         UnitInfoSidebarModule,
-        UnitInfoPanelModule
+        UnitInfoPanelModule,
+        HttpClientModule
     ],
     providers: [
         VehMarkersService,
         UnitInfoService,
         ZonesService,
         RoutesService,
+        { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
 export class OpenStreetMapModule {

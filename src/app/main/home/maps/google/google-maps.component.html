@@ -158,9 +158,16 @@
 
         <div class="section-title">Sample</div> -->
         <!-- <p fxLayout="row" fxLayoutAlign="start start"> -->
-        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="false"
-            (mapClick)="mapClicked($event)">
-            <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
+
+        <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+            [zoomControl]="false" (mapClick)="mapClicked($event)">
+            <div *ngIf="isClickedEvent">
+                <agm-overlay *ngFor="let event of eventLocation" [latitude]="event.latitude"
+                    [longitude]="event.longitude">
+                    <div class="event_marker_div"><img class="event_marker_img" src="assets/images/event_marker.png"
+                            height="40" width="40"></div>
+                </agm-overlay>
+            </div>
             <agm-marker-cluster [minimumClusterSize]="minClusterSize"
                 imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
@@ -227,8 +234,17 @@
         <mat-icon>layers</mat-icon>
     </button>
 
+    <button *ngIf="isClickedEvent" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
+        (click)="cleanEventLocation()">
+        <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
+        <mat-icon class="event_clean">location_off</mat-icon>
+
+    </button>
+
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
-        <unitInfo-panel [currentUnit]="currentUnit"></unitInfo-panel>
+        <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
+            (eventLocation)="showEventLocation($event)">
+        </unitInfo-panel>
     </unitinfo-sidebar>
 
     <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">

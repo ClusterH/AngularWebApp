@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { MakesComponent} from 'app/main/admin/makes/makes/makes.component';
+import { MakesComponent } from 'app/main/admin/makes/makes/makes.component';
 import { MakesService } from 'app/main/admin/makes/services/makes.service';
-import { MakeDetailComponent} from 'app/main/admin/makes/make_detail/make_detail.component';
+import { MakeDetailComponent } from 'app/main/admin/makes/make_detail/make_detail.component';
 import { MakeDetailService } from 'app/main/admin/makes/services/make_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/makes/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'makes',
+        path: 'makes',
         component: MakesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'make_detail',
+        path: 'make_detail',
         component: MakeDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        MakesService, MakeDetailService
+        MakesService, MakeDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class MakesModule{ }
+export class MakesModule { }

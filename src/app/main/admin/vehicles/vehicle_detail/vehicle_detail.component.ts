@@ -12,7 +12,7 @@ import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
 import { VehicleDetail } from 'app/main/admin/vehicles/model/vehicle.model';
 import { VehicleDetailDataSource } from "app/main/admin/vehicles/services/vehicle_detail.datasource";
 import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
-import { merge, Subject, pipe } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 import { isEmpty } from 'lodash';
@@ -74,7 +74,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
             console.log(data);
             this.vehicle = data;
-        })
+        });
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         if (isEmpty(this.vehicle)) {

@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { PrivilegesComponent} from 'app/main/system/privileges/privileges/privileges.component';
+import { PrivilegesComponent } from 'app/main/system/privileges/privileges/privileges.component';
 import { PrivilegesService } from 'app/main/system/privileges/services/privileges.service';
-import { PrivilegeDetailComponent} from 'app/main/system/privileges/privilege_detail/privilege_detail.component';
+import { PrivilegeDetailComponent } from 'app/main/system/privileges/privilege_detail/privilege_detail.component';
 import { PrivilegeDetailService } from 'app/main/system/privileges/services/privilege_detail.service';
 import { CourseDialogComponent } from 'app/main/system/privileges/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'privileges',
+        path: 'privileges',
         component: PrivilegesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'privilege_detail',
+        path: 'privilege_detail',
         component: PrivilegeDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        PrivilegesService, PrivilegeDetailService
+        PrivilegesService, PrivilegeDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class PrivilegesModule{ }
+export class PrivilegesModule { }

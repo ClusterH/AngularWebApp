@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ConnectionsComponent} from 'app/main/system/connections/connections/connections.component';
+import { ConnectionsComponent } from 'app/main/system/connections/connections/connections.component';
 import { ConnectionsService } from 'app/main/system/connections/services/connections.service';
-import { ConnectionDetailComponent} from 'app/main/system/connections/connection_detail/connection_detail.component';
+import { ConnectionDetailComponent } from 'app/main/system/connections/connection_detail/connection_detail.component';
 import { ConnectionDetailService } from 'app/main/system/connections/services/connection_detail.service';
 import { CourseDialogComponent } from 'app/main/system/connections/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'connections',
+        path: 'connections',
         component: ConnectionsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'connection_detail',
+        path: 'connection_detail',
         component: ConnectionDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        ConnectionsService, ConnectionDetailService
+        ConnectionsService, ConnectionDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ConnectionsModule{ }
+export class ConnectionsModule { }

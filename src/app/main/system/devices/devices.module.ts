@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { DevicesComponent} from 'app/main/system/devices/devices/devices.component';
+import { DevicesComponent } from 'app/main/system/devices/devices/devices.component';
 import { DevicesService } from 'app/main/system/devices/services/devices.service';
-import { DeviceDetailComponent} from 'app/main/system/devices/device_detail/device_detail.component';
+import { DeviceDetailComponent } from 'app/main/system/devices/device_detail/device_detail.component';
 import { DeviceDetailService } from 'app/main/system/devices/services/device_detail.service';
 import { CourseDialogComponent } from 'app/main/system/devices/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'devices',
+        path: 'devices',
         component: DevicesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'device_detail',
+        path: 'device_detail',
         component: DeviceDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        DevicesService, DeviceDetailService
+        DevicesService, DeviceDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class DevicesModule{ }
+export class DevicesModule { }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog,  MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
@@ -12,7 +12,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 import { TankDetail } from 'app/main/fuelmanagement/tanks/model/tank.model';
-import {CourseDialogComponent} from "../dialog/dialog.component";
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -29,11 +29,10 @@ import { locale as tanksPortuguese } from 'app/main/fuelmanagement/tanks/i18n/pt
     templateUrl: './tank_detail.component.html',
     styleUrls: ['./tank_detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
 
-export class TankDetailComponent implements OnInit
-{
+export class TankDetailComponent implements OnInit {
     tank_detail: any;
     public tank: any;
     pageType: string;
@@ -44,7 +43,7 @@ export class TankDetailComponent implements OnInit
     tankDetail: TankDetail = {};
 
     displayedColumns: string[] = ['name'];
- 
+
     filter_string: string = '';
     method_string: string = '';
 
@@ -55,7 +54,7 @@ export class TankDetailComponent implements OnInit
 
     fromDate: string = '';
     toDate: string = '';
-    
+
     constructor(
         public tankDetailService: TankDetailService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -66,19 +65,17 @@ export class TankDetailComponent implements OnInit
     ) {
         this._fuseTranslationLoaderService.loadTranslations(tanksEnglish, tanksSpanish, tanksFrench, tanksPortuguese);
 
-        this.tank = localStorage.getItem("tank_detail")? JSON.parse(localStorage.getItem("tank_detail")) : '';
+        this.tank = localStorage.getItem("tank_detail") ? JSON.parse(localStorage.getItem("tank_detail")) : '';
 
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
-        if ( this.tank != '' )
-        {
+        if (this.tank != '') {
             this.pageType = 'edit';
             this.getTankHistory('today');
         }
-        else
-        {
-            
+        else {
+
             this.pageType = 'new';
         }
 
@@ -86,42 +83,43 @@ export class TankDetailComponent implements OnInit
     }
 
     ngOnInit(): void {
-        
+
         this.tankForm = this._formBuilder.group({
             date: [null],
         });
     }
 
     generateChartData(chart_data: any) {
-        
+
         let chartData = [];
-        
+
         for (let i in chart_data) {
             // let truetime = new Date(chart_data[i].truetime);
-            // 
+            //
 
             chartData.push({
-                date:  new Date(chart_data[i].truetime),
+                date: new Date(chart_data[i].truetime),
                 level: chart_data[i].volume
             });
         }
-        
+
 
         am4core.ready(() => {
 
             am4core.disposeAllCharts();
 
             let chart = am4core.create("chartdiv", am4charts.XYChart);
-      
+
             // Add data
             chart.data = chartData;
-    
+
+
             // Create axes
             let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
             dateAxis.renderer.minGridDistance = 50;
             // dateAxis.renderer.grid.template.disabled = true;
             // dateAxis.renderer.fullWidthTooltip = true;
-    
+
             let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
             valueAxis.min = 0;
             // valueAxis.renderer.minGridDistance = 0.01;
@@ -129,7 +127,7 @@ export class TankDetailComponent implements OnInit
             // dateAxis.renderer.fullWidthTooltip = true;
             // valueAxis.adjustMinMax(0, 10000, 100, 100, true);
             // valueAxis.strictMinMax = true;
-            
+
             // Create series
             let series = chart.series.push(new am4charts.LineSeries());
             series.dataFields.valueY = "level";
@@ -140,8 +138,8 @@ export class TankDetailComponent implements OnInit
             series.tooltip.pointerOrientation = "vertical";
             series.tooltip.background.cornerRadius = 20;
             series.tooltip.background.fillOpacity = 0.5;
-            series.tooltip.label.padding(12,12,12,12);
-    
+            series.tooltip.label.padding(12, 12, 12, 12);
+
             // Add scrollbar
             let scrollbarX = new am4charts.XYChartScrollbar();
             scrollbarX.series.push(series);
@@ -156,94 +154,83 @@ export class TankDetailComponent implements OnInit
     }
 
     getValues(dateTime: any, mode: string) {
-        this.tankDetail.name             = this.tankForm.get('name').value || '',
-        this.tankDetail.isactive         = this.tank.isactive || true;
+        this.tankDetail.name = this.tankForm.get('name').value || '',
+            this.tankDetail.isactive = this.tank.isactive || true;
         // this.tankDetail.deletedwhen      = this.tank.deletedwhen || '';
         // this.tankDetail.deletedby        = this.tank.deletedby || 0;
 
-        if( mode  == "save" ) {
-            this.tankDetail.id               = this.tank.id;
-            this.tankDetail.createdwhen      = this.tank.createdwhen;
-            this.tankDetail.createdby        = this.tank.createdby;
+        if (mode == "save") {
+            this.tankDetail.id = this.tank.id;
+            this.tankDetail.createdwhen = this.tank.createdwhen;
+            this.tankDetail.createdby = this.tank.createdby;
             this.tankDetail.lastmodifieddate = dateTime;
-            this.tankDetail.lastmodifiedby   = this.userID;
-        } else if ( mode == "add" ) {
-            this.tankDetail.id               = 0;
-            this.tankDetail.createdwhen      = dateTime;
-            this.tankDetail.createdby        = this.userID;
+            this.tankDetail.lastmodifiedby = this.userID;
+        } else if (mode == "add") {
+            this.tankDetail.id = 0;
+            this.tankDetail.createdwhen = dateTime;
+            this.tankDetail.createdby = this.userID;
             this.tankDetail.lastmodifieddate = dateTime;
-            this.tankDetail.lastmodifiedby   = this.userID;
+            this.tankDetail.lastmodifiedby = this.userID;
         }
-        
     }
 
     dateFormat(date: any) {
-        
-
         let str = '';
 
-        
-
         if (date != '') {
-            str = 
-                ("00" + (date.getMonth() + 1)).slice(-2) 
-                + "/" + ("00" + date.getDate()).slice(-2) 
+            str =
+                ("00" + (date.getMonth() + 1)).slice(-2)
+                + "/" + ("00" + date.getDate()).slice(-2)
                 + "/" + date.getFullYear();
 
-                if (date.getHours() < 12) {
-                    str = str  + " " 
-                    + ("00" + date.getHours()).slice(-2) + ":" 
-                    + ("00" + date.getMinutes()).slice(-2) 
-                    + ":" + ("00" + date.getSeconds()).slice(-2) + " " + 'AM'; 
-                } else {
-                    str = str + " "
-                    + (date.getHours() - 12) + ":" 
-                    + ("00" + date.getMinutes()).slice(-2) 
-                    + ":" + ("00" + date.getSeconds()).slice(-2) + " " + 'PM'; 
-                }
-               
+            if (date.getHours() < 12) {
+                str = str + " "
+                    + ("00" + date.getHours()).slice(-2) + ":"
+                    + ("00" + date.getMinutes()).slice(-2)
+                    + ":" + ("00" + date.getSeconds()).slice(-2) + " " + 'AM';
+            } else {
+                str = str + " "
+                    + (date.getHours() - 12) + ":"
+                    + ("00" + date.getMinutes()).slice(-2)
+                    + ":" + ("00" + date.getSeconds()).slice(-2) + " " + 'PM';
+            }
         }
 
         return str;
     }
-    
+
     saveTank(): void {
-        
         let today = new Date().toISOString();
         this.getValues(today, "save");
-        
 
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
             this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
-            .subscribe((result: any) => {
-                
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    alert("Success!");
-                    this.router.navigate(['admin/tanks/tanks']);
-                }
-            });
+                .subscribe((result: any) => {
+
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        alert("Success!");
+                        this.router.navigate(['admin/tanks/tanks']);
+                    }
+                });
         }
     }
 
     addTank(): void {
-        
         let today = new Date().toISOString();
         this.getValues(today, "add");
-        
 
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
             this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
-            .subscribe((result: any) => {
-                
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    alert("Success!");
-                    this.router.navigate(['admin/tanks/tanks']);
-                }
-            });
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        alert("Success!");
+                        this.router.navigate(['admin/tanks/tanks']);
+                    }
+                });
         }
     }
 
@@ -252,7 +239,7 @@ export class TankDetailComponent implements OnInit
         let flag = 'goback';
 
         dialogConfig.disableClose = true;
-        
+
         dialogConfig.data = {
             tank: "", flag: flag
         };
@@ -262,38 +249,34 @@ export class TankDetailComponent implements OnInit
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
         dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                    
+            if (result) {
+
 
             } else {
-                    
+
             }
         });
     }
 
-    private _registerCustomChartJSPlugin(): void
-    {
+    private _registerCustomChartJSPlugin(): void {
         (window as any).Chart.plugins.register({
-            afterDatasetsDraw: function(chart, easing): any {
+            afterDatasetsDraw: function (chart, easing): any {
                 // Only activate the plugin if it's made available
                 // in the options
                 if (
                     !chart.options.plugins.xLabelsOnTop ||
                     (chart.options.plugins.xLabelsOnTop && chart.options.plugins.xLabelsOnTop.active === false)
-                )
-                {
+                ) {
                     return;
                 }
 
                 // To only draw at the end of animation, check for easing === 1
                 const ctx = chart.ctx;
 
-                chart.data.datasets.forEach(function(dataset, i): any {
+                chart.data.datasets.forEach(function (dataset, i): any {
                     const meta = chart.getDatasetMeta(i);
-                    if ( !meta.hidden )
-                    {
-                        meta.data.forEach(function(element, index): any {
+                    if (!meta.hidden) {
+                        meta.data.forEach(function (element, index): any {
 
                             // Draw the text in black, with the specified font
                             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
@@ -348,11 +331,11 @@ export class TankDetailComponent implements OnInit
             this.dateOption = 'today';
 
             this.getHistoryData(date, fromdate, todate)
-            .subscribe((res: any) => {
-                this.generateChartData(res);
-            });
+                .subscribe((res: any) => {
+                    this.generateChartData(res);
+                });
 
-            
+
         } else if (date == 'yesterday') {
             let yesterdayDate = new Date();
 
@@ -364,9 +347,9 @@ export class TankDetailComponent implements OnInit
             this.dateOption = 'yesterday';
 
             this.getHistoryData(date, fromdate, todate)
-            .subscribe((res: any) => {
-                this.generateChartData(res);
-            });
+                .subscribe((res: any) => {
+                    this.generateChartData(res);
+                });
 
         } else if (date == 'this_week') {
             let curr = new Date; // get current date
@@ -379,9 +362,9 @@ export class TankDetailComponent implements OnInit
             this.dateOption = 'this_week';
 
             this.getHistoryData(date, fromdate, todate)
-            .subscribe((res: any) => {
-                this.generateChartData(res);
-            });
+                .subscribe((res: any) => {
+                    this.generateChartData(res);
+                });
 
         } else if (date == 'last_week') {
             let curr = new Date; // get current date
@@ -393,18 +376,18 @@ export class TankDetailComponent implements OnInit
 
             this.dateOption = 'last_week';
 
-             this.getHistoryData(date, fromdate, todate)
-            .subscribe((res: any) => {
-                this.generateChartData(res);
-            });
+            this.getHistoryData(date, fromdate, todate)
+                .subscribe((res: any) => {
+                    this.generateChartData(res);
+                });
 
         } else if (date == 'date_range') {
             this.dateOption = 'date_range';
 
             this.getHistoryData(date, this.fromDate, this.toDate)
-            .subscribe((res: any) => {
-                this.generateChartData(res);
-            });
+                .subscribe((res: any) => {
+                    this.generateChartData(res);
+                });
         }
 
     }
@@ -412,21 +395,21 @@ export class TankDetailComponent implements OnInit
     getHistoryData(dateOption: string, fromdate: string, todate: string): Observable<any> {
         let volume_data: [];
         let subject = new Subject<any>();
-        
-        this.tankDetailService.getTankHistory(this.userConncode, this.userID, this.tank.id, fromdate, todate)
-        .subscribe((res: any) => {
-            
-            if (res.responseCode == 100) {
-                this.noData = true;
 
-                volume_data = res.TrackingXLAPI.DATA;
-                
-                subject.next(volume_data);
-               
-            } else {
-                this.noData = false;
-            }
-        });
+        this.tankDetailService.getTankHistory(this.userConncode, this.userID, this.tank.id, fromdate, todate)
+            .subscribe((res: any) => {
+
+                if (res.responseCode == 100) {
+                    this.noData = true;
+
+                    volume_data = res.TrackingXLAPI.DATA;
+
+                    subject.next(volume_data);
+
+                } else {
+                    this.noData = false;
+                }
+            });
 
         return subject.asObservable();
     }

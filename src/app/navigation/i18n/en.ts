@@ -26,7 +26,7 @@ export const locale = {
             "CARGOS": "Cargos",
             "PERSONS": "Persons",
             "ASSETS": "Assets",
-           
+
             "COMPANIES": "Companies",
             "SUBFLEETS": "SubFleets",
             "GROUPS": "Groups",
@@ -57,18 +57,18 @@ export const locale = {
             "FUELMANAGEMENT": "Fuel Management",
             "TANKS": "Tanks",
             "FUELINGREGISTRY": "Fueling Registry",
-            
+
             "SETTING": "Setting",
             "MYACCOUNT": "My Account",
             "USERSETTING": "User Setting",
-            'SAMPLE'        : {
+            'SAMPLE': {
                 'TITLE': 'Sample',
                 'BADGE': '25'
             },
 
             "SYSTEM": "System",
             "PRIVILEGES": "Privileges",
-            "USER_ROLES" : "User Roles",
+            "USER_ROLES": "User Roles",
             "UNITTYPES": "Unit Types",
             "DEVICES": "Devices",
             "SIMS": "SIMs",
@@ -79,7 +79,11 @@ export const locale = {
             "COMMANDS": "Commands",
             "SYSTEM_COMMANDS": "System Commands",
             "CONNECTIONS": "Connections",
-            "DEV_CONFIG" : "Device Configurations"
+            "DEV_CONFIG": "Device Configurations",
+            "INSTALLATIONS": "Installations",
+            "CONTRACTORS": "Contractors",
+            "INSTALLERS": "Installers",
+            "JOBS": "Jobs"
         }
     }
 };

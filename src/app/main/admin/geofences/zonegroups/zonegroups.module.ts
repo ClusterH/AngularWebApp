@@ -38,35 +38,36 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseHighlightModule } from '@fuse/components';
 
-import { ZonegroupsComponent} from 'app/main/admin/geofences/zonegroups/zonegroups/zonegroups.component';
+import { ZonegroupsComponent } from 'app/main/admin/geofences/zonegroups/zonegroups/zonegroups.component';
 import { ZonegroupsService } from 'app/main/admin/geofences/zonegroups/services/zonegroups.service';
-import { ZonegroupDetailComponent} from 'app/main/admin/geofences/zonegroups/zonegroup_detail/zonegroup_detail.component';
+import { ZonegroupDetailComponent } from 'app/main/admin/geofences/zonegroups/zonegroup_detail/zonegroup_detail.component';
 import { ZonegroupDetailService } from 'app/main/admin/geofences/zonegroups/services/zonegroup_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/geofences/zonegroups/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'zonegroups',
+        path: 'zonegroups',
         component: ZonegroupsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'zonegroup_detail',
+        path: 'zonegroup_detail',
         component: ZonegroupDetailComponent,
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         FuseHighlightModule,
         FuseSidebarModule,
 
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -107,7 +108,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        ZonegroupsService, ZonegroupDetailService
+        ZonegroupsService, ZonegroupDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ZonegroupsModule{ }
+export class ZonegroupsModule { }

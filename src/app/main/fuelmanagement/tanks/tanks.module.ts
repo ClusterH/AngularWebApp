@@ -36,7 +36,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { TanksComponent} from 'app/main/fuelmanagement/tanks/tanks/tanks.component';
+import { TanksComponent } from 'app/main/fuelmanagement/tanks/tanks/tanks.component';
 import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service';
 import { TankDetailComponent } from 'app/main/fuelmanagement/tanks/tank_detail/tank_detail.component';
 import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
@@ -45,27 +45,28 @@ import { CourseDialogComponent } from 'app/main/fuelmanagement/tanks/dialog/dial
 import 'hammerjs';
 import 'chartjs-plugin-zoom';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'tanks',
+        path: 'tanks',
         component: TanksComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'tank_detail',
+        path: 'tank_detail',
         component: TankDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -86,7 +87,7 @@ const routes = [
         MatProgressSpinnerModule,
         SatDatepickerModule,
         SatNativeDateModule,
-        
+
         TranslateModule,
         HttpClientModule,
 
@@ -108,7 +109,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        TanksService, TankDetailService
+        TanksService, TankDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class TanksModule{ }
+export class TanksModule { }

@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuicklinkStrategy, QuicklinkModule } from 'ngx-quicklink';
@@ -21,6 +21,7 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppStoreModule } from 'app/store/store.module';
 import 'hammerjs';
 import { AppComponent } from "app/app.component";
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 import { SharedModule } from 'app/sharedModules/shared.module';
 
 const appRoutes: Routes = [
@@ -62,6 +63,7 @@ const appRoutes: Routes = [
         AppStoreModule,
         SharedModule
     ],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

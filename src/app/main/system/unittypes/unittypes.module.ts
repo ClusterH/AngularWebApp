@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { UnittypesComponent} from 'app/main/system/unittypes/unittypes/unittypes.component';
+import { UnittypesComponent } from 'app/main/system/unittypes/unittypes/unittypes.component';
 import { UnittypesService } from 'app/main/system/unittypes/services/unittypes.service';
-import { UnittypeDetailComponent} from 'app/main/system/unittypes/unittype_detail/unittype_detail.component';
+import { UnittypeDetailComponent } from 'app/main/system/unittypes/unittype_detail/unittype_detail.component';
 import { UnittypeDetailService } from 'app/main/system/unittypes/services/unittype_detail.service';
 import { CourseDialogComponent } from 'app/main/system/unittypes/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'unittypes',
+        path: 'unittypes',
         component: UnittypesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'unittype_detail',
+        path: 'unittype_detail',
         component: UnittypeDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        UnittypesService, UnittypeDetailService
+        UnittypesService, UnittypeDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class UnitTypesModule{ }
+export class UnitTypesModule { }

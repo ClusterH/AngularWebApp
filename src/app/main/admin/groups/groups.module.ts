@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { GroupsComponent} from 'app/main/admin/groups/groups/groups.component';
+import { GroupsComponent } from 'app/main/admin/groups/groups/groups.component';
 import { GroupsService } from 'app/main/admin/groups/services/groups.service';
-import { GroupDetailComponent} from 'app/main/admin/groups/group_detail/group_detail.component';
+import { GroupDetailComponent } from 'app/main/admin/groups/group_detail/group_detail.component';
 import { GroupDetailService } from 'app/main/admin/groups/services/group_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/groups/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'groups',
+        path: 'groups',
         component: GroupsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'group_detail',
+        path: 'group_detail',
         component: GroupDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        GroupsService, GroupDetailService
+        GroupsService, GroupDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class GroupsModule{ }
+export class GroupsModule { }

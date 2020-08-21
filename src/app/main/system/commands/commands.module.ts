@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { CommandsComponent} from 'app/main/system/commands/commands/commands.component';
+import { CommandsComponent } from 'app/main/system/commands/commands/commands.component';
 import { CommandsService } from 'app/main/system/commands/services/commands.service';
-import { CommandDetailComponent} from 'app/main/system/commands/command_detail/command_detail.component';
+import { CommandDetailComponent } from 'app/main/system/commands/command_detail/command_detail.component';
 import { CommandDetailService } from 'app/main/system/commands/services/command_detail.service';
 import { CourseDialogComponent } from 'app/main/system/commands/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'commands',
+        path: 'commands',
         component: CommandsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'command_detail',
+        path: 'command_detail',
         component: CommandDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        CommandsService, CommandDetailService
+        CommandsService, CommandDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class CommandsModule{ }
+export class CommandsModule { }

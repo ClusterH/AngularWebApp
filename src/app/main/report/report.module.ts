@@ -35,32 +35,33 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ReportComponent} from 'app/main/report/reportcomponent/report.component';
-import { ReportResultComponent} from 'app/main/report/reportcomponent/reportresult/reportresult.component';
+import { ReportComponent } from 'app/main/report/reportcomponent/report.component';
+import { ReportResultComponent } from 'app/main/report/reportcomponent/reportresult/reportresult.component';
 import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
 import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
 
 import { CourseDialogComponent } from 'app/main/report/reportcomponent/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'reportcomponent/:id',
+        path: 'reportcomponent/:id',
         component: ReportComponent,
     },
     {
-        path     : 'reportresult',
+        path: 'reportresult',
         component: ReportResultComponent,
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatRadioModule,
@@ -101,7 +102,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        ReportService,ReportResultService
+        ReportService, ReportResultService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ReportModule{ }
+export class ReportModule { }

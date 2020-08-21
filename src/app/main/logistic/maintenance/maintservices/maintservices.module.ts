@@ -34,27 +34,28 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { MaintservicesComponent} from 'app/main/logistic/maintenance/maintservices/maintservices/maintservices.component';
+import { MaintservicesComponent } from 'app/main/logistic/maintenance/maintservices/maintservices/maintservices.component';
 import { MaintservicesService } from 'app/main/logistic/maintenance/maintservices/services/maintservices.service';
 import { MaintserviceDialogComponent } from 'app/main/logistic/maintenance/maintservices/dialog/dialog.component';
 import { DeleteDialogComponent } from 'app/main/logistic/maintenance/maintservices/deletedialog/deletedialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'maintservices',
+        path: 'maintservices',
         component: MaintservicesComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -93,7 +94,7 @@ const routes = [
         DeleteDialogComponent,
     ],
     providers: [
-        MaintservicesService
+        MaintservicesService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class MaintservicesModule{ }
+export class MaintservicesModule { }

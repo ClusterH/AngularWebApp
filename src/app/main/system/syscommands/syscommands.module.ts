@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { SysCommandsComponent} from 'app/main/system/syscommands/syscommands/syscommands.component';
+import { SysCommandsComponent } from 'app/main/system/syscommands/syscommands/syscommands.component';
 import { SysCommandsService } from 'app/main/system/syscommands/services/syscommands.service';
-import { SysCommandDetailComponent} from 'app/main/system/syscommands/syscommand_detail/syscommand_detail.component';
+import { SysCommandDetailComponent } from 'app/main/system/syscommands/syscommand_detail/syscommand_detail.component';
 import { SysCommandDetailService } from 'app/main/system/syscommands/services/syscommand_detail.service';
 import { CourseDialogComponent } from 'app/main/system/syscommands/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'syscommands',
+        path: 'syscommands',
         component: SysCommandsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'syscommand_detail',
+        path: 'syscommand_detail',
         component: SysCommandDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        SysCommandsService, SysCommandDetailService
+        SysCommandsService, SysCommandDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class SysCommandsModule{ }
+export class SysCommandsModule { }

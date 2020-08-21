@@ -35,33 +35,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { UserProfilesComponent} from 'app/main/system/userprofiles/userprofiles/userprofiles.component';
+import { UserProfilesComponent } from 'app/main/system/userprofiles/userprofiles/userprofiles.component';
 import { UserProfilesService } from 'app/main/system/userprofiles/services/userprofiles.service';
-import { UserProfileDetailComponent} from 'app/main/system/userprofiles/userprofile_detail/userprofile_detail.component';
+import { UserProfileDetailComponent } from 'app/main/system/userprofiles/userprofile_detail/userprofile_detail.component';
 import { UserProfileDetailService } from 'app/main/system/userprofiles/services/userprofile_detail.service';
 import { CourseDialogComponent } from 'app/main/system/userprofiles/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'userprofiles',
+        path: 'userprofiles',
         component: UserProfilesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'userprofile_detail',
+        path: 'userprofile_detail',
         component: UserProfileDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -101,7 +102,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        UserProfilesService, UserProfileDetailService
+        UserProfilesService, UserProfileDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class UserProfilesModule{ }
+export class UserProfilesModule { }

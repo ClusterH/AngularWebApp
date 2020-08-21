@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
 import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
 import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
@@ -16,7 +15,7 @@ import { UsersService } from 'app/main/admin/users/services/users.service';
 import { UserDetailService } from 'app/main/admin/users/services/user_detail.service';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
@@ -107,12 +106,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.paginator.pageIndex = 0);
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist"))
-            )
-            .subscribe((res: any) => {
-
-            });
+            .pipe(tap(() => this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
@@ -124,7 +118,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     selectedFilter() {
-
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -137,49 +130,38 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.dataSource.loadUsers(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
     }
 
-    filterEvent() {
-        this.selectedFilter();
-    }
+    filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
         this.dataSource.loadUsers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "User_Tlist");
     }
 
     addNewUser() {
-        this.userDetailService.user_detail = '';
-        localStorage.removeItem("user_detail");
+        // this.userDetailService.user_detail = '';
+        // localStorage.removeItem("user_detail");
         this.router.navigate(['admin/users/user_detail']);
     }
 
     editShowUserDetail(user: any) {
-        this.userDetailService.user_detail = user;
-        localStorage.setItem("user_detail", JSON.stringify(user));
-        this.router.navigate(['admin/users/user_detail']);
+        // this.userDetailService.user_detail = user;
+        // localStorage.setItem("user_detail", JSON.stringify(user));
+        this.router.navigate(['admin/users/user_detail'], { queryParams: user });
     }
 
     deleteUser(user): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            user, flag: this.flag
-        };
-
+        dialogConfig.data = { user, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 let deleteUser = this._adminUsersService.userList.findIndex((deleteduser: any) => deleteduser.id == user.id);
-
                 if (deleteUser > -1) {
                     this._adminUsersService.userList.splice(deleteUser, 1);
                     this.dataSource.usersSubject.next(this._adminUsersService.userList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
                 }
-            } else {
-
             }
         });
     }
@@ -187,21 +169,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     duplicateUser(user): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            user, flag: this.flag
-        };
-
+        dialogConfig.data = { user, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-
-            } else {
-
-            }
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(user => {
+            if (user) { this.router.navigate(['admin/users/user_detail'], { queryParams: user }); }
         });
     }
 }

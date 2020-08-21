@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ServiceplansComponent} from 'app/main/system/serviceplans/serviceplans/serviceplans.component';
+import { ServiceplansComponent } from 'app/main/system/serviceplans/serviceplans/serviceplans.component';
 import { ServiceplansService } from 'app/main/system/serviceplans/services/serviceplans.service';
-import { ServiceplanDetailComponent} from 'app/main/system/serviceplans/serviceplan_detail/serviceplan_detail.component';
+import { ServiceplanDetailComponent } from 'app/main/system/serviceplans/serviceplan_detail/serviceplan_detail.component';
 import { ServiceplanDetailService } from 'app/main/system/serviceplans/services/serviceplan_detail.service';
 import { CourseDialogComponent } from 'app/main/system/serviceplans/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'serviceplans',
+        path: 'serviceplans',
         component: ServiceplansComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'serviceplan_detail',
+        path: 'serviceplan_detail',
         component: ServiceplanDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        ServiceplansService, ServiceplanDetailService
+        ServiceplansService, ServiceplanDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ServiceplansModule{ }
+export class ServiceplansModule { }

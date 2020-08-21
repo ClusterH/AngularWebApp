@@ -118,7 +118,6 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     getFilterPanelClists(method: string): void {
         this.filterPanelService.getFilterPanelClists(this.userConncode, this.userID, 1, 10000, this.filter_string, method)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
-                console.log(res);
                 if (res.responseCode == 100) {
                     switch (method) {
                         case 'producttype_clist':
@@ -151,17 +150,14 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
 
     onUnitTypePageChange(event) {
-        console.log(event);
         // this.unittypepageconfig.currentPage = event;
     }
 
     onUnitClistPageChange(event) {
-        console.log(event);
         // this.unitclistpageconfig.currentPage = event;
     }
 
     onCheckboxChangeUnit(e, type) {
-        console.log(e, type);
         const checkArray: FormArray = this.unitForm.get(type) as FormArray;
         if (e.target.checked) {
             checkArray.push(new FormControl(e.target.value));
@@ -190,13 +186,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
 
     toggleSidebarOpen(key) {
-        console.log(key);
         this.filterPanelCloseEmitter.emit(false);
-        console.log('selected checkbox =====>', this.unittypeSelection.selected);
         this.unitclistSelection.clear();
         this.unittypeSelection.clear();
-
-
         this.unitInfoSideBarService.getSidebar(key).toggleOpen();
     }
 

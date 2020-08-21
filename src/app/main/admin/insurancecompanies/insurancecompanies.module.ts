@@ -34,34 +34,35 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { InsuranceCompaniesComponent} from 'app/main/admin/insurancecompanies/insurancecompanies/insurancecompanies.component';
+import { InsuranceCompaniesComponent } from 'app/main/admin/insurancecompanies/insurancecompanies/insurancecompanies.component';
 import { InsuranceCompaniesService } from 'app/main/admin/insurancecompanies/services/insurancecompanies.service';
-import { InsuranceCompanyDetailComponent} from 'app/main/admin/insurancecompanies/insurancecompany_detail/insurancecompany_detail.component';
+import { InsuranceCompanyDetailComponent } from 'app/main/admin/insurancecompanies/insurancecompany_detail/insurancecompany_detail.component';
 import { InsuranceCompanyDetailService } from 'app/main/admin/insurancecompanies/services/insurancecompany_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/insurancecompanies/dialog/dialog.component';
 import { StylePaginatorDirective } from 'app/main/admin/insurancecompanies/insurancecompanies/style-paginator.directive';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'insurancecompanies',
+        path: 'insurancecompanies',
         component: InsuranceCompaniesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'insurancecompany_detail',
+        path: 'insurancecompany_detail',
         component: InsuranceCompanyDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -101,7 +102,7 @@ const routes = [
         StylePaginatorDirective
     ],
     providers: [
-        InsuranceCompaniesService, InsuranceCompanyDetailService
+        InsuranceCompaniesService, InsuranceCompanyDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class InsuranceCompaniesModule{ }
+export class InsuranceCompaniesModule { }

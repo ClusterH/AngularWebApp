@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { CarriersComponent} from 'app/main/system/carriers/carriers/carriers.component';
+import { CarriersComponent } from 'app/main/system/carriers/carriers/carriers.component';
 import { CarriersService } from 'app/main/system/carriers/services/carriers.service';
-import { CarrierDetailComponent} from 'app/main/system/carriers/carrier_detail/carrier_detail.component';
+import { CarrierDetailComponent } from 'app/main/system/carriers/carrier_detail/carrier_detail.component';
 import { CarrierDetailService } from 'app/main/system/carriers/services/carrier_detail.service';
 import { CourseDialogComponent } from 'app/main/system/carriers/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'carriers',
+        path: 'carriers',
         component: CarriersComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'carrier_detail',
+        path: 'carrier_detail',
         component: CarrierDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        CarriersService, CarrierDetailService
+        CarriersService, CarrierDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class CarriersModule{ }
+export class CarriersModule { }

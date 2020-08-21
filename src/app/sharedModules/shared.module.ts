@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +31,17 @@ import { BlockUIModule } from 'ng-block-ui';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
+
+import { MatDialogModule } from "@angular/material/dialog";
+
+import { RouterModule } from '@angular/router';
+import { FuseSharedModule } from '@fuse/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { ContractorsComponent } from 'app/main/system/installations/contractors/contractors/contractors.component';
+import { DeleteDialogComponent } from 'app/main/system/installations/contractors/deletedialog/deletedialog.component';
+import { ContractorDialogComponent } from 'app/main/system/installations/contractors/dialog/dialog.component';
+import { ContractorsService } from 'app/main/system/installations/contractors/services/contractors.service';
 
 @NgModule({
     imports: [CommonModule, QuicklinkModule],
@@ -72,6 +83,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
         FuseConfirmDialogModule,
         FuseDirectivesModule,
         FusePipesModule,
-    ]
+    ],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }],
 })
 export class SharedModule { }

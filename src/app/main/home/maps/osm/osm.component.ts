@@ -139,21 +139,21 @@ export class OpenStreetMapComponent implements OnInit, OnDestroy {
 
         this.intializeMapOptions();
 
-        this._adminVehMarkersService.getVehMarkers("PolarixUSA", 2).subscribe(
+        this._adminVehMarkersService.getVehMarkers(this.user.conncode, this.user.id).subscribe(
             (data) => {
                 this.vehmarkers = data.TrackingXLAPI.DATA;
                 this.getMarkerCluster(this.vehmarkers);
             }
         );
 
-        this._adminZonesService.getZones("PolarixUSA", 2).subscribe(
+        this._adminZonesService.getZones(this.user.conncode, this.user.id).subscribe(
             (data) => {
                 this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
                 this.getPolygon(this.zones);
             }
         );
 
-        this._adminRoutesService.getRoutes("PolarixUSA", 2).subscribe(
+        this._adminRoutesService.getRoutes(this.user.conncode, this.user.id).subscribe(
             (data) => {
                 this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
                 this.getPolyline(this.routes);

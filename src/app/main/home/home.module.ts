@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FuseSharedModule } from '@fuse/shared.module';
+// import { FuseSharedModule } from '@fuse/shared.module';
+// import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
+import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
     { path: 'analytics', loadChildren: () => import('./analytics/analytics.module').then(m => m.AnalyticsDashboardModule) },
@@ -11,7 +13,8 @@ const routes = [
 @NgModule({
     imports: [
         RouterModule.forChild(routes),
-        FuseSharedModule
+        // FuseSharedModule,
+        SharedModule
     ]
 })
 export class HomeModule { }

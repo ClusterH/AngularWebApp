@@ -1,20 +1,14 @@
 <div id="pois" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center_table center">
-
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
-
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -24,14 +18,13 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'POIS.SELECTFIELD' | translate}}:</mat-label>
-
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
-                            <mat-option value="name">{{'POIS.NAME' | translate}}</mat-option> 
+                            <mat-option value="name">{{'POIS.NAME' | translate}}</mat-option>
                             <mat-option value="account">{{'POIS.RADIUS' | translate}}</mat-option>
                             <mat-option value="operator">{{'POIS.POINT' | translate}}</mat-option>
                             <mat-option value="company">{{'POIS.COMPANY' | translate}}</mat-option>
@@ -54,55 +47,44 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'POIS.SEARCHFORPOI' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'POIS.SEARCHFORPOI' | translate }}" [(ngModel)]="filter_string"
+                            (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
-
             <!-- ADD BUTTON -->
-            <button mat-fab
-                    [routerLink]="'/admin/pois/poi_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue != 3"
-                    (click)="addNewPoi()">
-               <mat-icon>add</mat-icon>
-
+            <button mat-fab [routerLink]="'/admin/pois/poi_detail'" class="accent  mt-24 mt-md-0"
+                [disabled]="restrictValue != 3" (click)="addNewPoi()">
+                <mat-icon>add</mat-icon>
             </button>
             <!-- / ADD BUTTON -->
-
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                    <mat-spinner
-                        color="accent" 
-                        mode="indeterminate"
-                        diameter="50"
-                        style="margin:0 auto;">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
                     </mat-spinner>
                 </div>
             </div>
-
-            <mat-table class="pois-table font-size-10"
-                        #table [dataSource]="dataSource"
-                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 250%;">
-
+            <mat-table class="pois-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
+                matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+                style="width: 250%;">
                 <!-- ID Column -->
-                <ng-container matColumnDef="id" >
+                <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let poi">
-                        <button (click) = "editShowPoiDetail(poi)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
+                        <button (click)="editShowPoiDetail(poi)" [disabled]="restrictValue == '1'"
+                            style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deletePoi(poi)">delete</mat-icon>
                         <mat-icon class="active-icon s-16 copy_icon" (click)="duplicatePoi(poi)">file_copy</mat-icon>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.NAME' | translate }}</mat-header-cell>
@@ -110,169 +92,154 @@
                         <p class="name text-truncate">{{poi.name}}</p>
                     </mat-cell>
                 </ng-container>
-
-                 <!-- Radius Column -->
-                 <ng-container matColumnDef="radius">
+                <!-- Radius Column -->
+                <ng-container matColumnDef="radius">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.RADIUS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-cell *matCellDef="let poi">
                         <p class="radius text-truncate">
                             {{poi.radius}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
-                 <!-- Point Column -->
-                 <ng-container matColumnDef="point">
+                <!-- Point Column -->
+                <ng-container matColumnDef="point">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.POINT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-cell *matCellDef="let poi">
                         <p class="point text-truncate">
                             {{poi.point}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
-                 <!-- PointType Column -->
-                 <ng-container matColumnDef="pointtype">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.POINTTYPE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                <!-- PointType Column -->
+                <ng-container matColumnDef="pointtype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.POINTTYPE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="pointtype text-truncate">
                             {{poi.pointtype}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Company Column -->
                 <ng-container matColumnDef="company">
-                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>{{ 'POIS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>
+                        {{ 'POIS.COMPANY' | translate }}</mat-header-cell>
                     <mat-cell *matCellDef="let poi" fxHide fxShow.gt-md>
                         <p class="company text-truncate">
                             {{poi.company}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Group Column -->
                 <ng-container matColumnDef="group">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.GROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-cell *matCellDef="let poi">
                         <p class="group text-truncate">
                             {{poi.group}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- SubGroup Column -->
                 <ng-container matColumnDef="subgroup">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.SUBGROUP' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.SUBGROUP' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="subgroup text-truncate">
                             {{poi.subgroup}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Address Column -->
                 <ng-container matColumnDef="address">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.ADDRESS' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.ADDRESS' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="address text-truncate">
                             {{poi.address}}
                         </p>
                     </mat-cell>
                 </ng-container>
-                
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="created text-truncate">
                             {{poi.created}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
-                 <!-- CreatedByName Column -->
-                 <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                <!-- CreatedByName Column -->
+                <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.CREATEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="created text-truncate">
                             {{poi.createdbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDWHEN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="deletedwhen text-truncate">
                             {{poi.deletedwhen}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.DELETEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="deletedbyname text-truncate">
                             {{poi.deletedbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="lastmodifieddate text-truncate">
                             {{poi.lastmodifieddate}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let poi" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'POIS.LASTMODIFIEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let poi">
                         <p class="lastmodifiedbyname text-truncate">
                             {{poi.lastmodifiedbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-
-                <mat-row  *matRowDef="let poi; columns: displayedColumns;"
-                            class="poi font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let poi; columns: displayedColumns;" class="poi font-size-10" matRipple>
                 </mat-row>
-
             </mat-table>
-
         </div>
         <div>
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
-
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

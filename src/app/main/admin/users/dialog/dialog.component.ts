@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -7,36 +7,39 @@ import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
 import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
 import { UsersService } from 'app/main/admin/users/services/users.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'user-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnInit {
-
-   user: any;
-   flag: any;
+export class CourseDialogComponent implements OnDestroy {
+    private _unsubscribeAll: Subject<any>;
+    user: any;
+    flag: any;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private usersService: UsersService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {user, flag} 
+        @Inject(MAT_DIALOG_DATA) { user, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
-
+        this._unsubscribeAll = new Subject();
         this.user = user;
         this.flag = flag;
     }
 
-    ngOnInit() {
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
             this.user.id = 0;
             this.user.name = '';
             this.user.email = '';
@@ -47,29 +50,17 @@ export class CourseDialogComponent implements OnInit {
             this.user.deletedbyname = '';
             this.user.lastmodifieddate = '';
             this.user.lastmodifiedbyname = '';
-    
-            localStorage.setItem("user_detail", JSON.stringify(this.user));
-    
-            this.router.navigate(['admin/users/user_detail']);
-        } else if( this.flag == "delete") {
-            this.usersService.deleteUser(this.user.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dialogRef.close(result);
-                }
-              });
+            this.dialogRef.close(this.user);
+        } else if (this.flag == "delete") {
+            this.usersService.deleteUser(this.user.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dialogRef.close(result);
+                    }
+                });
         }
     }
 
-    close() {
-        localStorage.removeItem("user_detail");
-        this.dialogRef.close();
-    }
-
-    goback() {
-        this.dialogRef.close();
-        localStorage.removeItem("user_detail");
-
-        this.router.navigate(['admin/users/users']);
-    }
+    close() { this.dialogRef.close(); }
+    goback() { this.dialogRef.close('goback'); }
 }

@@ -1,14 +1,30 @@
 <div fxLayout="column" fxFlex fusePerfectScrollbar class="unitInfo-panel">
-    <div class="unitInfo-panel-header mat-elevation-z12 primary py-16 px-8 mb-12" fxLayout="row"
+    <div class="unitInfo-panel-header mat-elevation-z12 primary py-16 px-8 mb-8" fxLayout="row"
         fxLayoutAlign="space-between center">
-        <div class="panel-title h2 ml-8">
+        <div class="panel-title h3 ml-8">
             <span *ngIf="!currentUnit">Unit Info</span>
             <span *ngIf="currentUnit" fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="mr-12">directions_car</mat-icon>{{currentUnit.name}}
+                <mat-icon class="mr-16">directions_car</mat-icon>{{currentUnit.name}}
             </span>
         </div>
     </div>
-    <mat-accordion *ngIf="currentUnit">
+    <div class="unitInfo-panel-icon mat-elevation-z8 py-16 px-8 mb-4 w-100-p" fxLayout="row"
+        fxLayoutAlign="space-between center">
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/share_location1.png"
+            (click)="goOptionPanel('sharelocation')" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/street_view1.png"
+            (click)="showPositionDialog('streetview')" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/directions1.png"
+            (click)="showPositionDialog('direction')" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/locate_now.png"
+            (click)="goOptionPanel('locatenow')" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/playback_history1.png" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/send_command1.png" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/convoy1.png" />
+        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/show_graph.png" />
+    </div>
+
+    <mat-accordion *ngIf="currentUnit && currentChannel == 'mainpanel'">
         <!-- Unit panel -->
         <mat-expansion-panel class="unit-panel">
             <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
@@ -24,20 +40,44 @@
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxFlex="40" fxLayoutAlign="start center">Plate : </div>
-                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
-                </div>
-                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Company : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.company}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxFlex="40" fxLayoutAlign="start center">SubGroup : </div>
-                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
-                </div>
-                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Group : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.group}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Account : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.account}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Operator : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.operator}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">UnitType : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.unittype}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">ServicePlan : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.serviceplan}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">ProductType : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.producttype}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Make : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.make}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Model : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.model}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">TimeZone : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.timezone}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Latitude : </div>
@@ -48,28 +88,37 @@
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.longitude}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxFlex="40" fxLayoutAlign="start center">Status : </div>
-                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.status}}</div>
+                    <div fxFlex="40" fxLayoutAlign="start center">Speed : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.speed}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Heading : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.heading}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Last Report : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.lastreport}}</div>
                 </div>
+
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Location : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.location}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxFlex="40" fxLayoutAlign="start center">Passengers : </div>
-                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
-                </div>
-                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxFlex="40" fxLayoutAlign="start center">Speed : </div>
-                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.speed}}</div>
+                    <div fxFlex="40" fxLayoutAlign="start center">Ignition : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.ignition}}</div>
                 </div>
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Device : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.device}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Status : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.status}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Plateno : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.plateno}}</div>
                 </div>
             </div>
         </mat-expansion-panel>
@@ -82,16 +131,76 @@
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
+            <div class="unit-panel-body">
+                <div class="unit-driver-photo w-100-p mat-elevation-z8 mb-12">
+                    <img src="assets/images/avatars/download.jpg">
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Name : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">PhoneNumber : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.phonenumber}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Email : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.email}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Hire Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.hiredate}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">License<br>Exp Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.licenseexpirationdate}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Physical Test<br>Exp Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.physicaltestexpirydate}}</div>
+                </div>
+            </div>
         </mat-expansion-panel>
         <!-- Events Panel -->
         <mat-expansion-panel>
             <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
                 <mat-panel-title>
-                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                    <div class="h3" fxLayout="row" fxLayoutAlign="space-between center">
                         &#8895;&nbsp;&nbsp;&nbsp;Events
+                        <!-- <div class="h3 show_all_event" (click)="showEventLocation(currentEvents, 'all')">
+                            Show All
+                        </div> -->
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
+            <div class="unit-panel-body">
+                <div class="unit-event-header mb-12" (click)="showEventLocation(currentEvents, 'all')">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8">
+                        <div class="h3">Name</div>
+                        <div class="h3">Latitude</div>
+                    </div>
+                    <mat-divider class="m-8 mx-24 primary-400-bg"></mat-divider>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8 mb-8">
+                        <div class="h3">StartDate</div>
+                        <div class="h3">Longitude</div>
+                    </div>
+                </div>
+
+                <div class="unit-info-listItem unit-info-event" *ngFor="let event of currentEvents"
+                    (click)="showEventLocation(event, 'every')">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8">
+                        <div class="h5">{{event.name}}</div>
+                        <div class="h5">{{event.latitude}}</div>
+                    </div>
+                    <mat-divider class="m-8 mx-24 primary-400-bg"></mat-divider>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8 mb-8">
+                        <div class="h5">{{event.startdate}}</div>
+                        <div class="h5">{{event.longitude}}</div>
+                    </div>
+                </div>
+
+
+            </div>
         </mat-expansion-panel>
         <!-- Sensors panel -->
         <mat-expansion-panel>
@@ -114,4 +223,87 @@
             </mat-expansion-panel-header>
         </mat-expansion-panel>
     </mat-accordion>
+
+    <div *ngIf="currentChannel == 'sharelocation'" class="option-channel share-location-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div class="h3">Share Location</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body">
+            <div class="sendlinkemail  w-100-p">
+                <label for="sendlinkemail">Send Link to Email:</label>
+                <input type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                    class="email-address pt-4 px-0" [(ngModel)]="linkedEmail" required>
+            </div>
+
+            <div class="expirationtime w-100-p">
+                <label for="expirationtime">Link expiration time:</label>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <input type="number" [(ngModel)]="expireTime" class="expiration-time pt-4 px-0 mr-8" required
+                        fxFlex="64">
+                    <select fxFlex="36" [(ngModel)]="expireTimeUnit" class="expiration-time-unit py-4">
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                        <option value="second">Second</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="current_unit_link mb-24" fxLayout="row" fxLayoutAlign="start center"
+                (click)="showPositionDialog('sharelocation')">
+                <mat-icon class="h3 mr-8 unit-share-link">insert_link
+                </mat-icon>
+                <a class="h3">Open a follow up window</a>
+            </div>
+            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
+                <button class="send-button " type="button" (click)="sendLinkEmail()"> &#10003; Send </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div *ngIf="currentChannel == 'directions'" class="option-channel share-location-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div id="testtttt" class="h3">Direction</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body">
+            <div class="direction_vehicle_name" fxLayout="row" fxLayoutAlign="start center">
+                <div class="h3 w-40 mr-12">From</div>
+                <div class="h3">{{currentUnit.name}}</div>
+            </div>
+            <div class="direction_autocomplete w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="h3 w-40 mr-12">To</div>
+                <div class="h3  w-100-p">
+
+                    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+                        type="text" class="autocomplete-poi-address" id="search">
+
+                </div>
+            </div>
+            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" (click)="sendLinkEmail()" class="ml-12"> Send </button>
+            </div>
+        </div>
+    </div> -->
+
+    <div *ngIf="currentChannel == 'locatenow'" class="option-channel share-location-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div class="h3">Locate Now</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body">
+            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" (click)="sendLocateRequest()" class="ml-12"> Send </button>
+            </div>
+        </div>
+    </div>
 </div>

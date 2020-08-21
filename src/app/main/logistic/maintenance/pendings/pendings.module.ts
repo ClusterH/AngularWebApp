@@ -33,26 +33,27 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { PendingsComponent} from 'app/main/logistic/maintenance/pendings/pendings/pendings.component';
+import { PendingsComponent } from 'app/main/logistic/maintenance/pendings/pendings/pendings.component';
 import { PendingsService } from 'app/main/logistic/maintenance/pendings/services/pendings.service';
 import { AttendDialogComponent } from 'app/main/logistic/maintenance/pendings/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'pendings',
+        path: 'pendings',
         component: PendingsComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -90,7 +91,7 @@ const routes = [
         AttendDialogComponent,
     ],
     providers: [
-        PendingsService
+        PendingsService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class PendingsModule{ }
+export class PendingsModule { }

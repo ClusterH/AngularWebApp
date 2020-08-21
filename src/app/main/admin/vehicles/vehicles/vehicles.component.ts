@@ -116,14 +116,10 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
 
     addNewVehicle() {
-        // this.vehicleDetailService.vehicle_detail = '';
-        // localStorage.removeItem("vehicle_detail");
         this.router.navigate(['admin/vehicles/vehicle_detail']);
     }
 
     editShowVehicleDetail(vehicle: any) {
-        // localStorage.setItem("vehicle_detail", JSON.stringify(vehicle));
-        // this._adminVehiclesService.setVehicleDetail(vehicle);
         this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
     }
 
@@ -140,6 +136,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
                 if (deleteVehicle > -1) {
                     this._adminVehiclesService.vehicleList.splice(deleteVehicle, 1);
                     this.dataSource.vehiclesSubject.next(this._adminVehiclesService.vehicleList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
                 }
             }
         });

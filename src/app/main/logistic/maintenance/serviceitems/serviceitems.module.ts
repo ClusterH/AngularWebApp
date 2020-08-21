@@ -34,27 +34,28 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ServiceitemsComponent} from 'app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.component';
+import { ServiceitemsComponent } from 'app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.component';
 import { ServiceitemsService } from 'app/main/logistic/maintenance/serviceitems/services/serviceitems.service';
 import { ServiceItemDialogComponent } from 'app/main/logistic/maintenance/serviceitems/dialog/dialog.component';
 import { DeleteDialogComponent } from 'app/main/logistic/maintenance/serviceitems/deletedialog/deletedialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'serviceitems',
+        path: 'serviceitems',
         component: ServiceitemsComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -93,7 +94,7 @@ const routes = [
         DeleteDialogComponent,
     ],
     providers: [
-        ServiceitemsService
+        ServiceitemsService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ServiceitemsModule{ }
+export class ServiceitemsModule { }

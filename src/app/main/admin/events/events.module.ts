@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -34,6 +33,8 @@ import { EventDetailService } from 'app/main/admin/events/services/event_detail.
 import { BlockUIModule } from 'ng-block-ui';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
@@ -92,7 +93,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        EventsService, EventDetailService
+        EventsService, EventDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
 export class EventsModule { }

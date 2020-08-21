@@ -14,8 +14,8 @@ import { PoigroupsDataSource } from "app/main/admin/poi/poigroups/services/poigr
 import { PoigroupsService } from 'app/main/admin/poi/poigroups/services/poigroups.service';
 import { PoigroupDetailService } from 'app/main/admin/poi/poigroups/services/poigroup_detail.service';
 import * as $ from 'jquery';
-import { merge } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({

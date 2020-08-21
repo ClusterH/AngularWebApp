@@ -1,9 +1,9 @@
+// import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { MouseEvent } from '@agm/core';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { TranslateService } from '@ngx-translate/core';
 import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
 import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
@@ -11,13 +11,14 @@ import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
 import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { AuthService } from 'app/authentication/services/authentication.service';
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
+import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { VehMarkersDataSource } from "app/main/home/maps/services/vehmarkers.datasource";
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
-import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
+import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 declare const google: any;
@@ -38,6 +39,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     private _unsubscribeAll: Subject<any>;
     currentUnit: any;
+    currentOperator: any;
+    currentEvents: any;
 
     lat: number;
     lng: number;
@@ -48,8 +51,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     routes: marker[];
     tmpZones: marker[];
     tmpRoutes: marker[];
-    zoom: number = 8;
+    zoom: number = 12;
     minClusterSize = 2;
+    isClickedEvent: boolean = false;
+    eventLocation: any = [];
     polygon: any;
     showVehicles: boolean = true;
     showZones: boolean = true;
@@ -59,6 +64,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     // filterPanToggle: boolean = false;
     selectedCountry: string;
     user: any;
+
+    // @ViewChild('AgmMap') agmMap: AgmMap;
 
     // managerOptions = {
     //     drawingControl: true,
@@ -86,7 +93,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         , private _unitInfoSidebarService: UnitInfoSidebarService
         , private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
-        private _authService: AuthService
+        private _authService: AuthService,
     ) {
         this.user = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA;
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
@@ -105,26 +112,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         };
 
         this.languages = [
-            {
-                id: 'en',
-                title: 'English',
-                flag: 'us'
-            },
-            {
-                id: 'sp',
-                title: 'Spanish',
-                flag: 'sp'
-            },
-            {
-                id: 'fr',
-                title: 'French',
-                flag: 'fr'
-            },
-            {
-                id: 'pt',
-                title: 'Portuguese',
-                flag: 'pt'
-            },
+            { id: 'en', title: 'English', flag: 'us' },
+            { id: 'sp', title: 'Spanish', flag: 'sp' },
+            { id: 'fr', title: 'French', flag: 'fr' },
+            { id: 'pt', title: 'Portuguese', flag: 'pt' },
         ];
 
         this.navigation = navigation;
@@ -132,45 +123,27 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         // Set the defaults
         this.lat = 25.7959;
         this.lng = -80.2871;
+        this.zoom
         this.tmpVehmarkers = [];
         this.tmpZones = [];
         this.tmpRoutes = [];
     }
 
-    ngOnInit(): void {
-
-        // this._fuseConfigService.config
-        // .pipe(takeUntil(this._unsubscribeAll))
-        // .subscribe((settings) => {
-        //     this.horizontalNavbar = settings.layout.navbar.position === 'top';
-        //     this.rightNavbar = settings.layout.navbar.position === 'right';
-        //     this.hiddenNavbar = settings.layout.navbar.hidden === true;
-        // });
-
-        // this.dataSource = new VehMarkersDataSource(this._adminVehMarkersService);
-        // this.dataSource.loadVehicles("PolarixUSA", 2);
-
-
+    ngOnInit() {
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
 
-        this._adminVehMarkersService.getVehMarkers("PolarixUSA", 2).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-            (data) => {
-                this.vehmarkers = data.TrackingXLAPI.DATA.slice(0, 10);
-            }
-        );
-
-        this._adminZonesService.getZones("PolarixUSA", 2).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-            (data) => {
-                this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
-            }
-        );
-
-        this._adminRoutesService.getRoutes("PolarixUSA", 2).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-            (data) => {
-                this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
-            }
-        );
-
+        forkJoin(
+            this._adminVehMarkersService.getVehMarkers(this.user.conncode, this.user.id),
+            this._adminZonesService.getZones(this.user.conncode, this.user.id),
+            this._adminRoutesService.getRoutes(this.user.conncode, this.user.id),
+        ).pipe(takeUntil(this._unsubscribeAll)).subscribe(([marker, zone, route]) => {
+            console.log('marker==========', marker);
+            console.log('zone==========', zone);
+            console.log('route==========', route);
+            this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
+            this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
+            this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
+        });
     }
 
     ngAfterViewInit() { }
@@ -192,6 +165,17 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this._authService.logOut();
     }
 
+    async loadMapData() {
+        let marker = await this._adminVehMarkersService.getVehMarkers(this.user.conncode, this.user.id).pipe(takeUntil(this._unsubscribeAll)).toPromise();
+        this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
+
+        let zone = await this._adminZonesService.getZones(this.user.conncode, this.user.id).pipe(takeUntil(this._unsubscribeAll)).toPromise()
+        this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
+
+        let route = await this._adminRoutesService.getRoutes(this.user.conncode, this.user.id).pipe(takeUntil(this._unsubscribeAll)).toPromise()
+        this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
+    }
+
     toggleSidebarOpen(key, id?): void {
         // this._unitInfoSidebarService.getSidebar(key).toggleOpen();
         if (key == 'unitInfoPanel') {
@@ -200,7 +184,14 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                     console.log(res);
                     // this.unitInfoService.onUnitChanged = id;
-                    this.currentUnit = res.TrackingXLAPI.DATA[0];
+                    // this.currentUnit = JSON.parse(res.TrackingXLAPI.DATA[0]);
+                    this.currentUnit = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).unit;
+                    console.log(this.currentUnit);
+                    this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
+                    console.log(this.currentOperator);
+                    this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
+                    console.log(this.currentEvents);
+
                 });
 
             // this.unitInfoService.onUnitChanged = id;
@@ -370,6 +361,25 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             });
         });
     };
+
+    showEventLocation(event: any) {
+        console.log(event);
+        this.eventLocation = event;
+        this.isClickedEvent = true;
+        // this.agmMap.mapReady.subscribe(map => {
+        //     const bounds: LatLngBounds = new google.maps.LatLngBounds();
+        //     for (let mm of this.eventLocation) {
+        //         bounds.extend(new google.maps.LatLng(mm.latitude, mm.longitude));
+        //     }
+        //     map.fitBounds(bounds);
+        // });
+        this.lat = event[0].latitude;
+        this.lng = event[0].longitude;
+    }
+
+    cleanEventLocation() {
+        this.isClickedEvent = false;
+    }
 }
 
 interface marker {

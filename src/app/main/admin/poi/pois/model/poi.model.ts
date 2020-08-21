@@ -1,5 +1,4 @@
-export interface PoiDetail
-{
+export interface PoiDetail {
     id?: number;
     name?: string;
     companyid?: number;

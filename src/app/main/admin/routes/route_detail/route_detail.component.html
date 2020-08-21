@@ -1,25 +1,19 @@
 <div id="route_detail" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center">
-
         <!-- HEADER -->
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
-
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
-
-                <button mat-icon-button class="mr-0 mr-sm-16" >
+                <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/routes/routes'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
-
                 <div fxLayout="column" fxLayoutAlign="start start"
-                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
                         {{route.name}}
                     </div>
@@ -32,63 +26,44 @@
                 </div>
             </div>
             <!-- / APP TITLE -->
-
-            <button mat-raised-button
-                    class="save-route-button"
-                    *ngIf="pageType ==='new'" (click)="addRoute()">
+            <button mat-raised-button class="save-route-button" *ngIf="pageType ==='new'" (click)="addRoute()">
                 <span>{{ 'ROUTES.ADD' | translate }}</span>
             </button>
-
-            <button mat-raised-button
-                    class="save-route-button"
-                    *ngIf="pageType ==='edit'" (click)="saveRoute()">
+            <button mat-raised-button class="save-route-button" *ngIf="pageType ==='edit'" (click)="saveRoute()">
                 <span>{{ 'ROUTES.SAVE' | translate }}</span>
             </button>
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <!-- CONTENT -->
             <div class="content">
-
-                <form [formGroup]="routeForm" class="route w-100-p" fxLayout="column" fxFlex >
-
+                <form [formGroup]="routeForm" class="route w-100-p" fxLayout="column" fxFlex>
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'ROUTES.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'ROUTES.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="Name"
-                                           name="name"
-                                           formControlName="name"
-                                           required>
+                                    <input matInput placeholder="Name" name="name" formControlName="name" required>
                                 </mat-form-field>
                             </div>
-                           
                             <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
                                 <fieldset style="border-radius: 4px; border: 1px solid #2423233a;">
                                     <legend>&nbsp;{{ 'ROUTES.AUDIT' | translate }}&nbsp;</legend>
                                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ROUTES.CREATED' | translate }}</mat-label>
-                                            <input matInput placeholder="Created"
-                                                name="created"
-                                                    formControlName="created">
+                                            <input matInput placeholder="Created" name="created"
+                                                formControlName="created">
                                         </mat-form-field>
 
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ROUTES.CREATEDBYNAME' | translate }}</mat-label>
-                                            <input matInput placeholder="CreatedByName"
-                                                name="createdbyname"
+                                            <input matInput placeholder="CreatedByName" name="createdbyname"
                                                 formControlName="createdbyname">
                                         </mat-form-field>
                                     </div>
-
-                                <!-- <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <!-- <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'ROUTES.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When"
@@ -103,37 +78,30 @@
                                             formControlName="deletedbyname">
                                     </mat-form-field>
                                 </div> -->
-
                                     <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ROUTES.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                            <input matInput placeholder="Last Modified Date"
-                                                name="lastmodifieddate"
+                                            <input matInput placeholder="Last Modified Date" name="lastmodifieddate"
                                                 formControlName="lastmodifieddate">
                                         </mat-form-field>
-
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ROUTES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
                                             <input matInput placeholder="Last Modified By Name"
-                                                name="lastmodifiedbyname"
-                                                formControlName="lastmodifiedbyname">
+                                                name="lastmodifiedbyname" formControlName="lastmodifiedbyname">
                                         </mat-form-field>
                                     </div>
                                 </fieldset>
                             </div>
                         </mat-tab>
-
                     </mat-tab-group>
                 </form>
-            <agm-map [disableDefaultUI]="false">
-           
-            <!-- [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="false"   (mapClick)="mapClicked($event)"-->
-            <!-- <agm-polyline *ngFor="let rte of routes" [strokeColor]="blue">
+                <agm-map [disableDefaultUI]="false">
+                    <!-- [latitude]="lat" [longitude]="lng" [zoom]="12" [disableDefaultUI]="false" [zoomControl]="false"   (mapClick)="mapClicked($event)"-->
+                    <!-- <agm-polyline *ngFor="let rte of routes" [strokeColor]="blue">
                 <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
                 </agm-polyline-point>
             </agm-polyline> -->
-
-            </agm-map>
+                </agm-map>
             </div>
             <!-- / CONTENT -->
         </div>
@@ -141,4 +109,3 @@
     </div>
     <!-- / CENTER -->
 </div>
-

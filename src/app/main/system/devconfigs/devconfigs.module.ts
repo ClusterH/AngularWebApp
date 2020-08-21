@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { DevConfigsComponent} from 'app/main/system/devconfigs/devconfigs/devconfigs.component';
+import { DevConfigsComponent } from 'app/main/system/devconfigs/devconfigs/devconfigs.component';
 import { DevConfigsService } from 'app/main/system/devconfigs/services/devconfigs.service';
-import { DevConfigDetailComponent} from 'app/main/system/devconfigs/devconfig_detail/devconfig_detail.component';
+import { DevConfigDetailComponent } from 'app/main/system/devconfigs/devconfig_detail/devconfig_detail.component';
 import { DevConfigDetailService } from 'app/main/system/devconfigs/services/devconfig_detail.service';
 import { CourseDialogComponent } from 'app/main/system/devconfigs/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'devconfigs',
+        path: 'devconfigs',
         component: DevConfigsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'devconfig_detail',
+        path: 'devconfig_detail',
         component: DevConfigDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        DevConfigsService, DevConfigDetailService
+        DevConfigsService, DevConfigDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class DevConfigsModule{ }
+export class DevConfigsModule { }

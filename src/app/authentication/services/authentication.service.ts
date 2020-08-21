@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
@@ -32,41 +32,39 @@ export class AuthService {
         return this._httpClient.get('http://trackingxlapi.polarix.com/AuthenticateUser.ashx', {
             headers: headers,
             params: params
-        })
-            .pipe(map(user => {
+        });
+        // .pipe(map(user => {
 
-                if (user) {
-                    localStorage.setItem('user_info', JSON.stringify(user));
-                }
+        //     if (user) {
+        //         localStorage.setItem('user_info', JSON.stringify(user));
+        //     }
 
-                this.currentUserSubject.next(user);
-                return user;
-            }));
+        //     this.currentUserSubject.next(user);
+        //     return user;
+        // }), share());
     }
 
     getUserObject(conncode: string, id: number) {
+        console.log('getUserObject--->>>>');
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         let params = new HttpParams()
             .set('conncode', conncode.toString())
+            .set('userid', id.toString())
             .set('id', id.toString())
             .set('method', 'user_Object');
-
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
-        })
+        });
     }
 
     logOut() {
         // remove user from local storage and set current user to null
-
         localStorage.removeItem('user_info');
-
+        localStorage.removeItem('current_token');
         this.currentUserSubject.next(null);
-
     }
 }

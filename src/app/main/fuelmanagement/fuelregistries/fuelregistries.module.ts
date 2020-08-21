@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { FuelregistriesComponent} from 'app/main/fuelmanagement/fuelregistries/fuelregistries/fuelregistries.component';
+import { FuelregistriesComponent } from 'app/main/fuelmanagement/fuelregistries/fuelregistries/fuelregistries.component';
 import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
-import { FuelregistryDetailComponent} from 'app/main/fuelmanagement/fuelregistries/fuelregistry_detail/fuelregistry_detail.component';
+import { FuelregistryDetailComponent } from 'app/main/fuelmanagement/fuelregistries/fuelregistry_detail/fuelregistry_detail.component';
 import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistry_detail.service';
 import { CourseDialogComponent } from 'app/main/fuelmanagement/fuelregistries/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'fuelregistries',
+        path: 'fuelregistries',
         component: FuelregistriesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'fuelregistry_detail',
+        path: 'fuelregistry_detail',
         component: FuelregistryDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatRadioModule,
@@ -100,7 +101,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        FuelregistriesService, FuelregistryDetailService
+        FuelregistriesService, FuelregistryDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class FuelregistriesModule{ }
+export class FuelregistriesModule { }

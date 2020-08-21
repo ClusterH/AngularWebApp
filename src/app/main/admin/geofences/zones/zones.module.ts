@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { ZonesComponent} from 'app/main/admin/geofences/zones/zones/zones.component';
+import { ZonesComponent } from 'app/main/admin/geofences/zones/zones/zones.component';
 import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.service';
-import { ZoneDetailComponent} from 'app/main/admin/geofences/zones/zone_detail/zone_detail.component';
+import { ZoneDetailComponent } from 'app/main/admin/geofences/zones/zone_detail/zone_detail.component';
 import { ZoneDetailService } from 'app/main/admin/geofences/zones/services/zone_detail.service';
 import { CourseDialogComponent } from 'app/main/admin/geofences/zones/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'zones',
+        path: 'zones',
         component: ZonesComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'zone_detail',
+        path: 'zone_detail',
         component: ZoneDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        ZonesService, ZoneDetailService
+        ZonesService, ZoneDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class ZonesModule{ }
+export class ZonesModule { }

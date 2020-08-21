@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { AccountsComponent} from 'app/main/system/accounts/accounts/accounts.component';
+import { AccountsComponent } from 'app/main/system/accounts/accounts/accounts.component';
 import { AccountsService } from 'app/main/system/accounts/services/accounts.service';
-import { AccountDetailComponent} from 'app/main/system/accounts/account_detail/account_detail.component';
+import { AccountDetailComponent } from 'app/main/system/accounts/account_detail/account_detail.component';
 import { AccountDetailService } from 'app/main/system/accounts/services/account_detail.service';
 import { CourseDialogComponent } from 'app/main/system/accounts/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'accounts',
+        path: 'accounts',
         component: AccountsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'account_detail',
+        path: 'account_detail',
         component: AccountDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        AccountsService, AccountDetailService
+        AccountsService, AccountDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class AccountsModule{ }
+export class AccountsModule { }

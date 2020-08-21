@@ -34,33 +34,34 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { EventsComponent} from 'app/main/logistic/maintenance/events/events/events.component';
+import { EventsComponent } from 'app/main/logistic/maintenance/events/events/events.component';
 import { EventsService } from 'app/main/logistic/maintenance/events/services/events.service';
-import { EventDetailComponent} from 'app/main/logistic/maintenance/events/event_detail/event_detail.component';
+import { EventDetailComponent } from 'app/main/logistic/maintenance/events/event_detail/event_detail.component';
 import { EventDetailService } from 'app/main/logistic/maintenance/events/services/event_detail.service';
 import { CourseDialogComponent } from 'app/main/logistic/maintenance/events/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'events',
+        path: 'events',
         component: EventsComponent,
         // pathMatch: 'full'
     },
     {
-        path     : 'event_detail',
+        path: 'event_detail',
         component: EventDetailComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -99,7 +100,7 @@ const routes = [
         CourseDialogComponent,
     ],
     providers: [
-        EventsService, EventDetailService
+        EventsService, EventDetailService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class EventsModule{ }
+export class EventsModule { }

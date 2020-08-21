@@ -1,0 +1,154 @@
+<div id="installers" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center_table center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'INSTALLER.INSTALLERS' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'INSTALLER.SELECTFIELD' | translate}}:</mat-label>
+
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'INSTALLER.NAME' | translate}}</mat-option>
+                            <mat-option value="email">{{'INSTALLER.EMAIL' | translate}}</mat-option>
+                            <mat-option value="password">{{'INSTALLER.PASSWORD' | translate}}</mat-option>
+                            <mat-option value="installerprofile">{{'INSTALLER.INSTALLERPROFILE' | translate}}
+                            </mat-option>
+                            <mat-option value="timezone">{{'INSTALLER.TIMEZONE' | translate}}</mat-option>
+                            <mat-option value="lengthunit">{{'INSTALLER.LENGTHUNIT' | translate}}</mat-option>
+                            <mat-option value="fuelunit">{{'INSTALLER.FUELUNIT' | translate}}</mat-option>
+                            <mat-option value="weightunit">{{'INSTALLER.WEIGHTUNIT' | translate}}</mat-option>
+                            <mat-option value="tempunit">{{'INSTALLER.TEMPUNIT' | translate}}</mat-option>
+                            <mat-option value="company">{{'INSTALLER.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'INSTALLER.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'INSTALLER.SUBGROUP' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'INSTALLER.SEARCHFORINSTALLER' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterInstaller()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-fab class="accent  mt-24 mt-md-0" (click)="addNewInstaller()">
+                <mat-icon>add</mat-icon>
+
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;">
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+
+            <mat-table class="installers-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
+                matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+                style="width: 100%;">
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let installer">
+                        <button (click)="editShowInstallerDetail(installer)" [disabled]="restrictValue == '1'"
+                            style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteInstaller(installer)">delete
+                        </mat-icon>
+                        <!-- <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateInstaller(installer)">file_copy</mat-icon> -->
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSTALLER.NAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let installer">
+                        <p class="name text-truncate">{{installer.name}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSTALLER.COMPANY' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let installer">
+                        <p class="company text-truncate">{{installer.company}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Group Column -->
+                <ng-container matColumnDef="group">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSTALLER.GROUP' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let installer">
+                        <p class="group text-truncate">{{installer.group}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let installer; columns: displayedColumns;" class="installer font-size-10"
+                    matRipple>
+                </mat-row>
+
+            </mat-table>
+
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageInstaller()"
+                        [(ngModel)]="dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+
+            </div>
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageInstaller = $event">
+            </mat-paginator>
+        </div>
+
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -18,11 +18,6 @@ import { merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
-
-
-
-
-
 @Component({
     selector: 'app-poigroup-detail',
     templateUrl: './poigroup_detail.component.html',
@@ -36,15 +31,11 @@ export class PoigroupDetailComponent implements OnInit {
     pageType: string;
     userConncode: string;
     userID: number;
-
     poigroupModel_flag: boolean;
-
     poigroupForm: FormGroup;
     poigroupDetail: PoigroupDetail = {};
-
     displayedColumns: string[] = ['name'];
     POIsColumns: string[] = ['id', 'name'];
-
     dataSource: PoigroupDetailDataSource;
 
     dataSourceCompany: PoigroupDetailDataSource;
@@ -53,20 +44,15 @@ export class PoigroupDetailComponent implements OnInit {
 
     filter_string: string = '';
     method_string: string = '';
-
     currentTab: number;
-
     dialogRef: any;
     filterBy: boolean;
     includedSelection = new SelectionModel<Element>(true, []);
     excludedSelection = new SelectionModel<Element>(true, []);
 
-    @ViewChild(MatPaginator, { static: true })
-    paginatorCompany: MatPaginator;
-    @ViewChild('paginatorIncluded', { read: MatPaginator, static: true })
-    paginatorIncluded: MatPaginator;
-    @ViewChild('paginatorExcluded', { read: MatPaginator, static: true })
-    paginatorExcluded: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginatorCompany: MatPaginator;
+    @ViewChild('paginatorIncluded', { read: MatPaginator, static: true }) paginatorIncluded: MatPaginator;
+    @ViewChild('paginatorExcluded', { read: MatPaginator, static: true }) paginatorExcluded: MatPaginator;
 
     constructor(
         public poigroupDetailService: PoigroupDetailService,

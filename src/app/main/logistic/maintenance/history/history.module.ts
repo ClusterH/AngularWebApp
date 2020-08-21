@@ -33,26 +33,27 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseConfirmDialogModule } from '@fuse/components';
 
-import { HistoryComponent} from 'app/main/logistic/maintenance/history/history/history.component';
+import { HistoryComponent } from 'app/main/logistic/maintenance/history/history/history.component';
 import { HistoryService } from 'app/main/logistic/maintenance/history/services/history.service';
 import { AttendDialogComponent } from 'app/main/logistic/maintenance/history/dialog/dialog.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 const routes = [
     {
-        path     : 'history',
+        path: 'history',
         component: HistoryComponent,
         // pathMatch: 'full'
     },
 ];
 
 @NgModule({
-    imports     : [
+    imports: [
         FuseSharedModule,
         FuseConfirmDialogModule,
         NgxMatSelectSearchModule,
-        
+
         MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
@@ -90,7 +91,7 @@ const routes = [
         AttendDialogComponent,
     ],
     providers: [
-        HistoryService
+        HistoryService, { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
     ]
 })
-export class HistoryModule{ }
+export class HistoryModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -12,7 +12,8 @@ import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
 import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { AuthService } from 'app/authentication/services/authentication.service';
 import * as _ from 'lodash';
-import { first } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { first, takeUntil, share } from 'rxjs/operators';
 
 @Component({
     selector: 'login',
@@ -21,7 +22,7 @@ import { first } from 'rxjs/operators';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
     loginForm: FormGroup;
     userEmail: string;
     userPassword: string;
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
     // hiddenNavItem: boolean;
     isHideNavList: any = {};
     userObjectList: any = {};
+    private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -45,12 +47,19 @@ export class LoginComponent implements OnInit {
         private _translateService: TranslateService,
     ) {
         // this.hiddenNavItem = false;
+        this._unsubscribeAll = new Subject();
+
+        // if (localStorage.getItem('user_info') && (localStorage.getItem('current_token').length != 0)) {
         if (localStorage.getItem('user_info')) {
+            console.log('constructor====>>>');
             this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
             this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
             this.isHideNaveItem(this.userConncode, this.userID);
-            this.router.navigate(['/home/analytics']);
+            // this.router.navigate(['/admin/vehicles/vehicles']);
         }
+        //  else {
+        //     this.router.navigate(['/login']);
+        // }
 
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         // Configure the layout
@@ -85,11 +94,14 @@ export class LoginComponent implements OnInit {
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
     }
 
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     userLogin() {
         // stop here if form is invalid
-        if (this.loginForm.invalid) {
-            return;
-        }
+        if (this.loginForm.invalid) { return; }
 
         this.userEmail = this.loginForm.get('email').value;
         this.userPassword = this.loginForm.get('password').value;
@@ -106,35 +118,40 @@ export class LoginComponent implements OnInit {
         }
 
         this.authService.userLogin(this.userEmail, this.userPassword)
-            .pipe(first())
-            .subscribe((res: any) => {
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                console.log("login--->>>", res);
                 if (res.responseCode == 100) {
-                    this.isHideNaveItem(res.TrackingXLAPI.DATA.conncode, res.TrackingXLAPI.DATA.id);
+                    console.log('Login success=>>>>');
+                    localStorage.setItem('user_info', JSON.stringify(res));
+
+                    this.userConncode = res.TrackingXLAPI.DATA.conncode;
+                    this.userID = res.TrackingXLAPI.DATA.id;
+                    // localStorage.setItem('current_token', res.token);
+
+                    this.isHideNaveItem(this.userConncode, this.userID);
                 }
-                this.router.navigate(['/home/analytics']);
-            }, error => {
-                alert(error);
             });
     }
 
     isHideNaveItem(conncode: string, id: number) {
-        this.authService.getUserObject(conncode, id)
-            .subscribe((res: any) => {
-                if (res.responseCode == 100) {
-                    this.isHideNavList = res.TrackingXLAPI.DATA1;
-                    this.userObjectList = res.TrackingXLAPI.DATA;
-                    console.log(this.userObjectList);
+        this.authService.getUserObject(conncode, id).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+            console.log('userObject --->>>', res);
+            if (res.responseCode == 100) {
+                this.isHideNavList = res.TrackingXLAPI.DATA1;
+                this.userObjectList = res.TrackingXLAPI.DATA;
+                console.log(this.userObjectList);
 
-                    localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
-                    localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
+                localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
+                localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
 
-                    for (let item in this.isHideNavList) {
-                        if (Number(this.isHideNavList[item]) == 0) {
-                            this._fuseNavigationService.updateNavigationItem(`${item}`, { hidden: true });
-                        }
+                for (let item in this.isHideNavList) {
+                    if (Number(this.isHideNavList[item]) == 0) {
+                        this._fuseNavigationService.updateNavigationItem(`${item}`, { hidden: true });
                     }
                 }
-            });
+                this.router.navigate(['/admin/vehicles/vehicles']);
+            }
+        });
     }
 
     setLanguage(lang): void {
