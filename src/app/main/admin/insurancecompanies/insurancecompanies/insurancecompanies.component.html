@@ -1,20 +1,14 @@
 <div id="insurancecompanies" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center_table center">
-
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
-
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -24,15 +18,15 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
-                    <mat-label style="min-width: max-content;">{{'INSURANCECOMPANIES.SELECTFIELD' | translate}}:</mat-label>
-
+                    <mat-label style="min-width: max-content;">{{'INSURANCECOMPANIES.SELECTFIELD' | translate}}:
+                    </mat-label>
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'INSURANCECOMPANIES.NAME' | translate}}</mat-option>
-                            <!-- <mat-option value="insurancecompany">{{'INSURANCECOMPANIES.COMPANY' | translate}}</mat-option>
+                            <!-- <mat-option value="insurancecompany">{{'INSURANCECOMPANIES.INSURANCECOMPANY' | translate}}</mat-option>
                             <mat-option value="group">{{'INSURANCECOMPANIES.GROUP' | translate}}</mat-option>
                             <mat-option value="subgroup">{{'INSURANCECOMPANIES.SUBGROUP' | translate}}</mat-option>
                             <mat-option value="account">{{'INSURANCECOMPANIES.ACCOUNT' | translate}}</mat-option>
@@ -46,10 +40,14 @@
                             <mat-option value="timezone">{{'INSURANCECOMPANIES.TIMEZONE' | translate}}</mat-option> -->
                             <mat-option value="created">{{'INSURANCECOMPANIES.CREATED' | translate}}</mat-option>
                             <mat-option value="created">{{'INSURANCECOMPANIES.CREATEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="deletedwhen">{{'INSURANCECOMPANIES.DELETEDWHEN' | translate}}</mat-option>
-                            <mat-option value="deletedwhen">{{'INSURANCECOMPANIES.DELETEDBYNAME' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'INSURANCECOMPANIES.LASTMODIFIEDDATE' | translate}}</mat-option>
-                            <mat-option value="lastmodifieddate">{{'INSURANCECOMPANIES.LASTMODIFIEDBYNAME' | translate}}</mat-option>
+                            <mat-option value="deletedwhen">{{'INSURANCECOMPANIES.DELETEDWHEN' | translate}}
+                            </mat-option>
+                            <mat-option value="deletedwhen">{{'INSURANCECOMPANIES.DELETEDBYNAME' | translate}}
+                            </mat-option>
+                            <mat-option value="lastmodifieddate">{{'INSURANCECOMPANIES.LASTMODIFIEDDATE' | translate}}
+                            </mat-option>
+                            <mat-option value="lastmodifieddate">{{'INSURANCECOMPANIES.LASTMODIFIEDBYNAME' | translate}}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -57,155 +55,143 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'INSURANCECOMPANIES.SEARCHFORCOMPANY' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'INSURANCECOMPANIES.SEARCHFORINSURANCECOMPANY' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
-
             <!-- ADD BUTTON -->
-            <button mat-fab
-                    [routerLink]="'/admin/insurancecompanies/insurancecompany_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue != 3"
-                    (click)="addNewInsuranceCompany()">
-               <mat-icon>add</mat-icon>
-
+            <button mat-fab [routerLink]="'/admin/insurancecompanies/insurancecompany_detail'"
+                class="accent  mt-24 mt-md-0" [disabled]="restrictValue != 3" (click)="addNewInsurancecompany()">
+                <mat-icon>add</mat-icon>
             </button>
             <!-- / ADD BUTTON -->
-
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                <mat-spinner
-                color="accent"
-                mode="indeterminate"
-                diameter="50"
-                style="margin:0 auto;">
-                </mat-spinner>
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                    </mat-spinner>
                 </div>
             </div>
-            <mat-table class="insurancecompanies-table font-size-10"
-                        #table [dataSource]="dataSource"
-                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 100%;">
-
+            <mat-table class="insurancecompanies-table font-size-10" #table [dataSource]="dataSource" matSort
+                matSortActive="id" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar style="width: 100%;">
                 <!-- ID Column -->
-                <ng-container matColumnDef="id" >
+                <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let insurancecompany">
-                        <button (click) = "editShowInsuranceCompanyDetail(insurancecompany)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteInsuranceCompany(insurancecompany)">delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateInsuranceCompany(insurancecompany)">file_copy</mat-icon>
+                        <button (click)="editShowInsurancecompanyDetail(insurancecompany)"
+                            [disabled]="restrictValue == '1'" style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
+                        <mat-icon class="active-icon s-16 delete_icon"
+                            (click)="deleteInsurancecompany(insurancecompany)">delete
+                        </mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon"
+                            (click)="duplicateInsurancecompany(insurancecompany)">file_copy
+                        </mat-icon>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.NAME' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.NAME' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let insurancecompany">
                         <p class="name text-truncate">{{insurancecompany.name}}</p>
                     </mat-cell>
                 </ng-container>
-
-                               
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="created text-truncate">
                             {{insurancecompany.created}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
-                 <!-- CreatedByName Column -->
-                 <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                <!-- CreatedByName Column -->
+                <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'INSURANCECOMPANIES.CREATEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="created text-truncate">
                             {{insurancecompany.createdbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'INSURANCECOMPANIES.DELETEDWHEN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="deletedwhen text-truncate">
                             {{insurancecompany.deletedwhen}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'INSURANCECOMPANIES.DELETEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="deletedbyname text-truncate">
                             {{insurancecompany.deletedbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'INSURANCECOMPANIES.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="lastmodifieddate text-truncate">
                             {{insurancecompany.lastmodifieddate}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'INSURANCECOMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let insurancecompany" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'INSURANCECOMPANIES.LASTMODIFIEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let insurancecompany">
                         <p class="lastmodifiedbyname text-truncate">
                             {{insurancecompany.lastmodifiedbyname}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-
-                <mat-row  *matRowDef="let insurancecompany; columns: displayedColumns;"
-                            class="insurancecompany font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let insurancecompany; columns: displayedColumns;"
+                    class="insurancecompany font-size-10" matRipple>
                 </mat-row>
-
             </mat-table>
-
         </div>
         <div>
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
-
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

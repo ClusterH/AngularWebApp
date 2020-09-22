@@ -13,13 +13,12 @@ export class VehMarkersService {
         this.onVehMarkerClickChanged = new BehaviorSubject([]);
     }
 
-    getVehMarkers(conncode: string, userid: number): Observable<any> {
-        console.log('getvehiclelocationservice=======>>>', userid);
+    getVehMarkers(): Observable<any> {
+        console.log('getvehiclelocationservice=======>>>');
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
+
             .set('method', "GetVehicleLocations");
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,

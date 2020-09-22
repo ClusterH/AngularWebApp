@@ -2,7 +2,7 @@
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'INSTALLER.INSTALLERCREATE' | translate }}</span>
-            <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'INSTALLER.INSTALLEREDIT' | translate }}</span>
+            <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'INSTALLER.INSTALLERDETAIL' | translate }}</span>
             <button mat-icon-button (click)="close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -10,76 +10,91 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-
         <form [formGroup]="installerForm">
-
             <div fxLayout="column">
                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                     <mat-label>{{ 'INSTALLER.NAME' | translate }}</mat-label>
                     <input matInput placeholder="Name" name="name" formControlName="name" required>
                 </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'INSTALLER.USERNAME' | translate }}</mat-label>
+                    <input matInput placeholder="User Name" name="username" formControlName="username" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'INSTALLER.PASSWORD' | translate }}</mat-label>
+                    <input matInput placeholder="Password" name="password" formControlName="password" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'INSTALLER.EMAIL' | translate }}</mat-label>
+                    <input matInput placeholder="Email" name="email" formControlName="email" required>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>{{ 'INSTALLER.CELLPHONE' | translate }}</mat-label>
+                    <input matInput placeholder="Cell Phone" name="cellphone" formControlName="cellphone" required>
+                </mat-form-field>
 
                 <mat-form-field appearance="outline" floatLabel="always" class="select_list">
-                    <mat-label>{{ 'INSTALLER.COMPANY' | translate }}</mat-label>
-                    <mat-select (click)="showCompanyList('company_clist')" (selectionChange)="onCompanyChange($event)"
-                        formControlName="company">
-                        <div class="filter_company_input">
+                    <mat-label>{{ 'INSTALLER.INSTALLCONTRACTOR' | translate }}</mat-label>
+                    <mat-select (click)="showInstallContractorList('installcontractor_clist')"
+                        formControlName="installcontractor">
+                        <div class="filter_installcontractor_input">
                             <input matInput formControlName="filterstring" #filter placeholder="Filter"
                                 (keyup)="onKey($event)">
                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                         </div>
 
                         <div style="width: 100%; overflow: auto;">
-                            <mat-table [dataSource]="dataSourceCompany"
+                            <mat-table [dataSource]="dataSourceInstallContractor"
                                 class="vehicles-table font-size-10 mat-elevation-z8">
                                 <ng-container matColumnDef="name">
-                                    <td mat-cell *matCellDef="let company;" style="border: 0px;">
-                                        <mat-option [value]="company.id">{{company.name}}</mat-option>
+                                    <td mat-cell *matCellDef="let installcontractor;" style="border: 0px;">
+                                        <mat-option [value]="installcontractor.id">{{installcontractor.name}}
+                                        </mat-option>
                                     </td>
                                 </ng-container>
-                                <tr class="company_list" style="height: 15px;" mat-row
+                                <tr class="installcontractor_list" style="height: 15px;" mat-row
                                     *matRowDef="let row; columns: displayedColumns;"></tr>
                             </mat-table>
                         </div>
-                        <mat-paginator style=" height: 40px;" #paginatorCompany class="table_paginator_detail"
-                            [length]="dataSourceCompany.totalLength" [pageSize]="10" [hidePageSize]="true"
-                            showFirstLastButtons (click)="comapnyPagenation(paginatorCompany)" sticky="true">
+                        <mat-paginator style=" height: 40px;" #paginatorInstallContractor class="table_paginator_detail"
+                            [length]="dataSourceInstallContractor.totalLength" [pageSize]="10" [hidePageSize]="true"
+                            showFirstLastButtons (click)="installcontractorPagenation(paginatorInstallContractor)"
+                            sticky="true">
                         </mat-paginator>
-
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>{{ 'INSTALLER.GROUP' | translate }}</mat-label>
-                    <mat-select formControlName="group" (click)="showCompanyList('group_clist')">
-                        <div class="filter_company_input">
+                    <mat-label>{{ 'INSTALLER.CARRIER' | translate }}</mat-label>
+                    <mat-select formControlName="carrier" (click)="showInstallContractorList('carrier_clist')">
+                        <div class="filter_installcontractor_input">
                             <input matInput formControlName="filterstring" #filter placeholder="Filter"
                                 (keyup)="onKey($event)">
                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                         </div>
 
                         <div style="width: 100%; overflow: auto;">
-                            <mat-table [dataSource]="dataSourceGroup"
+                            <mat-table [dataSource]="dataSourceCarrier"
                                 class="vehicles-table font-size-10 mat-elevation-z8">
                                 <ng-container matColumnDef="name">
-                                    <td mat-cell *matCellDef="let group" style="border: 0px;">
-                                        <mat-option style="width: 100%; height: auto; padding: 0px;" [value]="group.id">
-                                            {{group.name}}</mat-option>
+                                    <td mat-cell *matCellDef="let carrier" style="border: 0px;">
+                                        <mat-option style="width: 100%; height: auto; padding: 0px;"
+                                            [value]="carrier.id">
+                                            {{carrier.name}}</mat-option>
                                     </td>
                                 </ng-container>
-                                <tr class="company_list" style="height: 15px; " mat-row
+                                <tr class="installcontractor_list" style="height: 15px; " mat-row
                                     *matRowDef="let row; columns: displayedColumns;"></tr>
                             </mat-table>
                         </div>
 
-                        <mat-paginator style=" height: 40px;" #paginatorGroup class="table_paginator"
-                            [length]="dataSourceGroup.totalLength" [pageSize]="10" [hidePageSize]="true"
-                            showFirstLastButtons (click)="groupPagenation(paginatorGroup)"></mat-paginator>
+                        <mat-paginator style=" height: 40px;" #paginatorCarrier class="table_paginator"
+                            [length]="dataSourceCarrier.totalLength" [pageSize]="10" [hidePageSize]="true"
+                            showFirstLastButtons (click)="carrierPagenation(paginatorCarrier)"></mat-paginator>
                     </mat-select>
                 </mat-form-field>
             </div>
         </form>
-
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">

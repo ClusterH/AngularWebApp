@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class TankDetailService 
-{
+export class TankDetailService {
     routeParams: any;
     tank: any;
     public tank_detail: any;
@@ -18,85 +17,94 @@ export class TankDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the defaults
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
-        
+    getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
-            
+        if (name == '') {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
-           
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
-        
+
     }
 
-    saveTankDetail(conncode: string, userid: number, tankDetail: any = {}): Observable<any> {
+    getGroups(pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        if (name == '') {
+            const params_detail = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('companyid', companyid.toString())
+                .set('method', 'group_CList');
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: header_detail,
+                params: params_detail
+            });
+        } else {
+            const params_detail = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('companyid', companyid.toString())
+                .set('method', 'group_CList');
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: header_detail,
+                params: params_detail
+            });
+        }
+    }
 
+    saveTankDetail(tankDetail: any = {}): Observable<any> {
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', tankDetail.id.toString())
             .set('name', tankDetail.name.toString())
             .set('isactive', tankDetail.isactive.toString())
-            .set('createdby', tankDetail.createdby.toString())
-            .set('created', tankDetail.createdwhen.toString())
-            .set('lastmodifiedby', tankDetail.lastmodifiedby.toString())
-            .set('lastmodifieddate', tankDetail.lastmodifieddate.toString())
-            .set('method', 'tank_save');
-        
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            .set('companyid', tankDetail.companyid.toString())
+            .set('groupid', tankDetail.groupid.toString())
+            .set('lastreport', tankDetail.lastreport)
+            .set('volume', tankDetail.volume.toString())
+            .set('volumeunitid', tankDetail.volumeunitid.toString())
+            .set('level', tankDetail.level.toString())
+            .set('levelunitid', tankDetail.levelunitid.toString())
+            .set('temp', tankDetail.temp.toString())
+            .set('tempunitid', tankDetail.tempunitid.toString())
+            .set('hassensor', tankDetail.hassensor.toString())
+            .set('capacity', tankDetail.capacity.toString())
+            .set('method', 'FuelTank_Save');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
     }
 
-    getTankHistory(conncode: string, userid: number, tankid: number, fromtime: string, totime: string): Observable<any> {
+    getTankHistory(tankid: number, fromtime: string, totime: string): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('tankid', tankid.toString())
             .set('fromtime', fromtime.toString())
             .set('totime', totime.toString())
             .set('method', 'fueltank_history');
-        
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

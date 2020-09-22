@@ -17,7 +17,7 @@ import { ReportDataSource } from "app/main/report/reportcomponent/services/repor
 import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
 import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
 import { BehaviorSubject, merge, Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { ReportDetail } from './model/report.model';
 
 @Component({
@@ -80,8 +80,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     filter_string: string = '';
     method_string: string = 'report';
 
-    userConncode: string;
-    userID: number;
+
 
     reportColumns = [
         'id',
@@ -136,8 +135,7 @@ export class ReportComponent implements OnInit, OnDestroy {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
@@ -178,7 +176,7 @@ export class ReportComponent implements OnInit, OnDestroy {
             this.dataSourceDriver = new ReportDataSource(this.reportService);
             this.dataSourceEvent = new ReportDataSource(this.reportService);
             setTimeout(() => {
-                this.dataSourceReport.loadReport(this.userConncode, this.userID, 0, 5, this.currentCategoryID, '', "report_clist");
+                this.dataSourceReport.loadReport(0, 5, this.currentCategoryID, '', "report_clist");
             });
 
             // Vertical Stepper form stepper
@@ -268,8 +266,8 @@ export class ReportComponent implements OnInit, OnDestroy {
             // this.dataSourceUnit = new ReportDataSource(this.reportService);
 
             // setTimeout(() => {
-            //     this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, 0, '', 'group_clist');
-            //     this.dataSourceUnit.loadReport(this.userConncode, this.userID, 0, 5, 0, '', 'unit_clist');
+            //     this.dataSourceGroup.loadGroup0, 5, 0, '', 'group_clist');
+            //     this.dataSourceUnit.loadReport0, 5, 0, '', 'unit_clist');
             // });
 
             this.loadingSubjectGroup.next(true);
@@ -287,7 +285,7 @@ export class ReportComponent implements OnInit, OnDestroy {
             // this.dataSourceUnit = new ReportDataSource(this.reportService);
 
             // setTimeout(() => {
-            //     this.dataSourceUnit.loadReport(this.userConncode, this.userID, 0, 5, 0, '', 'unit_clist');
+            //     this.dataSourceUnit.loadReport0, 5, 0, '', 'unit_clist');
             // });
 
             this.loadingSubjectUnit.next(true);
@@ -302,7 +300,7 @@ export class ReportComponent implements OnInit, OnDestroy {
             if (!this.isWholeCompany) {
                 this.dataSourceGroup = new ReportDataSource(this.reportService);
 
-                this.dataSourceGroup.loadGroup(this.userConncode, this.userID, 0, 5, this.companySelection.selected[0].id, '', 'group_clist')
+                this.dataSourceGroup.loadGroup(0, 5, this.companySelection.selected[0].id, '', 'group_clist')
                 this.myStepper.selected.completed = true;
             }
 
@@ -318,7 +316,7 @@ export class ReportComponent implements OnInit, OnDestroy {
             if (!this.isWholeGroup) {
                 this.dataSourceUnit = new ReportDataSource(this.reportService);
 
-                this.dataSourceUnit.loadGroup(this.userConncode, this.userID, 0, 5, this.groupSelection.selected[0].id, '', 'unit_clist')
+                this.dataSourceUnit.loadGroup(0, 5, this.groupSelection.selected[0].id, '', 'unit_clist')
                 this.myStepper.selected.completed = true;
             }
 
@@ -371,11 +369,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                 .pipe(
                     tap(() => {
                         this.loadReport(this.method_string)
-                    })
-                )
-                .subscribe((res: any) => {
-
-                });
+                    }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
         })
     }
 
@@ -387,17 +381,17 @@ export class ReportComponent implements OnInit, OnDestroy {
 
     loadReport(method_string: string) {
         if (method_string == 'report') {
-            this.dataSourceReport.loadReport(this.userConncode, this.userID, this.paginatorReport.pageIndex, this.paginatorReport.pageSize, this.currentCategoryID, this.filter_string, `${method_string}_clist`)
+            this.dataSourceReport.loadReport(this.paginatorReport.pageIndex, this.paginatorReport.pageSize, this.currentCategoryID, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'company') {
-            this.dataSourceCompany.loadReport(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceCompany.loadReport(this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'group') {
-            this.dataSourceGroup.loadGroup(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceGroup.loadGroup(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'unit') {
-            this.dataSourceUnit.loadGroup(this.userConncode, this.userID, this.paginatorUnit.pageIndex, this.paginatorUnit.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceUnit.loadGroup(this.paginatorUnit.pageIndex, this.paginatorUnit.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'driver') {
-            this.dataSourceDriver.loadReport(this.userConncode, this.userID, this.paginatorDriver.pageIndex, this.paginatorDriver.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceDriver.loadReport(this.paginatorDriver.pageIndex, this.paginatorDriver.pageSize, 0, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'event') {
-            this.dataSourceEvent.loadReport(this.userConncode, this.userID, this.paginatorEvent.pageIndex, this.paginatorEvent.pageSize, 0, this.filter_string, `${method_string}_clist`)
+            this.dataSourceEvent.loadReport(this.paginatorEvent.pageIndex, this.paginatorEvent.pageSize, 0, this.filter_string, `${method_string}_clist`)
         }
     }
 
@@ -488,7 +482,7 @@ export class ReportComponent implements OnInit, OnDestroy {
             this.selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
 
 
-            this.reportService.getReportParams(this.userConncode, this.userID, selectedReportid, this.selectedReport.apimethod)
+            this.reportService.getReportParams(selectedReportid, this.selectedReport.apimethod)
                 .subscribe((res: any) => {
 
                     for (let i = 0; i < res.TrackingXLAPI.DATA.length; i++) {
@@ -500,7 +494,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                 if (params == 'companyid') {
                     this.loadingSubjectCompany.next(true);
                     this.dataSourceCompany = new ReportDataSource(this.reportService);
-                    this.dataSourceCompany.loadReport(this.userConncode, this.userID, 0, 5, 0, this.filter_string, 'company_clist');
+                    this.dataSourceCompany.loadReport(0, 5, 0, this.filter_string, 'company_clist');
 
 
 
@@ -597,15 +591,15 @@ export class ReportComponent implements OnInit, OnDestroy {
 
 
         if (this.method_string == 'company') {
-            this.dataSourceCompany.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceCompany.loadReport(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'group') {
-            this.dataSourceGroup.loadGroup(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceGroup.loadGroup(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'unit') {
-            this.dataSourceUnit.loadGroup(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceUnit.loadGroup(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'driver') {
-            this.dataSourceDriver.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceDriver.loadReport(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'event') {
-            this.dataSourceEvent.loadReport(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
+            this.dataSourceEvent.loadReport(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         }
     }
 
@@ -710,8 +704,6 @@ export class ReportComponent implements OnInit, OnDestroy {
         for (let param in this.entered_report_param) {
             if (this.entered_report_param[param] === null) {
                 delete this.entered_report_param[param];
-            } else {
-
             }
         }
 

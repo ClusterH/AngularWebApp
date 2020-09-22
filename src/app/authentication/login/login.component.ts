@@ -27,8 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     userEmail: string;
     userPassword: string;
     userRemember: boolean;
-    userConncode: string;
-    userID: number;
     selectedLanguage: any;
     languages: any;
 
@@ -52,9 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         // if (localStorage.getItem('user_info') && (localStorage.getItem('current_token').length != 0)) {
         if (localStorage.getItem('user_info')) {
             console.log('constructor====>>>');
-            this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-            this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-            this.isHideNaveItem(this.userConncode, this.userID);
+            this.isHideNaveItem();
             // this.router.navigate(['/admin/vehicles/vehicles']);
         }
         //  else {
@@ -121,23 +117,20 @@ export class LoginComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                 console.log("login--->>>", res);
                 if (res.responseCode == 100) {
-                    console.log('Login success=>>>>');
+                    console.log('Login success=>>>>', res);
                     localStorage.setItem('user_info', JSON.stringify(res));
 
-                    this.userConncode = res.TrackingXLAPI.DATA.conncode;
-                    this.userID = res.TrackingXLAPI.DATA.id;
-                    // localStorage.setItem('current_token', res.token);
-
-                    this.isHideNaveItem(this.userConncode, this.userID);
+                    this.isHideNaveItem();
                 }
             });
     }
 
-    isHideNaveItem(conncode: string, id: number) {
-        this.authService.getUserObject(conncode, id).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+    isHideNaveItem() {
+        this.authService.getUserObject().pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
             console.log('userObject --->>>', res);
             if (res.responseCode == 100) {
-                this.isHideNavList = res.TrackingXLAPI.DATA1;
+                this.isHideNavList = res.TrackingXLAPI.DATA1[0];
+                console.log()
                 this.userObjectList = res.TrackingXLAPI.DATA;
                 console.log(this.userObjectList);
 

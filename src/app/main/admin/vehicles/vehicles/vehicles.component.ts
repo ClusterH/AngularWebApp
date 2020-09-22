@@ -12,7 +12,6 @@ import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
 import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
 import { VehiclesDataSource } from "app/main/admin/vehicles/services/vehicles.datasource";
 import { VehiclesService } from 'app/main/admin/vehicles/services/vehicles.service';
-import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_detail.service';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -38,8 +37,8 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     index_number: number = 1;
     currentUser: any;
     vehicle: any;
-    userConncode: string;
-    userID: number;
+    // userConncode: string;
+    // userID: number;
     restrictValue: any;
     flag: string = '';
     displayedColumns = ['id', 'name', 'company', 'group', 'subgroup', 'account', 'operator', 'unittype', 'serviceplan', 'producttype', 'make', 'model', 'isactive', 'timezone', 'created', 'createdbyname', 'deletedwhen', 'deletedbyname', 'lastmodifieddate', 'lastmodifiedbyname'
@@ -59,8 +58,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).vehicles;
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
@@ -73,7 +70,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
     ngAfterViewInit(): void {
@@ -84,8 +81,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.paginator.pageIndex = 0);
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(tap(() => this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList")),
-                takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
+            .pipe(tap(() => this.dataSource.loadVehicles(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
@@ -101,18 +97,18 @@ export class VehiclesComponent implements OnInit, OnDestroy {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+            this.dataSource.loadVehicles(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
         }
     }
     actionPageIndexbutton(pageIndex: number) {
-        this.dataSource.loadVehicles(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     filterEvent() { this.selectedFilter(); }
 
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadVehicles(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
+        this.dataSource.loadVehicles(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_TList");
     }
 
     addNewVehicle() {
@@ -120,6 +116,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
 
     editShowVehicleDetail(vehicle: any) {
+        console.log(vehicle);
         this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
     }
 

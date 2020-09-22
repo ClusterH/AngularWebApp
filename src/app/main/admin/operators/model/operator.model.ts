@@ -1,11 +1,10 @@
-export interface OperatorDetail
-{
+export interface OperatorDetail {
     id?: number;
     name?: string;
     email?: string;
     password?: string;
     phonenumber?: string;
-    operatortypeid?: number; 
+    operatortypeid?: number;
     isactive?: boolean;
     companyid?: number;
     groupid?: number;
@@ -16,7 +15,6 @@ export interface OperatorDetail
     deletedby?: number;
     lastmodifieddate?: Date;
     lastmodifiedby?: number;
-    filephoto?: string;
     birthdate?: string;
     sin?: string;
     hiredate?: string;

@@ -12,11 +12,11 @@ export const locale = {
             "CLOSE": "Close",
 
             "NAME": "Name",
-            "COMPANY": "Company",
-            "GROUP": "Group",
-            "DESCRIPTION": "Description",
-            "CONTRACTORCREATE": "Create Service",
-            "CONTRACTOREDIT": "Edit Service",
+            "CONTACTNAME": "Contact Name",
+            "NUMBER": "Number",
+            "EMAIL": "Email",
+            "NOOFINSTALLERS": "No Of Installers",
+            "CARRIER": "Carrier",
 
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",

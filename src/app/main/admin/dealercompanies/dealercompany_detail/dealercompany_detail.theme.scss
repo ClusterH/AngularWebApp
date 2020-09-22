@@ -1,17 +1,13 @@
 @mixin admin-dealercompany-theme($theme) {
-
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
     admin-dealercompany-detail {
-
         .header {
-
             .search-wrapper {
                 background: map-get($background, card);
 
                 .search {
-
                     .mat-icon {
                         color: map-get($foreground, icon);
                     }

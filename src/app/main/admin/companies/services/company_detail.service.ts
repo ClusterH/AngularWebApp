@@ -14,37 +14,26 @@ export class CompanyDetailService {
      *
      * @param {HttpClient} _httpClient
      */
-    constructor(
-        private _httpClient: HttpClient
-    ) {
-        // Set the defaults
-    }
+    constructor(private _httpClient: HttpClient) { }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
+    getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         if (name == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-
             return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-
             return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
@@ -52,12 +41,9 @@ export class CompanyDetailService {
         }
     }
 
-    saveCompanyDetail(conncode: string, userid: number, companyDetail: any = {}): Observable<any> {
+    saveCompanyDetail(companyDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', companyDetail.id.toString())
             .set('name', companyDetail.name.toString())
             .set('orgno', companyDetail.orgno.toString())
@@ -87,7 +73,6 @@ export class CompanyDetailService {
             .set('webstartlong', companyDetail.webstartlong.toString())
             .set('hasprivatelabel', companyDetail.hasprivatelabel.toString())
             .set('method', 'company_save');
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
@@ -124,7 +109,7 @@ export class CompanyDetailService {
         //     'method': 'unit_save'
         // }
         // let objects = JSON.stringify(params_detail);
-        // 
+        //
         // alert(objects);
 
 
@@ -136,13 +121,13 @@ export class CompanyDetailService {
     //     return new Promise((resolve, reject) => {
     //         if ( this.routeParams.id === 'new' )
     //         {
-    //             
+    //
     //             this.onProductChanged.next(false);
     //             resolve(false);
     //         }
     //         else
     //         {
-    //             
+    //
 
     //             // this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
     //             //     .subscribe((response: any) => {
@@ -183,7 +168,7 @@ export class CompanyDetailService {
     //                     };
     //                     this.onProductChanged.next(this.company);
     //                     resolve(this.company);
-    //                     
+    //
     //                 // }, reject);
     //         }
     //     });

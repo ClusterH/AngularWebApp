@@ -9,13 +9,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector     : 'scrumboard-board-card-dialog',
-    templateUrl  : './card.component.html',
-    styleUrls    : ['./card.component.scss'],
+    selector: 'scrumboard-board-card-dialog',
+    templateUrl: './card.component.html',
+    styleUrls: ['./card.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
-{
+export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
     card: any;
     board: any;
     list: any;
@@ -53,8 +52,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         private _matDialog: MatDialog,
         private _scrumboardService: ScrumboardService,
         private _formBuilder: FormBuilder,
-    )
-    {
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -66,15 +64,14 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
 
                 this.card = this.board.cards[0].find((_card) => {
-                    
+
                     return this._data.cardId === _card.id;
                 });
 
@@ -85,13 +82,13 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
                 });
 
                 this._scrumboardService.getBoardMembers()
-                .then((res: any) => {
-                    console.log(res);
-                    this.board.members = res.TrackingXLAPI.DATA;
+                    .then((res: any) => {
+                        console.log(res);
+                        this.board.members = res.TrackingXLAPI.DATA;
 
-                });
+                    });
             });
-        
+
         this.cardCommentForm = this._formBuilder.group({
             newComment: [null, Validators.required],
         });
@@ -100,8 +97,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -114,8 +110,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * Remove due date
      */
-    removeDueDate(): void
-    {
+    removeDueDate(): void {
         this.card.due = '';
         // this.updateCard();
     }
@@ -123,8 +118,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * Toggle subscribe
      */
-    toggleSubscribe(): void
-    {
+    toggleSubscribe(): void {
         this.card.subscribed = !this.card.subscribed;
 
         // this.updateCard();
@@ -135,14 +129,11 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param attachmentId
      */
-    toggleCoverImage(attachmentId): void
-    {
-        if ( this.card.idattachmentcover === attachmentId )
-        {
+    toggleCoverImage(attachmentId): void {
+        if (this.card.idattachmentcover === attachmentId) {
             this.card.idattachmentcover = '';
         }
-        else
-        {
+        else {
             this.card.idattachmentcover = attachmentId;
         }
 
@@ -154,10 +145,8 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param attachment
      */
-    removeAttachment(attachment): void
-    {
-        if ( attachment.id === this.card.idattachmentcover )
-        {
+    removeAttachment(attachment): void {
+        if (attachment.id === this.card.idattachmentcover) {
             this.card.idattachmentcover = '';
         }
 
@@ -171,12 +160,11 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param checklist
      */
-    removeChecklist(checklist): void
-    {
+    removeChecklist(checklist): void {
         this._scrumboardService.deleteBoardCardChecklist(checklist.id, this.card.id)
-        .then(res => {
-            console.log(res);
-        });
+            .then(res => {
+                console.log(res);
+            });
 
         this.card.checklists.splice(this.card.checklists.indexOf(checklist), 1);
 
@@ -188,27 +176,23 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param list
      */
-    updateCheckedCount(list): void
-    {
+    updateCheckedCount(list): void {
         const checkItems = list.checkitems;
         let checkedItems = 0;
         let allCheckedItems = 0;
         let allCheckItems = 0;
 
-        for ( const checkItem of checkItems )
-        {
+        for (const checkItem of checkItems) {
             console.log(checkItem);
 
-            if ( checkItem.checked )
-            {
+            if (checkItem.checked) {
                 checkedItems++;
             }
         }
 
         list.checkitemschecked = checkedItems;
 
-        for ( const item of this.card.checklists )
-        {
+        for (const item of this.card.checklists) {
             allCheckItems += item.checkitems.length;
             allCheckedItems += item.checkitemschecked;
         }
@@ -230,19 +214,19 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         }
 
         this._scrumboardService.saveBoardCardCheckItem(checkItem)
-        .then(res => {
-            console.log(res);
-            this.addedCheckItemId = res.TrackingXLAPI.DATA[0].id;
+            .then(res => {
+                console.log(res);
+                this.addedCheckItemId = res.TrackingXLAPI.DATA[0].id;
 
-            // newCheckItem.id = this.addedCheckItemId;
+                // newCheckItem.id = this.addedCheckItemId;
 
-            // checkList.checkitems.push(newCheckItem);
+                // checkList.checkitems.push(newCheckItem);
 
-            // this.updateCheckedCount(checkList);
+                // this.updateCheckedCount(checkList);
 
-            // form.setValue({checkItem: ''});
+                // form.setValue({checkItem: ''});
 
-        });
+            });
     }
 
     /**
@@ -251,12 +235,11 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      * @param checkItem
      * @param checklist
      */
-    removeChecklistItem(checkItem, checklist): void
-    {
+    removeChecklistItem(checkItem, checklist): void {
         this._scrumboardService.deleteBoardCardCheckItem(checkItem.id, checklist.id, this.card.id)
-        .then(res => {
-            console.log(res);
-        });
+            .then(res => {
+                console.log(res);
+            });
 
         checklist.checkitems.splice(checklist.checkitems.indexOf(checkItem), 1);
 
@@ -271,37 +254,35 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      * @param {NgForm} form
      * @param checkList
      */
-    addCheckItem(form: NgForm, checkList): void
-    {
+    addCheckItem(form: NgForm, checkList): void {
         const checkItemVal = form.value.checkItem;
 
-        if ( !checkItemVal || checkItemVal === '' )
-        {
+        if (!checkItemVal || checkItemVal === '') {
             return;
         }
 
         let newCheckItem = {
             id: '0',
-            name   : checkItemVal,
+            name: checkItemVal,
             checked: false,
             checklistid: checkList.id,
             cardid: this.card.id
         };
 
         this._scrumboardService.saveBoardCardCheckItem(newCheckItem)
-        .then(res => {
-            console.log(res);
-            this.addedCheckItemId = res.TrackingXLAPI.DATA[0].id;
+            .then(res => {
+                console.log(res);
+                this.addedCheckItemId = res.TrackingXLAPI.DATA[0].id;
 
-            newCheckItem.id = this.addedCheckItemId;
+                newCheckItem.id = this.addedCheckItemId;
 
-            checkList.checkitems.push(newCheckItem);
+                checkList.checkitems.push(newCheckItem);
 
-            this.updateCheckedCount(checkList);
+                this.updateCheckedCount(checkList);
 
-            form.setValue({checkItem: ''});
+                form.setValue({ checkItem: '' });
 
-        });
+            });
         // this.updateCard();
     }
 
@@ -310,8 +291,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param {NgForm} form
      */
-    addChecklist(form: NgForm): void
-    {
+    addChecklist(form: NgForm): void {
         const newCheckList = {
             id: '0',
             name: form.value.checklistTitle,
@@ -320,21 +300,21 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         }
 
         this._scrumboardService.saveBoardCardChecklist(newCheckList)
-        .then(res => {
-            console.log(res);
-            this.addedChecklistId = res.TrackingXLAPI.DATA[0].id;
-        });
+            .then(res => {
+                console.log(res);
+                this.addedChecklistId = res.TrackingXLAPI.DATA[0].id;
+            });
 
         this.card.checklists.push({
-            id               : this.addedChecklistId,
-            name             : form.value.checklistTitle,
+            id: this.addedChecklistId,
+            name: form.value.checklistTitle,
             checkitemschecked: 0,
-            checkitems       : []
+            checkitems: []
         });
 
         console.log(this.card.checklists);
 
-        form.setValue({checklistTitle: ''});
+        form.setValue({ checklistTitle: '' });
         form.resetForm();
         this.checklistMenu.closeMenu();
         // this.updateCard();
@@ -343,8 +323,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * On checklist menu open
      */
-    onChecklistMenuOpen(): void
-    {
+    onChecklistMenuOpen(): void {
         setTimeout(() => {
             this.newCheckListTitleField.nativeElement.focus();
         });
@@ -355,24 +334,23 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
      *
      * @param {NgForm} form
      */
-    addNewComment(): void
-    {
+    addNewComment(): void {
         // console.log(form.value);
         // const newCommentText = form.value.newComment;
 
-        const newCommentText= this.cardCommentForm.get('newComment').value;
+        const newCommentText = this.cardCommentForm.get('newComment').value;
         console.log(newCommentText);
 
         const newComment = {
             idmember: '345',
-            message : newCommentText,
-            time    : new Date().toISOString()
+            message: newCommentText,
+            time: new Date().toISOString()
         };
 
         this._scrumboardService.addNewComment('0', newComment, this.card.id)
-        .then(res => {
-            console.log(res);
-        });
+            .then(res => {
+                console.log(res);
+            });
 
 
 
@@ -394,17 +372,15 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * Remove card
      */
-    removeCard(): void
-    {
+    removeCard(): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete the card?';
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            {
+        this.confirmDialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
                 this.matDialogRef.close();
                 this._scrumboardService.removeCard(this.card.id, this.list.id);
             }
@@ -414,10 +390,9 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
     /**
      * Update card
      */
-    updateCard(): void
-    {
+    updateCard(): void {
         this.matDialogRef.close()
-        
+
         if (this.card.due != '') {
             this.card.due = this.dateFormat(new Date(this.card.due));
         }
@@ -430,13 +405,13 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
         let str = '';
 
         if (date != '') {
-            str = 
-              ("00" + (date.getMonth() + 1)).slice(-2) 
-              + "/" + ("00" + date.getDate()).slice(-2) 
-              + "/" + date.getFullYear() + " " 
-              + ("00" + date.getHours()).slice(-2) + ":" 
-              + ("00" + date.getMinutes()).slice(-2) 
-            }
+            str =
+                ("00" + (date.getMonth() + 1)).slice(-2)
+                + "/" + ("00" + date.getDate()).slice(-2)
+                + "/" + date.getFullYear() + " "
+                + ("00" + date.getHours()).slice(-2) + ":"
+                + ("00" + date.getMinutes()).slice(-2)
+        }
 
         return str;
     }
@@ -446,14 +421,14 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy
 
         if (this.card.idmembers.indexOf(member.id) == -1) {
             this._scrumboardService.deleteCardUser(member.id, this.card.id)
-            .then(res => {
-                console.log("remove: ", res);
-            });
+                .then(res => {
+                    console.log("remove: ", res);
+                });
         } else {
             this._scrumboardService.insertCardUser(member.id, this.card.id)
-            .then(res => {
-                console.log("checked", res);
-            });
+                .then(res => {
+                    console.log("checked", res);
+                });
         }
     }
 }

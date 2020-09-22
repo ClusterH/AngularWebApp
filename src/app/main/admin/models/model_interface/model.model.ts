@@ -1,5 +1,4 @@
-export interface ModelDetail
-{
+export interface ModelDetail {
     id?: number;
     name?: string;
     makeid?: number;

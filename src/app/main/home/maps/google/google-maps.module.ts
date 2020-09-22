@@ -22,6 +22,7 @@ import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { UnitInfoSidebarModule } from 'app/main/home/maps/sidebar/sidebar.module';
 import { UnitInfoPanelModule } from 'app/main/home/maps/unitInfo-panel/unitInfo-panel.module';
 import { FilterPanelModule } from 'app/main/home/maps/filter-panel/filter-panel.module';
+import { TrackPanelModule } from 'app/main/home/maps/track-panel/track-panel.module';
 import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
@@ -56,6 +57,7 @@ const routes = [
         FuseShortcutsModule,
         UnitInfoPanelModule,
         FilterPanelModule,
+        TrackPanelModule,
         HttpClientModule,
         SharedModule
     ],

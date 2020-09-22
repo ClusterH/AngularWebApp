@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class DealerCompanyDetailService {
+export class DealercompanyDetailService {
     routeParams: any;
     dealercompany: any;
     public dealercompany_detail: any;
@@ -20,14 +20,13 @@ export class DealerCompanyDetailService {
         // Set the defaults
     }
 
-    getDealerCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
+    getDealercompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         if (name == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
@@ -38,8 +37,7 @@ export class DealerCompanyDetailService {
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
@@ -50,20 +48,18 @@ export class DealerCompanyDetailService {
                 params: params
             });
         }
-
     }
 
-    saveDealerCompanyDetail(conncode: string, userid: number, dealercompanyDetail: any = {}): Observable<any> {
+    saveDealercompanyDetail(dealercompanyDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
+
             .set('id', dealercompanyDetail.id.toString())
             .set('name', dealercompanyDetail.name.toString())
             .set('orgno', dealercompanyDetail.orgno.toString())
             .set('accountid', dealercompanyDetail.accountid.toString())
-            .set('companytypeid', dealercompanyDetail.companytypeid.toString())
+            .set('dealercompanytypeid', dealercompanyDetail.dealercompanytypeid.toString())
             .set('userprofileid', dealercompanyDetail.userprofileid.toString())
             .set('isactive', dealercompanyDetail.isactive.toString())
             .set('created', dealercompanyDetail.created.toString())
@@ -87,7 +83,7 @@ export class DealerCompanyDetailService {
             .set('webstartlat', dealercompanyDetail.webstartlat.toString())
             .set('webstartlong', dealercompanyDetail.webstartlong.toString())
             .set('hasprivatelabel', dealercompanyDetail.hasprivatelabel.toString())
-            .set('method', 'company_save');
+            .set('method', 'dealercompany_save');
 
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
@@ -125,7 +121,7 @@ export class DealerCompanyDetailService {
         //     'method': 'unit_save'
         // }
         // let objects = JSON.stringify(params_detail);
-        // 
+        //
         // alert(objects);
 
 
@@ -137,13 +133,13 @@ export class DealerCompanyDetailService {
     //     return new Promise((resolve, reject) => {
     //         if ( this.routeParams.id === 'new' )
     //         {
-    //             
+    //
     //             this.onProductChanged.next(false);
     //             resolve(false);
     //         }
     //         else
     //         {
-    //             
+    //
 
     //             // this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
     //             //     .subscribe((response: any) => {
@@ -164,7 +160,7 @@ export class DealerCompanyDetailService {
     //                         serviceplanid: "5",
     //                         serviceplan: "Asset Rentals",
     //                         producttypeid: "1",
-    //                         producttype: "DealerCompany",
+    //                         producttype: "Dealercompany",
     //                         makeid: "28",
     //                         make: "ISUZU",
     //                         modelid: "363",
@@ -184,13 +180,9 @@ export class DealerCompanyDetailService {
     //                     };
     //                     this.onProductChanged.next(this.dealercompany);
     //                     resolve(this.dealercompany);
-    //                     
+    //
     //                 // }, reject);
     //         }
     //     });
     // }
-
-
-
-
 }

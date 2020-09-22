@@ -10,23 +10,24 @@
     </div>
     <div class="unitInfo-panel-icon mat-elevation-z8 py-16 px-8 mb-4 w-100-p" fxLayout="row"
         fxLayoutAlign="space-between center">
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/share_location1.png"
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/share-circle.png"
             (click)="goOptionPanel('sharelocation')" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/street_view1.png"
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/street-circle.png"
             (click)="showPositionDialog('streetview')" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/directions1.png"
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/direction-circle.png"
             (click)="showPositionDialog('direction')" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/locate_now.png"
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/location-circle.png"
             (click)="goOptionPanel('locatenow')" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/playback_history1.png" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/send_command1.png" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/convoy1.png" />
-        <img class="header-icons" fxFlex="9" src="assets/icons/map_unitInfo/show_graph.png" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/playback-circle.png"
+            (click)="goOptionPanel('playbackhistory')" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/command-circle.png" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/convoy-circle.png" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/graph-circle.png" />
     </div>
 
     <mat-accordion *ngIf="currentUnit && currentChannel == 'mainpanel'">
         <!-- Unit panel -->
-        <mat-expansion-panel class="unit-panel">
+        <mat-expansion-panel class="unit-panel" [expanded]="true">
             <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
                 <mat-panel-title>
                     <div class="h3" fxLayout="row" fxLayoutAlign="start center">
@@ -264,33 +265,65 @@
         </div>
     </div>
 
-    <!-- <div *ngIf="currentChannel == 'directions'" class="option-channel share-location-panel">
+    <div *ngIf="currentChannel == 'playbackhistory'" class="option-channel playback-history-panel">
         <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
             fxLayoutAlign="space-between center">
-            <div id="testtttt" class="h3">Direction</div>
+            <div id="testtttt" class="h3">PlayBack</div>
             <div>
                 <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
             </div>
         </div>
-        <div class="option-panel-body">
-            <div class="direction_vehicle_name" fxLayout="row" fxLayoutAlign="start center">
-                <div class="h3 w-40 mr-12">From</div>
-                <div class="h3">{{currentUnit.name}}</div>
-            </div>
-            <div class="direction_autocomplete w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="h3 w-40 mr-12">To</div>
-                <div class="h3  w-100-p">
+        <div class="option-panel-body h-260">
+            <select [(ngModel)]="playbackDateRange" (ngModelChange)="onChangePlaybackDateOption($event)"
+                class="playback-time-option w-100-p py-4">
+                <option value="0">Today</option>
+                <option value="1">Yesterday</option>
+                <option value="2">This Week</option>
+                <option value="3">Last Week</option>
+                <option value="4">Date Range</option>
+            </select>
 
-                    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
-                        type="text" class="autocomplete-poi-address" id="search">
+            <div *ngIf="playbackDateRange == '4'" class="date-range-option">
+                <form fxLayout="column" [formGroup]="dateStep">
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="pr-4" fxFlex="55">
+                            <mat-label>From Date</mat-label>
+                            <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="start">
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
 
-                </div>
+                        <mat-form-field appearance="outline" class="no-errors-spacer" fxFlex="45">
+                            <mat-label>Start time</mat-label>
+                            <input matInput class="date-range-time" type="time" value="starttime"
+                                formControlName="starttime">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="pr-4" fxFlex="55">
+                            <mat-label>End Date</mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" name="end" formControlName="end">
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-errors-spacer" fxFlex="45">
+                            <mat-label>End time</mat-label>
+                            <input matInput class="date-range-time" type="time" value="endtime"
+                                formControlName="endtime">
+                        </mat-form-field>
+                    </div>
+                </form>
+
             </div>
-            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
-                <button type="button" (click)="sendLinkEmail()" class="ml-12"> Send </button>
+
+            <div class="daterange-next-button" fxLayout="row" fxLayoutAlign="end center">
+                <button class="next-button" type="button" (click)="playbackHistory()"> &#10003; Next </button>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <div *ngIf="currentChannel == 'locatenow'" class="option-channel share-location-panel">
         <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"

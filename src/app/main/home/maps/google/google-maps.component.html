@@ -119,6 +119,10 @@
 
                 <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
 
+                <button mat-icon-button class="track-panel-toggle-button" (click)="toggleSidebarOpen('trackPanel')"
+                    aria-label="Toggle track panel">
+                    <mat-icon class="secondary-text">gesture</mat-icon>
+                </button>
                 <button mat-icon-button class="quick-panel-toggle-button" (click)="toggleFuseSidebarOpen('quickPanel')"
                     aria-label="Toggle quick panel">
                     <mat-icon class="secondary-text">format_list_bulleted</mat-icon>
@@ -159,8 +163,9 @@
         <div class="section-title">Sample</div> -->
         <!-- <p fxLayout="row" fxLayoutAlign="start start"> -->
 
-        <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
-            [zoomControl]="false" (mapClick)="mapClicked($event)">
+        <agm-map #AgmMap id="AgmMap" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+            [zoomControl]="false" (mapClick)="mapClicked($event)" (mapReady)="onMapReady($event)"
+            [fitBounds]="isTrackUnitHistory">
             <div *ngIf="isClickedEvent">
                 <agm-overlay *ngFor="let event of eventLocation" [latitude]="event.latitude"
                     [longitude]="event.longitude">
@@ -168,27 +173,38 @@
                             height="40" width="40"></div>
                 </agm-overlay>
             </div>
-            <agm-marker-cluster [minimumClusterSize]="minClusterSize"
-                imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
-                <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.id)"
-                    [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable == 'true'"
-                    [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
+            <div>
+                <agm-marker-cluster [minimumClusterSize]="minClusterSize"
+                    imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
 
-                    <agm-info-window>
-                        <strong>{{m.label}}</strong>
-                    </agm-info-window>
-                </agm-marker>
-            </agm-marker-cluster>
+                    <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.id)"
+                        [latitude]="m.lat" [longitude]="m.lng" [label]="m.label"
+                        [markerDraggable]="m.draggable == 'true'" [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
 
-            <agm-polyline *ngFor="let rte of routes" [strokeColor]="'blue'">
-                <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
-                </agm-polyline-point>
-            </agm-polyline>
+                        <agm-info-window>
+                            <strong>{{m.label}}</strong>
+                        </agm-info-window>
+                    </agm-marker>
+                </agm-marker-cluster>
 
-            <agm-polygon *ngFor='let zone of zones' [fillColor]="'red'" [fillOpacity]="0.01" [strokeColor]="'red'"
-                [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
-            </agm-polygon>
+                <agm-polyline *ngFor="let rte of routes" [strokeColor]="'blue'">
+                    <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
+                    </agm-polyline-point>
+                </agm-polyline>
+
+                <agm-polygon *ngFor='let zone of zones' [fillColor]="'red'" [fillOpacity]="0.01" [strokeColor]="'red'"
+                    [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
+                </agm-polygon>
+            </div>
+
+            <div *ngIf="isTrackUnitHistory">
+                <agm-polyline *ngFor="let rte of trackHistoryPolylines" [strokeColor]="rte.strokeColor">
+                    <agm-polyline-point *ngFor="let pnt of rte.historyList" [latitude]="pnt.lat" [longitude]="pnt.lng"
+                        [agmFitBounds]="true">
+                    </agm-polyline-point>
+                </agm-polyline>
+            </div>
 
             <!-- <agm-polyline *ngFor="let point of polyline;let i = index;"  [strokeColor]="point.speed < 50 ? '#2196f3': 'red'">
                 <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude">
@@ -240,6 +256,11 @@
         <mat-icon class="event_clean">location_off</mat-icon>
 
     </button>
+    <button *ngIf="isTrackUnitHistory" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
+        (click)="cleanTrackLocation()">
+        <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
+        <mat-icon class="event_clean">block</mat-icon>
+    </button>
 
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
@@ -249,5 +270,10 @@
 
     <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">
         <filter-panel (filterPanelCloseEmitter)="filterToggleOff($event)"></filter-panel>
+    </unitinfo-sidebar>
+
+    <unitinfo-sidebar name="trackPanel" class="trackPanel-sidebar w-700" position="right">
+        <track-panel (centerTrackLocation)="centerTrackLocation($event)" (trackHistory)="showHideTrackPolyline($event)">
+        </track-panel>
     </unitinfo-sidebar>
 </div>

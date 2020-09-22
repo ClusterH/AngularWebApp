@@ -16,13 +16,12 @@ export class EventsService {
         private _httpClient: HttpClient,
     ) { }
 
-    getEvents(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
+    getEvents(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -35,8 +34,7 @@ export class EventsService {
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -52,14 +50,12 @@ export class EventsService {
     }
 
     deleteEvent(id: number): Observable<any> {
-        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', userConncode.toString())
-            .set('userid', userID.toString())
+
             .set('id', id.toString())
             .set('method', "event_delete");
 

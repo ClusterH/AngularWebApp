@@ -15,13 +15,12 @@ export class JobsService {
      */
     constructor(private _httpClient: HttpClient) { }
 
-    getJobs(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
+    getJobs(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -33,8 +32,6 @@ export class JobsService {
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -48,13 +45,11 @@ export class JobsService {
         }
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
+    getDetailClist(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
@@ -64,8 +59,6 @@ export class JobsService {
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
@@ -77,47 +70,35 @@ export class JobsService {
         }
     }
 
-    getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        if (name == '') {
-            const params_detail = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('companyid', companyid.toString())
-                .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: header_detail,
-                params: params_detail
-            });
-        } else {
-            const params_detail = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
-                .set('pageindex', (pageindex + 1).toString())
-                .set('pagesize', pagesize.toString())
-                .set('name', `^${name}^`)
-                .set('companyid', companyid.toString())
-                .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: header_detail,
-                params: params_detail
-            });
-        }
-    }
-
-    saveJob(conncode: string, userid: number, jobDetail: any = {}): Observable<any> {
+    saveJob(jobDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', jobDetail.id.toString())
-            .set('name', jobDetail.name.toString())
-            .set('companyid', jobDetail.companyid.toString())
-            .set('groupid', jobDetail.groupid.toString())
+            .set('imei', jobDetail.imei.toString())
+            .set('vin', jobDetail.vin.toString())
+            .set('plate', jobDetail.plate.toString())
+            .set('customername', jobDetail.customername.toString())
+            .set('address', jobDetail.address.toString())
+            .set('customerphonenumber', jobDetail.customerphonenumber.toString())
+            .set('scheduledate', jobDetail.scheduledate.toString())
+            .set('duration', jobDetail.duration.toString())
+            .set('installerid', jobDetail.installerid.toString())
+            .set('installcontractorid', jobDetail.installcontractorid.toString())
+            .set('startdate', jobDetail.startdate.toString())
+            .set('enddate', jobDetail.enddate.toString())
+            .set('createdby', jobDetail.createdby.toString())
+            .set('created', jobDetail.created.toString())
             .set('isactive', jobDetail.isactive.toString())
-            .set('method', 'maintjob_save');
+            .set('deletedby', jobDetail.deletedby.toString())
+            .set('deletedwhen', jobDetail.deletedwhen.toString())
+            .set('longitude', jobDetail.longitude.toString())
+            .set('latitude', jobDetail.latitude.toString())
+            .set('status', jobDetail.status.toString())
+            .set('installationjobtypeid', jobDetail.installationjobtypeid.toString())
+            .set('description', jobDetail.description.toString())
+            .set('devicetypeid', jobDetail.devicetypeid.toString())
+            .set('notes', jobDetail.notes.toString())
+            .set('method', 'installation_Save');
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
@@ -125,18 +106,71 @@ export class JobsService {
     }
 
     deleteJob(id: string): Observable<any> {
-        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', userConncode.toString())
-            .set('userid', userID.toString())
             .set('id', id.toString())
-            .set('method', "maintjob_delete");
+            .set('method', "installation_Delete");
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
+        });
+    }
+
+    Installationimages_TList(id: string): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('installationid', id.toString())
+            .set('method', "Installationimages_TList");
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    saveInstallationImages(id: any, images: any): Observable<any> {
+        console.log(id, 'imaages===>>>', images);
+        let token: string = localStorage.getItem('current_token') || '';
+        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+
+        const header_detail = new HttpHeaders()
+            .append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"))
+        const body = {
+            "installationid": id,
+            "data": images,
+            "method": "InstallationImages_Save",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
+        }
+
+        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+            headers: header_detail,
+        });
+    }
+
+    deleteInstallationImages(id: any, images: any): Observable<any> {
+        console.log(images);
+
+        let token: string = localStorage.getItem('current_token') || '';
+        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+        const body = {
+            "installationid": id,
+            "data": images,
+            "method": "InstallationImages_Delete",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
+        }
+        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+            headers: headers,
         });
     }
 }

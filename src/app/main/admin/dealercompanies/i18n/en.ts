@@ -2,20 +2,20 @@ export const locale = {
     lang: 'en',
     data: {
         DEALERCOMPANIES: {
-            "DEALERCOMPANIES": "DealerCompanies",
-            "SEARCHFORCOMPANY": "Search for a DealerCompany",
-            "NEWCOMPANY": "New DealerCompany",
-            "COMPANYDETAIL": "DealerCompany Detail",
+            "DEALERCOMPANIES": "Dealercompanies",
+            "SEARCHFORDEALERCOMPANY": "Search for a Dealercompany",
+            "NEWDEALERCOMPANY": "New Dealercompany",
+            "DEALERCOMPANYDETAIL": "Dealercompany Detail",
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
 
             "NAME": "Name",
-            "COMPANY": "DealerCompany",
+            "DEALERCOMPANY": "Dealercompany",
             "ACCOUNT": "Account",
             "USERPROFILE": "User Profile",
             "ORGNO": "Organization Number",
-            "COMPANYTYPE": "DealerCompany Type",
+            "DEALERCOMPANYTYPE": "Dealercompany Type",
             "ISACTIVE": "IsActive",
             "CREATED": "Created",
             "CREATEDBYNAME": "CreatedByName",
@@ -32,14 +32,14 @@ export const locale = {
             "EMAIL_SENDER": "Email Sender",
             "EMAIL_USER": "Email User",
             "EMAIL_PASSWORD": "Email Password",
-                        
-            "ADDRESS" : "Address",
-            "COUNTRY" : "Country",
-            "CONTACT_NAME" : "Contact Name",
-            "PHONE" : "Phonenumber",
-            "EMAIL" : "Email",
-            "COMMENTS" : "Comments",
-            "HASPRIVATELABEL" : "Private Label",
+
+            "ADDRESS": "Address",
+            "COUNTRY": "Country",
+            "CONTACT_NAME": "Contact Name",
+            "PHONE": "Phonenumber",
+            "EMAIL": "Email",
+            "COMMENTS": "Comments",
+            "HASPRIVATELABEL": "Private Label",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
             "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
@@ -48,8 +48,8 @@ export const locale = {
             "DELETE": "Delete",
             "CANCEL": "Cancel",
             "OK": "OK"
-            
-            // "COMPANYID": "DealerCompanyID",
+
+            // "DEALERCOMPANYID": "DealercompanyID",
             // "GROUPID": "GroupID",
             // "SUBGROUPID": "SubGroupID",
             // "UNITTYPEID1": "UnitTypeID1",
@@ -57,15 +57,15 @@ export const locale = {
             // "CREATEDBY": "CreatedBY",
             // "DELETEDBY": "DeletedBy",
             // "LASTMODIFIEDBY": "LastModifiedBy",
-            
-            
+
+
             // "FIRSTINFO": "First Info",
             // "SECONDINFO": "Second Info",
             // "THIRDINFO": "Third Info",
             // "ITEMS_PER_PAGE": "Page Size",
             // "NEXT_PAGE": "Next Page",
             // "PREVIOUS_PAGE": "Prev Page",
-            
+
         }
     }
 };

@@ -14,37 +14,30 @@ import { CarriersDataSource } from "app/main/system/carriers/services/carriers.d
 import { CarriersService } from 'app/main/system/carriers/services/carriers.service';
 import { CarrierDetailService } from 'app/main/system/carriers/services/carrier_detail.service';
 import * as $ from 'jquery';
-import { merge } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
-    selector     : 'system-carriers',
-    templateUrl  : './carriers.component.html',
-    styleUrls    : ['./carriers.component.scss'],
-    animations   : fuseAnimations,
+    selector: 'system-carriers',
+    templateUrl: './carriers.component.html',
+    styleUrls: ['./carriers.component.scss'],
+    animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class CarriersComponent implements OnInit
-{
+export class CarriersComponent implements OnInit {
     dataSource: CarriersDataSource;
-
     @Output()
     pageEvent: PageEvent;
-   
-    pageIndex= 0;
+    pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
     currentUser: any;
-
     carrier: any;
-    userConncode: string;
-    userID: number;
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -52,161 +45,110 @@ export class CarriersComponent implements OnInit
         'created',
         'createdbyname',
         'deletedwhen',
-        'deletedbyname', 
+        'deletedbyname',
         'lastmodifieddate',
         'lastmodifiedbyname'
     ];
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    private _unsubscribeAll: Subject<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
-    @ViewChild(MatPaginator, {static: true})
-    paginator: MatPaginator;
-
-    @ViewChild(MatSort, {static: true})
-    sort: MatSort;
-
-    @ViewChild('filter', {static: true})
-    filter: ElementRef;
-    
     constructor(
         private _systemCarriersService: CarriersService,
         private carrierDetailService: CarrierDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    )
-    {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+    ) {
+        this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).carriers;
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(carriersEnglish, carriersSpanish, carriersFrench, carriersPortuguese);
-
-        this.pageIndex= 0;
+        this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
     }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-   
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
         merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-           tap(() => this.dataSource.loadCarriers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist"))
-        )
-        .subscribe( (res: any) => {
-            
-        });
+            .pipe(tap(() => this.dataSource.loadCarriers(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
-   
-    ngOnInit(): void
-    {
+
+    ngOnInit(): void {
         this.dataSource = new CarriersDataSource(this._systemCarriersService);
-        this.dataSource.loadCarriers(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Carrier_Tlist");
+        this.dataSource.loadCarriers(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Carrier_Tlist");
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     selectedFilter() {
-        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadCarriers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
+            this.dataSource.loadCarriers(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
-        this.dataSource.loadCarriers(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
+        this.dataSource.loadCarriers(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
     }
 
-    filterEvent() {
-        this.selectedFilter();
-    }
+    filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadCarriers(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
+        this.dataSource.loadCarriers(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Carrier_Tlist");
     }
 
     addNewCarrier() {
-        this.carrierDetailService.carrier_detail = '';
-        localStorage.removeItem("carrier_detail");
         this.router.navigate(['system/carriers/carrier_detail']);
     }
 
     editShowCarrierDetail(carrier: any) {
-        this.carrierDetailService.carrier_detail = carrier;
-
-        localStorage.setItem("carrier_detail", JSON.stringify(carrier));
-
-        this.router.navigate(['system/carriers/carrier_detail']);
+        console.log(carrier);
+        this.router.navigate(['system/carriers/carrier_detail'], { queryParams: carrier });
     }
-    
-    deleteCarrier(carrier: any): void
-    {
+
+    deleteCarrier(carrier: any): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            carrier, flag: this.flag
-        };
-
+        dialogConfig.data = { carrier, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                let deleteCarrier =  this._systemCarriersService.carrierList.findIndex((deletedcarrier: any) => deletedcarrier.id == carrier.id);
-        
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
+                let deleteCarrier = this._systemCarriersService.carrierList.findIndex((deletedcarrier: any) => deletedcarrier.id == carrier.id);
                 if (deleteCarrier > -1) {
                     this._systemCarriersService.carrierList.splice(deleteCarrier, 1);
                     this.dataSource.carriersSubject.next(this._systemCarriersService.carrierList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
-                }  
-            } else {
-                
+                }
             }
         });
     }
 
-    duplicateCarrier(carrier: any): void
-    {
-        
-
+    duplicateCarrier(carrier: any): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            carrier, flag: this.flag
-        };
-
+        dialogConfig.data = { carrier, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                
-            } else {
-                
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
+                this.router.navigate(['system/carriers/carrier_detail'], { queryParams: result });
             }
         });
     }

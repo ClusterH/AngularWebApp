@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class ServiceplanDetailService 
-{
+export class ServiceplanDetailService {
     routeParams: any;
     serviceplan: any;
     public serviceplan_detail: any;
@@ -18,53 +17,36 @@ export class ServiceplanDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
-        // Set the defaults
-    }
+    ) { }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
-        
+    getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
+        if (name == '') {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
-           
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
-        
     }
 
-    saveServiceplanDetail(conncode: string, userid: number, serviceplanDetail: any = {}): Observable<any> {
+    saveServiceplanDetail(serviceplanDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', serviceplanDetail.id.toString())
             .set('name', serviceplanDetail.name.toString())
             .set('carrierplanid', serviceplanDetail.carrierplanid.toString())
@@ -83,10 +65,7 @@ export class ServiceplanDetailService
             .set('lastmodifieddate', serviceplanDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', serviceplanDetail.lastmodifiedby.toString())
             .set('method', 'serviceplan_save');
-        
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

@@ -50,7 +50,7 @@
                                         class="select_list">
                                         <mat-label>{{ 'POIS.COMPANY' | translate }}</mat-label>
                                         <mat-select (click)="showCompanyList('company_clist')"
-                                            formControlName="company">
+                                            (selectionChange)="onCompanyChange($event)" formControlName="company">
                                             <div class="filter_company_input">
                                                 <input matInput formControlName="filterstring" #filter
                                                     placeholder="Filter" (keyup)="onKey($event)">

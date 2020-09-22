@@ -8,6 +8,8 @@ import { locale as zonesEnglish } from 'app/main/admin/geofences/zones/i18n/en';
 import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
 import { locale as zonesFrench } from 'app/main/admin/geofences/zones/i18n/fr';
 import { locale as zonesPortuguese } from 'app/main/admin/geofences/zones/i18n/pt';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'zone-dialog',
@@ -15,9 +17,10 @@ import { locale as zonesPortuguese } from 'app/main/admin/geofences/zones/i18n/p
     styleUrls: ['./dialog.component.css']
 })
 export class CourseDialogComponent implements OnInit {
+    private _unsubscribeAll: Subject<any>;
 
-   zone: any;
-   flag: any;
+    zone: any;
+    flag: any;
 
     constructor(
         private router: Router,
@@ -25,7 +28,7 @@ export class CourseDialogComponent implements OnInit {
         private zonesService: ZonesService,
 
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {zone, flag} 
+        @Inject(MAT_DIALOG_DATA) { zone, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(zonesEnglish, zonesSpanish, zonesFrench, zonesPortuguese);
 
@@ -37,8 +40,8 @@ export class CourseDialogComponent implements OnInit {
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
+
             this.zone.id = 0;
             this.zone.name = '';
             this.zone.created = '';
@@ -47,18 +50,18 @@ export class CourseDialogComponent implements OnInit {
             this.zone.deletedbyname = '';
             this.zone.lastmodifieddate = '';
             this.zone.lastmodifiedbyname = '';
-    
+
             localStorage.setItem("zone_detail", JSON.stringify(this.zone));
-    
+
             this.router.navigate(['admin/geofences/zones/zone_detail']);
-        } else if( this.flag == "delete") {
-           
-            this.zonesService.deleteZone(this.zone.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dialogRef.close(result);
-                }
-            });
+        } else if (this.flag == "delete") {
+
+            this.zonesService.deleteZone(this.zone.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dialogRef.close(result);
+                    }
+                });
         }
     }
 

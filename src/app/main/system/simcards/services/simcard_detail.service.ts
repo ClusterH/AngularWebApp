@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class SimcardDetailService 
-{
+export class SimcardDetailService {
     routeParams: any;
     simcard: any;
     public simcard_detail: any;
@@ -18,52 +17,38 @@ export class SimcardDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the defaults
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
-        
+    getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
+        if (name == '') {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
-           
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
 
-    saveSimcardDetail(conncode: string, userid: number, simcardDetail: any = {}): Observable<any> {
+    saveSimcardDetail(simcardDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', simcardDetail.id.toString())
             .set('name', simcardDetail.name.toString())
             .set('phonenumber', simcardDetail.phonenumber.toString())
@@ -76,10 +61,7 @@ export class SimcardDetailService
             .set('lastmodifieddate', simcardDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', simcardDetail.lastmodifiedby.toString())
             .set('method', 'simcard_save');
-        
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

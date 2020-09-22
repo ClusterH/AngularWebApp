@@ -1,0 +1,58 @@
+<div fxLayout="column" fxFlex fusePerfectScrollbar class="track-panel">
+    <div class="track-panel-header mat-elevation-z12 primary py-16 px-8 mb-12" fxLayout="row"
+        fxLayoutAlign="space-between center">
+        <div class="panel-title h2 ml-8">Track Option</div>
+        <button mat-icon-button class="toggle-panel-open" (click)="toggleSidebarOpen('trackPanel')">
+            <mat-icon class="h4">close</mat-icon>
+        </button>
+    </div>
+    <div *ngIf="unitHistoryList" class="track-panel-body">
+        <mat-accordion *ngFor="let item of unitHistoryList; let k=index">
+            <mat-expansion-panel [expanded]="step === item.id" (opened)="setStep(item.id)">
+                <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                    <mat-panel-title>
+                        <div class="h4" fxLayout="row" fxLayoutAlign="start center">
+                            <div class="mr-4">
+                                <input type="checkbox" class="show-hide-checkbox" [value]="item.id"
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? trackSelection.toggle(item.id) : null; onShowHideTrack($event)"
+                                    [checked]="true" />
+                            </div>
+                            <div class="mr-4">
+                                <input class="track-color-picker" [(colorPicker)]="item.strokeColor"
+                                    [style.background]="item.strokeColor" (click)="$event.stopPropagation()"
+                                    [cpOKButton]="true" [cpCancelButton]="true" />
+                            </div>
+
+                            <div class="mr-4" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-icon class="active-icon s-16 center_icon mr-4"
+                                    (click)="centerMap(item, 'trackList'); $event.stopPropagation()">add_circle_outline
+                                </mat-icon>
+                                <mat-icon class="active-icon s-16 delete_icon" (click)="deleteFromList(item.id)">delete
+                                </mat-icon>
+                            </div>
+                            <div>{{item.name}}</div>
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngFor="let data of item.historyList | paginate: config[k]" class="mb-8 item-panel-body">
+                    <label (click)="centerMap(data, 'trackItem')">
+                        <mat-icon class="active-icon s-16 center_icon mr-4">
+                            add_circle_outline
+                        </mat-icon>
+                        <span>{{data.Location}}</span>
+                    </label>
+                    <!--
+                    <label>
+                        <span (click)="centerMap(data, 'trackItem')">&#8853;&nbsp;&nbsp;{{data.Location}}</span>
+                    </label> -->
+                </div>
+
+                <pagination-controls id={{item.id}} class="trackHistory-pagination" [previousLabel]="labels.prevLabel"
+                    [nextLabel]="labels.nextLabel" (pageChange)="pageChanged($event, k)">
+                </pagination-controls>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

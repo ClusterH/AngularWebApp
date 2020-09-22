@@ -7,6 +7,8 @@ import { locale as tanksEnglish } from 'app/main/fuelmanagement/tanks/i18n/en';
 import { locale as tanksSpanish } from 'app/main/fuelmanagement/tanks/i18n/sp';
 import { locale as tanksFrench } from 'app/main/fuelmanagement/tanks/i18n/fr';
 import { locale as tanksPortuguese } from 'app/main/fuelmanagement/tanks/i18n/pt';
+import { Subject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'tank-dialog',
@@ -14,16 +16,17 @@ import { locale as tanksPortuguese } from 'app/main/fuelmanagement/tanks/i18n/pt
     styleUrls: ['./dialog.component.css']
 })
 export class CourseDialogComponent implements OnInit {
+    private _unsubscribeAll: Subject<any>;
 
-   tank: any;
-   flag: any;
+    tank: any;
+    flag: any;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private tanksService: TanksService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {tank, flag} 
+        @Inject(MAT_DIALOG_DATA) { tank, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(tanksEnglish, tanksSpanish, tanksFrench, tanksPortuguese);
 
@@ -35,27 +38,27 @@ export class CourseDialogComponent implements OnInit {
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
+
             this.tank.id = 0;
             this.tank.name = '';
             this.tank.createdwhen = '';
             this.tank.createdbyname = '';
             this.tank.lastmodifieddate = '';
             this.tank.lastmodifiedbyname = '';
-    
+
             localStorage.setItem("tank_detail", JSON.stringify(this.tank));
-    
-            
-    
+
+
+
             this.router.navigate(['fuelmanagement/tanks/tanks_detail']);
-        } else if( this.flag == "delete") {
-            this.tanksService.deleteTank(this.tank.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.reloadComponent();
-                }
-            });
+        } else if (this.flag == "delete") {
+            this.tanksService.deleteTank(this.tank.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.reloadComponent();
+                    }
+                });
         }
 
         this.dialogRef.close();

@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class CarrierDetailService 
-{
+export class CarrierDetailService {
     routeParams: any;
     carrier: any;
     public carrier_detail: any;
@@ -18,17 +17,13 @@ export class CarrierDetailService
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
         // Set the defaults
     }
-   
-    saveCarrierDetail(conncode: string, userid: number, carrierDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
+    saveCarrierDetail(carrierDetail: any = {}): Observable<any> {
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', carrierDetail.id.toString())
             .set('name', carrierDetail.name.toString())
             .set('isactive', carrierDetail.isactive.toString())
@@ -39,10 +34,7 @@ export class CarrierDetailService
             .set('lastmodifieddate', carrierDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', carrierDetail.lastmodifiedby.toString())
             .set('method', 'carrier_save');
-        
-            
-
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

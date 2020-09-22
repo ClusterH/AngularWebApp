@@ -45,16 +45,11 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <!-- CONTENT -->
             <div class="content">
-
                 <form [formGroup]="eventForm" class="event w-100-p" fxLayout="column" fxFlex>
-
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'EVENTS.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'EVENTS.NAME' | translate }}</mat-label>
@@ -588,7 +583,6 @@
                                                                 placeholder="Filter" (keyup)="onKey($event)">
                                                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                                                         </div>
-
                                                         <div style="width: 100%; overflow: auto;">
                                                             <mat-table [dataSource]="dataSourceDigitalInput1"
                                                                 class="vehicles-table font-size-10 mat-elevation-z8">

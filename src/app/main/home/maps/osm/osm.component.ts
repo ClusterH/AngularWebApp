@@ -84,7 +84,6 @@ export class OpenStreetMapComponent implements OnInit, OnDestroy {
         private _translateService: TranslateService,
         private _authService: AuthService
     ) {
-        this.user = JSON.parse(localStorage.getItem('user_info'));
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
 
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
@@ -139,21 +138,21 @@ export class OpenStreetMapComponent implements OnInit, OnDestroy {
 
         this.intializeMapOptions();
 
-        this._adminVehMarkersService.getVehMarkers(this.user.conncode, this.user.id).subscribe(
+        this._adminVehMarkersService.getVehMarkers().subscribe(
             (data) => {
                 this.vehmarkers = data.TrackingXLAPI.DATA;
                 this.getMarkerCluster(this.vehmarkers);
             }
         );
 
-        this._adminZonesService.getZones(this.user.conncode, this.user.id).subscribe(
+        this._adminZonesService.getZones().subscribe(
             (data) => {
                 this.zones = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
                 this.getPolygon(this.zones);
             }
         );
 
-        this._adminRoutesService.getRoutes(this.user.conncode, this.user.id).subscribe(
+        this._adminRoutesService.getRoutes().subscribe(
             (data) => {
                 this.routes = JSON.parse("[" + data.TrackingXLAPI.DATA[0].paths + "]");
                 this.getPolyline(this.routes);

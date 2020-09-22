@@ -28,15 +28,30 @@
             height: 44px;
             .from-origin {
                 position: absolute;
-                top: 0px;
+                top: -13px;
             }
             .to-destination {
                 position: absolute;
-                top: 26px;
+                top: 32px;
             }
         }
-        .change_img:hover {
+        .change_direction_icon:hover {
+            color: whitesmoke !important;
             transform: scale(1.1);
+        }
+        .dot-icon {
+            line-height: 0.7;
+            color: rgba(245, 245, 245, 0.7);
+        }
+        .dot-origin {
+            line-height: 1;
+            font-size: 14px;
+            color: rgba(245, 245, 245);
+        }
+        .dot-destination {
+            font-size: 18px;
+            line-height: 1;
+            color: rgba(245, 245, 245);
         }
     }
     .autocomplete-poi-address {
@@ -46,6 +61,8 @@
         border: solid 1px whitesmoke !important;
         width: 100% !important;
         height: 25px !important;
+        align-items: center;
+        justify-content: space-between;
         input {
             background-color: transparent !important;
             color: whitesmoke !important;
@@ -55,6 +72,9 @@
             font-size: small !important;
             width: 16px !important;
             height: 16px !important;
+            min-width: 16px !important;
+            min-height: 16px !important;
+            float: right;
         }
     }
     .direction-poilist {

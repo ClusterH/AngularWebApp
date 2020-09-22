@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -7,36 +7,38 @@ import { locale as operatorsEnglish } from 'app/main/admin/operators/i18n/en';
 import { locale as operatorsSpanish } from 'app/main/admin/operators/i18n/sp';
 import { locale as operatorsFrench } from 'app/main/admin/operators/i18n/fr';
 import { locale as operatorsPortuguese } from 'app/main/admin/operators/i18n/pt';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
     selector: 'operator-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnInit {
-
-   operator: any;
-   flag: any;
+export class CourseDialogComponent implements OnDestroy {
+    operator: any;
+    flag: any;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private operatorsService: OperatorsService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {operator, flag} 
+        @Inject(MAT_DIALOG_DATA) { operator, flag }
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(operatorsEnglish, operatorsSpanish, operatorsFrench, operatorsPortuguese);
-
         this.operator = operator;
         this.flag = flag;
     }
 
-    ngOnInit() {
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
             this.operator.id = 0;
             this.operator.name = '';
             this.operator.email = '';
@@ -48,29 +50,17 @@ export class CourseDialogComponent implements OnInit {
             this.operator.deletedbyname = '';
             this.operator.lastmodifieddate = '';
             this.operator.lastmodifiedbyname = '';
-    
-            localStorage.setItem("operator_detail", JSON.stringify(this.operator));
-    
-            this.router.navigate(['admin/operators/operator_detail']);
-        } else if( this.flag == "delete") {
-            this.operatorsService.deleteOperator(this.operator.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dialogRef.close(result);
-                }
-            });
+            this.dialogRef.close(this.operator);
+        } else if (this.flag == "delete") {
+            this.operatorsService.deleteOperator(this.operator.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dialogRef.close(result);
+                    }
+                });
         }
     }
 
-    close() {
-        localStorage.removeItem("operator_detail");
-        this.dialogRef.close();
-    }
-
-    goback() {
-        this.dialogRef.close();
-        localStorage.removeItem("operator_detail");
-
-        this.router.navigate(['admin/operators/operators']);
-    }
+    close() { this.dialogRef.close(); }
+    goback() { this.dialogRef.close('goback'); }
 }

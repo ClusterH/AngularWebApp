@@ -1,10 +1,9 @@
-export interface InsuranceCompanyDetail
-{
+export interface InsurancecompanyDetail {
     id?: number;
     name?: string;
     orgno?: string;
     accountid?: number;
-    companytypeid?: number;
+    insurancecompanytypeid?: number;
     userprofileid?: number;
     isactive?: boolean;
     created?: Date;
@@ -28,5 +27,4 @@ export interface InsuranceCompanyDetail
     webstartlat?: number;
     webstartlong?: number;
     hasprivatelabel?: boolean;
-
 }

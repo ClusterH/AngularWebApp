@@ -21,7 +21,7 @@ const routes = [
         TranslateModule,
         RouterModule.forChild(routes),
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyAP_Xy-1QSclKYAvxSmAZO2BuFAWWAlOZQ',
+            apiKey: 'AIzaSyDO1lOoJtxmSRni0mkXGGrqmcn3TqLP8t4',
             libraries: ['places', 'drawing', 'geometry'],
         }),
         SharedModule

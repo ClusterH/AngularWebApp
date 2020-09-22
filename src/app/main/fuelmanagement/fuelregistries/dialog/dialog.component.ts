@@ -8,6 +8,8 @@ import { locale as fuelregistriesPortuguese } from 'app/main/fuelmanagement/fuel
 import { locale as fuelregistriesSpanish } from 'app/main/fuelmanagement/fuelregistries/i18n/sp';
 import { FuelregistriesDataSource } from "app/main/fuelmanagement/fuelregistries/services/fuelregistries.datasource";
 import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'fuelregistry-dialog',
@@ -15,17 +17,18 @@ import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/se
     styleUrls: ['./dialog.component.css']
 })
 export class CourseDialogComponent implements OnInit {
+    private _unsubscribeAll: Subject<any>;
 
-   fuelregistry: any;
-   flag: any;
-   dataSource: FuelregistriesDataSource;
+    fuelregistry: any;
+    flag: any;
+    dataSource: FuelregistriesDataSource;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private fuelregistriesService: FuelregistriesService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {fuelregistry, flag} 
+        @Inject(MAT_DIALOG_DATA) { fuelregistry, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(fuelregistriesEnglish, fuelregistriesSpanish, fuelregistriesFrench, fuelregistriesPortuguese);
 
@@ -37,27 +40,27 @@ export class CourseDialogComponent implements OnInit {
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
+
             this.fuelregistry.id = 0;
             this.fuelregistry.datentime = '';
-    
+
             localStorage.setItem("fuelregistry_detail", JSON.stringify(this.fuelregistry));
 
             this.dialogRef.close();
-    
+
             this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail']);
-        } else if( this.flag == "delete") {
+        } else if (this.flag == "delete") {
             // this.reloadComponent();
 
-            this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    console.log(result);
-                    
-                    this.dialogRef.close(result);
-                }
-            });
+            this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        console.log(result);
+
+                        this.dialogRef.close(result);
+                    }
+                });
         }
     }
 

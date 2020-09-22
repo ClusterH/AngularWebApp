@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,37 +14,30 @@ import { ServiceplansDataSource } from "app/main/system/serviceplans/services/se
 import { ServiceplansService } from 'app/main/system/serviceplans/services/serviceplans.service';
 import { ServiceplanDetailService } from 'app/main/system/serviceplans/services/serviceplan_detail.service';
 import * as $ from 'jquery';
-import { merge } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
-    selector     : 'system-serviceplans',
-    templateUrl  : './serviceplans.component.html',
-    styleUrls    : ['./serviceplans.component.scss'],
-    animations   : fuseAnimations,
+    selector: 'system-serviceplans',
+    templateUrl: './serviceplans.component.html',
+    styleUrls: ['./serviceplans.component.scss'],
+    animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class ServiceplansComponent implements OnInit
-{
+export class ServiceplansComponent implements OnInit, OnDestroy {
     dataSource: ServiceplansDataSource;
-
     @Output()
     pageEvent: PageEvent;
-   
-    pageIndex= 0;
+    pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
     currentUser: any;
-
     serviceplan: any;
-    userConncode: string;
-    userID: number;
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -58,41 +51,29 @@ export class ServiceplansComponent implements OnInit
         'created',
         'createdbyname',
         'deletedwhen',
-        'deletedbyname', 
+        'deletedbyname',
         'lastmodifieddate',
         'lastmodifiedbyname'
-        
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    private _unsubscribeAll: Subject<any>;
 
-    @ViewChild(MatPaginator, {static: true})
-    paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
-    @ViewChild(MatSort, {static: true})
-    sort: MatSort;
-
-    @ViewChild('filter', {static: true})
-    filter: ElementRef;
-    
     constructor(
         private _systemServiceplansService: ServiceplansService,
         private serviceplanDetailService: ServiceplanDetailService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    )
-    {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+    ) {
+        this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).serviceplans;
-
-        
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
-
-        this.pageIndex= 0;
+        this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
@@ -103,127 +84,82 @@ export class ServiceplansComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-   
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        
-
         merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-           tap(() => this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist"))
-        )
-        .subscribe( (res: any) => {
-            
-        });
+            .pipe(tap(() => this.dataSource.loadServiceplans(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
-   
-    ngOnInit(): void
-    {
-        
 
+    ngOnInit(): void {
         this.dataSource = new ServiceplansDataSource(this._systemServiceplansService);
-        this.dataSource.loadServiceplans(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Serviceplan_Tlist");
+        this.dataSource.loadServiceplans(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
-    onRowClicked(serviceplan) {
-        
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     selectedFilter() {
-        
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
+            this.dataSource.loadServiceplans(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
-        this.dataSource.loadServiceplans(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
+        this.dataSource.loadServiceplans(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
-    filterEvent() {
-        this.selectedFilter();
-    }
+    filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadServiceplans(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
+        this.dataSource.loadServiceplans(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Serviceplan_Tlist");
     }
 
     addNewServiceplan() {
-        this.serviceplanDetailService.serviceplan_detail = '';
-        localStorage.removeItem("serviceplan_detail");
         this.router.navigate(['system/serviceplans/serviceplan_detail']);
     }
 
     editShowServiceplanDetail(serviceplan: any) {
-        this.serviceplanDetailService.serviceplan_detail = serviceplan;
-
-        localStorage.setItem("serviceplan_detail", JSON.stringify(serviceplan));
-
-        this.router.navigate(['system/serviceplans/serviceplan_detail']);
+        this.router.navigate(['system/serviceplans/serviceplan_detail'], { queryParams: serviceplan });
     }
-    
-    deleteServiceplan(serviceplan): void
-    {
+
+    deleteServiceplan(serviceplan): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            serviceplan, flag: this.flag
-        };
-
+        dialogConfig.data = { serviceplan, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                let deleteServiceplan =  this._systemServiceplansService.serviceplanList.findIndex((deletedserviceplan: any) => deletedserviceplan.id == serviceplan.id);
-        
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
+                let deleteServiceplan = this._systemServiceplansService.serviceplanList.findIndex((deletedserviceplan: any) => deletedserviceplan.id == serviceplan.id);
                 if (deleteServiceplan > -1) {
                     this._systemServiceplansService.serviceplanList.splice(deleteServiceplan, 1);
                     this.dataSource.serviceplansSubject.next(this._systemServiceplansService.serviceplanList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
-                }  
-            } else {
-                
+                }
             }
         });
     }
 
-    duplicateServiceplan(serviceplan): void
-    {
+    duplicateServiceplan(serviceplan): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-        
-        dialogConfig.data = {
-            serviceplan, flag: this.flag
-        };
-
+        dialogConfig.data = { serviceplan, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            { 
-                
-            } else {
-                
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
+                this.router.navigate(['system/serviceplans/serviceplan_detail'], { queryParams: serviceplan });
             }
         });
     }

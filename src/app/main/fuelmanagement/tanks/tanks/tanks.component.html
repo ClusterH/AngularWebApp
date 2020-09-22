@@ -8,13 +8,11 @@
     <div class="center_table center">
 
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -24,7 +22,7 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'TANKS.SELECTFIELD' | translate}}:</mat-label>
 
@@ -39,18 +37,17 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'TANKS.SEARCHFORTANK' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'TANKS.SEARCHFORTANK' | translate }}" [(ngModel)]="filter_string"
+                            (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <button mat-fab
-                    [routerLink]="'/admin/tanks/tank_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    (click)="addNewTank()">
-               <mat-icon>add</mat-icon>
+            <button mat-fab [routerLink]="'/admin/tanks/tank_detail'" class="accent  mt-24 mt-md-0"
+                (click)="addNewTank()">
+                <mat-icon>add</mat-icon>
 
             </button>
             <!-- / ADD BUTTON -->
@@ -62,11 +59,7 @@
         <div class="content p-24">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                    <mat-spinner
-                        color="accent" 
-                        mode="indeterminate"
-                        diameter="50"
-                        style="margin:0 auto;">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
                     </mat-spinner>
                 </div>
             </div>
@@ -76,7 +69,7 @@
                 <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
 
                     <div class="course" *ngFor="let tank of tanksService.tanks" fxFlex="100" fxFlex.gt-xs="50"
-                        fxFlex.gt-sm="33"  [@animate]="{value:'*',params:{y:'100%'}}">
+                        fxFlex.gt-sm="33" [@animate]="{value:'*',params:{y:'100%'}}">
 
                         <div class="course-content white" fxLayout="column" fxFlex="1 1 auto">
 
@@ -89,38 +82,48 @@
                                 <div class="length" fxLayout="row" fxLayoutAlign="center center">
                                     <mat-icon class="length-icon s-20">description</mat-icon>
                                     <mat-icon class="length-icon s-20" (click)="tankDetail(tank)">launch</mat-icon>
+                                    <mat-icon class="length-icon s-20" (click)="tankDetailEdit(tank)">edit</mat-icon>
                                 </div>
 
                             </div>
 
                             <div class="content" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 1 auto">
                                 <div class="background_fuel_orange w-100-p h-116" fxLayout="column">
-                                    <div class="background_white w-100-p" [style.height.%]="100 - tank.volume * 100/tank.capacity"></div>
-                                    <div class="background_orange w-100-p" [style.height.%]="tank.volume * 100/tank.capacity"></div>
+                                    <div class="background_white w-100-p"
+                                        [style.height.%]="100 - tank.volume * 100/tank.capacity"></div>
+                                    <div class="background_orange w-100-p"
+                                        [style.height.%]="tank.volume * 100/tank.capacity"></div>
                                 </div>
                                 <img src="assets/icons/fuelManagement/fuel_tank3.png" class="w-100-p tank_img">
 
-                                <div class="percentage_tank h2"><strong>{{tank.volume * 100/tank.capacity}}%</strong></div>
+                                <div class="percentage_tank h2"><strong>{{tank.volume * 100/tank.capacity}}%</strong>
+                                </div>
 
                                 <div class="last_report w-100-p mt-28" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>Last Report: </strong></span></div>
-                                    <div class="w-60-p"><span class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss a'}}</span></div>
+                                    <div class="w-60-p"><span
+                                            class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss a'}}</span></div>
                                 </div>
 
                                 <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
-                                    <div class="w-30-p"><span class="h3"><strong>{{tank.volumeunit}}: </strong></span></div>
-                                    <div class="w-60-p"><span class="h3">{{tank.volume}}&nbsp;&nbsp;{{tank.volumeunit}}</span></div>
+                                    <div class="w-30-p"><span class="h3"><strong>{{tank.volumeunit}}: </strong></span>
+                                    </div>
+                                    <div class="w-60-p"><span
+                                            class="h3">{{tank.volume}}&nbsp;&nbsp;{{tank.volumeunit}}</span></div>
                                 </div>
 
                                 <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>Level: </strong></span></div>
-                                    <div class="w-60-p"><span class="h3">{{tank.level}}&nbsp;&nbsp;{{tank.levelunit}}</span></div>
+                                    <div class="w-60-p"><span
+                                            class="h3">{{tank.level}}&nbsp;&nbsp;{{tank.levelunit}}</span></div>
                                 </div>
 
                                 <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>Temp: </strong></span></div>
-                                    <div class="w-60-p" *ngIf="tank.tempunit == 'Celsius'"><span class="h3">{{tank.temp}}&nbsp;&nbsp;&#8451;</span></div>
-                                    <div class="w-60-p" *ngIf="tank.tempunit == 'Fahrenheit'"><span class="h3">{{tank.temp}}&nbsp;&nbsp;&#8457;</span></div>
+                                    <div class="w-60-p" *ngIf="tank.tempunit == 'Celsius'"><span
+                                            class="h3">{{tank.temp}}&nbsp;&nbsp;&#8451;</span></div>
+                                    <div class="w-60-p" *ngIf="tank.tempunit == 'Fahrenheit'"><span
+                                            class="h3">{{tank.temp}}&nbsp;&nbsp;&#8457;</span></div>
                                 </div>
                             </div>
                         </div>
@@ -136,17 +139,14 @@
 
             <div class="step-navigation">
 
-                <button mat-fab class="previous mat-accent fuse-white-fg"
-                        (click)="gotoPreviousStep()"
-                        [disabled]="currentStep === 0"
-                        [fxHide]="currentStep === 0">
+                <button mat-fab class="previous mat-accent fuse-white-fg" (click)="gotoPreviousStep()"
+                    [disabled]="currentStep === 0" [fxHide]="currentStep === 0">
                     <mat-icon>chevron_left</mat-icon>
                 </button>
-    
-                <button mat-fab class="next mat-accent fuse-white-fg"
-                        (click)="gotoNextStep()"
-                        [disabled]="currentStep === dataSource.total_page - 1"
-                        [fxHide]="currentStep === dataSource.total_page - 1">
+
+                <button mat-fab class="next mat-accent fuse-white-fg" (click)="gotoNextStep()"
+                    [disabled]="currentStep === dataSource.total_page - 1"
+                    [fxHide]="currentStep === dataSource.total_page - 1">
                     <mat-icon>chevron_right</mat-icon>
                 </button>
             </div>

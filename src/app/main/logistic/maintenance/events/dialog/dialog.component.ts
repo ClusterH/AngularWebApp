@@ -17,23 +17,21 @@ import { locale as eventsPortuguese } from 'app/main/logistic/maintenance/events
 })
 export class CourseDialogComponent implements OnInit {
 
-   event: any;
-   flag: any;
+    event: any;
+    flag: any;
 
-   userConncode: string;
-   userID: number;
 
-   dataSource: EventsDataSource;
+
+    dataSource: EventsDataSource;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private eventsService: EventsService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any, 
+        @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
 
@@ -46,25 +44,25 @@ export class CourseDialogComponent implements OnInit {
 
     deleteList(): boolean {
         let deletedMaintevent = this.eventsService.mainteventList.findIndex((index: any) => index.id == this.event.id);
-      
+
         if (deletedMaintevent > -1) {
             this.eventsService.mainteventList.splice(deletedMaintevent, 1);
 
             return true;
         }
     }
-    
+
     delete() {
         let result = this.deleteList();
 
         if (result) {
             this.eventsService.deleteEvent(this.event.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dataSource = new EventsDataSource(this.eventsService);
-                    this.dataSource.eventsSubject.next(this.eventsService.mainteventList);
-                }
-            });
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dataSource = new EventsDataSource(this.eventsService);
+                        this.dataSource.eventsSubject.next(this.eventsService.mainteventList);
+                    }
+                });
             // this.flagForDeleting.next(false);
             this.dialogRef.close(this.eventsService.mainteventList);
         }

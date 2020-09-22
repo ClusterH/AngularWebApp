@@ -12,6 +12,16 @@ export const locale = {
 
             "NAME": "Name",
             "ISACTIVE": "IsActive",
+            "COMPANY": "Company",
+            "GROUP": "Group",
+            "LASTREPORT": "Last Report",
+            "VOLUME": "Volume",
+            "VOLUMEUNIT": "Volume Unit",
+            "LEVEL": "Level",
+            "LEVELUNIT": "Level Unit",
+            "TEMP": "Temp",
+            "TEMPUNIT": "Temp Unit",
+            "CAPACITY": "Capacity",
             "TIMEZONE": "TimeZone",
             "CREATED": "Created",
             "CREATEDBYNAME": "CreatedByName",
@@ -28,9 +38,9 @@ export const locale = {
             "DELETE": "Delete",
             "NO": "No",
             "YES": "Yes"
-            
-          
-            
+
+
+
         }
     }
 };

@@ -1,5 +1,4 @@
-export interface MakeDetail
-{
+export interface MakeDetail {
     id?: number;
     name?: string;
     isactive?: boolean;
@@ -7,6 +6,4 @@ export interface MakeDetail
     createdwhen?: Date;
     lastmodifiedby?: number;
     lastmodifieddate?: Date;
-
-    // lastmodifiedbyname: string
 }

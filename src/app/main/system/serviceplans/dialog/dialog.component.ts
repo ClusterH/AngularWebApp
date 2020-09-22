@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -7,36 +7,39 @@ import { locale as serviceplansEnglish } from 'app/main/system/serviceplans/i18n
 import { locale as serviceplansSpanish } from 'app/main/system/serviceplans/i18n/sp';
 import { locale as serviceplansFrench } from 'app/main/system/serviceplans/i18n/fr';
 import { locale as serviceplansPortuguese } from 'app/main/system/serviceplans/i18n/pt';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'serviceplan-dialog',
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnInit {
-
-   serviceplan: any;
-   flag: any;
+export class CourseDialogComponent implements OnDestroy {
+    private _unsubscribeAll: Subject<any>;
+    serviceplan: any;
+    flag: any;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private serviceplansService: ServiceplansService,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) {serviceplan, flag} 
+        @Inject(MAT_DIALOG_DATA) { serviceplan, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
-
+        this._unsubscribeAll = new Subject();
         this.serviceplan = serviceplan;
         this.flag = flag;
     }
 
-    ngOnInit() {
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     save() {
-        if(this.flag == "duplicate") {
-        
+        if (this.flag == "duplicate") {
             this.serviceplan.id = 0;
             this.serviceplan.name = '';
             this.serviceplan.created = '';
@@ -45,32 +48,17 @@ export class CourseDialogComponent implements OnInit {
             this.serviceplan.deletedbyname = '';
             this.serviceplan.lastmodifieddate = '';
             this.serviceplan.lastmodifiedbyname = '';
-    
-            localStorage.setItem("serviceplan_detail", JSON.stringify(this.serviceplan));
-    
-            
-    
-            this.router.navigate(['system/serviceplans/serviceplan_detail']);
-        } else if( this.flag == "delete") {
-            this.serviceplansService.deleteServiceplan(this.serviceplan.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dialogRef.close(result);
-                }
-            });
+            this.dialogRef.close(this.serviceplan);
+        } else if (this.flag == "delete") {
+            this.serviceplansService.deleteServiceplan(this.serviceplan.id).pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dialogRef.close(result);
+                    }
+                });
         }
-
     }
 
-    close() {
-        localStorage.removeItem("serviceplan_detail");
-        this.dialogRef.close();
-    }
-
-    goback() {
-        this.dialogRef.close();
-        localStorage.removeItem("serviceplan_detail");
-
-        this.router.navigate(['system/serviceplans/serviceplans']);
-    }
+    close() { this.dialogRef.close(); }
+    goback() { this.dialogRef.close('goback'); }
 }

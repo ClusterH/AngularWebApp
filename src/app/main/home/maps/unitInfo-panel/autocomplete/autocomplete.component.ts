@@ -21,8 +21,7 @@ import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 export class AutocompleteDialogComponent implements OnInit, OnDestroy {
     unit: any;
     flag: any;
-    userConncode: string;
-    userID: number;
+
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild('unitMap') unitMap: AgmMap;
@@ -53,14 +52,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
             icon: 'assets/icons/map_unitInfo/residential-places.png',
             infoWindow: ''
         },
-
         waypoints: [],
-
-        // waypoints: {
-        //     icon: 'assets/icons/map_unitInfo/waypoint2.png',
-        //     infoWindow: ''
-        // },
-
         destination: {
             icon: 'assets/icons/map_unitInfo/default.png',
             infoWindow: ''
@@ -68,12 +60,13 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
     };
 
     destPlace: any;
-
     dir: any = [];
     waypointsList: Array<any> = [];
+    waypointDistance: Array<any> = [];
     selectedPOIList: Array<any> = [];
     poiDataList: Array<any> = [];
     poiDataListPage: number;
+    countDisRequest: number = 0;
     poiSelection = new SelectionModel<Element>(true, []);
 
     constructor(
@@ -88,51 +81,33 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) { unit, flag }
     ) {
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.unit = unit;
         this.flag = flag;
-        console.log(this.unit, this.flag);
-        this.getPOIList(this.userConncode, this.userID, 1, 1000, this.filter_string);
+        this.getPOIList(1, 1000, this.filter_string);
     }
 
     ngOnInit() {
         this.poiSelection.isSelected = this.isCheckedRow.bind(this);
         this.mapsAPILoader.load().then(() => {
-            // let input = document.getElementById('testtttt');
             this.agmDirection = new AgmDirection(this.mapsAPIWrapper);
-            console.log('agmDirection==========>>>>>', this.agmDirection);
-
-            console.log('search==>', this.search);
-            // console.log('search==>', input);
             let autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement);
-            console.log("autocomplete=>>>>", autocomplete);
-            console.log("searchElementRef=>>>>", this.search.nativeElement);
             autocomplete.addListener("place_changed", () => {
                 this.ngZone.run(() => {
-                    //get the place result
                     let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-                    console.log(place);
-                    //verify result
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
 
-                    //set latitude, longitude and zoom
                     this.latitude = place.geometry.location.lat();
                     this.longitude = place.geometry.location.lng();
                     this.destPlace = place.name;
 
                     if (this.isChange) {
-                        console.log('deselect======>>');
                         this.poiSelection.clear();
                         this.poiSelection = new SelectionModel<Element>(false, []);
-
                     }
-                    // this.dir = [];
-                    // this.zoom = 12;
-                    console.log(this.latitude, this.longitude);
                 });
             });
         });
@@ -162,10 +137,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
                 this.waypointsList.push({ lat: this.latitude, lng: this.longitude, name: this.destPlace });
             }
 
-            console.log(this.waypointsList, this.unit.latitude);
-
             if (this.poiSelection.selected) {
-                console.log(this.waypointsList);
                 let selectedPOIs = JSON.parse(JSON.stringify(this.poiSelection.selected));
                 for (let poiID of selectedPOIs) {
                     let address = this.poiDataList.find(poi => poi.id == poiID);
@@ -176,7 +148,6 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
             }
         } else {
             if (this.latitude) {
-                console.log(this.latitude);
                 this.waypointsList.unshift({ lat: this.latitude, lng: this.longitude, name: this.destPlace });
                 this.selectedPOIList.push({ lat: this.unit.latitude, lng: this.unit.longitude, name: this.unit.name });
             } else {
@@ -187,112 +158,115 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
             }
         }
 
-        let isFinish = this.recursiveWayPoints(this.waypointsList.concat(this.selectedPOIList));
-        if (isFinish == true) {
-            console.log(this.markerOptions);
-            console.log(this.waypoints);
-            console.log(this.origin);
-
-        }
-        this.isDirection = true;
-
+        this.recursiveWayPoints(this.waypointsList.concat(this.selectedPOIList));
     }
 
-    recursiveWayPoints(list: any): boolean {
-        console.log(list);
+    recursiveWayPoints(list: any) {
         const tempArray = list;
         if (tempArray.length == 2) {
-            // this.dir.push(tempArray[0]);
-            // this.dir.push(tempArray[1]);
-            console.log('end recursive=>>>>', this.dir);
             if (this.isChange) {
                 this.origin = this.waypointsList[0];
                 this.markerOptions.origin.infoWindow = this.waypointsList[0].name;
+                this.markerOptions.waypoints = [];
+                this.destination = { lat: tempArray[1].lat, lng: tempArray[1].lng };
+                this.markerOptions.destination.infoWindow = tempArray[1].name;
+                this.isDirection = true;
+                return
             } else {
                 this.origin = { lat: this.unit.latitude, lng: this.unit.longitude };
                 this.markerOptions.origin.infoWindow = this.unit.name;
-
+                this.destination = { lat: tempArray[1].lat, lng: tempArray[1].lng };
+                this.markerOptions.destination.infoWindow = tempArray[1].name;
+                for (let p = 0; p < this.dir.length; p++) {
+                    this.waypoints.push({ location: { lat: this.dir[p].lat, lng: this.dir[p].lng }, stopover: false });
+                    this.markerOptions.waypoints.push({ infoWindow: this.dir[p].name, icon: 'assets/icons/map_unitInfo/waypoint2.png' });
+                    if (p == this.dir.length - 1) {
+                        this.isDirection = true;
+                        return
+                    }
+                }
             }
-            // this.destination = { lat: this.dir[this.dir.length - 1].lat, lng: this.dir[this.dir.length - 1].lng };
-            this.destination = { lat: tempArray[1].lat, lng: tempArray[1].lng };
-            this.markerOptions.destination.infoWindow = tempArray[1].name;
-            // icon: 'assets/icons/map_unitInfo/waypoint2.png',
-            for (let p = 0; p < this.dir.length; p++) {
-                this.waypoints.push({ location: { lat: this.dir[p].lat, lng: this.dir[p].lng }, stopover: false });
-                this.markerOptions.waypoints.push({ infoWindow: this.dir[p].name, icon: 'assets/icons/map_unitInfo/waypoint2.png' });
-            }
-            return true;
-
+        } else {
+            this.generateWayPointList(tempArray[0], tempArray.slice(1)).then(temp => {
+                this.dir.push(temp[0]);
+                this.recursiveWayPoints(temp);
+            });
         }
-
-        this.generateWayPointList(tempArray[0], tempArray.slice(1)).then(temp => {
-            console.log(temp);
-            this.dir.push(temp[0]);
-            this.recursiveWayPoints(temp);
-        });
     }
 
-    generateWayPointList(origin: {}, dest: any[]): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let waypointList = [];
-            console.log(dest);
+    async generateWayPointList(origin: {}, dest: any[]): Promise<any> {
+        return await new Promise((resolve, reject) => {
+            this.waypointDistance = [];
 
             for (let i = 0; i < dest.length; i++) {
                 this.getDistance(origin, { lat: dest[i].lat, lng: dest[i].lng, name: dest[i].name }).then(distance => {
-                    waypointList.push({ lat: dest[i].lat, lng: dest[i].lng, name: dest[i].name, distance: distance });
-                    console.log(waypointList, 'distance', distance);
+                    this.waypointDistance.push({ lat: dest[i].lat, lng: dest[i].lng, name: dest[i].name, distance: distance });
                     if (i == dest.length - 1) {
-                        waypointList.sort((a, b) => this.sortByDistance(a, b));
-                        console.log(waypointList, i);
-                        resolve(waypointList);
+                        setTimeout(() => {
+                            this.waypointDistance.sort((a, b) => this.sortByDistance(a, b));
+                            resolve(this.waypointDistance);
+                        }, 250);
+
                     }
                 });
-            }
+            };
         })
     }
 
     getDistance(origin: any, destination: any): Promise<any> {
         return new Promise((resolve, reject) => {
             const directionsService = new google.maps.DirectionsService;
-            console.log(origin);
-            console.log(destination);
-            let distance;
-            // if (!(origin && destination && origin.lat && destination.lat))
-            //     return -1;
+            let distance = 0;
+            this.countDisRequest += 1;
+            if (this.countDisRequest == 10) {
+                setTimeout(() => {
+                    console.log('==========>>>Limit')
+                    directionsService.route({
+                        origin,
+                        destination,
+                        waypoints: [],
+                        optimizeWaypoints: true,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    }, (response, status) => {
+                        console.log(response, status);
+                        if (status == 'OK') {
+                            distance = response.routes[0].legs[0].distance.value;
+                            this.countDisRequest = 0;
+                            resolve(distance);
+                        } else {
+                            alert('Distance request failed due to ' + status);
+                        }
+                    });
+                }, 1000)
+            } else {
+                directionsService.route({
+                    origin,
+                    destination,
+                    waypoints: [],
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, (response, status) => {
+                    console.log(response, status);
+                    if (status == 'OK') {
+                        distance = response.routes[0].legs[0].distance.value;
+                        resolve(distance);
+                    } else {
+                        alert('Distance request failed due to ' + status);
+                    }
+                });
+            }
 
-            directionsService.route({
-                origin,
-                destination,
-                waypoints: [],
-                optimizeWaypoints: true,
-                travelMode: google.maps.TravelMode.DRIVING
-            }, (response, status) => {
-                console.log(response, status);
-                if (status == 'OK') {
-                    distance = response.routes[0].legs[0].distance.value;
-                    console.log('distance========>>>', distance);
-                    resolve(distance);
-                } else {
-                    alert('Distance request failed due to ' + status);
-                }
-            }), reject
-        });
+        })
     }
 
     sortByDistance(a, b): number {
-        // return new Promise((resolve, reject) => {
-        //     console.log('sort==>>', a, b);
-        //     if (a.distance > b.distance) resolve(1);
-        //     else if (a.distance < b.distance) resolve(-1);
-        //     else return resolve(0);
-        // })
         if (a.distance > b.distance) return 1;
         else if (a.distance < b.distance) return -1;
         else return 0;
     }
 
-    getPOIList(conncode: string, userid: number, pageindex: number, pagesize: number, filter_string: string) {
-        this.unitInfoService.getPOIList(conncode, userid, this.unit.id, pageindex, pagesize, filter_string).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+    getPOIList(pageindex: number, pagesize: number, filter_string: string) {
+        this.unitInfoService.getPOIList(this.unit.id, pageindex, pagesize, filter_string).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
             console.log(res);
             this.poiDataList = res.TrackingXLAPI.DATA;
             this.poiDataListPage = 1;
@@ -314,10 +288,8 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
     onKey(event: any) {
         this.filter_string = event.target.value;
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-            this.getPOIList(this.userConncode, this.userID, 1, 1000000, this.filter_string);
+            this.getPOIList(1, 1000000, this.filter_string);
         }
-        // this.managePageIndex(this.method_string);
-        // this.loadVehicleDetail(this.method_string);
     }
 
     // onCheckboxChangeUnit(e, type) {

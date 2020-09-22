@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -31,7 +31,7 @@ import { Route } from '@angular/compiler/src/core';
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class JobsComponent implements OnInit {
+export class JobsComponent implements OnInit, OnDestroy {
     dataSource: JobsDataSource;
 
     @Output()
@@ -44,30 +44,31 @@ export class JobsComponent implements OnInit {
     filter_string: string = '';
     index_number: number = 1;
     currentJob: any;
-
     job: any;
-    userConncode: string;
-    userID: number;
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
-        'name',
-        'company',
-        'group'
+        'imei',
+        'scheduledate',
+        'address',
+        'plate',
+        'customer',
+        'customerphonenumber',
+        'status',
+        'installer',
+        'created',
+        'createdby',
     ];
 
     dialogRef: any;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true })
     paginator: MatPaginator;
-
     @ViewChild(MatSort, { static: true })
     sort: MatSort;
-
     @ViewChild('filter', { static: true })
     filter: ElementRef;
 
@@ -77,8 +78,7 @@ export class JobsComponent implements OnInit {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).jobs;
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(jobsEnglish, jobsSpanish, jobsFrench, jobsPortuguese);
@@ -94,66 +94,50 @@ export class JobsComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-
         // when paginator job is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-
-
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.dataSource.loadJobs(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintjob_TList"))
-            )
-            .subscribe((res: any) => {
-
-            });
+            .pipe(tap(() => this.dataSource.loadJobs(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintjob_TList")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
 
     ngOnInit(): void {
-
-
         this.dataSource = new JobsDataSource(this._adminJobsService);
-        this.dataSource.loadJobs(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintjob_TList");
+        this.dataSource.loadJobs(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "installation_TList");
     }
 
-    onRowClicked(job) {
-
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
+    onRowClicked(job) { }
     selectedFilter() {
-
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadJobs(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintjob_TList");
+            this.dataSource.loadJobs(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "installation_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-
-        this.dataSource.loadJobs(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintjob_TList");
+        this.dataSource.loadJobs(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "installation_TList");
     }
 
-    filterJob() {
-        this.selectedFilter();
-    }
+    filterJob() { this.selectedFilter(); }
     navigatePageJob() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadJobs(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintjob_TList");
+        this.dataSource.loadJobs(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "installation_TList");
     }
 
     addNewJob() {
-
         this.dialogRef = this._matDialog.open(JobDialogComponent, {
             panelClass: 'job-dialog',
             disableClose: true,
@@ -163,17 +147,12 @@ export class JobsComponent implements OnInit {
             }
         });
 
-        this.dialogRef.afterClosed()
-            .subscribe(res => {
-
-                this.dataSource.jobsSubject.next(res);
-
-            });
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            this.dataSource.jobsSubject.next(res);
+        });
     }
 
     editShowJobDetail(job: any) {
-
-
         this.dialogRef = this._matDialog.open(JobDialogComponent, {
             panelClass: 'job-dialog',
             disableClose: true,
@@ -183,16 +162,12 @@ export class JobsComponent implements OnInit {
             }
         });
 
-        this.dialogRef.afterClosed()
-            .subscribe(res => {
-
-                this.dataSource.jobsSubject.next(res);
-            });
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            this.dataSource.jobsSubject.next(res);
+        });
     }
 
     deleteJob(job): void {
-
-
         this.dialogRef = this._matDialog.open(DeleteDialogComponent, {
             panelClass: 'delete-dialog',
             disableClose: true,
@@ -202,12 +177,9 @@ export class JobsComponent implements OnInit {
             }
         });
 
-        this.dialogRef.afterClosed()
-            .subscribe(res => {
-
-                this.dataSource.jobsSubject.next(res);
-
-            });
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            this.dataSource.jobsSubject.next(res);
+        });
     }
 
     // duplicateJob(job): void
@@ -223,7 +195,7 @@ export class JobsComponent implements OnInit {
 
     //     const dialogRef = this._matDialog.open(JobDialogComponent, dialogConfig);
 
-    //     dialogRef.afterClosed().subscribe(result => {
+    //     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
     //         if ( result )
     //         {
     //

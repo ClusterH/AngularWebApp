@@ -15,7 +15,7 @@ import { UserDetailService } from 'app/main/admin/users/services/user_detail.ser
 import { merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
     selector: 'app-user-detail',
@@ -29,8 +29,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     user_detail: any;
     public user: any;
     pageType: string;
-    userConncode: string;
-    userID: number;
+
     userModel_flag: boolean;
     userForm: FormGroup;
     userDetail: UserDetail = {};
@@ -80,8 +79,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             console.log(data);
             this.user = data;
         });
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         if (isEmpty(this.user)) { this.pageType = 'new'; }
         else { this.pageType = 'edit'; }
         this.filter_string = '';
@@ -97,14 +95,18 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.dataSourceTempUnit = new UserDetailDataSource(this.userDetailService);
         this.dataSourceLanguage = new UserDetailDataSource(this.userDetailService);
 
-        this.dataSourceCompany.loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.company, "company_clist");
-        this.dataSourceGroup.loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.group, "group_clist");
-        this.dataSourceTimeZone.loadUserDetail(this.userConncode, this.userID, 0, 10, this.user.timezone, "timezone_clist");
-        this.dataSourceLengthUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "lengthunit_clist");
-        this.dataSourceFuelUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "fuelunit_clist");
-        this.dataSourceWeightUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "weightunit_clist");
-        this.dataSourceTempUnit.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "tempunit_clist");
-        this.dataSourceLanguage.loadUserDetail(this.userConncode, this.userID, 0, 10, '', "language_clist");
+        this.dataSourceCompany.loadUserDetail(0, 10, this.user.company, "company_clist");
+        if (isEmpty(this.user)) {
+            this.dataSourceGroup.loadGroupDetail(0, 10, this.user.group, 0, "group_clist");
+        } else {
+            this.dataSourceGroup.loadGroupDetail(0, 10, this.user.group, this.user.companyid, "group_clist");
+        }
+        this.dataSourceTimeZone.loadUserDetail(0, 10, this.user.timezone, "timezone_clist");
+        this.dataSourceLengthUnit.loadUserDetail(0, 10, '', "lengthunit_clist");
+        this.dataSourceFuelUnit.loadUserDetail(0, 10, '', "fuelunit_clist");
+        this.dataSourceWeightUnit.loadUserDetail(0, 10, '', "weightunit_clist");
+        this.dataSourceTempUnit.loadUserDetail(0, 10, '', "tempunit_clist");
+        this.dataSourceLanguage.loadUserDetail(0, 10, '', "language_clist");
 
         this.userForm = this._formBuilder.group({
             name: [null, Validators.required],
@@ -119,16 +121,17 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             company: [null, Validators.required],
             group: [null, Validators.required],
             subgroup: [null, Validators.required],
-            created: [{ value: '', disabled: true }, Validators.required],
-            createdbyname: [{ value: '', disabled: true }, Validators.required],
-            deletedwhen: [{ value: '', disabled: true }, Validators.required],
-            deletedbyname: [{ value: '', disabled: true }, Validators.required],
-            lastmodifieddate: [{ value: '', disabled: true }, Validators.required],
-            lastmodifiedbyname: [{ value: '', disabled: true }, Validators.required],
+            created: [{ value: '', disabled: true }],
+            createdbyname: [{ value: '', disabled: true }],
+            deletedwhen: [{ value: '', disabled: true }],
+            deletedbyname: [{ value: '', disabled: true }],
+            lastmodifieddate: [{ value: '', disabled: true }],
+            lastmodifiedbyname: [{ value: '', disabled: true }],
             language: [null, Validators.required],
-            filterstring: [null, Validators.required],
+            filterstring: [null],
         });
         this.setValues();
+        this.user_detail = this.userForm.value;
     }
 
     ngAfterViewInit() {
@@ -157,21 +160,26 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     loadUserDetail(method_string: string) {
         if (method_string == 'company') {
-            this.dataSourceCompany.loadUserDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceCompany.loadUserDetail(this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'group') {
-            this.dataSourceGroup.loadUserDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, `${method_string}_clist`)
+            let companyid = this.userForm.get('company').value;
+            if (companyid == undefined) {
+                this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, 0, `${method_string}_clist`)
+            } else {
+                this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
+            }
         } else if (method_string == 'lengthunit') {
-            this.dataSourceLengthUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorLengthUnit.pageIndex, this.paginatorLengthUnit.pageSize, '', `${method_string}_clist`)
+            this.dataSourceLengthUnit.loadUserDetail(this.paginatorLengthUnit.pageIndex, this.paginatorLengthUnit.pageSize, '', `${method_string}_clist`)
         } else if (method_string == 'fuelunit') {
-            this.dataSourceFuelUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorFuelUnit.pageIndex, this.paginatorFuelUnit.pageSize, '', `${method_string}_clist`)
+            this.dataSourceFuelUnit.loadUserDetail(this.paginatorFuelUnit.pageIndex, this.paginatorFuelUnit.pageSize, '', `${method_string}_clist`)
         } else if (method_string == 'weightunit') {
-            this.dataSourceWeightUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorWeightUnit.pageIndex, this.paginatorWeightUnit.pageSize, '', `${method_string}_clist`)
+            this.dataSourceWeightUnit.loadUserDetail(this.paginatorWeightUnit.pageIndex, this.paginatorWeightUnit.pageSize, '', `${method_string}_clist`)
         } else if (method_string == 'tempunit') {
-            this.dataSourceTempUnit.loadUserDetail(this.userConncode, this.userID, this.paginatorTempUnit.pageIndex, this.paginatorTempUnit.pageSize, '', `${method_string}_clist`)
+            this.dataSourceTempUnit.loadUserDetail(this.paginatorTempUnit.pageIndex, this.paginatorTempUnit.pageSize, '', `${method_string}_clist`)
         } else if (method_string == 'language') {
-            this.dataSourceLanguage.loadUserDetail(this.userConncode, this.userID, this.paginatorLanguage.pageIndex, this.paginatorLanguage.pageSize, '', `${method_string}_clist`)
+            this.dataSourceLanguage.loadUserDetail(this.paginatorLanguage.pageIndex, this.paginatorLanguage.pageSize, '', `${method_string}_clist`)
         } else if (method_string == 'timezone') {
-            this.dataSourceTimeZone.loadUserDetail(this.userConncode, this.userID, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceTimeZone.loadUserDetail(this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
         }
     }
 
@@ -209,14 +217,14 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.method_string = item.split('_')[0];
         let selected_element_id = this.userForm.get(`${this.method_string}`).value;
         let clist = this.userDetailService.unit_clist_item[methodString];
-        for (let i = 0; i < clist.length; i++) {
-            if (clist[i].id == selected_element_id) {
-                this.userForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
-            }
-            this.managePageIndex(this.method_string);
-            this.loadUserDetail(this.method_string);
-        }
+        let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
+        console.log(currentOptionID);
+        this.userForm.get('filterstring').setValue(clist[currentOptionID].name);
+        this.filter_string = clist[currentOptionID].name;
+        console.log(this.filter_string);
+
+        this.managePageIndex(this.method_string);
+        this.loadUserDetail(this.method_string);
     }
 
     clearFilter() {
@@ -236,16 +244,16 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     setValues() {
         this.userForm.get('name').setValue(this.user.name);
-        this.userForm.get('company').setValue(this.user.companyid);
-        this.userForm.get('group').setValue(this.user.groupid);
+        this.userForm.get('company').setValue(Number(this.user.companyid));
+        this.userForm.get('group').setValue(Number(this.user.groupid));
         this.userForm.get('email').setValue(this.user.email);
         this.userForm.get('password').setValue(this.user.password);
-        this.userForm.get('lengthunit').setValue(this.user.lengthunitid);
-        this.userForm.get('fuelunit').setValue(this.user.fuelunitid);
-        this.userForm.get('weightunit').setValue(this.user.weightunitid);
-        this.userForm.get('tempunit').setValue(this.user.tempunitid);
-        this.userForm.get('language').setValue(this.user.languageid);
-        this.userForm.get('timezone').setValue(this.user.timezoneid);
+        this.userForm.get('lengthunit').setValue(Number(this.user.lengthunitid));
+        this.userForm.get('fuelunit').setValue(Number(this.user.fuelunitid));
+        this.userForm.get('weightunit').setValue(Number(this.user.weightunitid));
+        this.userForm.get('tempunit').setValue(Number(this.user.tempunitid));
+        this.userForm.get('language').setValue(Number(this.user.languageid));
+        this.userForm.get('timezone').setValue(Number(this.user.timezoneid));
         let created = this.user.created ? new Date(`${this.user.created}`) : '';
         let deletedwhen = this.user.deletedwhen ? new Date(`${this.user.deletedwhen}`) : '';
         let lastmodifieddate = this.user.lastmodifieddate ? new Date(`${this.user.lastmodifieddate}`) : '';
@@ -259,6 +267,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     getValues(dateTime: any, mode: string) {
+        const userID: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.userDetail.name = this.userForm.get('name').value || '';
         this.userDetail.email = this.userForm.get('email').value || '';
         this.userDetail.password = this.userForm.get('password').value || '';
@@ -280,13 +289,13 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.userDetail.created = this.user.created;
             this.userDetail.createdby = this.user.createdby;
             this.userDetail.lastmodifieddate = dateTime;
-            this.userDetail.lastmodifiedby = this.userID;
+            this.userDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.userDetail.id = 0;
             this.userDetail.created = dateTime;
-            this.userDetail.createdby = this.userID;
+            this.userDetail.createdby = userID;
             this.userDetail.lastmodifieddate = dateTime;
-            this.userDetail.lastmodifiedby = this.userID;
+            this.userDetail.lastmodifiedby = userID;
         }
     }
 
@@ -310,7 +319,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         if (this.userDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
+            this.userDetailService.saveUserDetail(this.userDetail)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if (result.responseCode == 100) {
                         alert("Success!");
@@ -326,7 +335,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         if (this.userDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.userDetailService.saveUserDetail(this.userConncode, this.userID, this.userDetail)
+            this.userDetailService.saveUserDetail(this.userDetail)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if (result.responseCode == 100) {
                         alert("Success!");
@@ -337,16 +346,29 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
-        dialogConfig.disableClose = true;
-        dialogConfig.data = { user: "", flag: flag };
-        dialogConfig.disableClose = false;
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result == 'goback') {
-                this.router.navigate(['admin/users/users']);
-            }
-        });
+        this.filter_string = '';
+        this.userForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.userForm.value;
+        console.log(this.user_detail, currentState);
+        if (isEqual(this.user_detail, currentState)) {
+            this.router.navigate(['admin/users/users']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = { user: "", flag: flag };
+            dialogConfig.disableClose = false;
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['admin/users/users']);
+                }
+            });
+        }
+    }
+
+    onCompanyChange(event: any) {
+        let current_companyID = this.userForm.get('company').value;
+        this.dataSourceGroup.loadGroupDetail(0, 10, "", current_companyID, "group_clist");
     }
 }

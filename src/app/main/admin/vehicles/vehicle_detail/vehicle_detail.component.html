@@ -25,10 +25,12 @@
                 </div>
             </div>
             <!-- / APP TITLE -->
-            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='new'" (click)="addVehicle()">
+            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='new'" (click)="addVehicle()"
+                [disabled]="vehicleForm.invalid">
                 <span>{{ 'VEHICLES.ADD' | translate }}</span>
             </button>
-            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='edit'" (click)="saveVehicle()">
+            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='edit'" (click)="saveVehicle()"
+                [disabled]="vehicleForm.invalid">
                 <span>{{ 'VEHICLES.SAVE' | translate }}</span>
             </button>
         </div>

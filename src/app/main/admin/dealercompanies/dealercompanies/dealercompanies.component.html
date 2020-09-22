@@ -31,7 +31,7 @@
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'DEALERCOMPANIES.NAME' | translate}}</mat-option>
-                            <!-- <mat-option value="dealercompany">{{'DEALERCOMPANIES.COMPANY' | translate}}</mat-option>
+                            <!-- <mat-option value="dealercompany">{{'DEALERCOMPANIES.DEALERCOMPANY' | translate}}</mat-option>
                             <mat-option value="group">{{'DEALERCOMPANIES.GROUP' | translate}}</mat-option>
                             <mat-option value="subgroup">{{'DEALERCOMPANIES.SUBGROUP' | translate}}</mat-option>
                             <mat-option value="account">{{'DEALERCOMPANIES.ACCOUNT' | translate}}</mat-option>
@@ -58,7 +58,7 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'DEALERCOMPANIES.SEARCHFORCOMPANY' | translate }}"
+                        <input #filter placeholder="{{ 'DEALERCOMPANIES.SEARCHFORDEALERCOMPANY' | translate }}"
                             [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
@@ -67,7 +67,7 @@
 
             <!-- ADD BUTTON -->
             <button mat-fab [routerLink]="'/admin/dealercompanies/dealercompany_detail'" class="accent  mt-24 mt-md-0"
-                [disabled]="restrictValue != 3" (click)="addNewDealerCompany()">
+                [disabled]="restrictValue != 3" (click)="addNewDealercompany()">
                 <mat-icon>add</mat-icon>
 
             </button>
@@ -92,15 +92,17 @@
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let dealercompany">
-                        <button (click)="editShowDealerCompanyDetail(dealercompany)" [disabled]="restrictValue == '1'"
+                        <button (click)="editShowDealercompanyDetail(dealercompany)" [disabled]="restrictValue == '1'"
                             style="background: none; border: none;">
                             <mat-icon class="active-icon s-16 edit_icon"
                                 [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
                         </button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDealerCompany(dealercompany)">
-                            delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateDealerCompany(dealercompany)">
-                            file_copy</mat-icon>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDealercompany(dealercompany)">
+                            delete
+                        </mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateDealercompany(dealercompany)">
+                            file_copy
+                        </mat-icon>
                     </mat-cell>
                 </ng-container>
 
@@ -161,7 +163,8 @@
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                        {{ 'DEALERCOMPANIES.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
+                        {{ 'DEALERCOMPANIES.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let dealercompany">
                         <p class="lastmodifieddate text-truncate">
                             {{dealercompany.lastmodifieddate}}
@@ -172,7 +175,8 @@
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
-                        {{ 'DEALERCOMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
+                        {{ 'DEALERCOMPANIES.LASTMODIFIEDBYNAME' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let dealercompany">
                         <p class="lastmodifiedbyname text-truncate">
                             {{dealercompany.lastmodifiedbyname}}

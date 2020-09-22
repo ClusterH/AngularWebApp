@@ -24,16 +24,12 @@ export class InstallerDialogComponent implements OnInit {
     installer: InstallerDetail = {};
     flag: any;
     installerForm: FormGroup;
-    serviceDetail: InstallerDetail = {};
-
-    userConncode: string;
-    userID: number;
-
+    installerDetail: InstallerDetail = {};
     private flagForSaving = new BehaviorSubject<boolean>(false);
 
     dataSource: InstallersDataSource;
-    dataSourceCompany: InstallersDataSource;
-    dataSourceGroup: InstallersDataSource;
+    dataSourceInstallContractor: InstallersDataSource;
+    dataSourceCarrier: InstallersDataSource;
 
     filter_string: string = '';
     method_string: string = '';
@@ -42,9 +38,9 @@ export class InstallerDialogComponent implements OnInit {
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true })
-    paginatorCompany: MatPaginator;
-    @ViewChild('paginatorGroup', { read: MatPaginator })
-    paginatorGroup: MatPaginator;
+    paginatorInstallContractor: MatPaginator;
+    @ViewChild('paginatorCarrier', { read: MatPaginator })
+    paginatorCarrier: MatPaginator;
 
     constructor(
         private router: Router,
@@ -59,125 +55,122 @@ export class InstallerDialogComponent implements OnInit {
         this.flag = _data.flag;
 
         if (this.flag == 'edit') {
-            this.installer = _data.serviceDetail;
+            this.installer = _data.installerDetail;
+            console.log('dialog===>>>', this.installer);
 
         } else {
 
         }
-
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
         this.filter_string = '';
     }
 
     ngOnInit() {
-        this.dataSourceCompany = new InstallersDataSource(this.installersService);
-        this.dataSourceGroup = new InstallersDataSource(this.installersService);
+        this.dataSourceInstallContractor = new InstallersDataSource(this.installersService);
+        this.dataSourceCarrier = new InstallersDataSource(this.installersService);
 
-        this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, 0, 10, this.installer.company, "company_clist");
-        if (this.installer.companyid != undefined) {
-            this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, this.installer.group, this.installer.companyid, "group_clist");
-        }
+        this.dataSourceInstallContractor.loadInstallContractorDetail(0, 10, this.installer.installcontractor, "installcontractor_clist");
+        this.dataSourceCarrier.loadCarrierDetail(0, 10, this.installer.carrier, "carrier_clist");
 
         this.installerForm = this._formBuilder.group({
             name: [null, Validators.required],
-            company: [null],
-            group: [null],
+            installcontractor: [null],
+            username: [null],
+            password: [null],
+            email: [null],
+            cellphone: [null],
+            carrier: [null],
             filterstring: [null],
         });
-
         this.setValues();
     }
 
     ngAfterViewInit() {
+        merge(this.paginatorInstallContractor.page)
+            .pipe(tap(() => { this.loadInstallerDetail("installcontractor") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
-
-        merge(this.paginatorCompany.page)
-            .pipe(
-                tap(() => {
-                    this.loadServiceDetail("company")
-                })
-            )
-            .subscribe((res: any) => {
-
-            });
-
-        merge(this.paginatorGroup.page)
-            .pipe(
-                tap(() => {
-                    this.loadServiceDetail("group")
-                })
-            )
-            .subscribe((res: any) => {
-
-            });
+        merge(this.paginatorCarrier.page)
+            .pipe(tap(() => { this.loadInstallerDetail("carrier") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
     }
 
     setValues() {
         this.installerForm.get('name').setValue(this.installer.name);
-        this.installerForm.get('company').setValue(this.installer.companyid);
-        this.installerForm.get('group').setValue(this.installer.groupid);
+        this.installerForm.get('username').setValue(this.installer.username);
+        this.installerForm.get('password').setValue(this.installer.password);
+        this.installerForm.get('email').setValue(this.installer.email);
+        this.installerForm.get('cellphone').setValue(this.installer.cellphone);
+        this.installerForm.get('installcontractor').setValue(Number(this.installer.installcontractorid));
+        this.installerForm.get('carrier').setValue(Number(this.installer.carrierid));
         this.installerForm.get('filterstring').setValue(this.filter_string);
     }
 
     getValue() {
-
-        this.serviceDetail.id = this.installer.id;
-
-        this.serviceDetail.name = this.installerForm.get('name').value;
-        this.serviceDetail.companyid = this.installerForm.get('company').value;
-        this.serviceDetail.groupid = this.installerForm.get('group').value ? this.installerForm.get('group').value : '';
+        this.installerDetail.id = this.installer.id;
+        this.installerDetail.name = this.installerForm.get('name').value;
+        this.installerDetail.username = this.installerForm.get('username').value;
+        this.installerDetail.password = this.installerForm.get('password').value;
+        this.installerDetail.cellphone = this.installerForm.get('cellphone').value;
+        this.installerDetail.email = this.installerForm.get('email').value;
+        this.installerDetail.installcontractorid = this.installerForm.get('installcontractor').value;
+        this.installerDetail.carrierid = this.installerForm.get('carrier').value;
+        this.installerDetail.isactive = this.installer.isactive;
+        this.installerDetail.deletedby = this.installer.deletedby;
+        this.installerDetail.deletedwhen = this.installer.deletedwhen;
+        this.installerDetail.isactive = this.installer.isactive;
         let currentInstaller = this.installersService.installerList.findIndex((service: any) => service.id == this.installer.id);
-        this.installersService.installerList[currentInstaller].id = this.serviceDetail.id;
-        this.installersService.installerList[currentInstaller].name = this.serviceDetail.name;
-        this.installersService.installerList[currentInstaller].companyid = this.serviceDetail.companyid;
-        this.installersService.installerList[currentInstaller].groupid = this.serviceDetail.groupid;
-        let clist = this.installersService.unit_clist_item['company_clist'];
+        this.installersService.installerList[currentInstaller].id = this.installerDetail.id;
+        this.installersService.installerList[currentInstaller].name = this.installerDetail.name;
+        this.installersService.installerList[currentInstaller].username = this.installerDetail.username;
+        this.installersService.installerList[currentInstaller].password = this.installerDetail.password;
+        this.installersService.installerList[currentInstaller].cellphone = this.installerDetail.cellphone;
+        this.installersService.installerList[currentInstaller].email = this.installerDetail.email;
+        this.installersService.installerList[currentInstaller].installcontractorid = this.installerDetail.installcontractorid;
+        this.installersService.installerList[currentInstaller].carrierid = this.installerDetail.carrierid;
+        this.installersService.installerList[currentInstaller].isactive = this.installerDetail.isactive;
+        this.installersService.installerList[currentInstaller].deletedby = this.installerDetail.deletedby;
+        this.installersService.installerList[currentInstaller].deletedhen = this.installerDetail.deletedwhen;
 
+        let clist = this.installersService.unit_clist_item['installcontractor_clist'];
         for (let i = 0; i < clist.length; i++) {
-            if (clist[i].id == this.serviceDetail.companyid) {
-                this.installersService.installerList[currentInstaller].company = clist[i].name;
+            if (clist[i].id == this.installerDetail.installcontractorid) {
+                this.installersService.installerList[currentInstaller].installcontractor = clist[i].name;
             }
         }
 
-        let glist = this.installersService.unit_clist_item['group_clist'];
+        let glist = this.installersService.unit_clist_item['carrier_clist'];
         for (let i = 0; i < glist.length; i++) {
-            if (glist[i].id == this.serviceDetail.groupid) {
-                this.installersService.installerList[currentInstaller].group = glist[i].name;
+            if (glist[i].id == this.installerDetail.carrierid) {
+                this.installersService.installerList[currentInstaller].carrier = glist[i].name;
             }
         }
         this.flagForSaving.next(true);
     }
 
-    loadServiceDetail(method_string: string) {
-        if (method_string == 'company') {
-            this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
-        } else if (method_string == 'group') {
-            let companyid = this.installerForm.get('company').value;
-
-            this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
+    loadInstallerDetail(method_string: string) {
+        if (method_string == 'installcontractor') {
+            this.dataSourceInstallContractor.loadInstallContractorDetail(this.paginatorInstallContractor.pageIndex, this.paginatorInstallContractor.pageSize, this.filter_string, `${method_string}_clist`)
+        } else if (method_string == 'carrier') {
+            this.dataSourceCarrier.loadCarrierDetail(this.paginatorCarrier.pageIndex, this.paginatorCarrier.pageSize, this.filter_string, `${method_string}_clist`)
         }
     }
 
     managePageIndex(method_string: string) {
         switch (method_string) {
-            case 'company':
-                this.paginatorCompany.pageIndex = 0;
+            case 'installcontractor':
+                this.paginatorInstallContractor.pageIndex = 0;
                 break;
 
-            case 'group':
-                this.paginatorGroup.pageIndex = 0;
+            case 'carrier':
+                this.paginatorCarrier.pageIndex = 0;
                 break;
         }
     }
 
-    showCompanyList(item: string) {
+    showInstallContractorList(item: string) {
         let methodString = item;
         this.method_string = item.split('_')[0];
 
-        if (this.method_string == 'group' && this.installerForm.get('company').value == '') {
-            alert('Please choose company first');
+        if (this.method_string == 'carrier' && this.installerForm.get('installcontractor').value == '') {
+            alert('Please choose installcontractor first');
         } else {
             let selected_element_id = this.installerForm.get(`${this.method_string}`).value;
             let clist = this.installersService.unit_clist_item[methodString];
@@ -190,66 +183,48 @@ export class InstallerDialogComponent implements OnInit {
             }
 
             this.managePageIndex(this.method_string);
-            this.loadServiceDetail(this.method_string);
+            this.loadInstallerDetail(this.method_string);
         }
     }
 
-    onCompanyChange(event: any) {
-
-        let current_companyID = this.installerForm.get('company').value;
-        this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
-    }
-
     clearFilter() {
-
         this.filter_string = '';
         this.installerForm.get('filterstring').setValue(this.filter_string);
-
         this.managePageIndex(this.method_string);
-        this.loadServiceDetail(this.method_string);
+        this.loadInstallerDetail(this.method_string);
     }
 
     onKey(event: any) {
         this.filter_string = event.target.value;
-
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-
             this.managePageIndex(this.method_string);
-            this.loadServiceDetail(this.method_string);
+            this.loadInstallerDetail(this.method_string);
         }
-
-
     }
 
-    comapnyPagenation(paginator) {
-        this.dataSourceCompany.loadCompanyDetail(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, this.filter_string, "company_clist");
+    installcontractorPagenation(paginator) {
+        this.dataSourceInstallContractor.loadInstallContractorDetail(paginator.pageIndex, paginator.pageSize, this.filter_string, "installcontractor_clist");
     }
 
-    groupPagenation(paginator) {
-        let companyid = this.installerForm.get('company').value;
-        this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, paginator.pageIndex, paginator.pageSize, this.filter_string, companyid, "group_clist");
+    carrierPagenation(paginator) {
+        this.dataSourceCarrier.loadCarrierDetail(paginator.pageIndex, paginator.pageSize, this.filter_string, "carrier_clist");
     }
 
     save() {
         this.getValue();
-
-        if (this.serviceDetail.name == '') {
+        if (this.installerDetail.name == '') {
             alert('Please enter Service Name')
         } else {
-
             if (this.flagForSaving) {
-                this.installersService.saveInstaller(this.userConncode, this.userID, this.serviceDetail)
-                    .subscribe((result: any) => {
-
-                        if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                            alert("Success!");
-
-                            this.flagForSaving.next(false);
-                            this.dialogRef.close(this.installersService.installerList);
-                        } else {
-                            alert('Failed saving!');
-                        }
-                    });
+                this.installersService.saveInstaller(this.installerDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        alert("Success!");
+                        this.flagForSaving.next(false);
+                        this.dialogRef.close(this.installersService.installerList);
+                    } else {
+                        alert('Failed saving!');
+                    }
+                });
             };
         }
     }
@@ -257,51 +232,49 @@ export class InstallerDialogComponent implements OnInit {
     add() {
         this.getNewvalue();
 
-        if (this.serviceDetail.name == '') {
+        if (this.installerDetail.name == '') {
             alert('Please enter Service Name')
         } else {
             if (this.flagForSaving) {
-                this.installersService.saveInstaller(this.userConncode, this.userID, this.serviceDetail)
-                    .subscribe((res: any) => {
-                        if ((res.responseCode == 200) || (res.responseCode == 100)) {
-                            alert("Success!");
+                this.installersService.saveInstaller(this.installerDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                    if ((res.responseCode == 200) || (res.responseCode == 100)) {
+                        alert("Success!");
 
-                            this.flagForSaving.next(false);
-                            this.dialogRef.close(this.installersService.installerList);
-
-                        } else {
-                            alert('Failed adding!');
-                        }
-                    });
-            } else {
-
+                        this.flagForSaving.next(false);
+                        this.dialogRef.close(this.installersService.installerList);
+                    } else {
+                        alert('Failed adding!');
+                    }
+                });
             }
         }
     }
 
     getNewvalue() {
-        this.serviceDetail.id = '0';
-        this.serviceDetail.name = this.installerForm.get('name').value;
-        this.serviceDetail.companyid = this.installerForm.get('company').value;
-        this.serviceDetail.groupid = this.installerForm.get('group').value ? this.installerForm.get('group').value : '';
+        this.installerDetail.id = '0';
+        this.installerDetail.name = this.installerForm.get('name').value;
+        this.installerDetail.name = this.installerForm.get('username').value;
+        this.installerDetail.name = this.installerForm.get('password').value;
+        this.installerDetail.name = this.installerForm.get('email').value;
+        this.installerDetail.name = this.installerForm.get('cellphone').value;
+        this.installerDetail.installcontractorid = this.installerForm.get('installcontractor').value;
+        this.installerDetail.carrierid = this.installerForm.get('carrier').value;
 
-        let clist = this.installersService.unit_clist_item['company_clist'];
-
+        let clist = this.installersService.unit_clist_item['installcontractor_clist'];
         for (let i = 0; i < clist.length; i++) {
-            if (clist[i].id == this.serviceDetail.companyid) {
-                this.serviceDetail.company = clist[i].name;
+            if (clist[i].id == this.installerDetail.installcontractorid) {
+                this.installerDetail.installcontractor = clist[i].name;
             }
         }
 
-        let glist = this.installersService.unit_clist_item['group_clist'];
-
+        let glist = this.installersService.unit_clist_item['carrier_clist'];
         for (let i = 0; i < glist.length; i++) {
-            if (glist[i].id == this.serviceDetail.groupid) {
-                this.serviceDetail.group = glist[i].name;
+            if (glist[i].id == this.installerDetail.carrierid) {
+                this.installerDetail.carrier = glist[i].name;
             }
         }
 
-        this.installersService.installerList = this.installersService.installerList.concat(this.serviceDetail);
+        this.installersService.installerList = this.installersService.installerList.concat(this.installerDetail);
 
         this.flagForSaving.next(true);
     }

@@ -1,22 +1,22 @@
 export interface VehicleDetail {
-    id?: number;
+    id?: string;
     name?: string;
-    companyid?: number;
-    groupid?: number;
-    subgroup?: number;
-    accountid?: number;
-    operatorid?: number;
-    unittypeid?: number;
-    serviceplanid?: number;
-    producttypeid?: number;
-    makeid?: number;
-    modelid?: number;
+    companyid?: string;
+    groupid?: string;
+    subgroup?: string;
+    accountid?: string;
+    operatorid?: string;
+    unittypeid?: string;
+    serviceplanid?: string;
+    producttypeid?: string;
+    makeid?: string;
+    modelid?: string;
     isactive?: boolean;
-    timezoneid?: number
+    timezoneid?: string
     created?: Date;
-    createdby?: number;
+    createdby?: string;
     deletedwhen?: Date;
-    deletedby?: number;
+    deletedby?: string;
     lastmodifieddate?: Date;
-    lastmodifiedby?: number;
+    lastmodifiedby?: string;
 }

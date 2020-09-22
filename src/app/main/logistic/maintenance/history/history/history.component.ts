@@ -5,8 +5,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map } from 'rxjs/operators';
+import { fromEvent, merge, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/operators';
 
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
@@ -23,20 +23,19 @@ import { locale as historyFrench } from 'app/main/logistic/maintenance/history/i
 import { locale as historyPortuguese } from 'app/main/logistic/maintenance/history/i18n/pt';
 
 @Component({
-    selector     : 'logistic-history',
-    templateUrl  : './history.component.html',
-    styleUrls    : ['./history.component.scss'],
-    animations   : fuseAnimations,
+    selector: 'logistic-history',
+    templateUrl: './history.component.html',
+    styleUrls: ['./history.component.scss'],
+    animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class HistoryComponent implements OnInit
-{
+export class HistoryComponent implements OnInit {
     dataSource: HistoryDataSource;
 
     @Output()
     pageEvent: PageEvent;
-   
-    pageIndex= 0;
+
+    pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
@@ -45,8 +44,7 @@ export class HistoryComponent implements OnInit
     currentUser: any;
 
     history: any;
-    userConncode: string;
-    userID: number;
+
     restrictValue: any;
 
     dash_history: string = '';
@@ -66,33 +64,27 @@ export class HistoryComponent implements OnInit
 
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    private _unsubscribeAll: Subject<any>;
 
-    @ViewChild(MatPaginator, {static: true})
-    paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
-    @ViewChild(MatSort, {static: true})
-    sort: MatSort;
-
-    @ViewChild('filter', {static: true})
-    filter: ElementRef;
-    
     constructor(
         private historyService: HistoryService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-    )
-    {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+    ) {
+        this._unsubscribeAll = new Subject();
         // this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).history;
 
-        
+
 
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(historyEnglish, historySpanish, historyFrench, historyPortuguese);
 
-        this.pageIndex= 0;
+        this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
@@ -103,97 +95,89 @@ export class HistoryComponent implements OnInit
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-        
+
 
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-   
+
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-        
+
 
         merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-           tap(() => this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList"))
-        )
-        .subscribe( (res: any) => {
-            
-        });
+            .pipe(tap(() => this.dataSource.loadHistory(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
-   
-    ngOnInit(): void
-    {
-        
+
+    ngOnInit(): void {
+
 
         this.dataSource = new HistoryDataSource(this.historyService);
-        this.dataSource.loadHistory(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancehistory_TList");
-        
+        this.dataSource.loadHistory(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancehistory_TList");
+
         this.getDash();
     }
 
     getDash() {
-        this.historyService.getDashboard(this.userConncode, this.userID)
-        .subscribe((res: any) => {
-            
+        this.historyService.getDashboard()
+            .subscribe((res: any) => {
 
-            this.dash_history = res.TrackingXLAPI.DATA[0].history;
-            this.dash_created = res.TrackingXLAPI.DATA[0].created;
-            this.dash_postponed = res.TrackingXLAPI.DATA[0].postponed;
-        });
+
+                this.dash_history = res.TrackingXLAPI.DATA[0].history;
+                this.dash_created = res.TrackingXLAPI.DATA[0].created;
+                this.dash_postponed = res.TrackingXLAPI.DATA[0].postponed;
+            });
     }
 
     onRowClicked(history) {
-        
+
     }
 
     selectedFilter() {
-        
+
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+            this.dataSource.loadHistory(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        
-        this.dataSource.loadHistory(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+
+        this.dataSource.loadHistory(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
     }
 
-    filterEvent() {
-        this.selectedFilter();
-    }
+    filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadHistory(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
+        this.dataSource.loadHistory(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancehistory_TList");
     }
 
     attendDetail(history: any) {
-        
+
 
         this.dialogRef = this._matDialog.open(AttendDialogComponent, {
             panelClass: 'attend-form-dialog',
-            data      : {
+            data: {
                 attend: history,
             }
         });
 
         this.dialogRef.afterClosed()
             .subscribe(res => {
-                
+
 
                 // if ( !res ) {
                 //     return;
                 // }
 
-                // this.historyService.saveAttend(this.userConncode, this.userID, res)
+                // this.historyService.saveAttendres)
                 // .subscribe((result: any) => {
                 //     if ((result.responseCode == 200)||(result.responseCode == 100)) {
                 //         alert('Successfully saved');

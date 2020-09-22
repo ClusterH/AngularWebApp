@@ -21,11 +21,11 @@ export class RouteDetailDataSource extends DataSource<any> {
         this._unsubscribeAll = new Subject();
     }
 
-    loadRouteDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
+    loadRouteDetail(pageindex: number, pagesize: number, name: string, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
         // use pipe operator to chain functions with Observable type
-        this.routeDetailService.getCompanies(conncode, userid, pageindex, pagesize, name, method)
+        this.routeDetailService.getCompanies(pageindex, pagesize, name, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
@@ -33,7 +33,7 @@ export class RouteDetailDataSource extends DataSource<any> {
             ).subscribe((result: any) => {
                 this.routesSubject.next(result.TrackingXLAPI.DATA);
                 this.routeDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

@@ -77,8 +77,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     ) {
         console.log('start filter===>');
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         this.getFilterPanelClists('producttype_clist');
         this.getFilterPanelClists('unittype_clist');
@@ -116,7 +115,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
 
     getFilterPanelClists(method: string): void {
-        this.filterPanelService.getFilterPanelClists(this.userConncode, this.userID, 1, 10000, this.filter_string, method)
+        this.filterPanelService.getFilterPanelClists(1, 10000, this.filter_string, method)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                 if (res.responseCode == 100) {
                     switch (method) {

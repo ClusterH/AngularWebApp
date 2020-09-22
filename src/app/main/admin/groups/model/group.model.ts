@@ -1,11 +1,10 @@
-export interface GroupDetail
-{
+export interface GroupDetail {
     id?: number;
     name?: string;
     email?: string;
     contactname?: string;
     contactphone?: string;
-    address?: string; 
+    address?: string;
     isactive?: boolean;
     companyid?: number;
     accountid?: number;

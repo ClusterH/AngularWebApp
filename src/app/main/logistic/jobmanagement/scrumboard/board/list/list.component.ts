@@ -12,13 +12,12 @@ import { Card } from 'app/main/logistic/jobmanagement/scrumboard/card.model';
 import { ScrumboardCardDialogComponent } from 'app/main/logistic/jobmanagement/scrumboard/board/dialogs/card/card.component';
 
 @Component({
-    selector     : 'scrumboard-board-list',
-    templateUrl  : './list.component.html',
-    styleUrls    : ['./list.component.scss'],
+    selector: 'scrumboard-board-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScrumboardBoardListComponent implements OnInit, OnDestroy
-{
+export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
     board: any;
     dialogRef: any;
 
@@ -47,8 +46,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         private _activatedRoute: ActivatedRoute,
         private _scrumboardService: ScrumboardService,
         private _matDialog: MatDialog
-    )
-    {
+    ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -60,12 +58,11 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._scrumboardService.onBoardChanged
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
-                
+
                 this.board = board;
             });
     }
@@ -73,8 +70,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
@@ -89,8 +85,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      *
      * @param newListName
      */
-    onListNameChanged(newListName): void
-    {
+    onListNameChanged(newListName): void {
         this.list.name = newListName;
         this._scrumboardService.updateList(this.list, this.board.id);
     }
@@ -100,17 +95,15 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      *
      * @param newCardName
      */
-    onCardAdd(newCardName): void
-    {
-        if ( newCardName === '' )
-        {
+    onCardAdd(newCardName): void {
+        if (newCardName === '') {
             return;
         }
 
         let due = this.dateFormat(new Date());
         console.log(due);
 
-        this._scrumboardService.addCard(this.board.id, this.list.id, new Card({name: newCardName, due: due}));
+        this._scrumboardService.addCard(this.board.id, this.list.id, new Card({ name: newCardName, due: due }));
 
         setTimeout(() => {
             this.listScroll.scrollToBottom(0, 400);
@@ -121,15 +114,15 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         let str = '';
 
         if (date != '') {
-            str = 
-              ("00" + (date.getMonth() + 1)).slice(-2) 
-              + "/" + ("00" + date.getDate()).slice(-2) 
-              + "/" + date.getFullYear() + " " 
-              + ("00" + date.getHours()).slice(-2) + ":" 
-              + ("00" + date.getMinutes()).slice(-2) 
-          }
-      
-    
+            str =
+                ("00" + (date.getMonth() + 1)).slice(-2)
+                + "/" + ("00" + date.getDate()).slice(-2)
+                + "/" + date.getFullYear() + " "
+                + ("00" + date.getHours()).slice(-2) + ":"
+                + ("00" + date.getMinutes()).slice(-2)
+        }
+
+
         return str;
     }
 
@@ -138,17 +131,15 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      *
      * @param listId
      */
-    removeList(listId): void
-    {
+    removeList(listId): void {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
 
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete the list and it\'s all cards?';
 
-        this.confirmDialogRef.afterClosed().subscribe(result => {
-            if ( result )
-            {
+        this.confirmDialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
                 this._scrumboardService.removeList(listId);
             }
         });
@@ -159,11 +150,10 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
      *
      * @param cardId
      */
-    openCardDialog(cardId): void
-    {
+    openCardDialog(cardId): void {
         this.dialogRef = this._matDialog.open(ScrumboardCardDialogComponent, {
             panelClass: 'scrumboard-card-dialog',
-            data      : {
+            data: {
                 cardId: cardId,
                 listId: this.list.id
             }
@@ -185,8 +175,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
     //     // this._scrumboardService.updateBoard(this.board);
     // }
 
-    onDropCard(ev, list): void
-    {
+    onDropCard(ev, list): void {
         console.log("drop card: ", ev, list.id);
 
         this.destinationListId = list.id;
@@ -194,7 +183,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         this._scrumboardService.draggedCardId
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(cardId => {
-                
+
                 this.draggedCardId = cardId;
             });
 
@@ -207,8 +196,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy
         // this._scrumboardService.updateBoard(this.board);
     }
 
-    onDragCard(ev, cardid, listid): void
-    {
+    onDragCard(ev, cardid, listid): void {
         console.log("drag card: ", ev, cardid, listid);
 
         this._scrumboardService.draggedCardId.next(cardid);

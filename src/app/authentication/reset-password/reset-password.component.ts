@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/internal/operators';
+
 
 @Component({
     selector: 'reset-password',

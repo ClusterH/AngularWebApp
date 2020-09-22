@@ -4,9 +4,8 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
 
 export class PoisDataSource extends DataSource<any> {
-    public poisSubject = new BehaviorSubject<any>([]);
-    // to show the total number of records
-    private loadingSubject = new BehaviorSubject<boolean>(false);
+    public poisSubject = new BehaviorSubject<any>([]); private loadingSubject = new BehaviorSubject<boolean>(false);
+
     public loading$ = this.loadingSubject.asObservable();
     totalLength: number;
     total_page: number;
@@ -18,10 +17,10 @@ export class PoisDataSource extends DataSource<any> {
         this._unsubscribeAll = new Subject();
     }
 
-    loadPois(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string) {
+    loadPois(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string) {
         this.loadingSubject.next(true);
         // use pipe operator to chain functions with Observable type
-        this._adminPoisService.getPois(conncode, userid, pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
+        this._adminPoisService.getPois(pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
@@ -29,7 +28,7 @@ export class PoisDataSource extends DataSource<any> {
             ).subscribe((result: any) => {
                 this._adminPoisService.poiList = result.TrackingXLAPI.DATA;
                 this.poisSubject.next(result.TrackingXLAPI.DATA);
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

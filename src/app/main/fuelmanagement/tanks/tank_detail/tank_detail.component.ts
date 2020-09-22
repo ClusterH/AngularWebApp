@@ -1,28 +1,23 @@
-import { Component, OnInit, ViewEncapsulation, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { Subject, Observable } from 'rxjs';
-
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import * as am4core from "@amcharts/amcharts4/core";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-
-am4core.useTheme(am4themes_animated);
-
-import { TankDetail } from 'app/main/fuelmanagement/tanks/model/tank.model';
-import { CourseDialogComponent } from "../dialog/dialog.component";
-
+import { Component, NgZone, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Router, ActivatedRoute } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
-
 import { locale as tanksEnglish } from 'app/main/fuelmanagement/tanks/i18n/en';
-import { locale as tanksSpanish } from 'app/main/fuelmanagement/tanks/i18n/sp';
 import { locale as tanksFrench } from 'app/main/fuelmanagement/tanks/i18n/fr';
 import { locale as tanksPortuguese } from 'app/main/fuelmanagement/tanks/i18n/pt';
+import { locale as tanksSpanish } from 'app/main/fuelmanagement/tanks/i18n/sp';
+import { TankDetail } from 'app/main/fuelmanagement/tanks/model/tank.model';
+import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
+import { isEmpty } from 'lodash';
+am4core.useTheme(am4themes_animated);
 
 @Component({
     selector: 'fuelmanagement-tank-detail',
@@ -32,28 +27,21 @@ import { locale as tanksPortuguese } from 'app/main/fuelmanagement/tanks/i18n/pt
     animations: fuseAnimations
 })
 
-export class TankDetailComponent implements OnInit {
+export class TankDetailComponent implements OnInit, OnDestroy {
     tank_detail: any;
     public tank: any;
     pageType: string;
-    userConncode: string;
-    userID: number;
-
     tankForm: FormGroup;
     tankDetail: TankDetail = {};
-
     displayedColumns: string[] = ['name'];
-
     filter_string: string = '';
     method_string: string = '';
-
     chart_data: any = [];
-
     dateOption = 'today';
     noData: boolean = true;
-
     fromDate: string = '';
     toDate: string = '';
+    private _unsubscribeAll: Subject<any>;
 
     constructor(
         public tankDetailService: TankDetailService,
@@ -62,64 +50,55 @@ export class TankDetailComponent implements OnInit {
         private _formBuilder: FormBuilder,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(tanksEnglish, tanksSpanish, tanksFrench, tanksPortuguese);
-
-        this.tank = localStorage.getItem("tank_detail") ? JSON.parse(localStorage.getItem("tank_detail")) : '';
-
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
-        if (this.tank != '') {
+        this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
+            console.log(data);
+            this.tank = data;
+        });
+        // this.tank = localStorage.getItem("tank_detail") ? JSON.parse(localStorage.getItem("tank_detail")) : '';
+        if (isEmpty(this.tank)) {
+            this.pageType = 'new';
+        } else {
             this.pageType = 'edit';
             this.getTankHistory('today');
-        }
-        else {
-
-            this.pageType = 'new';
         }
 
         this.filter_string = '';
     }
 
     ngOnInit(): void {
-
         this.tankForm = this._formBuilder.group({
             date: [null],
         });
     }
 
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     generateChartData(chart_data: any) {
-
         let chartData = [];
-
         for (let i in chart_data) {
-            // let truetime = new Date(chart_data[i].truetime);
-            //
-
             chartData.push({
                 date: new Date(chart_data[i].truetime),
                 level: chart_data[i].volume
             });
         }
 
-
         am4core.ready(() => {
-
             am4core.disposeAllCharts();
-
             let chart = am4core.create("chartdiv", am4charts.XYChart);
-
             // Add data
             chart.data = chartData;
-
-
             // Create axes
             let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
             dateAxis.renderer.minGridDistance = 50;
             // dateAxis.renderer.grid.template.disabled = true;
             // dateAxis.renderer.fullWidthTooltip = true;
-
             let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
             valueAxis.min = 0;
             // valueAxis.renderer.minGridDistance = 0.01;
@@ -154,8 +133,9 @@ export class TankDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
-        this.tankDetail.name = this.tankForm.get('name').value || '',
-            this.tankDetail.isactive = this.tank.isactive || true;
+        const userID: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        this.tankDetail.name = this.tankForm.get('name').value || '';
+        this.tankDetail.isactive = this.tank.isactive || true;
         // this.tankDetail.deletedwhen      = this.tank.deletedwhen || '';
         // this.tankDetail.deletedby        = this.tank.deletedby || 0;
 
@@ -164,13 +144,13 @@ export class TankDetailComponent implements OnInit {
             this.tankDetail.createdwhen = this.tank.createdwhen;
             this.tankDetail.createdby = this.tank.createdby;
             this.tankDetail.lastmodifieddate = dateTime;
-            this.tankDetail.lastmodifiedby = this.userID;
+            this.tankDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.tankDetail.id = 0;
             this.tankDetail.createdwhen = dateTime;
-            this.tankDetail.createdby = this.userID;
+            this.tankDetail.createdby = userID;
             this.tankDetail.lastmodifieddate = dateTime;
-            this.tankDetail.lastmodifiedby = this.userID;
+            this.tankDetail.lastmodifiedby = userID;
         }
     }
 
@@ -206,14 +186,12 @@ export class TankDetailComponent implements OnInit {
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
-                .subscribe((result: any) => {
-
-                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        alert("Success!");
-                        this.router.navigate(['admin/tanks/tanks']);
-                    }
-                });
+            this.tankDetailService.saveTankDetail(this.tankDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
+                if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                    alert("Success!");
+                    this.router.navigate(['admin/tanks/tanks']);
+                }
+            });
         }
     }
 
@@ -224,13 +202,12 @@ export class TankDetailComponent implements OnInit {
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.tankDetailService.saveTankDetail(this.userConncode, this.userID, this.tankDetail)
-                .subscribe((result: any) => {
-                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        alert("Success!");
-                        this.router.navigate(['admin/tanks/tanks']);
-                    }
-                });
+            this.tankDetailService.saveTankDetail(this.tankDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
+                if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                    alert("Success!");
+                    this.router.navigate(['admin/tanks/tanks']);
+                }
+            });
         }
     }
 
@@ -248,11 +225,8 @@ export class TankDetailComponent implements OnInit {
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-
-
-            } else {
 
             }
         });
@@ -396,7 +370,7 @@ export class TankDetailComponent implements OnInit {
         let volume_data: [];
         let subject = new Subject<any>();
 
-        this.tankDetailService.getTankHistory(this.userConncode, this.userID, this.tank.id, fromdate, todate)
+        this.tankDetailService.getTankHistory(this.tank.id, fromdate, todate)
             .subscribe((res: any) => {
 
                 if (res.responseCode == 100) {

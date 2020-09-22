@@ -1,57 +1,42 @@
 <div id="dialog_table">
-<div *ngIf="flag == 'duplicate'">
-    <h2 mat-dialog-title>{{'MODELS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+    <div *ngIf="flag == 'duplicate'">
+        <h2 mat-dialog-title>{{'MODELS.DUPLICATE_CONFIRM_MESSAGE' | translate}}</h2>
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'MODELS.DUPLICATE' | translate}}
+                </button>
 
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MODELS.DUPLICATE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+                <button class="mat-raised-button" (click)="close()">
                     {{'MODELS.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
-</div>
-
-
-<div *ngIf="flag == 'delete'">
-    <h2 mat-dialog-title>{{'MODELS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="save()">
-                {{'MODELS.DELETE' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()">
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </div>
+    <div *ngIf="flag == 'delete'">
+        <h2 mat-dialog-title>{{'MODELS.DELETE_CONFIRM_MESSAGE' | translate}}</h2>
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="save()">
+                    {{'MODELS.DELETE' | translate}}
+                </button>
+                <button class="mat-raised-button" (click)="close()">
                     {{'MODELS.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
-</div>
-
-<div *ngIf="flag == 'goback'">
-    <h2 mat-dialog-title>{{'MODELS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
-
-    <mat-dialog-actions>
-        <div class="confirm_buttons">
-            <button class="mat-raised-button accent-500"  (click)="goback()" fxFlex="30">
-                {{'MODELS.YES' | translate}}
-            </button>
-        
-            <button class="mat-raised-button"
-                    (click)="close()" fxFlex="30">
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </div>
+    <div *ngIf="flag == 'goback'">
+        <h2 mat-dialog-title>{{'MODELS.GOBACK_CONFIRM_MESSAGE' | translate}}</h2>
+        <mat-dialog-actions>
+            <div class="confirm_buttons">
+                <button class="mat-raised-button accent-500" (click)="goback()" fxFlex="30">
+                    {{'MODELS.YES' | translate}}
+                </button>
+                <button class="mat-raised-button" (click)="close()" fxFlex="30">
                     {{'MODELS.NO' | translate}}
-            </button>
-        </div>
-
-    </mat-dialog-actions>
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </div>
 </div>
-</div>
-

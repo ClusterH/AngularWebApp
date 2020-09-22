@@ -13,13 +13,13 @@
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
 
-                <button mat-icon-button class="mr-0 mr-sm-16" >
+                <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/operators/operators'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
 
                 <div fxLayout="column" fxLayoutAlign="start start"
-                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
                         {{operator.name}}
                     </div>
@@ -33,15 +33,11 @@
             </div>
             <!-- / APP TITLE -->
 
-            <button mat-raised-button
-                    class="save-operator-button"
-                    *ngIf="pageType ==='new'" (click)="addOperator()">
+            <button mat-raised-button class="save-operator-button" *ngIf="pageType ==='new'" (click)="addOperator()">
                 <span>{{ 'OPERATORS.ADD' | translate }}</span>
             </button>
 
-            <button mat-raised-button
-                    class="save-operator-button"
-                    *ngIf="pageType ==='edit'" (click)="saveOperator()">
+            <button mat-raised-button class="save-operator-button" *ngIf="pageType ==='edit'" (click)="saveOperator()">
                 <span>{{ 'OPERATORS.SAVE' | translate }}</span>
             </button>
         </div>
@@ -53,25 +49,24 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <form [formGroup]="operatorForm" class="operator w-100-p" fxLayout="column" fxFlex >
-
+                <form [formGroup]="operatorForm" class="operator w-100-p" fxLayout="column" fxFlex>
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'OPERATORS.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
-
-                                    <div class="profile_image" style="width: 150px; height: 150px; margin-bottom: 20px; margin-right: 30px;" >
+                                    <div class="profile_image"
+                                        style="width: 150px; height: 150px; margin-bottom: 20px; margin-right: 30px;">
                                         {{imageError}}
                                         <div class="custom-file fileInputProfileWrap">
-                                            <input type="file" (change)="fileChangeEvent($event)" class="fileInputProfile">
+                                            <input type="file" (change)="fileChangeEvent($event)"
+                                                class="fileInputProfile">
                                             <div class="img-space">
                                                 <ng-container *ngIf="isImageSaved; else elseTemplate">
                                                     <img [src]="cardImageBase64" />
                                                 </ng-container>
                                                 <ng-template #elseTemplate>
-                                                    <img src="/assets/images/avatars/profile.jpg" class="img-responsive">
+                                                    <img src="/assets/images/avatars/profile.jpg"
+                                                        class="img-responsive">
                                                 </ng-template>
                                             </div>
                                         </div>
@@ -81,170 +76,170 @@
                                         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.NAME' | translate }}</mat-label>
-                                                <input matInput placeholder="Name"
-                                                    name="name"
-                                                    formControlName="name"
+                                                <input matInput placeholder="Name" name="name" formControlName="name"
                                                     required>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.EMAIL' | translate }}</mat-label>
-                                                <input matInput placeholder="Email"
-                                                       name="email"
-                                                       formControlName="email"
-                                                       required>
+                                                <input matInput placeholder="Email" name="email" formControlName="email"
+                                                    required>
                                             </mat-form-field>
                                         </div>
 
                                         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                            <mat-form-field appearance="outline"  fxFlex="48">
+                                            <mat-form-field appearance="outline" fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.BIRTHDATE' | translate }}</mat-label>
-                                                <input matInput [matDatepicker]="birthDatePicker" name="birthdate" formControlName="birthdate">
-                                                <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+                                                <input matInput [matDatepicker]="birthDatePicker" name="birthdate"
+                                                    formControlName="birthdate">
+                                                <mat-datepicker-toggle matSuffix [for]="birthDatePicker">
+                                                </mat-datepicker-toggle>
                                                 <mat-datepicker #birthDatePicker></mat-datepicker>
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                                 <mat-label>{{ 'OPERATORS.PASSWORD' | translate }}</mat-label>
-                                                <input matInput placeholder="Password"
-                                                       name="password"
-                                                       formControlName="password"
-                                                       required>
+                                                <input matInput placeholder="Password" name="password"
+                                                    formControlName="password" required>
                                             </mat-form-field>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48" class="select_list">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48"
+                                        class="select_list">
                                         <mat-label>{{ 'OPERATORS.COMPANY' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                        <mat-select (click)="showCompanyList('company_clist')"
+                                            (selectionChange)="onCompanyChange($event)" formControlName="company">
+                                            <div class="filter_company_input">
+                                                <input matInput formControlName="filterstring" #filter
+                                                    placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
 
-                                            <div  style="width: 100%; overflow: auto;" >
-                                                <mat-table [dataSource]="dataSourceCompany"  class="operators-table font-size-10 mat-elevation-z8" >
+                                            <div style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceCompany"
+                                                    class="operators-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let company;"  style="border: 0px;">
-                                                            <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let company;" style="border: 0px;">
+                                                            <mat-option [value]="company.id">{{company.name}}
+                                                            </mat-option>
                                                         </td>
                                                     </ng-container>
-                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    <tr class="company_list" style="height: 15px;" mat-row
+                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorCompany
-                                                class="table_paginator_detail"
-                                                [length]="dataSourceCompany.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                                sticky="true"
-                                            ></mat-paginator>
-                                          
+                                            <mat-paginator style=" height: 40px;" #paginatorCompany
+                                                class="table_paginator_detail" [length]="dataSourceCompany.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons
+                                                sticky="true"></mat-paginator>
+
                                         </mat-select>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.GROUP' | translate }}</mat-label>
-                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                        <mat-select formControlName="group" (click)="showCompanyList('group_clist')">
+                                            <div class="filter_company_input">
+                                                <input matInput formControlName="filterstring" #filter
+                                                    placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
 
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceGroup"  class="operators-table font-size-10 mat-elevation-z8" >
+                                            <div style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceGroup"
+                                                    class="operators-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let group" style="border: 0px;">
+                                                            <mat-option style="width: 100%; height: auto; padding: 0px;"
+                                                                [value]="group.id">{{group.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
-                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    <tr class="company_list" style="height: 15px; " mat-row
+                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-                                        
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorGroup
-                                                class="table_paginator"
-                                                [length]="dataSourceGroup.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                            ></mat-paginator>
+
+                                            <mat-paginator style=" height: 40px;" #paginatorGroup
+                                                class="table_paginator" [length]="dataSourceGroup.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
+                                            </mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30" class="select_list">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30"
+                                        class="select_list">
                                         <mat-label>{{ 'OPERATORS.OPERATORTYPE' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('operatortype_clist')" formControlName="operatortype">
+                                        <mat-select (click)="showCompanyList('operatortype_clist')"
+                                            formControlName="operatortype">
 
-                                            <div  style="width: 100%; overflow: auto;" >
-                                                <mat-table [dataSource]="dataSourceOperatorType"  class="operators-table font-size-10 mat-elevation-z8" >
+                                            <div style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceOperatorType"
+                                                    class="operators-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let operatortype;"  style="border: 0px;">
-                                                            <mat-option  [value]="operatortype.id">{{operatortype.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let operatortype;"
+                                                            style="border: 0px;">
+                                                            <mat-option [value]="operatortype.id">{{operatortype.name}}
+                                                            </mat-option>
                                                         </td>
                                                     </ng-container>
-                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    <tr class="company_list" style="height: 15px;" mat-row
+                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorOperatorType
+                                            <mat-paginator style=" height: 40px;" #paginatorOperatorType
                                                 class="table_paginator_detail"
-                                                [length]="dataSourceOperatorType.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                                sticky="true"
-                                            ></mat-paginator>
-                                          
+                                                [length]="dataSourceOperatorType.totalLength" [pageSize]="10"
+                                                [hidePageSize]="true" showFirstLastButtons sticky="true">
+                                            </mat-paginator>
+
                                         </mat-select>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline"  fxFlex="30">
+                                    <mat-form-field appearance="outline" fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.HIREDATE'| translate }}</mat-label>
-                                        <input matInput [matDatepicker]="hireDatePicker" name="hiredate" formControlName="hiredate">
+                                        <input matInput [matDatepicker]="hireDatePicker" name="hiredate"
+                                            formControlName="hiredate">
                                         <mat-datepicker-toggle matSuffix [for]="hireDatePicker"></mat-datepicker-toggle>
                                         <mat-datepicker #hireDatePicker></mat-datepicker>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.PHONENUMBER' | translate }}</mat-label>
-                                        <input matInput placeholder="PhoneNumber"
-                                            name="phonenumber"
-                                            formControlName="phonenumber"
-                                            required>
+                                        <input matInput placeholder="PhoneNumber" name="phonenumber"
+                                            formControlName="phonenumber" required>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                  
-                                    <mat-form-field appearance="outline"  fxFlex="30">
+
+                                    <mat-form-field appearance="outline" fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.PHYSICALTESTEXPIRYDATE'| translate }}</mat-label>
-                                        <input matInput [matDatepicker]="physicaltestDatePicker" name="physicaltestexpirydate" formControlName="physicaltestexpirydate">
-                                        <mat-datepicker-toggle matSuffix [for]="physicaltestDatePicker"></mat-datepicker-toggle>
+                                        <input matInput [matDatepicker]="physicaltestDatePicker"
+                                            name="physicaltestexpirydate" formControlName="physicaltestexpirydate">
+                                        <mat-datepicker-toggle matSuffix [for]="physicaltestDatePicker">
+                                        </mat-datepicker-toggle>
                                         <mat-datepicker #physicaltestDatePicker></mat-datepicker>
                                     </mat-form-field>
 
-                                   
-                                    <mat-form-field appearance="outline"  fxFlex="30">
+
+                                    <mat-form-field appearance="outline" fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.LICENSEEXPIRATIONDATE'| translate }}</mat-label>
-                                        <input matInput [matDatepicker]="licenseexpirationDatePicker" name="licenseexpirationdate" formControlName="licenseexpirationdate">
-                                        <mat-datepicker-toggle matSuffix [for]="licenseexpirationDatePicker"></mat-datepicker-toggle>
+                                        <input matInput [matDatepicker]="licenseexpirationDatePicker"
+                                            name="licenseexpirationdate" formControlName="licenseexpirationdate">
+                                        <mat-datepicker-toggle matSuffix [for]="licenseexpirationDatePicker">
+                                        </mat-datepicker-toggle>
                                         <mat-datepicker #licenseexpirationDatePicker></mat-datepicker>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
                                         <mat-label>{{ 'OPERATORS.DRIVERLICENSENUMBER' | translate }}</mat-label>
-                                        <input matInput placeholder="Driver LicenseNumber"
-                                               name="driverlicensenumber"
-                                               formControlName="driverlicensenumber">
+                                        <input matInput placeholder="Driver LicenseNumber" name="driverlicensenumber"
+                                            formControlName="driverlicensenumber">
                                     </mat-form-field>
 
                                 </div>
@@ -254,52 +249,45 @@
                         <mat-tab label="{{ 'OPERATORS.AUDIT' | translate }}">
 
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-                                
+
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.CREATED' | translate }}</mat-label>
-                                        <input matInput placeholder="Created"
-                                               name="created"
-                                                formControlName="created">
+                                        <input matInput placeholder="Created" name="created" formControlName="created">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.CREATEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="CreatedByName"
-                                               name="createdbyname"
-                                               formControlName="createdbyname">
+                                        <input matInput placeholder="CreatedByName" name="createdbyname"
+                                            formControlName="createdbyname">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.DELETEDWHEN' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted When"
-                                               name="deletedwhen"
-                                               formControlName="deletedwhen">
+                                        <input matInput placeholder="Deleted When" name="deletedwhen"
+                                            formControlName="deletedwhen">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.DELETEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Deleted By Name"
-                                               name="deletedbyname"
-                                               formControlName="deletedbyname">
+                                        <input matInput placeholder="Deleted By Name" name="deletedbyname"
+                                            formControlName="deletedbyname">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                        <input matInput placeholder="Last Modified Date"
-                                               name="lastmodifieddate"
-                                               formControlName="lastmodifieddate">
+                                        <input matInput placeholder="Last Modified Date" name="lastmodifieddate"
+                                            formControlName="lastmodifieddate">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'OPERATORS.LASTMODIFIEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Last Modified By Name"
-                                               name="lastmodifiedbyname"
-                                               formControlName="lastmodifiedbyname">
+                                        <input matInput placeholder="Last Modified By Name" name="lastmodifiedbyname"
+                                            formControlName="lastmodifiedbyname">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -317,4 +305,3 @@
     <!-- / CENTER -->
 
 </div>
-

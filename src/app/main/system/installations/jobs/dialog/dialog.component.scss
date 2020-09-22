@@ -6,7 +6,7 @@
     }
 
     @include media-breakpoint("gt-xs") {
-        width: 400px;
+        width: 600px;
     }
     .mat-dialog-container {
         padding: 0;
@@ -22,16 +22,57 @@
     }
 
     .dialog-content-wrapper {
-        max-height: 85vh;
+        max-height: 90vh;
         display: flex;
         flex-direction: column;
     }
     .mat-datepicker-toggle-default-icon {
         margin-left: 16px !important;
     }
+
+    .profile_image {
+        position: relative;
+        .delete-checkbox {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+    }
+
+    .add-button-div {
+        height: auto;
+        width: 100%;
+        min-height: 36px;
+    }
+
+    .add-button-div .add-button-btn {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        cursor: pointer;
+    }
+
+    .fileInputProfileWrap {
+        width: 100%;
+        height: auto;
+    }
+
+    .fileInputProfile {
+        position: absolute;
+        height: 36px;
+        width: 75px;
+
+        z-index: 1;
+        opacity: 0;
+    }
+    .fileInputProfile[disabled] + .add-button-div {
+        pointer-events: none;
+        cursor: not-allowed !important;
+    }
 }
 
-.filter_company_input {
+.filter_carrier_input {
     border: 1px solid #b3b1b1 !important;
     border-radius: 5px !important;
     margin: 20px !important;

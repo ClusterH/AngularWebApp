@@ -1,25 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { InsurancecompanyDetailComponent } from './insurancecompany_detail.component';
 
-import { InsuranceCompanyDetailComponent } from './insurancecompany_detail.component';
+describe('insurancecompanyDetailComponent', () => {
+    let component: InsurancecompanyDetailComponent;
+    let fixture: ComponentFixture<InsurancecompanyDetailComponent>;
 
-describe('InsuranceCompanyDetailComponent', () => {
-  let component: InsuranceCompanyDetailComponent;
-  let fixture: ComponentFixture<InsuranceCompanyDetailComponent>;
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [InsurancecompanyDetailComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ InsuranceCompanyDetailComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(InsurancecompanyDetailComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InsuranceCompanyDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

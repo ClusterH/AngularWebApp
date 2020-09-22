@@ -24,8 +24,7 @@ export class DeleteDialogComponent {
     installer: InstallerDetail;
     flag: any;
 
-    userConncode: string;
-    userID: number;
+
 
     dataSource: InstallersDataSource;
     private flagForDeleting = new BehaviorSubject<boolean>(false);
@@ -38,8 +37,7 @@ export class DeleteDialogComponent {
         private dialogRef: MatDialogRef<DeleteDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         this._fuseTranslationLoaderService.loadTranslations(installersEnglish, installersSpanish, installersFrench, installersPortuguese);
 

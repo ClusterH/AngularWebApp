@@ -1,9 +1,15 @@
 export interface InstallerDetail {
     id?: string;
     name?: string;
-    contact?: string;
-    companyid?: string;
-    company?: string;
-    groupid?: string;
-    group?: string;
+    username?: string;
+    password?: string;
+    isactive?: string;
+    deletedwhen?: string;
+    deletedby?: string;
+    installcontractorid?: number;
+    installcontractor?: string;
+    email?: string;
+    cellphone?: string;
+    carrierid?: number;
+    carrier?: string;
 }

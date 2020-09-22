@@ -5,8 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/internal/operators';
-import { tap } from 'rxjs/operators';
+
+import { tap, takeUntil } from 'rxjs/operators';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -38,8 +38,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
     index_number: number = 1;
     currentUser: any;
     route: any;
-    userConncode: string;
-    userID: number;
+
     restrictValue: any;
     flag: string = '';
     displayedColumns = [
@@ -68,8 +67,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).routes;
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(routesEnglish, routesSpanish, routesFrench, routesPortuguese);
@@ -88,8 +86,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.paginator.pageIndex = 0);
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList")),
+            .pipe(tap(() => this.dataSource.loadRoutes(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList")),
                 takeUntil(this._unsubscribeAll)
             ).subscribe((res: any) => { });
 
@@ -99,7 +96,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new RoutesDataSource(this._adminRoutesService);
-        this.dataSource.loadRoutes(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Route_TList");
+        this.dataSource.loadRoutes(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Route_TList");
     }
 
     ngOnDestroy() {
@@ -112,18 +109,18 @@ export class RoutesComponent implements OnInit, OnDestroy {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
+            this.dataSource.loadRoutes(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        this.dataSource.loadRoutes(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
+        this.dataSource.loadRoutes(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
     }
 
     filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadRoutes(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
+        this.dataSource.loadRoutes(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Route_TList");
     }
 
     addNewRoute() {

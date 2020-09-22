@@ -20,16 +20,21 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        // console.log(req);
+        console.log(req);
         let token: string = localStorage.getItem('current_token') || '';
-        // let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        // let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         if (token.length != 0) {
-            req = req.clone({ params: req.params.set("token", token) });
-            // req = req.clone({ params: req.params.set("conncode", conncode) });
-            // req = req.clone({ params: req.params.set("userid", userid.toString()) });
-            // console.log(req);
+            let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+            let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+            if (req.body != null && (req.body.method == "SaveOperatorImage" || req.body.method == "InstallationImages_Save" || req.body.method == "InstallationImages_Delete")) {
+                console.log(req);
+            } else {
+                req = req.clone({ params: req.params.set("token", token) });
+                req = req.clone({ params: req.params.set("conncode", conncode) });
+                req = req.clone({ params: req.params.set("userid", userid.toString()) });
+                console.log(req);
+            }
         }
         return next.handle(req).pipe(
             map((event: HttpEvent<any>) => {

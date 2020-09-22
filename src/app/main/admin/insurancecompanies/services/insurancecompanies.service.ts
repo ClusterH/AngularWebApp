@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-// import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class InsuranceCompaniesService
-{
+export class InsurancecompaniesService {
     insurancecompanies: any[];
     insurancecompanyList: any;
 
@@ -17,66 +15,52 @@ export class InsuranceCompaniesService
     constructor(
         private _httpClient: HttpClient,
     ) { }
-    
-    getInsuranceCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
-    {
+
+    getInsurancecompanies(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
-                .set('orderdirection', orderdirection.toString())                
-                .set('companytypeid', '3')
+                .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-               
-            
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
-            // filterString = "%" + filterString + "%";
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
-                .set('orderdirection', orderdirection.toString())              
-                .set('companytypeid', '3')
+                .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-
-            
-
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
-    
-    /**
-     * Delete contact
-     *
-    //  * @param contact
-     */
-    // deleteInsuranceCompany(insurancecompany): void
-    // {
-    //     const insurancecompanyIndex = this.insurancecompanies.indexOf(insurancecompany);
-    //     this.insurancecompanies.splice(insurancecompanyIndex, 1);
-    //     this.onInsuranceCompaniesChanged.next(this.insurancecompanies);
-    // }
 
-    // duplicateInsuranceCompany(insurancecompany): void
+    deleteInsurancecompany(id: number): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', id.toString())
+            .set('method', "insurancecompany_delete");
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    // duplicateInsurancecompany(insurancecompany): void
     // {
     //     const insurancecompanyIndex = this.insurancecompanies.indexOf(insurancecompany);
     //     this.insurancecompanies.splice(insurancecompanyIndex, 0, insurancecompany);
-    //     this.onInsuranceCompaniesChanged.next(this.insurancecompanies);
+    //     this.onInsurancecompaniesChanged.next(this.insurancecompanies);
     // }
 }

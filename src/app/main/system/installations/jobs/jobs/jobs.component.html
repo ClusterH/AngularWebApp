@@ -1,16 +1,12 @@
 <div id="jobs" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center_table center">
-
         <!-- HEADER -->
         <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
             fxLayoutAlign.gt-sm="space-between center">
-
             <!-- APP TITLE -->
             <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
@@ -25,23 +21,21 @@
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'JOB.SELECTFIELD' | translate}}:</mat-label>
-
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
-                            <mat-option value="name">{{'JOB.NAME' | translate}}</mat-option>
-                            <mat-option value="email">{{'JOB.EMAIL' | translate}}</mat-option>
-                            <mat-option value="password">{{'JOB.PASSWORD' | translate}}</mat-option>
-                            <mat-option value="jobprofile">{{'JOB.JOBPROFILE' | translate}}
+                            <mat-option value="imei">{{'JOB.IMEI' | translate}}</mat-option>
+                            <mat-option value="scheduledate">{{'JOB.SCHEDULEDATE' | translate}}</mat-option>
+                            <mat-option value="address">{{'JOB.ADDRESS' | translate}}</mat-option>
+                            <mat-option value="plate">{{'JOB.PLATE' | translate}}
                             </mat-option>
-                            <mat-option value="timezone">{{'JOB.TIMEZONE' | translate}}</mat-option>
-                            <mat-option value="lengthunit">{{'JOB.LENGTHUNIT' | translate}}</mat-option>
-                            <mat-option value="fuelunit">{{'JOB.FUELUNIT' | translate}}</mat-option>
-                            <mat-option value="weightunit">{{'JOB.WEIGHTUNIT' | translate}}</mat-option>
-                            <mat-option value="tempunit">{{'JOB.TEMPUNIT' | translate}}</mat-option>
-                            <mat-option value="company">{{'JOB.COMPANY' | translate}}</mat-option>
-                            <mat-option value="group">{{'JOB.GROUP' | translate}}</mat-option>
-                            <mat-option value="subgroup">{{'JOB.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="customer">{{'JOB.CUSTOMER' | translate}}</mat-option>
+                            <mat-option value="customerphonenumber">{{'JOB.CUSTOMERPHONENUMBER' | translate}}
+                            </mat-option>
+                            <mat-option value="status">{{'JOB.STATUS' | translate}}</mat-option>
+                            <mat-option value="installer">{{'JOB.INSTALLER' | translate}}</mat-option>
+                            <mat-option value="created">{{'JOB.CREATED' | translate}}</mat-option>
+                            <mat-option value="createdby">{{'JOB.CREATEDBY' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -55,17 +49,13 @@
                 </div>
             </div>
             <!-- / SEARCH -->
-
             <!-- ADD BUTTON -->
             <button mat-fab class="accent  mt-24 mt-md-0" (click)="addNewJob()">
                 <mat-icon>add</mat-icon>
-
             </button>
             <!-- / ADD BUTTON -->
-
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
@@ -77,8 +67,7 @@
 
             <mat-table class="jobs-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
                 matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
-                style="width: 100%;">
-
+                style="width: 120%;">
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
@@ -94,40 +83,92 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.NAME' | translate }}
+                <!-- Imei Column -->
+                <ng-container matColumnDef="imei">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.IMEI' | translate }}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let job">
-                        <p class="name text-truncate">{{job.name}}</p>
+                        <p class="imei text-truncate">{{job.imei}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- Company Column -->
-                <ng-container matColumnDef="company">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.COMPANY' | translate }}
+                <!-- ScheduleDate Column -->
+                <ng-container matColumnDef="scheduledate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.SCHEDULEDATE' | translate }}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let job">
-                        <p class="company text-truncate">{{job.company}}</p>
+                        <p class="scheduledate text-truncate">{{job.scheduledate}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- Group Column -->
-                <ng-container matColumnDef="group">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.GROUP' | translate }}
+                <!-- Address Column -->
+                <ng-container matColumnDef="address">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.ADDRESS' | translate }}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let job">
-                        <p class="group text-truncate">{{job.group}}</p>
+                        <p class="address text-truncate">{{job.address}}</p>
                     </mat-cell>
                 </ng-container>
-
+                <!-- Plate Column -->
+                <ng-container matColumnDef="plate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.PLATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="plate text-truncate">{{job.plate}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Customer Column -->
+                <ng-container matColumnDef="customer">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.CUSTOMER' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="customername text-truncate">{{job.customername}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Customer PhoneNumber Column -->
+                <ng-container matColumnDef="customerphonenumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.CUSTOMERPHONENUMBER' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="customerphonenumber text-truncate">{{job.customerphonenumber}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Status Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.STATUS' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="status text-truncate">{{job.status}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Installer Column -->
+                <ng-container matColumnDef="installer">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.INSTALLER' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="installer text-truncate">{{job.installer}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="created text-truncate">{{job.created}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- CreatedBy Column -->
+                <ng-container matColumnDef="createdby">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'JOB.CREATEDBY' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let job">
+                        <p class="createdby text-truncate">{{job.createdbyname}}</p>
+                    </mat-cell>
+                </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-
                 <mat-row *matRowDef="let job; columns: displayedColumns;" class="job font-size-10" matRipple>
                 </mat-row>
-
             </mat-table>
-
         </div>
         <div>
             <div class="page_index">
@@ -139,14 +180,12 @@
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
-
             </div>
             <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
                 [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                 (page)="pageJob = $event">
             </mat-paginator>
         </div>
-
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

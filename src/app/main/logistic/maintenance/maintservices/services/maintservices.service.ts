@@ -3,8 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
-export class MaintservicesService
-{
+export class MaintservicesService {
     maintservices: any[];
     public unit_clist_item: any = {};
     public maintserviceList: any = [];
@@ -20,31 +19,28 @@ export class MaintservicesService
     constructor(
         private _httpClient: HttpClient,
     ) { }
-    
-    getMaintservices(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any>
-    {
+
+    getMaintservices(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-               
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         } else {
             let params = new HttpParams()
-                .set('conncode', conncode.toString())
-                .set('userid', userid.toString())
+
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -52,202 +48,186 @@ export class MaintservicesService
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
 
-    getCompanies(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string): Observable<any>
-    {
-        
+    getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
+
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        
-        if(name == '') {
-            
-            let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+        if (name == '') {
+
+            let params = new HttpParams()
+
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method.toString());
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
-           
+
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
 
-    getGroups(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        
+    getGroups(pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
+
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('companyid', companyid.toString())
-            .set('method', 'group_CList');
-        
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('companyid', companyid.toString())
+                .set('method', 'group_CList');
+
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
         } else {
             const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set('name', `^${name}^`) 
-            .set('companyid', companyid.toString())
-            .set('method', 'group_CList');
-        
-            
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('companyid', companyid.toString())
+                .set('method', 'group_CList');
+
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
         }
-        
+
     }
 
-    getItemDetail(conncode: string, userid: number, pageindex: number, pagesize: number, serviceid: string,  name: string, method: string): Observable<any>
-    {
-        
+    getItemDetail(pageindex: number, pagesize: number, serviceid: string, name: string, method: string): Observable<any> {
+
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let paramIdentity = (this.pageType == 'edit' || this.new_serviceID != '')? 'serviceid' : 'companyid';
-        if(name == '') {
-            
+        let paramIdentity = (this.pageType == 'edit' || this.new_serviceID != '') ? 'serviceid' : 'companyid';
+        if (name == '') {
+
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set(`${paramIdentity}`, serviceid.toString())
-            .set('method', method.toString());
 
-            
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set(`${paramIdentity}`, serviceid.toString())
+                .set('method', method.toString());
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
-           
+
         } else {
             let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
-            .set('pageindex', (pageindex + 1).toString())
-            .set('pagesize', pagesize.toString())
-            .set(`${paramIdentity}`, serviceid.toString())
-            .set('name', `^${name}^`) 
-            .set('method', method.toString());
 
-            
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set(`${paramIdentity}`, serviceid.toString())
+                .set('name', `^${name}^`)
+                .set('method', method.toString());
 
 
-            return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-                headers: headers,   
+
+
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
                 params: params
             });
         }
     }
 
-    saveMaintservice(conncode: string, userid: number, maintserviceDetail: any = {}): Observable<any> {
+    saveMaintservice(maintserviceDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_detail = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
+
             .set('id', maintserviceDetail.id.toString())
             .set('name', maintserviceDetail.name.toString())
             .set('companyid', maintserviceDetail.companyid.toString())
             .set('groupid', maintserviceDetail.groupid.toString())
             .set('isactive', maintserviceDetail.isactive.toString())
             .set('method', 'maintservice_save');
-        
-            
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+
+
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
     }
 
-    addMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        
+    addMaintServiceToGroup(maintserviceArray: any = []): Observable<any> {
+
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
-            'conncode': conncode.toString(),
-            'userid': userid.toString(),
             'data': maintserviceArray,
             'method': 'MaintService_AddMaintServiceItem'
         }
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
             headers: header_detail
         });
     }
 
-    deleteMaintServiceToGroup(conncode: string, userid: number, maintserviceArray: any = []): Observable<any> {
-        
+    deleteMaintServiceToGroup(maintserviceArray: any = []): Observable<any> {
+
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         const params_data = {
-            'conncode': conncode.toString(),
-            'userid': userid.toString(),
             'data': maintserviceArray,
             'method': 'MaintService_DeleteMaintServiceItem'
         }
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
             headers: header_detail
         });
     }
-    
-    deleteMaintservice(id: string): Observable<any>
-    {
-        let userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        let userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
+    deleteMaintservice(id: string): Observable<any> {
+
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-                .set('conncode', userConncode.toString())
-                .set('userid', userID.toString())
-                .set('id', id.toString())
-                .set('method', "maintservice_delete");
-               
-            
 
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-            headers: headers,   
+            .set('id', id.toString())
+            .set('method', "maintservice_delete");
+
+
+
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
             params: params
         });
     }

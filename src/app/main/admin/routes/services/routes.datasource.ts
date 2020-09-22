@@ -16,10 +16,10 @@ export class RoutesDataSource extends DataSource<any> {
         super(); this._unsubscribeAll = new Subject();
     }
 
-    loadRoutes(conncode: string, userid: number, pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string) {
+    loadRoutes(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string) {
         this.loadingSubject.next(true);
         // use pipe operator to chain functions with Observable type
-        this._adminRoutesService.getRoutes(conncode, userid, pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
+        this._adminRoutesService.getRoutes(pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
@@ -27,7 +27,7 @@ export class RoutesDataSource extends DataSource<any> {
             ).subscribe((result: any) => {
                 this._adminRoutesService.routeList = result.TrackingXLAPI.DATA;
                 this.routesSubject.next(this._adminRoutesService.routeList);
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

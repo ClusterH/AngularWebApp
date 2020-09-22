@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation, ɵmarkDirty } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,7 +15,7 @@ import { VehicleDetailService } from 'app/main/admin/vehicles/services/vehicle_d
 import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
     selector: 'app-vehicle-detail',
@@ -29,9 +29,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     vehicle_detail: any;
     public vehicle: any;
     pageType: string;
-    userConncode: string;
-    userID: number;
-
     vehicleModel_flag: boolean;
     vehicleForm: FormGroup;
     vehicleDetail: VehicleDetail = {};
@@ -75,8 +72,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             console.log(data);
             this.vehicle = data;
         });
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         if (isEmpty(this.vehicle)) {
             this.vehicleDetailService.current_makeID = 0;
             this.vehicleModel_flag = false;
@@ -103,22 +99,22 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.dataSourceModel = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceTimeZone = new VehicleDetailDataSource(this.vehicleDetailService);
 
-        this.dataSourceCompany.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.company, "company_clist");
+        this.dataSourceCompany.loadVehicleDetail(0, 10, this.vehicle.company, "company_clist");
         if (isEmpty(this.vehicle)) {
-            this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, 0, "group_clist");
+            this.dataSourceGroup.loadGroupDetail(0, 10, this.vehicle.group, '0', "group_clist");
         } else {
-            this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, this.vehicle.group, this.vehicle.companyid, "group_clist");
+            this.dataSourceGroup.loadGroupDetail(0, 10, this.vehicle.group, this.vehicle.companyid, "group_clist");
         }
-        this.dataSourceAccount.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.account, "account_clist");
-        this.dataSourceOperator.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.operator, "operator_clist");
-        this.dataSourceUnitType.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.unittype, "unittype_clist");
-        this.dataSourceServicePlan.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.serviceplan, "serviceplan_clist");
-        this.dataSourceProductType.loadVehicleDetail(this.userConncode, this.userID, 0, 10, '', "producttype_clist");
-        this.dataSourceMake.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.make, "make_clist");
+        this.dataSourceAccount.loadVehicleDetail(0, 10, this.vehicle.account, "account_clist");
+        this.dataSourceOperator.loadVehicleDetail(0, 10, this.vehicle.operator, "operator_clist");
+        this.dataSourceUnitType.loadVehicleDetail(0, 10, this.vehicle.unittype, "unittype_clist");
+        this.dataSourceServicePlan.loadVehicleDetail(0, 10, this.vehicle.serviceplan, "serviceplan_clist");
+        this.dataSourceProductType.loadVehicleDetail(0, 10, '', "producttype_clist");
+        this.dataSourceMake.loadVehicleDetail(0, 10, this.vehicle.make, "make_clist");
         if (this.vehicleModel_flag) {
-            this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.model, "model_clist");
+            this.dataSourceModel.loadVehicleDetail(0, 10, this.vehicle.model, "model_clist");
         }
-        this.dataSourceTimeZone.loadVehicleDetail(this.userConncode, this.userID, 0, 10, this.vehicle.timezone, "timezone_clist");
+        this.dataSourceTimeZone.loadVehicleDetail(0, 10, this.vehicle.timezone, "timezone_clist");
         this.vehicleForm = this._formBuilder.group({
             name: [null, Validators.required],
             company: [null, Validators.required],
@@ -133,15 +129,16 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             model: [null, Validators.required],
             isactive: [null, Validators.required],
             timezone: [null, Validators.required],
-            created: [{ value: '', disabled: true }, Validators.required],
-            createdbyname: [{ value: '', disabled: true }, Validators.required],
-            deletedwhen: [{ value: '', disabled: true }, Validators.required],
-            deletedbyname: [{ value: '', disabled: true }, Validators.required],
-            lastmodifieddate: [{ value: '', disabled: true }, Validators.required],
-            lastmodifiedbyname: [{ value: '', disabled: true }, Validators.required],
-            filterstring: [null, Validators.required],
+            created: [{ value: '', disabled: true }],
+            createdbyname: [{ value: '', disabled: true }],
+            deletedwhen: [{ value: '', disabled: true }],
+            deletedbyname: [{ value: '', disabled: true }],
+            lastmodifieddate: [{ value: '', disabled: true }],
+            lastmodifiedbyname: [{ value: '', disabled: true }],
+            filterstring: [null],
         });
         this.setValues();
+        this.vehicle_detail = this.vehicleForm.value;
     }
 
     ngAfterViewInit() {
@@ -176,30 +173,30 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
 
     loadVehicleDetail(method_string: string) {
         if (method_string == 'company') {
-            this.dataSourceCompany.loadVehicleDetail(this.userConncode, this.userID, this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceCompany.loadVehicleDetail(this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'group') {
             let companyid = this.vehicleForm.get('company').value;
             if (companyid == undefined) {
-                this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, 0, `${method_string}_clist`)
+                this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, 0, `${method_string}_clist`)
             } else {
-                this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
+                this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
             }
         } else if (method_string == 'active') {
-            this.dataSourceAccount.loadVehicleDetail(this.userConncode, this.userID, this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceAccount.loadVehicleDetail(this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'operator') {
-            this.dataSourceOperator.loadVehicleDetail(this.userConncode, this.userID, this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceOperator.loadVehicleDetail(this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'unittype') {
-            this.dataSourceUnitType.loadVehicleDetail(this.userConncode, this.userID, this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceUnitType.loadVehicleDetail(this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'serviceplan') {
-            this.dataSourceServicePlan.loadVehicleDetail(this.userConncode, this.userID, this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceServicePlan.loadVehicleDetail(this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'producttype') {
-            this.dataSourceProductType.loadVehicleDetail(this.userConncode, this.userID, this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
+            this.dataSourceProductType.loadVehicleDetail(this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
         } else if (method_string == 'make') {
-            this.dataSourceMake.loadVehicleDetail(this.userConncode, this.userID, this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceMake.loadVehicleDetail(this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'model') {
-            this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceModel.loadVehicleDetail(this.paginatorModel.pageIndex, this.paginatorModel.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'timezone') {
-            this.dataSourceTimeZone.loadVehicleDetail(this.userConncode, this.userID, this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceTimeZone.loadVehicleDetail(this.paginatorTimeZone.pageIndex, this.paginatorTimeZone.pageSize, this.filter_string, `${method_string}_clist`)
         }
     }
 
@@ -239,19 +236,22 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
+        console.log(this.vehicleDetailService.unit_clist_item);
         let methodString = item;
         this.method_string = item.split('_')[0];
         if (this.method_string == 'model' && !this.vehicleModel_flag) {
             alert("Please check first Make is selected!");
         } else {
+            console.log(this.method_string);
             let selected_element_id = this.vehicleForm.get(`${this.method_string}`).value;
             let clist = this.vehicleDetailService.unit_clist_item[methodString];
-            for (let i = 0; i < clist.length; i++) {
-                if (clist[i].id == selected_element_id) {
-                    this.vehicleForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
-                }
-            }
+            console.log(selected_element_id, 'clist===>>>', clist);
+            let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
+            console.log(currentOptionID);
+            this.vehicleForm.get('filterstring').setValue(clist[currentOptionID].name);
+            this.filter_string = clist[currentOptionID].name;
+            console.log(this.filter_string);
+
             this.managePageIndex(this.method_string);
             this.loadVehicleDetail(this.method_string);
         }
@@ -273,17 +273,18 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     setValues() {
+        console.log('setValue===>>>', this.vehicle);
         this.vehicleForm.get('name').setValue(this.vehicle.name);
-        this.vehicleForm.get('company').setValue(this.vehicle.companyid);
-        this.vehicleForm.get('group').setValue(this.vehicle.groupid);
-        this.vehicleForm.get('account').setValue(this.vehicle.accountid);
-        this.vehicleForm.get('operator').setValue(this.vehicle.operatorid);
-        this.vehicleForm.get('unittype').setValue(this.vehicle.unittypeid);
-        this.vehicleForm.get('serviceplan').setValue(this.vehicle.serviceplanid);
-        this.vehicleForm.get('producttype').setValue(this.vehicle.producttypeid);
-        this.vehicleForm.get('make').setValue(this.vehicle.makeid);
-        this.vehicleForm.get('model').setValue(this.vehicle.modelid);
-        this.vehicleForm.get('timezone').setValue(this.vehicle.timezoneid);
+        this.vehicleForm.get('company').setValue(Number(this.vehicle.companyid));
+        this.vehicleForm.get('group').setValue(Number(this.vehicle.groupid));
+        this.vehicleForm.get('account').setValue(Number(this.vehicle.accountid));
+        this.vehicleForm.get('operator').setValue(Number(this.vehicle.operatorid));
+        this.vehicleForm.get('unittype').setValue(Number(this.vehicle.unittypeid));
+        this.vehicleForm.get('serviceplan').setValue(Number(this.vehicle.serviceplanid));
+        this.vehicleForm.get('producttype').setValue(Number(this.vehicle.producttypeid));
+        this.vehicleForm.get('make').setValue(Number(this.vehicle.makeid));
+        this.vehicleForm.get('model').setValue(Number(this.vehicle.modelid));
+        this.vehicleForm.get('timezone').setValue(Number(this.vehicle.timezoneid));
         let created = this.vehicle.created ? new Date(`${this.vehicle.created}`) : '';
         let deletedwhen = this.vehicle.deletedwhen ? new Date(`${this.vehicle.deletedwhen}`) : '';
         let lastmodifieddate = this.vehicle.lastmodifieddate ? new Date(`${this.vehicle.lastmodifieddate}`) : '';
@@ -297,6 +298,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     getValues(dateTime: any, mode: string) {
+        const userID: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.vehicleDetail.name = this.vehicleForm.get('name').value || '';
         this.vehicleDetail.companyid = this.vehicleForm.get('company').value || 0;
         this.vehicleDetail.groupid = this.vehicleForm.get('group').value || 0;
@@ -312,18 +314,18 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.vehicleDetail.isactive = this.vehicle.isactive || true;
         this.vehicleDetail.deletedwhen = this.vehicle.deletedwhen || '';
         this.vehicleDetail.deletedby = this.vehicle.deletedby || 0;
-        if (mode == "save") {
+        if (mode == "edit") {
             this.vehicleDetail.id = this.vehicle.id;
             this.vehicleDetail.created = this.vehicle.created;
             this.vehicleDetail.createdby = this.vehicle.createdby;
             this.vehicleDetail.lastmodifieddate = dateTime;
-            this.vehicleDetail.lastmodifiedby = this.userID;
-        } else if (mode == "add") {
-            this.vehicleDetail.id = 0;
+            this.vehicleDetail.lastmodifiedby = userID;
+        } else if (mode == "new") {
+            this.vehicleDetail.id = '0';
             this.vehicleDetail.created = dateTime;
-            this.vehicleDetail.createdby = this.userID;
+            this.vehicleDetail.createdby = userID;
             this.vehicleDetail.lastmodifieddate = dateTime;
-            this.vehicleDetail.lastmodifiedby = this.userID;
+            this.vehicleDetail.lastmodifiedby = userID;
         }
     }
 
@@ -343,11 +345,11 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
 
     saveVehicle(): void {
         let today = new Date().toISOString();
-        this.getValues(today, "save");
+        this.getValues(today, "edit");
         if (this.vehicleDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
+            this.vehicleDetailService.saveVehicleDetail(this.vehicleDetail)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
@@ -359,11 +361,11 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
 
     addVehicle(): void {
         let today = new Date().toISOString();
-        this.getValues(today, "add");
+        this.getValues(today, "new");
         if (this.vehicleDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.vehicleDetailService.saveVehicleDetail(this.userConncode, this.userID, this.vehicleDetail)
+            this.vehicleDetailService.saveVehicleDetail(this.vehicleDetail)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
@@ -374,28 +376,36 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
-        dialogConfig.disableClose = true;
-        dialogConfig.data = { vehicle: "", flag: flag };
-        dialogConfig.disableClose = false;
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result == 'goback') {
-                this.router.navigate(['admin/vehicles/vehicles']);
-            }
-        });
+        this.filter_string = '';
+        this.vehicleForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.vehicleForm.value;
+        console.log(this.vehicle_detail, currentState);
+        if (isEqual(this.vehicle_detail, currentState)) {
+            this.router.navigate(['admin/vehicles/vehicles']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = { vehicle: "", flag: flag };
+            dialogConfig.disableClose = false;
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['admin/vehicles/vehicles']);
+                }
+            });
+        }
     }
 
     onMakeChange(event: any) {
         this.vehicleDetailService.current_makeID = this.vehicleForm.get('make').value;
         this.vehicleModel_flag = true;
-        this.dataSourceModel.loadVehicleDetail(this.userConncode, this.userID, 0, 10, "", "model_clist");
+        this.dataSourceModel.loadVehicleDetail(0, 10, "", "model_clist");
     }
 
     onCompanyChange(event: any) {
         let current_companyID = this.vehicleForm.get('company').value;
-        this.dataSourceGroup.loadGroupDetail(this.userConncode, this.userID, 0, 10, "", current_companyID, "group_clist");
+        this.dataSourceGroup.loadGroupDetail(0, 10, "", current_companyID, "group_clist");
     }
 
     checkMakeIsSelected() {

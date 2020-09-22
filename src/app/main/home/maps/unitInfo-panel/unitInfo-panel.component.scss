@@ -79,52 +79,63 @@
                 width: calc(100% - 40px) !important;
                 height: 25px !important;
             }
-            mat-google-maps-autocomplete {
-                .mat-form-field {
-                    height: 40px !important;
-                }
-                .mat-form-field.mat-focused .mat-form-field-flex {
-                    height: 32px !important;
-                    padding: 0 !important;
-                    // border: 1px solid whitesmoke !important;
-                    // border-radius: 2px !important;
-                }
-                .mat-form-field-flex > .mat-form-field-infix {
-                    padding: 10px 0px 0 8px !important;
-                    border-top: none !important;
-                }
-                .mat-form-field-label-wrapper {
-                    top: -1.5em;
-                }
-                .mat-form-field-label {
-                    display: none;
-                }
-                .mat-error {
-                    display: none;
-                }
-                .mat-form-field-outline .mat-form-field-outline-thick {
-                    color: whitesmoke !important;
-                    border-radius: 1px !important;
-                    height: 32px !important;
-                }
-                // .mat-form-field-outline .mat-form-field-outline-thick:hover {
-                //     border: 1px solid whitesmoke !important;
-                // }
-                // .mat-form-field-label-wrapper {
-                //     color: whitesmoke;
-                // }
-                .mat-form-field-appearance-outline .mat-form-field-outline {
+            .playback-time-option {
+                border-radius: 2px !important;
+                margin-bottom: 24px !important;
+                background-color: transparent !important;
+                color: whitesmoke !important;
+                border: solid 1px rgba(245, 245, 245, 0.823) !important;
+                width: 100% !important;
+                height: 30px !important;
+                option {
+                    background-color: #3c4252;
                     color: whitesmoke;
+                }
+            }
+            .date-range-option {
+                .mat-form-field {
+                    font-size: small !important;
+                    color: whitesmoke !important;
+
+                    .mat-form-field-label {
+                        color: whitesmoke !important;
+                    }
+                }
+                .mat-form-field-appearance-outline .mat-form-field-outline-gap,
+                .mat-form-field-appearance-outline
+                    .mat-form-field-outline-start,
+                .mat-form-field-appearance-outline .mat-form-field-outline-end {
+                    border: 1px solid whitesmoke !important;
                 }
                 .mat-form-field-appearance-outline
-                    .mat-form-field-outline:hover {
-                    color: whitesmoke;
-                    border: 1px solid whitesmoke !important;
-                    border-radius: 2px !important;
+                    .mat-form-field-outline-start {
+                    border-right-style: none !important;
                 }
-                .mat-input-element {
-                    color: whitesmoke;
-                    caret-color: whitesmoke;
+                .mat-form-field-appearance-outline .mat-form-field-outline-end {
+                    border-left-style: none !important;
+                }
+                .mat-form-field-appearance-outline .mat-form-field-outline-gap {
+                    border-left-style: none !important;
+                    border-right-style: none !important;
+                }
+                .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float
+                    .mat-form-field-outline-gap {
+                    border-top-color: transparent !important;
+                }
+                .mat-form-field:not(.mat-form-field-appearance-legacy)
+                    .mat-form-field-suffix
+                    .mat-icon-button {
+                    width: 1.5em !important;
+                    height: 1.5rem !important;
+                    color: whitesmoke !important;
+                }
+                // input[type="time"]::-webkit-calendar-picker-indicator {
+                //     color: whitesmoke !important;
+                // }
+                .date-range-time:after {
+                    content: "\01F550";
+                    position: absolute;
+                    right: 17px;
                 }
             }
 
@@ -135,6 +146,7 @@
                 option {
                     background-color: #3c4252;
                     color: whitesmoke;
+                    border: none !important;
                 }
             }
             .current_unit_link {
@@ -169,6 +181,22 @@
                     // font-size: large;
                 }
                 .send-button:hover {
+                    transform: skewX(-10deg);
+                }
+            }
+
+            .daterange-next-button {
+                position: absolute;
+                bottom: 16px;
+                right: 16px;
+                .next-button {
+                    border: none;
+                    background-color: transparent;
+                    cursor: pointer;
+                    border-bottom: solid 1px whitesmoke !important;
+                    color: whitesmoke;
+                }
+                .next-button:hover {
                     transform: skewX(-10deg);
                 }
             }

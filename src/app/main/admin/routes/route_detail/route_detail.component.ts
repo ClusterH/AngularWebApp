@@ -13,7 +13,7 @@ import { RouteDetailService } from 'app/main/admin/routes/services/route_detail.
 import { CourseDialogComponent } from "../dialog/dialog.component";
 import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 declare const google: any;
 
@@ -30,12 +30,9 @@ export class RouteDetailComponent implements OnInit {
     route_detail: any;
     public route: any;
     pageType: string;
-    userConncode: string;
-    userID: number;
     routeForm: FormGroup;
     routeDetail: RouteDetail = {};
     displayedColumns: string[] = ['name'];
-
     filter_string: string = '';
     method_string: string = '';
     private _unsubscribeAll: Subject<any>;
@@ -47,7 +44,6 @@ export class RouteDetailComponent implements OnInit {
         public _matDialog: MatDialog,
         private router: Router,
         private activatedroute: ActivatedRoute
-
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(routesEnglish, routesSpanish, routesFrench, routesPortuguese);
@@ -55,8 +51,6 @@ export class RouteDetailComponent implements OnInit {
             console.log(data);
             this.route = data;
         });
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
 
         if (isEmpty(this.route)) {
             this.pageType = 'new';
@@ -77,6 +71,7 @@ export class RouteDetailComponent implements OnInit {
         });
 
         this.setValues();
+        this.route_detail = this.routeForm.value;
     }
 
     ngOnDestroy(): void {
@@ -95,6 +90,7 @@ export class RouteDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
+        const userID: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.routeDetail.name = this.routeForm.get('name').value || '';
         this.routeDetail.isactive = this.route.isactive || true;
 
@@ -103,13 +99,13 @@ export class RouteDetailComponent implements OnInit {
             this.routeDetail.created = this.route.created;
             this.routeDetail.createdby = this.route.createdby;
             this.routeDetail.lastmodifieddate = dateTime;
-            this.routeDetail.lastmodifiedby = this.userID;
+            this.routeDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.routeDetail.id = 0;
             this.routeDetail.created = dateTime;
-            this.routeDetail.createdby = this.userID;
+            this.routeDetail.createdby = userID;
             this.routeDetail.lastmodifieddate = dateTime;
-            this.routeDetail.lastmodifiedby = this.userID;
+            this.routeDetail.lastmodifiedby = userID;
         }
     }
 
@@ -133,7 +129,7 @@ export class RouteDetailComponent implements OnInit {
         if (this.routeDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail).pipe(takeUntil(this._unsubscribeAll))
+            this.routeDetailService.saveRouteDetail(this.routeDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
@@ -149,7 +145,7 @@ export class RouteDetailComponent implements OnInit {
         if (this.routeDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.routeDetailService.saveRouteDetail(this.userConncode, this.userID, this.routeDetail).pipe(takeUntil(this._unsubscribeAll))
+            this.routeDetailService.saveRouteDetail(this.routeDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
@@ -160,16 +156,22 @@ export class RouteDetailComponent implements OnInit {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
-        dialogConfig.disableClose = true;
-        dialogConfig.data = { route: "", flag: flag };
-        dialogConfig.disableClose = false;
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result == 'goback') {
-                this.router.navigate(['admin/routes/routes']);
-            }
-        });
+        const currentState = this.routeForm.value;
+        console.log(this.route_detail, currentState);
+        if (isEqual(this.route_detail, currentState)) {
+            this.router.navigate(['admin/routes/routes']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = { route: "", flag: flag };
+            dialogConfig.disableClose = false;
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['admin/routes/routes']);
+                }
+            });
+        }
     }
 }

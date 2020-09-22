@@ -1,7 +1,7 @@
 <div id="report" class="page-layout simple fullwidth" fxLayout="column">
 
-   <!-- HEADER -->
-   <div class="header accent p-20 h-120" fxLayout="row" fxLayoutAlign="start center">
+    <!-- HEADER -->
+    <div class="header accent p-20 h-120" fxLayout="row" fxLayoutAlign="start center">
         <div fxLayout="column" fxLayoutAlign="center start">
             <div fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="secondary-text s-18">receipt</mat-icon>
@@ -15,21 +15,24 @@
     <!-- / HEADER -->
 
 
-    <div class="content p-24" >  
+    <div class="content p-24">
 
         <div class="vertical-stepper-wrapper">
-            <mat-vertical-stepper class="mat-elevation-z4" [linear]="true" #stepper [selectedIndex]="selectedIndex" (selectionChange)="selectionChange($event)" [disableRipple]="true">
+            <mat-vertical-stepper class="mat-elevation-z4" [linear]="true" #stepper [selectedIndex]="selectedIndex"
+                (selectionChange)="selectionChange($event)" [disableRipple]="true">
                 <mat-step [stepControl]="reportStep">
 
                     <form fxLayout="column" [formGroup]="reportStep">
 
                         <ng-template matStepLabel>Select Report</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'report')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'report')">
                                     <mat-icon (click)="clearFilter('report')">clear</mat-icon>
                                 </div>
                             </div>
@@ -37,10 +40,7 @@
                             <div class="report_table ml-12" style="width: 80%; overflow: auto;">
                                 <div class="spinner_overlay" *ngIf="dataSourceReport.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
@@ -48,12 +48,12 @@
 
                                 <mat-table [dataSource]="dataSourceReport" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let report" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                        <mat-cell *matCellDef="let report"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="$event ? reportSelection.toggle(report.id) : null"
                                                 [checked]="reportSelection.isSelected(report.id)"
-                                                formControlName="report" required
-                                                >
+                                                formControlName="report" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -63,24 +63,21 @@
                                             <p class="report text-truncate">{{report.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let report; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let report; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorReport
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceReport.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorReport showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceReport.totalLength" [pageSize]="5" [hidePageSize]="true">
+                            </mat-paginator>
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-raised-button matStepperNext type="button" color="accent" (click)="getReportParams()">
+                            <button mat-raised-button matStepperNext type="button" color="accent"
+                                (click)="getReportParams()">
                                 Next
                             </button>
                         </div>
@@ -88,26 +85,27 @@
                     </form>
 
                 </mat-step>
-                
+
                 <mat-step *ngIf="loadingSubjectCompany | async">
 
                     <form fxLayout="column" [formGroup]="companyStep">
 
                         <ng-template matStepLabel>Company</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;" >
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'company')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'company')">
                                     <mat-icon (click)="clearFilter('company')">clear</mat-icon>
                                 </div>
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="center" class="ml-12 p-24">
-                                <mat-checkbox (change)="selectWholeCompany()"
-                                    formControlName="wholeCompany"
-                                    > &nbsp;Select Whole Company
+                                <mat-checkbox (change)="selectWholeCompany()" formControlName="wholeCompany">
+                                    &nbsp;Select Whole Company
                                 </mat-checkbox>
                             </div>
 
@@ -115,10 +113,7 @@
                             <div class="report_table ml-12" style="width: 80%; overflow: auto;">
                                 <div class="spinner_overlay" *ngIf="dataSourceCompany.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
@@ -126,13 +121,11 @@
 
                                 <mat-table [dataSource]="dataSourceCompany" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let company" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
-                                            <mat-checkbox
-                                                labelPosition="after"
-                                                (click)="$event.stopPropagation()"
+                                        <mat-cell *matCellDef="let company"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                            <mat-checkbox labelPosition="after" (click)="$event.stopPropagation()"
                                                 (change)="$event ? companySelection.toggle(company) : null"
-                                                [checked]="companySelection.isSelected(company)"
-                                                required>
+                                                [checked]="companySelection.isSelected(company)" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -142,21 +135,16 @@
                                             <p class="report text-truncate">{{company.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let company; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let company; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorCompany
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceCompany.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                                (click)="paginatorClick(paginatorCompany)"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorCompany showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceCompany.totalLength" [pageSize]="5" [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorCompany)"></mat-paginator>
 
                         </div>
 
@@ -164,7 +152,7 @@
                             <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
                                 Previous
                             </button>
-                            <button mat-raised-button  type="button" color="accent" (click)=checkOneCompany()>
+                            <button mat-raised-button type="button" color="accent" (click)=checkOneCompany()>
                                 Next
                             </button>
                         </div>
@@ -173,25 +161,26 @@
 
                 </mat-step>
 
-                <mat-step *ngIf="loadingSubjectGroup | async" >
+                <mat-step *ngIf="loadingSubjectGroup | async">
 
                     <form fxLayout="column" [formGroup]="groupStep">
 
                         <ng-template matStepLabel>Group</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'group')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'group')">
                                     <mat-icon (click)="clearFilter('group')">clear</mat-icon>
                                 </div>
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="center" class="ml-12 p-24">
-                                <mat-checkbox (change)="selectWholeGroup()"
-                                    formControlName="wholeGroup"
-                                    > &nbsp;Select Whole Group
+                                <mat-checkbox (change)="selectWholeGroup()" formControlName="wholeGroup"> &nbsp;Select
+                                    Whole Group
                                 </mat-checkbox>
                             </div>
 
@@ -200,10 +189,7 @@
 
                                 <div class="spinner_overlay" *ngIf="dataSourceGroup.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
@@ -211,12 +197,11 @@
 
                                 <mat-table [dataSource]="dataSourceGroup" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let group" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                        <mat-cell *matCellDef="let group"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="$event ? groupSelection.toggle(group) : null"
-                                                [checked]="groupSelection.isSelected(group)"
-                                                required
-                                                >
+                                                [checked]="groupSelection.isSelected(group)" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -226,21 +211,16 @@
                                             <p class="report text-truncate">{{group.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let group; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let group; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorGroup
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceGroup.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                                (click)="paginatorClick(paginatorGroup)"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorGroup showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceGroup.totalLength" [pageSize]="5" [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorGroup)"></mat-paginator>
 
                         </div>
 
@@ -248,7 +228,7 @@
                             <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
                                 Previous
                             </button>
-                            <button mat-raised-button  type="button" color="accent" (click)=checkOneGroup()>
+                            <button mat-raised-button type="button" color="accent" (click)=checkOneGroup()>
                                 Next
                             </button>
                         </div>
@@ -257,17 +237,19 @@
 
                 </mat-step>
 
-                <mat-step *ngIf="loadingSubjectUnit  | async" >
+                <mat-step *ngIf="loadingSubjectUnit  | async">
 
                     <form fxLayout="column" [formGroup]="unitStep">
 
                         <ng-template matStepLabel>Unit</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'unit')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'unit')">
                                     <mat-icon (click)="clearFilter('unit')">clear</mat-icon>
                                 </div>
                             </div>
@@ -275,23 +257,19 @@
                             <div class="report_table ml-12" style="width: 80%; overflow: auto;">
                                 <div class="spinner_overlay" *ngIf="dataSourceUnit.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
                                 </div>
-                                
+
                                 <mat-table [dataSource]="dataSourceUnit" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let unit" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                        <mat-cell *matCellDef="let unit"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="$event ? unitSelection.toggle(unit) : null"
-                                                [checked]="unitSelection.isSelected(unit)"
-                                                required
-                                                >
+                                                [checked]="unitSelection.isSelected(unit)" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -301,21 +279,16 @@
                                             <p class="report text-truncate">{{unit.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let unit; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let unit; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorUnit
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceUnit.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                                (click)="paginatorClick(paginatorUnit)"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorUnit showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceUnit.totalLength" [pageSize]="5" [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorUnit)"></mat-paginator>
 
                         </div>
 
@@ -332,17 +305,19 @@
 
                 </mat-step>
 
-                <mat-step *ngIf="loadingSubjectDriver  | async" >
+                <mat-step *ngIf="loadingSubjectDriver  | async">
 
                     <form fxLayout="column" [formGroup]="driverStep">
 
                         <ng-template matStepLabel>Driver</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'driver')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'driver')">
                                     <mat-icon (click)="clearFilter('driver')">clear</mat-icon>
                                 </div>
                             </div>
@@ -350,23 +325,19 @@
                             <div class="report_table ml-12" style="width: 80%; overflow: auto;">
                                 <div class="spinner_overlay" *ngIf="dataSourceDriver.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
                                 </div>
-                                
+
                                 <mat-table [dataSource]="dataSourceDriver" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let driver" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                        <mat-cell *matCellDef="let driver"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="$event ? driverSelection.toggle(driver) : null"
-                                                [checked]="driverSelection.isSelected(driver)"
-                                                required
-                                                >
+                                                [checked]="driverSelection.isSelected(driver)" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -376,21 +347,16 @@
                                             <p class="report text-truncate">{{driver.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let driver; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let driver; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorDriver
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceDriver.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                                (click)="paginatorClick(paginatorDriver)"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorDriver showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceDriver.totalLength" [pageSize]="5" [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorDriver)"></mat-paginator>
 
                         </div>
 
@@ -407,15 +373,16 @@
 
                 </mat-step>
 
-                <mat-step *ngIf="loadingSubjectDate  | async" >
+                <mat-step *ngIf="loadingSubjectDate  | async">
 
                     <form fxLayout="column" [formGroup]="dateStep">
 
                         <ng-template matStepLabel>Date and Time</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  >
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0">
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
-                                <mat-select formControlName="selectDate" [(value)]="selectedRange" (selectionChange)="onDateRangeChange($event)">
+                                <mat-select formControlName="selectDate" [(value)]="selectedRange"
+                                    (selectionChange)="onDateRangeChange($event)">
                                     <mat-option value="today">Today</mat-option>
                                     <mat-option value="yesterday">Yesterday</mat-option>
                                     <mat-option value="thisweek">This Week</mat-option>
@@ -424,37 +391,40 @@
                                 </mat-select>
                             </mat-form-field>
 
-                            <div  fxLayout="column" *ngIf="loadingSubjectDateRange  | async">
+                            <div fxLayout="column" *ngIf="loadingSubjectDateRange  | async">
                                 <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
 
                                     <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
                                         <mat-label>From Date</mat-label>
-                                        <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="start">
-                                        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                        <input matInput [matDatepicker]="startDatePicker" name="start"
+                                            formControlName="start">
+                                        <mat-datepicker-toggle matSuffix [for]="startDatePicker">
+                                        </mat-datepicker-toggle>
                                         <mat-datepicker #startDatePicker></mat-datepicker>
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50">
                                         <mat-label>Start time</mat-label>
                                         <input matInput type="time" value="starttime" formControlName="starttime">
                                     </mat-form-field>
-                    
+
                                 </div>
-                    
+
                                 <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
-                    
+
                                     <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="50">
                                         <mat-label>End Date</mat-label>
-                                        <input matInput [matDatepicker]="endDatePicker" name="end" formControlName="end">
+                                        <input matInput [matDatepicker]="endDatePicker" name="end"
+                                            formControlName="end">
                                         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                                         <mat-datepicker #endDatePicker></mat-datepicker>
                                     </mat-form-field>
-                    
+
                                     <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="50">
                                         <mat-label>End time</mat-label>
                                         <input matInput type="time" value="endtime" formControlName="endtime">
                                     </mat-form-field>
-                    
+
                                 </div>
                             </div>
 
@@ -464,7 +434,7 @@
                             <button class="mr-8" mat-raised-button matStepperPrevious type="button" color="accent">
                                 Previous
                             </button>
-                            <button mat-raised-button  type="button" color="accent" (click)="checkDateTime()">
+                            <button mat-raised-button type="button" color="accent" (click)="checkDateTime()">
                                 Next
                             </button>
                         </div>
@@ -473,17 +443,19 @@
 
                 </mat-step>
 
-                <mat-step *ngIf="loadingSubjectEvent  | async" >
+                <mat-step *ngIf="loadingSubjectEvent  | async">
 
                     <form fxLayout="column" [formGroup]="eventStep">
 
                         <ng-template matStepLabel>Event</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"  style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0"
+                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
 
-                            <div  fxLayout="row" fxLayoutAlign="center" >
+                            <div fxLayout="row" fxLayoutAlign="center">
                                 <div class="filter_company_input">
-                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onKeyFilter($event, 'event')">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Search"
+                                        (keyup)="onKeyFilter($event, 'event')">
                                     <mat-icon (click)="clearFilter('event')">clear</mat-icon>
                                 </div>
                             </div>
@@ -491,23 +463,19 @@
                             <div class="report_table ml-12" style="width: 80%; overflow: auto;">
                                 <div class="spinner_overlay" *ngIf="dataSourceEvent.loading$ | async">
                                     <div class="spinner_container">
-                                        <mat-spinner
-                                            color="accent" 
-                                            mode="indeterminate"
-                                            diameter="50"
+                                        <mat-spinner color="accent" mode="indeterminate" diameter="50"
                                             style="margin:0 auto;">
                                         </mat-spinner>
                                     </div>
                                 </div>
-                                
+
                                 <mat-table [dataSource]="dataSourceEvent" fusePerfectScrollbar>
                                     <ng-container matColumnDef="id">
-                                        <mat-cell *matCellDef="let driver" style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
+                                        <mat-cell *matCellDef="let driver"
+                                            style="flex-basis: 10%; flex-grow: 0; flex-shrink: 1">
                                             <mat-checkbox (click)="$event.stopPropagation()"
-                                                (change)="$event ? driverSelection.toggle(event) : null"
-                                                [checked]="driverSelection.isSelected(event)"
-                                                required
-                                                >
+                                                (change)="$event ? driverSelection.toggle(driver) : null"
+                                                [checked]="driverSelection.isSelected(driver)" required>
                                             </mat-checkbox>
                                         </mat-cell>
                                     </ng-container>
@@ -517,21 +485,16 @@
                                             <p class="report text-truncate">{{event.name}}</p>
                                         </mat-cell>
                                     </ng-container>
-                                    <mat-row  *matRowDef="let event; columns: reportColumns;" matRipple style="border-bottom-width: 0px;">
+                                    <mat-row *matRowDef="let event; columns: reportColumns;" matRipple
+                                        style="border-bottom-width: 0px;">
                                     </mat-row>
 
                                 </mat-table>
                             </div>
 
-                            <mat-paginator 
-                                #paginatorEvent
-                                showFirstLastButtons
-                                class="table_paginator_detail"
-                                [length]="dataSourceEvent.totalLength"
-                                [pageSize]="5"
-                                [hidePageSize]="true"
-                                (click)="paginatorClick(paginatorEvent)"
-                            ></mat-paginator>
+                            <mat-paginator #paginatorEvent showFirstLastButtons class="table_paginator_detail"
+                                [length]="dataSourceEvent.totalLength" [pageSize]="5" [hidePageSize]="true"
+                                (click)="paginatorClick(paginatorEvent)"></mat-paginator>
 
                         </div>
 
@@ -548,20 +511,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMinSpeed  | async">
+                <mat-step *ngIf="loadingSubjectMinSpeed  | async">
 
                     <form fxLayout="column" [formGroup]="speedStep">
 
                         <ng-template matStepLabel>Minimum Speed</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Min Speed</mat-label>
-                                <input matInput placeholder="Minimum Speed"
-                                       name="minspeed"
-                                       formControlName="minspeed"
-                                       type="number">
+                                <input matInput placeholder="Minimum Speed" name="minspeed" formControlName="minspeed"
+                                    type="number">
                                 <span matSuffix>km</span>
                             </mat-form-field>
 
@@ -580,20 +541,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMaxSpeed  | async">
+                <mat-step *ngIf="loadingSubjectMaxSpeed  | async">
 
                     <form fxLayout="column" [formGroup]="speedStep">
 
                         <ng-template matStepLabel>Maximum Speed</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Max Speed</mat-label>
-                                <input matInput placeholder="Maximum Speed"
-                                       name="maxspeed"
-                                       formControlName="maxspeed"
-                                       type="number">
+                                <input matInput placeholder="Maximum Speed" name="maxspeed" formControlName="maxspeed"
+                                    type="number">
                                 <span matSuffix>km</span>
                             </mat-form-field>
 
@@ -612,20 +571,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMinDistance  | async">
+                <mat-step *ngIf="loadingSubjectMinDistance  | async">
 
                     <form fxLayout="column" [formGroup]="distanceStep">
 
                         <ng-template matStepLabel>Minimum Distance</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Min Distance</mat-label>
-                                <input matInput placeholder="Min Distance"
-                                       name="mindistance"
-                                       formControlName="mindistance"
-                                       type="number">
+                                <input matInput placeholder="Min Distance" name="mindistance"
+                                    formControlName="mindistance" type="number">
                                 <span matSuffix>km</span>
                             </mat-form-field>
 
@@ -644,20 +601,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMaxDistance  | async">
+                <mat-step *ngIf="loadingSubjectMaxDistance  | async">
 
                     <form fxLayout="column" [formGroup]="distanceStep">
 
                         <ng-template matStepLabel>Maximum Distance</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Max Distance</mat-label>
-                                <input matInput placeholder="Max Distance"
-                                       name="maxdistance"
-                                       formControlName="maxdistance"
-                                       type="number">
+                                <input matInput placeholder="Max Distance" name="maxdistance"
+                                    formControlName="maxdistance" type="number">
                                 <span matSuffix>km</span>
                             </mat-form-field>
 
@@ -676,20 +631,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMinTemp  | async">
+                <mat-step *ngIf="loadingSubjectMinTemp  | async">
 
                     <form fxLayout="column" [formGroup]="tempStep">
 
                         <ng-template matStepLabel>Minimum Temperature</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Min Temperature</mat-label>
-                                <input matInput placeholder="Min Temperature"
-                                       name="mintemp"
-                                       formControlName="mintemp"
-                                       type="number">
+                                <input matInput placeholder="Min Temperature" name="mintemp" formControlName="mintemp"
+                                    type="number">
                                 <span matSuffix>&#8451;</span>
                             </mat-form-field>
 
@@ -708,20 +661,18 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMaxTemp  | async">
+                <mat-step *ngIf="loadingSubjectMaxTemp  | async">
 
                     <form fxLayout="column" [formGroup]="tempStep">
 
                         <ng-template matStepLabel>Maximum Temperature</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center" >
-                           
+                        <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
+
                             <mat-form-field appearance="outline" floatLabel="always" fxFlex="60">
                                 <mat-label>Max Temperature</mat-label>
-                                <input matInput placeholder="Max Temperature"
-                                       name="maxtemp"
-                                       formControlName="maxtemp"
-                                       type="number">
+                                <input matInput placeholder="Max Temperature" name="maxtemp" formControlName="maxtemp"
+                                    type="number">
                                 <span matSuffix>&#8451;</span>
                             </mat-form-field>
 
@@ -740,19 +691,20 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMinTime  | async">
+                <mat-step *ngIf="loadingSubjectMinTime  | async">
 
                     <form fxLayout="column" [formGroup]="timeStep">
 
                         <ng-template matStepLabel>Minimum Duration</ng-template>
-                           
+
                         <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
 
-                            <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" floatLabel="always" fxFlex="60">
+                            <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" floatLabel="always"
+                                fxFlex="60">
                                 <mat-label>Min Time</mat-label>
-                                <input matInput  [textMask]="mask" placeholder="--:--" formControlName="mintime">
+                                <input matInput [textMask]="mask" placeholder="--:--" formControlName="mintime">
                             </mat-form-field>
-            
+
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="center center">
@@ -768,20 +720,20 @@
 
                 </mat-step>
 
-                <mat-step  *ngIf="loadingSubjectMaxTime  | async">
+                <mat-step *ngIf="loadingSubjectMaxTime  | async">
 
                     <form fxLayout="column" [formGroup]="timeStep">
 
                         <ng-template matStepLabel>Maximum Duration</ng-template>
-                           
+
                         <div fxFlex="1 0 auto" fxLayout="row" class="m-16 mt-0" fxLayoutAlign="center">
 
                             <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="60">
                                 <mat-label>Max Time</mat-label>
-                                <input matInput  [textMask]="mask" formControlName="maxtime">
+                                <input matInput [textMask]="mask" formControlName="maxtime">
                                 <!-- [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]appTimeMask -->
                             </mat-form-field>
-            
+
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="center center">
@@ -803,11 +755,13 @@
 
                         <ng-template matStepLabel>Select OutPut Format</ng-template>
 
-                        <div fxFlex="1 0 auto" fxLayout="column"  class="m-16 mt-0" fxLayoutAlign="center center">
-                            <mat-radio-group class="output_group" formControlName="screen" aria-label="Select The OutPut Format"  fxLayout="column" class="m-16 mt-0 p-20"  style="border: 1px solid #3b3b3b; border-radius: 5px; width: 80%;">
-                                <mat-radio-button class="output_format m-4"  value="screen">Screen</mat-radio-button>
-                                <mat-radio-button class="output_format m-4"  value="excel">Excel</mat-radio-button>
-                                <mat-radio-button class="output_format m-4"  value="pdf">PDF</mat-radio-button>
+                        <div fxFlex="1 0 auto" fxLayout="column" class="m-16 mt-0" fxLayoutAlign="center center">
+                            <mat-radio-group class="output_group" formControlName="screen"
+                                aria-label="Select The OutPut Format" fxLayout="column" class="m-16 mt-0 p-20"
+                                style="border: 1px solid #3b3b3b; border-radius: 5px; width: 80%;">
+                                <mat-radio-button class="output_format m-4" value="screen">Screen</mat-radio-button>
+                                <mat-radio-button class="output_format m-4" value="excel">Excel</mat-radio-button>
+                                <mat-radio-button class="output_format m-4" value="pdf">PDF</mat-radio-button>
                             </mat-radio-group>
                         </div>
 

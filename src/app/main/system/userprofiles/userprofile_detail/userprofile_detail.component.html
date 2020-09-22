@@ -13,13 +13,13 @@
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
 
-                <button mat-icon-button class="mr-0 mr-sm-16" >
+                <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/userprofiles/userprofiles'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
 
                 <div fxLayout="column" fxLayoutAlign="start start"
-                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
                         {{userprofile.name}}
                     </div>
@@ -33,15 +33,13 @@
             </div>
             <!-- / APP TITLE -->
 
-            <button mat-raised-button
-                    class="save-userprofile-button"
-                    *ngIf="pageType ==='new'" (click)="addUserProfile()">
+            <button mat-raised-button class="save-userprofile-button" *ngIf="pageType ==='new'"
+                (click)="addUserProfile()">
                 <span>{{ 'USERPROFILES.ADD' | translate }}</span>
             </button>
 
-            <button mat-raised-button
-                    class="save-userprofile-button"
-                    *ngIf="pageType ==='edit'" (click)="saveUserProfile()">
+            <button mat-raised-button class="save-userprofile-button" *ngIf="pageType ==='edit'"
+                (click)="saveUserProfile()">
                 <span>{{ 'USERPROFILES.SAVE' | translate }}</span>
             </button>
         </div>
@@ -53,7 +51,7 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <form [formGroup]="userprofileForm" class="userprofile w-100-p" fxLayout="column" fxFlex >
+                <form [formGroup]="userprofileForm" class="userprofile w-100-p" fxLayout="column" fxFlex>
 
                     <mat-tab-group>
 
@@ -62,61 +60,65 @@
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'USERPROFILES.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="Name"
-                                           name="name"
-                                           formControlName="name"
-                                           required>
+                                    <input matInput placeholder="Name" name="name" formControlName="name" required>
                                 </mat-form-field>
                             </div>
 
                             <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
 
-                                <mat-form-field appearance="outline" floatLabel="always"  class="select_list w-100-p">
+                                <mat-form-field appearance="outline" floatLabel="always" class="select_list w-100-p">
                                     <mat-label>{{ 'USERPROFILES.COMPANY' | translate }}</mat-label>
-                                    <mat-select  (click)="showCompanyList('company_clist')" formControlName="company">
-                                        <div class="filter_company_input" >
-                                            <input matInput  formControlName="filterstring" #filter placeholder="Filter"   (keyup) = "onKey($event)">
+                                    <mat-select (click)="showCompanyList('company_clist')" formControlName="company">
+                                        <div class="filter_company_input">
+                                            <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                                (keyup)="onKey($event)">
                                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                                         </div>
 
-                                        <div  style="width: 100%; overflow: auto;" >
-                                            <mat-table [dataSource]="dataSourceCompany"  class="devices-table font-size-10 mat-elevation-z8" >
+                                        <div style="width: 100%; overflow: auto;">
+                                            <mat-table [dataSource]="dataSourceCompany"
+                                                class="devices-table font-size-10 mat-elevation-z8">
                                                 <ng-container matColumnDef="name">
-                                                    <td mat-cell *matCellDef="let company;"  style="border: 0px;">
-                                                        <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                                    <td mat-cell *matCellDef="let company;" style="border: 0px;">
+                                                        <mat-option [value]="company.id">{{company.name}}</mat-option>
                                                     </td>
                                                 </ng-container>
-                                                <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                <tr class="company_list" style="height: 15px;" mat-row
+                                                    *matRowDef="let row; columns: displayedColumns;"></tr>
                                             </mat-table>
                                         </div>
-                                        <mat-paginator style=" height: 40px;"
-                                            #paginatorCompany
-                                            class="table_paginator_detail"
-                                            [length]="dataSourceCompany.totalLength"
-                                            [pageSize]="10"
-                                            [hidePageSize]="true"
-                                            showFirstLastButtons
-                                            sticky="true"
-                                        ></mat-paginator>
-                                    
+                                        <mat-paginator style=" height: 40px;" #paginatorCompany
+                                            class="table_paginator_detail" [length]="dataSourceCompany.totalLength"
+                                            [pageSize]="10" [hidePageSize]="true" showFirstLastButtons sticky="true">
+                                        </mat-paginator>
+
                                     </mat-select>
                                 </mat-form-field>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                    <fieldset style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em; margin-bottom: 12px;" fxFlex="40">
+                                    <fieldset
+                                        style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em; margin-bottom: 12px;"
+                                        fxFlex="40">
                                         <legend>&nbsp;Modules&nbsp;</legend>
                                         <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
                                             <div *ngFor="let module of get_module_access">
                                                 <div fxLayout="row" fxLayoutAlign="space-between center">
-                                                    <div  fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
-                                                        <mat-icon style="color: rgb(3, 155, 229); margin-right: 4px;">label</mat-icon>
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50">
+                                                        <mat-icon style="color: rgb(3, 155, 229); margin-right: 4px;">
+                                                            label</mat-icon>
                                                         <span class="ml-4">{{module.privilege}}</span>
                                                     </div>
 
-                                                    <mat-form-field appearance="outline" floatLabel="always" class="w-50-p get_module_access mr-12">
+                                                    <mat-form-field appearance="outline" floatLabel="always"
+                                                        class="w-50-p get_module_access mr-12">
 
-                                                        <mat-select class="get_module_access_select" [(value)]="module.accesslevel" style=" height: 24px; max-height: 24px;" formControlName="{{module.privilege}}">
-                                                            <mat-option *ngFor="let restrict of access_restric_list" class="get_module_access_select_option" [value]="restrict">{{restrict}}</mat-option>
+                                                        <mat-select class="get_module_access_select"
+                                                            [(value)]="module.accesslevel"
+                                                            style=" height: 24px; max-height: 24px;"
+                                                            formControlName="{{module.privilege}}">
+                                                            <mat-option *ngFor="let restrict of access_restric_list"
+                                                                class="get_module_access_select_option"
+                                                                [value]="restrict">{{restrict}}</mat-option>
                                                         </mat-select>
 
                                                     </mat-form-field>
@@ -125,26 +127,32 @@
                                         </div>
                                     </fieldset>
 
-                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;" fxFlex="28">
+                                    <fieldset
+                                        style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;"
+                                        fxFlex="28">
                                         <legend>&nbsp;Reports&nbsp;</legend>
                                         <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
-                                            <div *ngFor="let report of get_report_access" class="report-check-button mb-12 mt-4">
-                                                <mat-checkbox formControlName="{{report.privilege}}" >
+                                            <div *ngFor="let report of get_report_access"
+                                                class="report-check-button mb-12 mt-4">
+                                                <mat-checkbox formControlName="{{report.privilege}}">
                                                     <label>{{report.privilege}}</label>
                                                 </mat-checkbox>
-                                            </div>  
-                                        </div> 
+                                            </div>
+                                        </div>
                                     </fieldset>
 
-                                    <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;" fxFlex="28">
+                                    <fieldset
+                                        style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;"
+                                        fxFlex="28">
                                         <legend>&nbsp;Commands&nbsp;</legend>
                                         <div style="width: 100%; overflow: auto; height: 96%; padding: 12px;">
-                                            <div *ngFor="let command of get_command_access" class="command-check-button mb-12 mt-4">
-                                                <mat-checkbox formControlName="{{command.privilege}}" >
+                                            <div *ngFor="let command of get_command_access"
+                                                class="command-check-button mb-12 mt-4">
+                                                <mat-checkbox formControlName="{{command.privilege}}">
                                                     <label>{{command.privilege}}</label>
                                                 </mat-checkbox>
-                                            </div>  
-                                        </div> 
+                                            </div>
+                                        </div>
                                     </fieldset>
 
                                     <!-- <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
@@ -160,42 +168,35 @@
                                 </div>
 
                             </div>
-                           
+
                         </mat-tab>
 
                         <mat-tab label="{{ 'USERPROFILES.AUDIT' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'VEHICLES.CREATED' | translate }}</mat-label>
-                                        <input matInput placeholder="Created"
-                                               name="created"
-                                                formControlName="created">
+                                        <mat-label>{{ 'USERPROFILES.CREATED' | translate }}</mat-label>
+                                        <input matInput placeholder="Created" name="created" formControlName="created">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'VEHICLES.CREATEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="CreatedByName"
-                                               name="createdbyname"
-                                               formControlName="createdbyname">
+                                        <mat-label>{{ 'USERPROFILES.CREATEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="CreatedByName" name="createdbyname"
+                                            formControlName="createdbyname">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'VEHICLES.LASTMODIFIEDDATE' | translate }}</mat-label>
-                                        <input matInput placeholder="Last Modified Date"
-                                               name="lastmodifieddate"
-                                               formControlName="lastmodifieddate">
+                                        <mat-label>{{ 'USERPROFILES.LASTMODIFIEDDATE' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified Date" name="lastmodifieddate"
+                                            formControlName="lastmodifieddate">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
-                                        <mat-label>{{ 'VEHICLES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
-                                        <input matInput placeholder="Last Modified By Name"
-                                               name="lastmodifiedbyname"
-                                               formControlName="lastmodifiedbyname">
+                                        <mat-label>{{ 'USERPROFILES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Last Modified By Name" name="lastmodifiedbyname"
+                                            formControlName="lastmodifiedbyname">
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -210,4 +211,3 @@
     </div>
     <!-- / CENTER -->
 </div>
-

@@ -4,8 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ReportDetail } from "app/main/report/reportcomponent/model/report.model";
 
 @Injectable()
-export class ReportResultService
-{
+export class ReportResultService {
     // report: any[];
     report_cList: any[];
 
@@ -16,75 +15,71 @@ export class ReportResultService
      */
     constructor(
         private _httpClient: HttpClient,
-    ) { }  
-       
-    loadReportResult(conncode: string, userid: number, pageindex: number, pagesize: number): Observable<any>
-    {
+    ) { }
+
+    loadReportResult(pageindex: number, pagesize: number): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         let params = new HttpParams()
-        .set('conncode', conncode.toString())
-        .set('userid', userid.toString())
-        .set('pageindex', (pageindex + 1).toString())
-        .set('pagesize', pagesize.toString());
-        
+
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString());
+
         let report_param = JSON.parse(localStorage.getItem('report_result'));
-        
 
-        for (let param in report_param) { 
-           
-                
-                if (param == 'reportname') {
-                    params = params.set('method', report_param[param].toString());
-                } else if (param != 'companyname' && param != 'groupname') {
-                    params = params.set(`${param}`, report_param[param].toString());
-                }
+
+        for (let param in report_param) {
+
+
+            if (param == 'reportname') {
+                params = params.set('method', report_param[param].toString());
+            } else if (param != 'companyname' && param != 'groupname') {
+                params = params.set(`${param}`, report_param[param].toString());
+            }
         }
-        
-        
 
-        
-       
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-            headers: headers,   
+
+
+
+
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
             params: params
         });
     }
 
-    loadCompanyGroup(conncode: string, userid: number, pageindex: number, pagesize: number, currentid: number, method: string): Observable<any>
-    {
+    loadCompanyGroup(pageindex: number, pagesize: number, currentid: number, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
 
         let params = new HttpParams()
-        .set('conncode', conncode.toString())
-        .set('userid', userid.toString())
-        .set('pageindex', (pageindex + 1).toString())
-        .set('pagesize', pagesize.toString());
-        
+
+            .set('pageindex', (pageindex + 1).toString())
+            .set('pagesize', pagesize.toString());
+
         let report_param = JSON.parse(localStorage.getItem('report_result'));
-        
 
-        for (let param in report_param) { 
-           
-                
-                if (param == 'reportname') {
-                    params = params.set('method', report_param[param].toString());
-                } else {
-                    params = params.set(`${param}`, report_param[param].toString());
-                }
+
+        for (let param in report_param) {
+
+
+            if (param == 'reportname') {
+                params = params.set('method', report_param[param].toString());
+            } else {
+                params = params.set(`${param}`, report_param[param].toString());
+            }
         }
-        
-        
 
-        
-       
-        return  this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx',{
-            headers: headers,   
+
+
+
+
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
             params: params
         });
     }
 
-    
+
 }

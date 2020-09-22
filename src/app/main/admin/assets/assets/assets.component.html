@@ -1,0 +1,259 @@
+<div id="assets" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center_table center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta</mat-icon>
+                <span class="logo-text h1"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'ASSETS.ASSETS' | translate }}</span>
+            </div>
+            <!-- / APP TITLE -->
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
+                    <!-- FILTER ITEM -->
+                    <mat-label style="min-width: max-content;">{{'ASSETS.SELECTFIELD' | translate}}:</mat-label>
+                    <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
+                        <mat-select [(value)]="selected">
+                            <mat-option>None</mat-option>
+                            <mat-option value="name">{{'ASSETS.NAME' | translate}}</mat-option>
+                            <mat-option value="company">{{'ASSETS.COMPANY' | translate}}</mat-option>
+                            <mat-option value="group">{{'ASSETS.GROUP' | translate}}</mat-option>
+                            <mat-option value="subgroup">{{'ASSETS.SUBGROUP' | translate}}</mat-option>
+                            <mat-option value="account">{{'ASSETS.ACCOUNT' | translate}}</mat-option>
+                            <mat-option value="operator">{{'ASSETS.OPERATOR' | translate}}</mat-option>
+                            <mat-option value="unittype">{{'ASSETS.UNITTYPE' | translate}}</mat-option>
+                            <mat-option value="serviceplan">{{'ASSETS.SERVICEPLAN' | translate}}</mat-option>
+                            <mat-option value="producttype">{{'ASSETS.PRODUCTTYPE' | translate}}</mat-option>
+                            <mat-option value="make">{{'ASSETS.MAKE' | translate}}</mat-option>
+                            <mat-option value="model">{{'ASSETS.MODEL' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <!-- SEARCH -->
+                <div class="search-wrapper mx-32 mx-md-0">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input #filter placeholder="{{ 'ASSETS.SEARCHFORASSET' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
+                    </div>
+                </div>
+            </div>
+            <!-- / SEARCH -->
+            <!-- ADD BUTTON -->
+            <button mat-fab [routerLink]="'/admin/assets/asset_detail'" class="accent  mt-24 mt-md-0"
+                [disabled]="restrictValue != 3" (click)="addNewAsset()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="width: 100%; overflow: auto;">
+            <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+                <div class="spinner_container">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                    </mat-spinner>
+                </div>
+            </div>
+            <mat-table class="assets-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
+                matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+                style="width: 250%;">
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <button (click)="editShowAssetDetail(asset)" [disabled]="restrictValue == '1'"
+                            style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteAsset(asset)">delete
+                        </mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateAsset(asset)">file_copy
+                        </mat-icon>
+                    </mat-cell>
+                </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.NAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="name text-truncate">{{asset.name}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Company Column -->
+                <ng-container matColumnDef="company">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>
+                        {{ 'ASSETS.COMPANY' | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="company text-truncate">{{asset.company}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Group Column -->
+                <ng-container matColumnDef="group">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.GROUP' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="group text-truncate">{{asset.group}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- SubGroup Column -->
+                <ng-container matColumnDef="subgroup">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.SUBGROUP' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="subgroup text-truncate">{{asset.subgroup}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Account Column -->
+                <ng-container matColumnDef="account">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.ACCOUNT' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="account text-truncate">{{asset.account}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Operator Column -->
+                <ng-container matColumnDef="operator">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.OPERATOR' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="operator text-truncate">{{asset.operator}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- UnitType Column -->
+                <ng-container matColumnDef="unittype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.UNITTYPE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="unittype text-truncate">{{asset.unittype}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- ServicePlan Column -->
+                <ng-container matColumnDef="serviceplan">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.SERVICEPLAN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="serviceplan text-truncate">{{asset.serviceplan}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- ProductType Column -->
+                <ng-container matColumnDef="producttype">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.PRODUCTTYPE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="producttype text-truncate">{{asset.producttype}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Make Column -->
+                <ng-container matColumnDef="make">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.MAKE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="make text-truncate">{{asset.make}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Model Column -->
+                <ng-container matColumnDef="model">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.MODEL' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="model text-truncate">{{asset.model}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="isactive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.ISACTIVE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="isactive text-truncate">{{asset.isactive}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- TimeZone Column -->
+                <ng-container matColumnDef="timezone">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.TIMEZONE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="timezone text-truncate">{{asset.timezone}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Created Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="created text-truncate">{{asset.created}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- CreatedByName Column -->
+                <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.CREATEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="created text-truncate">{{asset.createdbyname}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- DeletedWhen Column -->
+                <ng-container matColumnDef="deletedwhen">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.DELETEDWHEN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="deletedwhen text-truncate">{{asset.deletedwhen}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- Deleted Column -->
+                <ng-container matColumnDef="deletedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.DELETEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="deletedbyname text-truncate">{{asset.deletedbyname}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- LastModifiedDate Column -->
+                <ng-container matColumnDef="lastmodifieddate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="lastmodifieddate text-truncate">{{asset.lastmodifieddate}}</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- LastModifiedbyname Column -->
+                <ng-container matColumnDef="lastmodifiedbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ASSETS.LASTMODIFIEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let asset">
+                        <p class="lastmodifiedbyname text-truncate">{{asset.lastmodifiedbyname}}</p>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let asset; columns: displayedColumns;" class="asset font-size-10" matRipple>
+                </mat-row>
+            </mat-table>
+        </div>
+        <div>
+            <div class="page_index">
+                <!-- <form> -->
+                <label>Page&nbsp;:&nbsp;&nbsp;</label>
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
+                </mat-form-field>
+                <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+                <!-- </form> -->
+            </div>
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

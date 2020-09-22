@@ -6,26 +6,30 @@
             <mat-icon (click)="close()">close</mat-icon>
         </div>
         <mat-divider></mat-divider>
-        <div class="autocomplete-address my-8 mb-16" fxLayout="row" fxFlexAlign="space-between center">
-            <div class="h3 w-40" fxLayout="column" fxFlexAlign="center center">
-                <!-- <span class="w-8 h-8">&#9673;</span>
-                <span class="w-4 h-4">&#9679;</span>
-                <span class="w-4 h-4">&#9679;</span>
-                <span class="w-4 h-4">&#9679;</span>
-                <span><i class="material-icons w-8">place</i></span> -->
-                <span>From:</span>
-                <span>To:</span>
+        <div class="autocomplete-address my-8 mb-16" fxLayout="row" fxFlexAlign="center">
+            <div class="h6 w-20 mr-4" fxLayout="column" style="align-items: center;">
+                <span><i class="material-icons dot-origin">radio_button_checked</i></span>
+                <span class="dot-icon">&#9679;</span>
+                <span class="dot-icon">&#9679;</span>
+                <span class="mb-4 dot-icon">&#9679;</span>
+                <span><i class="material-icons dot-destination">place</i></span>
+                <!-- <span>From:</span>
+                <span>To:</span> -->
             </div>
-            <img class="change_img w-20 h-20 mx-4" src="assets/icons/map_unitInfo/change.png" height="18" width="18"
-                (click)="onChangeDirection()" />
-            <div class="h3 w-100-p autocomplete-container" fxLayout="column" fxFlexAlign="start center">
+            <!-- <img class="change_img w-20 h-20 mx-4" src="assets/icons/map_unitInfo/change.png" height="18" width="18"
+                (click)="onChangeDirection()" /> -->
+            <div class="h3 w-100-p autocomplete-container">
                 <div [ngClass]="[isChange? 'to-destination': 'from-origin']">{{unit.name}}</div>
-                <div class="autocomplete-poi-address" [ngClass]="[isChange? 'from-origin': 'to-destination']">
+
+                <div class="autocomplete-poi-address" [ngClass]="[isChange? 'from-origin': 'to-destination']"
+                    fxLayout="row">
                     <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
                         type="text" class="h4 px-4" #search [(ngModel)]="filter_string">
                     <mat-icon class="cancel_close_icon" (click)="clearAutoComplete()">clear</mat-icon>
                 </div>
             </div>
+            <div class="change_direction_icon" (click)="onChangeDirection()"><i class="material-icons"
+                    style="font-size:28px; font-weight: 900; color: rgba(245, 245, 245, 0.7)">swap_vert</i></div>
         </div>
         <mat-divider></mat-divider>
 

@@ -24,8 +24,7 @@ export class DeleteDialogComponent {
     maintservice: MaintserviceDetail;
     flag: any;
 
-    userConncode: string;
-    userID: number;
+
 
     dataSource: MaintservicesDataSource;
     private flagForDeleting = new BehaviorSubject<boolean>(false);
@@ -36,10 +35,9 @@ export class DeleteDialogComponent {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private maintservicesService: MaintservicesService,
         private dialogRef: MatDialogRef<DeleteDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any, 
+        @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         this._fuseTranslationLoaderService.loadTranslations(maintservicesEnglish, maintservicesSpanish, maintservicesFrench, maintservicesPortuguese);
 
@@ -49,27 +47,27 @@ export class DeleteDialogComponent {
 
     deleteList(): boolean {
         let deletedMaintservice = this.maintservicesService.maintserviceList.findIndex((index: any) => index.id == this.maintservice.id);
-      
+
         if (deletedMaintservice > -1) {
             this.maintservicesService.maintserviceList.splice(deletedMaintservice, 1);
 
             return true;
         }
     }
-    
+
     delete() {
         let result = this.deleteList();
 
         if (result) {
             this.maintservicesService.deleteMaintservice(this.maintservice.id)
-            .subscribe((result: any) => {
-                
-                
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dataSource = new MaintservicesDataSource(this.maintservicesService);
-                    this.dataSource.maintservicesSubject.next(this.maintservicesService.maintserviceList);
-                }
-            });
+                .subscribe((result: any) => {
+
+
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dataSource = new MaintservicesDataSource(this.maintservicesService);
+                        this.dataSource.maintservicesSubject.next(this.maintservicesService.maintserviceList);
+                    }
+                });
             this.flagForDeleting.next(false);
             this.dialogRef.close(this.maintservicesService.maintserviceList);
         }

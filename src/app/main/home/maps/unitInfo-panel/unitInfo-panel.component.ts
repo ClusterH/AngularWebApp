@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 // import { SelectionModel } from '@angular/cdk/collections';
-// import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { UnitLinkDialogComponent } from 'app/main/home/maps/unitInfo-panel/dialog/dialog.component';
@@ -12,6 +12,8 @@ import { AutocompleteDialogComponent } from 'app/main/home/maps/unitInfo-panel/a
 import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 declare let google: any;
 import PlaceResult = google.maps.places.PlaceResult;
+import { identifierName } from '@angular/compiler';
+import { random } from 'lodash';
 
 export interface Task {
     name: string;
@@ -25,18 +27,38 @@ export interface Task {
     encapsulation: ViewEncapsulation.None
 })
 export class UnitInfoPanelComponent implements OnInit, OnDestroy {
-    userID: number;
-    userConncode: string;
     currentChannel: string = 'mainpanel';
     linkedEmail: any;
     expireTime: number;
     expireTimeUnit: string = 'minutes';
+    playbackDateRange: string = '0';
+    dateStep: FormGroup;
+
+    count: number = 0;
+    color: any = {
+        blue: "#0000ff",
+        darkblue: "#00008b",
+        darkcyan: "#008b8b",
+        darkgreen: "#006400",
+        darkmagenta: "#8b008b",
+        darkred: "#8b0000",
+        darkviolet: "#9400d3",
+        fuchsia: "#ff00ff",
+        green: "#008000",
+        indigo: "#4b0082",
+        lime: "#00ff00",
+        magenta: "#ff00ff",
+        red: "#ff0000",
+        yellow: "#ffff00"
+    }
 
     @Input() currentUnit: any;
     @Input() currentOperator: any;
+
     @Input() currentEvents: any;
 
     @Output() eventLocation = new EventEmitter();
+    @Output() trackHistory = new EventEmitter();
 
     private _unsubscribeAll: Subject<any>;
 
@@ -44,17 +66,28 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
         public unitInfoService: UnitInfoService,
         private unitInfoSideBarService: UnitInfoSidebarService,
         public _matDialog: MatDialog,
+        private _formBuilder: FormBuilder,
     ) {
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
+        this.count = 0;
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.dateStep = this._formBuilder.group({
+            starttime: [null],
+            start: [null],
+            end: [null],
+            endtime: [null]
+        });
+
+    }
     ngAfterViewInit() { }
 
     ngOnChanges() {
         console.log(this.currentUnit);
+        this.goOptionPanel('mainpanel');
+        this.playbackDateRange = '0';
     }
 
     ngOnDestroy(): void {
@@ -82,7 +115,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     sendLocateRequest() {
-        this.unitInfoService.locateNow(this.userConncode, this.userID, this.currentUnit.id)
+        this.unitInfoService.locateNow(this.currentUnit.id)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                 if (res.TrackingXLAPI.DATA[0].id == '1') {
                     alert('Locate request send!');
@@ -103,7 +136,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
             this.expireTime = temp;
         }
 
-        this.unitInfoService.sendShareLocation(this.userConncode, this.userID, this.currentUnit.id, this.expireTime, this.linkedEmail)
+        this.unitInfoService.sendShareLocation(this.currentUnit.id, this.expireTime, this.linkedEmail)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                 console.log(res);
                 if (res.TrackingXLAPI.DATA[0].result == '1') {
@@ -136,5 +169,84 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
                 console.log(result);
             });
         }
+    }
+
+    onChangePlaybackDateOption(event: any) {
+        console.log(event);
+    }
+
+    playbackHistory() {
+        let params: any = {};
+        params.unitid = this.currentUnit.id;
+        params.historytype = this.playbackDateRange;
+
+        if (this.playbackDateRange == '4') {
+            if (this.dateStep.get('start').value == null || this.dateStep.get('starttime').value == null || this.dateStep.get('end').value == null || this.dateStep.get('endtime').value == null) {
+                alert("Please choose date and time correctly!");
+                return;
+            }
+
+            console.log(this.playbackDateRange);
+            params.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) + " " + this.paramTimeFormat(this.dateStep.get('starttime').value);
+            params.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) + " " + this.paramTimeFormat(this.dateStep.get('endtime').value);
+        }
+
+        this.unitInfoService.playbackHistory(params, 'GetTrackIDandName').then(idandname => {
+            console.log(idandname);
+            if (idandname.responseCode == 100) {
+                // this.unitInfoService.TrackID = res.TrackingXLAPI.DATA[0].id;
+                // this.unitInfoService.TrackName = res
+                this.unitInfoService.playbackHistory(params, 'GetUnitHistory')
+                    .then(history => {
+                        if (history.responseCode == 100) {
+                            this.count = this.count + 1;
+                            console.log(history, this.count);
+                            let color = this.random_rgba();
+                            console.log(color);
+                            this.unitInfoService.TrackHistoryList.next({
+                                id: idandname.TrackingXLAPI.DATA[0].id,
+                                name: idandname.TrackingXLAPI.DATA[0].name,
+                                strokeColor: color,
+                                // historyList: history.TrackingXLAPI.DATA.slice(20 * this.count, 20 * this.count + 20)
+                                // historyList: history.TrackingXLAPI.DATA.slice(0, 1)
+                                historyList: history.TrackingXLAPI.DATA
+                            });
+                        } else {
+                            alert('There are no any Data!');
+                            this.goOptionPanel('mainpanel');
+                            this.playbackDateRange = '0';
+                        }
+                    })
+            }
+        });
+    }
+
+    random_rgba() {
+        let result;
+        let count = 0;
+        for (let prop in this.color) {
+            if (Math.random() < 1 / ++count) result = prop;
+        }
+
+        return this.color[result];
+
+    }
+
+    paramDateFormat(date: any) {
+        let str = '';
+        if (date != '') {
+            str = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
+        }
+        return str;
+    }
+
+    paramTimeFormat(time) {
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1); // Remove full string match value
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+            time[0] = +(time[0] % 12) < 10 ? '0' + time[0] % 12 : time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
     }
 }

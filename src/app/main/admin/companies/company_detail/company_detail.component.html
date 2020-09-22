@@ -1,23 +1,17 @@
 <div id="company_detail" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center">
-
         <!-- HEADER -->
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
-
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
-
                 <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/companies/companies'"> -->
                     <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
-
                 <div fxLayout="column" fxLayoutAlign="start start"
                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
@@ -32,37 +26,29 @@
                 </div>
             </div>
             <!-- / APP TITLE -->
-
-            <button mat-raised-button class="save-company-button" *ngIf="pageType ==='new'" (click)="addCompany()">
+            <button mat-raised-button class="save-company-button" *ngIf="pageType ==='new'" (click)="addCompany()"
+                [disabled]="companyForm.invalid">
                 <span>{{ 'COMPANIES.ADD' | translate }}</span>
             </button>
-
-            <button mat-raised-button class="save-company-button" *ngIf="pageType ==='edit'" (click)="saveCompany()">
+            <button mat-raised-button class="save-company-button" *ngIf="pageType ==='edit'" (click)="saveCompany()"
+                [disabled]="companyForm.invalid">
                 <span>{{ 'COMPANIES.SAVE' | translate }}</span>
             </button>
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <!-- CONTENT -->
             <div class="content">
-
                 <form [formGroup]="companyForm" class="company w-100-p" fxLayout="column" fxFlex>
-
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'COMPANIES.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'COMPANIES.NAME' | translate }}</mat-label>
                                     <input matInput placeholder="Name" name="name" formControlName="name" required>
                                 </mat-form-field>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.ACCOUNT' | translate }}</mat-label>
                                         <mat-select formControlName="account"
@@ -72,7 +58,6 @@
                                                     placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-
                                             <div style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceAccount"
                                                     class="companies-table font-size-10 mat-elevation-z8">
@@ -86,15 +71,12 @@
                                                         *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-
                                             <mat-paginator style=" height: 40px;" #paginatorAccount
                                                 class="table_paginator" [length]="dataSourceAccount.totalLength"
                                                 [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
                                             </mat-paginator>
-
                                         </mat-select>
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.COMPANYTYPE' | translate }}</mat-label>
                                         <mat-select formControlName="companytype"
@@ -104,7 +86,6 @@
                                                     placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-
                                             <div style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceCompanyType"
                                                     class="companies-table font-size-10 mat-elevation-z8">
@@ -119,7 +100,6 @@
                                                         *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-
                                             <mat-paginator style=" height: 40px;" #paginatorCompanyType
                                                 class="table_paginator" [length]="dataSourceCompanyType.totalLength"
                                                 [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
@@ -127,14 +107,11 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.ORGNO' | translate }}</mat-label>
                                         <input matInput placeholder="orgno" name="orgno" formControlName="orgno">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.USERPROFILE' | translate }}</mat-label>
                                         <mat-select formControlName="userprofile"
@@ -144,7 +121,6 @@
                                                     placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-
                                             <div style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceUserProfile"
                                                     class="companies-table font-size-10 mat-elevation-z8">
@@ -159,7 +135,6 @@
                                                         *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-
                                             <mat-paginator style=" height: 40px;" #paginatorUserProfile
                                                 class="table_paginator" [length]="dataSourceUserProfile.totalLength"
                                                 [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
@@ -167,126 +142,104 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.ADDRESS' | translate }}</mat-label>
                                         <input matInput placeholder="Address" name="address" formControlName="address">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.COUNTRY' | translate }}</mat-label>
                                         <input matInput placeholder="Country" name="country" formControlName="country">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.CONTACT_NAME' | translate }}</mat-label>
                                         <input matInput placeholder="Contact Name" name="contactname"
                                             formControlName="contactname">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.PHONE' | translate }}</mat-label>
                                         <input matInput placeholder="Phonenumber" name="phone" formControlName="phone">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.EMAIL' | translate }}</mat-label>
                                         <input matInput placeholder="Email address" name="email"
                                             formControlName="email">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.COMMENTS' | translate }}</mat-label>
                                         <input matInput placeholder="Comments" name="comments"
                                             formControlName="comments">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-checkbox formControlName="hasprivatelabel" fxFlex="50">
                                         {{ 'COMPANIES.HASPRIVATELABEL' | translate }}</mat-checkbox>
                                 </div>
                             </div>
                         </mat-tab>
-
                         <mat-tab label="{{ 'COMPANIES.NOTIFICATIONS' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.EMAIL_SERVER' | translate }}</mat-label>
                                         <input matInput placeholder="Email Server (leave empty to use default)"
                                             name="emailserver" formControlName="emailserver">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.EMAIL_SENDER' | translate }}</mat-label>
                                         <input matInput placeholder="Email Sender" name="emailsender"
                                             formControlName="emailsender">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.EMAIL_USER' | translate }}</mat-label>
                                         <input matInput placeholder="Email User" name="emailuser"
                                             formControlName="emailuser">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.EMAIL_PASSWORD' | translate }}</mat-label>
                                         <input matInput placeholder="Email Password" name="emailpassword"
                                             formControlName="emailpassword">
                                     </mat-form-field>
                                 </div>
-
                             </div>
                         </mat-tab>
-
                         <mat-tab label="{{ 'COMPANIES.AUDIT' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created" name="created" formControlName="created">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.CREATEDBYNAME' | translate }}</mat-label>
                                         <input matInput placeholder="CreatedByName" name="createdbyname"
                                             formControlName="createdbyname">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.DELETEDWHEN' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted When" name="deletedwhen"
                                             formControlName="deletedwhen">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.DELETEDBYNAME' | translate }}</mat-label>
                                         <input matInput placeholder="Deleted By Name" name="deletedbyname"
                                             formControlName="deletedbyname">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date" name="lastmodifieddate"
                                             formControlName="lastmodifieddate">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified By Name" name="lastmodifiedbyname"
@@ -299,11 +252,8 @@
                 </form>
             </div>
             <!-- / CONTENT -->
-
         </div>
         <!-- / CONTENT CARD -->
-
     </div>
     <!-- / CENTER -->
-
 </div>

@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 @Injectable()
 export class UnitInfoService {
     // onUnitChanged: any = '';
-
+    TrackHistoryList: BehaviorSubject<any>;
 
     /**
      * Constructor
@@ -14,15 +14,13 @@ export class UnitInfoService {
      * @param {HttpClient} _httpClient
      */
     constructor(private _httpClient: HttpClient) {
-        // this.onUnitChanged = new BehaviorSubject({});
+        this.TrackHistoryList = new BehaviorSubject({});
     }
 
-    getUnitInfo(conncode: string, userid: number, unitid: number): Observable<any> {
+    getUnitInfo(unitid: number): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('id', unitid.toString())
             .set('method', 'GetUnitInfo_v1');
         console.log(params);
@@ -33,12 +31,10 @@ export class UnitInfoService {
         });
     }
 
-    sendShareLocation(conncode: string, userid: number, unitid: number, validitytime: number, emailaddress: string): Observable<any> {
+    sendShareLocation(unitid: number, validitytime: number, emailaddress: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('unitid', unitid.toString())
             .set('validitytime', validitytime.toString())
             .set('emailaddress', emailaddress.toString())
@@ -51,12 +47,10 @@ export class UnitInfoService {
         });
     }
 
-    locateNow(conncode: string, userid: number, unitid: number): Observable<any> {
+    locateNow(unitid: number): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', conncode.toString())
-            .set('userid', userid.toString())
             .set('unitid', unitid.toString())
             .set('method', 'LocateUnit');
         console.log(params);
@@ -67,12 +61,10 @@ export class UnitInfoService {
         });
     }
 
-    getPOIList(conncode: string, userid: number, unitid: number, pageindex: number, pagesize: number, filterstring: string): Observable<any> {
+    getPOIList(unitid: number, pageindex: number, pagesize: number, filterstring: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('conncode', conncode)
-            .set('userid', userid.toString())
             .set('unitid', unitid.toString())
             .set('pageindex', pageindex.toString())
             .set('pagesize', pagesize.toString())
@@ -83,5 +75,43 @@ export class UnitInfoService {
             headers: headers,
             params: params
         });
+    }
+
+    playbackHistory(param: any, method: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+
+            if (param.historytype == '4') {
+                console.log(param.historytype);
+                let params = new HttpParams()
+                    .set('unitid', param.unitid.toString())
+                    .set('historytype', param.historytype.toString())
+                    .set('datefrom', param.datefrom.toString())
+                    .set('dateto', param.dateto.toString())
+                    .set('method', method);
+                console.log(params);
+
+                this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    headers: headers,
+                    params: params
+                }).subscribe(res => {
+                    resolve(res);
+                }, reject)
+            } else {
+                let params = new HttpParams()
+                    .set('unitid', param.unitid.toString())
+                    .set('historytype', param.historytype.toString())
+                    .set('method', method);
+                console.log(params);
+
+                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    headers: headers,
+                    params: params
+                }).subscribe(res => {
+                    resolve(res);
+                }, reject)
+            }
+        })
     }
 }

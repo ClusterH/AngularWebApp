@@ -27,10 +27,8 @@ import { CourseDialogComponent } from "../dialog/dialog.component";
 })
 export class PoigroupsComponent implements OnInit {
     dataSource: PoigroupsDataSource;
-
     @Output()
     pageEvent: PageEvent;
-
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -38,12 +36,8 @@ export class PoigroupsComponent implements OnInit {
     filter_string: string = '';
     index_number: number = 1;
     currentUser: any;
-
     poigroup: any;
-    userConncode: string;
-    userID: number;
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -58,15 +52,10 @@ export class PoigroupsComponent implements OnInit {
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    @ViewChild(MatPaginator, { static: true })
-    paginator: MatPaginator;
-
-    @ViewChild(MatSort, { static: true })
-    sort: MatSort;
-
-    @ViewChild('filter', { static: true })
-    filter: ElementRef;
+    private _unsubscribeAll: Subject<any>;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
     constructor(
         private _adminPoigroupsService: PoigroupsService,
@@ -75,137 +64,87 @@ export class PoigroupsComponent implements OnInit {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+        this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).pois;
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(poigroupsEnglish, poigroupsSpanish, poigroupsFrench, poigroupsPortuguese);
-
         this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
         this.filter_string = '';
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
     ngAfterViewInit() {
-
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.dataSource.loadPoigroups(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist"))
-            )
-            .subscribe((res: any) => {
-            });
+            .pipe(tap(() => this.dataSource.loadPoigroups(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
         list_page[0].innerHTML = 'Page Size :';
     }
 
     ngOnInit(): void {
-
-
         this.dataSource = new PoigroupsDataSource(this._adminPoigroupsService);
-        this.dataSource.loadPoigroups(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poigroup_Tlist");
-    }
-
-    onRowClicked(poigroup) {
-
+        this.dataSource.loadPoigroups(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poigroup_Tlist");
     }
 
     selectedFilter() {
-
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadPoigroups(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
+            this.dataSource.loadPoigroups(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        this.dataSource.loadPoigroups(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
+        this.dataSource.loadPoigroups(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
     }
 
-    filterEvent() {
-        this.selectedFilter();
-    }
+    filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadPoigroups(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
+        this.dataSource.loadPoigroups(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poigroup_Tlist");
     }
 
     addNewPoigroup() {
-        this.poigroupDetailService.poigroup_detail = '';
-        localStorage.removeItem("poigroup_detail");
         this.router.navigate(['admin/poi/poigroups/poigroup_detail']);
     }
 
     editShowPoigroupDetail(poigroup: any) {
-
-        localStorage.setItem("poigroup_detail", JSON.stringify(poigroup));
-
-        this.router.navigate(['admin/poi/poigroups/poigroup_detail']);
+        this.router.navigate(['admin/poi/poigroups/poigroup_detail'], { queryParams: poigroup });
     }
 
     deletePoigroup(poigroup): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            poigroup, flag: this.flag
-        };
-
+        dialogConfig.data = { poigroup, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 let deletePoigroup = this._adminPoigroupsService.poigroupList.findIndex((deletedpoigroup: any) => deletedpoigroup.id == poigroup.id);
-
                 if (deletePoigroup > -1) {
                     this._adminPoigroupsService.poigroupList.splice(deletePoigroup, 1);
                     this.dataSource.poigroupsSubject.next(this._adminPoigroupsService.poigroupList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;
                 }
-            } else {
-
             }
         });
     }
 
     duplicatePoigroup(poigroup: any): void {
-
-
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            poigroup, flag: this.flag
-        };
-
+        dialogConfig.data = { poigroup, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-
-            } else {
-
+                this.router.navigate(['admin/poi/poigroups/poigroup_detail'], { queryParams: poigroup });
             }
         });
     }

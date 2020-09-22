@@ -1,10 +1,9 @@
-export interface DealerCompanyDetail
-{
+export interface DealercompanyDetail {
     id?: number;
     name?: string;
     orgno?: string;
     accountid?: number;
-    companytypeid?: number;
+    dealercompanytypeid?: number;
     userprofileid?: number;
     isactive?: boolean;
     created?: Date;

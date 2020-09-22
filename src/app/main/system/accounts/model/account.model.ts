@@ -1,5 +1,4 @@
-export interface AccountDetail
-{
+export interface AccountDetail {
     id?: number;
     name?: string;
     address?: string;

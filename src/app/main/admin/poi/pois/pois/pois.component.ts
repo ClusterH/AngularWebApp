@@ -39,8 +39,7 @@ export class PoisComponent implements OnInit, OnDestroy {
     currentUser: any;
 
     poi: any;
-    userConncode: string;
-    userID: number;
+
     restrictValue: any;
     flag: string = '';
     displayedColumns = [
@@ -74,8 +73,7 @@ export class PoisComponent implements OnInit, OnDestroy {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).pois;
         //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(poisEnglish, poisSpanish, poisFrench, poisPortuguese);
@@ -93,8 +91,7 @@ export class PoisComponent implements OnInit, OnDestroy {
         // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.paginator.pageIndex = 0);
         merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.dataSource.loadPois(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist")),
+            .pipe(tap(() => this.dataSource.loadPois(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist")),
                 takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
         const list_page = document.getElementsByClassName('mat-paginator-page-size-label');
@@ -103,7 +100,7 @@ export class PoisComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new PoisDataSource(this._adminPoisService);
-        this.dataSource.loadPois(this.userConncode, this.userID, this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poi_Tlist");
+        this.dataSource.loadPois(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Poi_Tlist");
     }
 
     ngOnDestroy(): void {
@@ -116,18 +113,18 @@ export class PoisComponent implements OnInit, OnDestroy {
             alert("Please choose Field for filter!");
         } else {
             this.paginator.pageIndex = 0;
-            this.dataSource.loadPois(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
+            this.dataSource.loadPois(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
         }
     }
 
     actionPageIndexbutton(pageIndex: number) {
-        this.dataSource.loadPois(this.userConncode, this.userID, pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
+        this.dataSource.loadPois(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
     }
 
     filterEvent() { this.selectedFilter(); }
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
-        this.dataSource.loadPois(this.userConncode, this.userID, this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
+        this.dataSource.loadPois(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Poi_Tlist");
     }
 
     addNewPoi() {

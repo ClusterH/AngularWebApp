@@ -21,11 +21,11 @@ export class VehicleDetailDataSource extends DataSource<any> {
         this._unsubscribeAll = new Subject();
     }
 
-    loadVehicleDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, method: string) {
+    loadVehicleDetail(pageindex: number, pagesize: number, name: string, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
         // use pipe operator to chain functions with Observable type
-        this.vehicleDetailService.getCompanies(conncode, userid, pageindex, pagesize, name, method)
+        this.vehicleDetailService.getCompanies(pageindex, pagesize, name, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
@@ -33,17 +33,17 @@ export class VehicleDetailDataSource extends DataSource<any> {
             ).subscribe((result: any) => {
                 this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
                 this.vehicleDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
     }
 
-    loadGroupDetail(conncode: string, userid: number, pageindex: number, pagesize: number, name: string, companyid, method: string) {
+    loadGroupDetail(pageindex: number, pagesize: number, name: string, companyid, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
         // use pipe operator to chain functions with Observable type
-        this.vehicleDetailService.getGroups(conncode, userid, pageindex, pagesize, name, companyid)
+        this.vehicleDetailService.getGroups(pageindex, pagesize, name, companyid)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)),
@@ -51,7 +51,7 @@ export class VehicleDetailDataSource extends DataSource<any> {
             ).subscribe((result: any) => {
                 this.vehiclesSubject.next(result.TrackingXLAPI.DATA);
                 this.vehicleDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1.Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

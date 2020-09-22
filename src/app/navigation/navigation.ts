@@ -47,6 +47,27 @@ export const navigation: FuseNavigation[] = [
                 url: '/admin/vehicles/vehicles',
             },
             {
+                id: 'cargos',
+                title: 'Cargos',
+                translate: 'NAV.CARGOS',
+                type: 'item',
+                url: 'pages/admin/cargos'
+            },
+            {
+                id: 'persons',
+                title: 'Persons',
+                translate: 'NAV.PERSONS',
+                type: 'item',
+                url: 'pages/admin/persons'
+            },
+            {
+                id: 'assets',
+                title: 'Assets',
+                translate: 'NAV.ASSETS',
+                type: 'item',
+                url: 'admin/assets/assets'
+            },
+            {
                 id: 'operators',
                 title: 'Operators',
                 translate: 'NAV.OPERATORS',
@@ -154,28 +175,6 @@ export const navigation: FuseNavigation[] = [
                     },
                 ]
             },
-            {
-                id: 'cargos',
-                title: 'Cargos',
-                translate: 'NAV.CARGOS',
-                type: 'item',
-                url: 'pages/admin/cargos'
-            },
-            {
-                id: 'persons',
-                title: 'Persons',
-                translate: 'NAV.PERSONS',
-                type: 'item',
-                url: 'pages/admin/persons'
-            },
-            {
-                id: 'assets',
-                title: 'Assets',
-                translate: 'NAV.ASSETS',
-                type: 'item',
-                url: 'pages/admin/assets'
-            },
-
             {
                 id: 'companies',
                 title: 'Companies',

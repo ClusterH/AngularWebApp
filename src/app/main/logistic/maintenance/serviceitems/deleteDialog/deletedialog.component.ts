@@ -24,8 +24,7 @@ export class DeleteDialogComponent {
     serviceitem: ServiceitemDetail;
     flag: any;
 
-    userConncode: string;
-    userID: number;
+
 
     dataSource: ServiceitemsDataSource;
     private flagForDeleting = new BehaviorSubject<boolean>(false);
@@ -36,10 +35,9 @@ export class DeleteDialogComponent {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private serviceitemsService: ServiceitemsService,
         private dialogRef: MatDialogRef<DeleteDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any, 
+        @Inject(MAT_DIALOG_DATA) private _data: any,
     ) {
-        this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-        this.userID       = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
+
 
         this._fuseTranslationLoaderService.loadTranslations(serviceitemsEnglish, serviceitemsSpanish, serviceitemsFrench, serviceitemsPortuguese);
 
@@ -49,25 +47,25 @@ export class DeleteDialogComponent {
 
     deleteList(): boolean {
         let deletedServiceItem = this.serviceitemsService.serviceitemList.findIndex((index: any) => index.id == this.serviceitem.id);
-      
+
         if (deletedServiceItem > -1) {
             this.serviceitemsService.serviceitemList.splice(deletedServiceItem, 1);
 
             return true;
         }
     }
-    
+
     delete() {
         let result = this.deleteList();
 
         if (result) {
             this.serviceitemsService.deleteServiceitem(this.serviceitem.id)
-            .subscribe((result: any) => {
-                if ((result.responseCode == 200)||(result.responseCode == 100)) {
-                    this.dataSource = new ServiceitemsDataSource(this.serviceitemsService);
-                    this.dataSource.serviceitemsSubject.next(this.serviceitemsService.serviceitemList);
-                }
-            });
+                .subscribe((result: any) => {
+                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                        this.dataSource = new ServiceitemsDataSource(this.serviceitemsService);
+                        this.dataSource.serviceitemsSubject.next(this.serviceitemsService.serviceitemList);
+                    }
+                });
             this.flagForDeleting.next(false);
             this.dialogRef.close(this.serviceitemsService.serviceitemList);
         }
