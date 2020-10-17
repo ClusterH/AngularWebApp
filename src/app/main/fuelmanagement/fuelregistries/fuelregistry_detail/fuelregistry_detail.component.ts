@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,6 +15,7 @@ import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistrie
 import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
     selector: 'app-fuelregistry-detail',
@@ -24,77 +25,58 @@ import { CourseDialogComponent } from "../dialog/dialog.component";
     animations: fuseAnimations
 })
 
-export class FuelregistryDetailComponent implements OnInit {
+export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     fuelregistry_detail: any;
     public fuelregistry: any;
     pageType: string;
     userConncode: string;
     userID: number;
     userObject: any;
-
     fuelregistryModel_flag: boolean;
-
     fuelregistryForm: FormGroup;
     fuelregistryDetail: FuelregistryDetail = {};
-
     displayedColumns: string[] = ['name'];
-
     dataSource: FuelregistryDetailDataSource;
-
     dataSourceToUnit: FuelregistryDetailDataSource;
     dataSourceToTank: FuelregistryDetailDataSource;
     dataSourceFromTank: FuelregistryDetailDataSource;
     dataSourceOperator: FuelregistryDetailDataSource;
     dataSourceOdometerUnit: FuelregistryDetailDataSource;
-
     filter_string: string = '';
     method_string: string = '';
     registrytype: string;
     private _unsubscribeAll: Subject<any>;
 
-    @ViewChild(MatPaginator, { static: true })
-    paginatorToUnit: MatPaginator;
-    @ViewChild('paginatorToTank', { read: MatPaginator, static: true })
-    paginatorToTank: MatPaginator;
-    @ViewChild('paginatorFromTank', { read: MatPaginator, static: true })
-    paginatorFromTank: MatPaginator;
-    @ViewChild('paginatorOperator', { read: MatPaginator, static: true })
-    paginatorOperator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginatorToUnit: MatPaginator;
+    @ViewChild('paginatorToTank', { read: MatPaginator, static: true }) paginatorToTank: MatPaginator;
+    @ViewChild('paginatorFromTank', { read: MatPaginator, static: true }) paginatorFromTank: MatPaginator;
+    @ViewChild('paginatorOperator', { read: MatPaginator, static: true }) paginatorOperator: MatPaginator;
 
     constructor(
         public _fuelregistryDetailService: FuelregistryDetailService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
         private _formBuilder: FormBuilder,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute
     ) {
         this._fuseTranslationLoaderService.loadTranslations(fuelregistriesEnglish, fuelregistriesSpanish, fuelregistriesFrench, fuelregistriesPortuguese);
         this._unsubscribeAll = new Subject();
-
-        this.fuelregistry = localStorage.getItem("fuelregistry_detail") ? JSON.parse(localStorage.getItem("fuelregistry_detail")) : '';
-        console.log(this.fuelregistry);
-
-
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
+        this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
+            console.log(data);
+            this.fuelregistry = data;
+        });
 
-        console.log(this.userObject);
-
-        if (this.fuelregistry != '') {
-            this.pageType = 'edit';
-        }
-        else {
-            this.pageType = 'new';
-        }
+        if (isEmpty(this.fuelregistry)) { this.pageType = 'new'; }
+        else { this.pageType = 'edit'; }
 
         this.filter_string = '';
     }
 
     ngOnInit(): void {
-
         this.registrytype = 'vehicle';
         let disabled = (this.registrytype == 'tank') ? true : false;
-
         this.dataSourceToUnit = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
         this.dataSourceToTank = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
         this.dataSourceFromTank = new FuelregistryDetailDataSource(this._fuelregistryDetailService);
@@ -119,61 +101,39 @@ export class FuelregistryDetailComponent implements OnInit {
             odometerunit: [null, Validators.required],
             cost: [null, Validators.required],
             operator: [null, Validators.required],
-            filterstring: [null, Validators.required],
+            filterstring: [null],
         });
 
         this.setValues();
+        this.fuelregistry_detail = this.fuelregistryForm.value;
     }
 
     ngAfterViewInit() {
-
         merge(this.paginatorToUnit.page)
-            .pipe(tap(() => {
-                this.loadFuelregistryDetail("tounit")
-            })
-            )
-            .subscribe(() => {
-
-            });
+            .pipe(tap(() => { this.loadFuelregistryDetail("tounit") }), takeUntil(this._unsubscribeAll)).subscribe(() => { });
 
         merge(this.paginatorToTank.page)
-            .pipe(tap(() => {
-                this.loadFuelregistryDetail("totank")
-            })
-            )
-            .subscribe(() => {
-
-            });
+            .pipe(tap(() => { this.loadFuelregistryDetail("totank") }), takeUntil(this._unsubscribeAll)).subscribe(() => { });
 
         merge(this.paginatorFromTank.page)
-            .pipe(tap(() => {
-                this.loadFuelregistryDetail("fromtank")
-            })
-            )
-            .subscribe(() => {
-
-            });
+            .pipe(tap(() => { this.loadFuelregistryDetail("fromtank") }), takeUntil(this._unsubscribeAll)).subscribe(() => { });
 
         merge(this.paginatorOperator.page)
-            .pipe(tap(() => {
-                this.loadFuelregistryDetail("operator")
-            })
-            )
-            .subscribe(() => {
+            .pipe(tap(() => { this.loadFuelregistryDetail("operator") }), takeUntil(this._unsubscribeAll)).subscribe(() => { });
+    }
 
-            });
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     loadFuelregistryDetail(method_string: string) {
         if (method_string == 'tounit') {
             this.dataSourceToUnit.loadFuelregistryDetail(this.paginatorToUnit.pageIndex, this.paginatorToUnit.pageSize, this.filter_string, 'unit_clist')
-
         } else if (method_string == 'totank') {
             this.dataSourceToTank.loadFuelregistryDetail(this.paginatorToTank.pageIndex, this.paginatorToTank.pageSize, this.filter_string, 'totank_clist')
-
         } else if (method_string == 'fromtank') {
             this.dataSourceFromTank.loadFuelregistryDetail(this.paginatorFromTank.pageIndex, this.paginatorFromTank.pageSize, this.filter_string, 'fromtank_clist')
-
         } else if (method_string == 'operator') {
             this.dataSourceOperator.loadFuelregistryDetail(this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, 'operator_clist')
         }
@@ -184,15 +144,12 @@ export class FuelregistryDetailComponent implements OnInit {
             case 'tounit':
                 this.paginatorToUnit.pageIndex = 0;
                 break;
-
             case 'totank':
                 this.paginatorToTank.pageIndex = 0;
                 break;
-
             case 'fromtank':
                 this.paginatorFromTank.pageIndex = 0;
                 break;
-
             case 'operator':
                 this.paginatorOperator.pageIndex = 0;
                 break;
@@ -207,43 +164,35 @@ export class FuelregistryDetailComponent implements OnInit {
 
         if (this.registrytype == 'vehicle' && this.method_string == 'totank') {
             return;
-
         } else if (this.registrytype == 'tank' && this.method_string == 'unit') {
             return;
-
         } else {
             let selected_element_id = this.fuelregistryForm.get(`${this.method_string}`).value;
             console.log("selected_element_id: ", selected_element_id);
-
             let clist = this._fuelregistryDetailService.unit_clist_item[methodString];
             console.log("clist: ", clist)
-
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
                     this.fuelregistryForm.get('filterstring').setValue(clist[i].name);
                     this.filter_string = clist[i].name;
                 }
-
-                this.managePageIndex(this.method_string);
-                this.loadFuelregistryDetail(this.method_string);
             }
+
+            this.managePageIndex(this.method_string);
+            this.loadFuelregistryDetail(this.method_string);
         }
     }
 
     clearFilter() {
-
         this.filter_string = '';
         this.fuelregistryForm.get('filterstring').setValue(this.filter_string);
-
         this.managePageIndex(this.method_string);
         this.loadFuelregistryDetail(this.method_string);
     }
 
     onKey(event: any) {
         this.filter_string = event.target.value;
-
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-
             this.managePageIndex(this.method_string);
             this.loadFuelregistryDetail(this.method_string);
         }
@@ -251,22 +200,21 @@ export class FuelregistryDetailComponent implements OnInit {
 
     setValues() {
         this.fuelregistryForm.get('registrytype').setValue(this.registrytype);
-        this.fuelregistryForm.get('tounit').setValue(this.fuelregistry.tounitid);
-        this.fuelregistryForm.get('totank').setValue(this.fuelregistry.totankid);
-        this.fuelregistryForm.get('fromtank').setValue(this.fuelregistry.fromtankid);
+        this.fuelregistryForm.get('tounit').setValue(Number(this.fuelregistry.tounitid));
+        this.fuelregistryForm.get('totank').setValue(Number(this.fuelregistry.totankid));
+        this.fuelregistryForm.get('fromtank').setValue(Number(this.fuelregistry.fromtankid));
         this.fuelregistryForm.get('amount').setValue(this.fuelregistry.amount || 0);
         this.fuelregistryForm.get('fuelunit').setValue(this.fuelregistry.fuelunit || 'liters');
         this.fuelregistryForm.get('datentime').setValue((this.fuelregistry.datentime != '') ? this.fuelregistry.datentime.slice(0, 16) : new Date().toISOString().slice(0, 16));
         this.fuelregistryForm.get('odometer').setValue(this.fuelregistry.odometer);
         this.fuelregistryForm.get('odometerunit').setValue(this.userObject.lengthunitid);
         this.fuelregistryForm.get('cost').setValue(this.fuelregistry.cost || 0);
-        this.fuelregistryForm.get('operator').setValue(this.fuelregistry.operatorid);
+        this.fuelregistryForm.get('operator').setValue(Number(this.fuelregistry.operatorid));
         this.fuelregistryForm.get('filterstring').setValue(this.filter_string);
     }
 
     getValues(dateTime: any, mode: string) {
         console.log(this.fuelregistryForm.get('datentime').value);
-
         this.fuelregistryDetail.tounitid = this.fuelregistryForm.get('tounit').value || '0';
         this.fuelregistryDetail.totankid = this.fuelregistryForm.get('totank').value || '0';
         this.fuelregistryDetail.fromtankid = this.fuelregistryForm.get('fromtank').value || '0';
@@ -275,12 +223,8 @@ export class FuelregistryDetailComponent implements OnInit {
         this.fuelregistryDetail.odometer = this.fuelregistryForm.get('odometer').value || '0';
         this.fuelregistryDetail.cost = this.fuelregistryForm.get('cost').value || '0';
         this.fuelregistryDetail.operatorid = this.fuelregistryForm.get('operator').value || '0';
-
-        console.log(this.fuelregistryDetail);
-
         if (mode == "save") {
             this.fuelregistryDetail.id = this.fuelregistry.id;
-
         } else if (mode == "add") {
             this.fuelregistryDetail.id = 0;
         }
@@ -289,7 +233,6 @@ export class FuelregistryDetailComponent implements OnInit {
     dateFormat(date: any) {
         console.log(date);
         let str = '';
-
         if (date != '') {
             str =
                 ("00" + (date.getMonth() + 1)).slice(-2)
@@ -298,24 +241,20 @@ export class FuelregistryDetailComponent implements OnInit {
                 + ("00" + date.getHours()).slice(-2) + ":"
                 + ("00" + date.getMinutes()).slice(-2)
         }
-
         return str;
     }
 
     savefuelregistry(): void {
-
         let today = new Date().toISOString();
         this.getValues(today, "save");
-
         if ((this.fuelregistryDetail.tounitid == '0' && this.registrytype == 'vehicle') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToUnit or FromTank')
         } else if ((this.fuelregistryDetail.totankid == '0' && this.registrytype == 'tank') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToTank or FromTank')
         } else {
-            this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail)
+            this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     console.log(result);
-
                     if (result.responseCode == 100) {
                         alert("Success!");
                         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
@@ -325,19 +264,16 @@ export class FuelregistryDetailComponent implements OnInit {
     }
 
     addfuelregistry(): void {
-
         let today = new Date().toISOString();
         this.getValues(today, "add");
-
         if ((this.fuelregistryDetail.tounitid == '0' && this.registrytype == 'vehicle') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToUnit or FromTank')
         } else if ((this.fuelregistryDetail.totankid == '0' && this.registrytype == 'tank') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToTank or FromTank')
         } else {
-            this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail)
+            this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     console.log(result);
-
                     if (result.responseCode == 100) {
                         alert("Success!");
                         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
@@ -347,24 +283,25 @@ export class FuelregistryDetailComponent implements OnInit {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
-
-        dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            fuelregistry: "", flag: flag
-        };
-
-        dialogConfig.disableClose = false;
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result) {
-
-            }
-        });
+        this.filter_string = '';
+        this.fuelregistryForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.fuelregistryForm.value;
+        console.log(this.fuelregistry_detail, currentState);
+        if (isEqual(this.fuelregistry_detail, currentState)) {
+            this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = { fuelregistry: "", flag: flag };
+            dialogConfig.disableClose = false;
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
+                }
+            });
+        }
     }
 
     onChangeRegistryType(event: any) {
@@ -373,7 +310,6 @@ export class FuelregistryDetailComponent implements OnInit {
         if (this.registrytype == 'vehicle') {
             this.fuelregistryForm.controls.tounit.enable();
             this.fuelregistryForm.controls.totank.disable();
-
         } else {
             this.fuelregistryForm.controls.totank.enable();
             this.fuelregistryForm.controls.tounit.disable();

@@ -68,7 +68,7 @@ $typography: mat-typography-config(
     $body-2: mat-typography-level(14px, 24px, 600),
     $button: mat-typography-level(14px, 14px, 600),
     $input: mat-typography-level(16px, 1.125, 400)
-        // line-height must be unitless !!!,,,,,,,,,,,,
+        // line-height must be unitless !!!,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -153,6 +153,8 @@ $typography: mat-typography-config(
 @import "src/app/main/system/devconfigs/devconfig_detail/devconfig_detail.theme";
 @import "src/app/main/system/privileges/privileges/privileges.theme";
 @import "src/app/main/system/privileges/privilege_detail/privilege_detail.theme";
+@import "src/app/main/system/dashboards/dashboards/dashboards.theme";
+@import "src/app/main/system/dashboards/dashboard_detail/dashboard_detail.theme";
 @import "src/app/main/system/installations/contractors/contractors/contractors.theme";
 @import "src/app/main/system/installations/installers/installers/installers.theme";
 @import "src/app/main/system/installations/jobs/jobs/jobs.theme";
@@ -247,6 +249,8 @@ $typography: mat-typography-config(
     @include system-userprofile-theme($theme);
     @include system-privileges-theme($theme);
     @include system-privilege-theme($theme);
+    @include system-dashboards-theme($theme);
+    @include system-dashboard-theme($theme);
     @include system-devconfigs-theme($theme);
     @include system-devconfig-theme($theme);
     @include system-contractors-theme($theme);

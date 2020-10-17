@@ -1,25 +1,19 @@
 <div id="event_detail" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center">
-
         <!-- HEADER -->
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
-
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
-
-                <button mat-icon-button class="mr-0 mr-sm-16" >
+                <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/events/events'"> -->
-                        <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
-
                 <div fxLayout="column" fxLayoutAlign="start start"
-                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
                         {{event.name}}
                     </div>
@@ -32,386 +26,307 @@
                 </div>
             </div>
             <!-- / APP TITLE -->
-
-            <button mat-raised-button
-                    class="save-event-button"
-                    *ngIf="pageType ==='new'" (click)="addEvent()">
+            <button mat-raised-button class="save-event-button" *ngIf="pageType ==='new'" (click)="addEvent()">
                 <span>{{ 'EVENTS.ADD' | translate }}</span>
             </button>
-
-            <button mat-raised-button
-                    class="save-event-button"
-                    *ngIf="pageType ==='edit'" (click)="saveEvent()">
+            <button mat-raised-button class="save-event-button" *ngIf="pageType ==='edit'" (click)="saveEvent()">
                 <span>{{ 'EVENTS.SAVE' | translate }}</span>
             </button>
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <!-- CONTENT -->
             <div class="content">
-
-                <form [formGroup]="eventForm" class="event w-100-p" fxLayout="column" fxFlex >
-
+                <form [formGroup]="eventForm" class="event w-100-p" fxLayout="column" fxFlex>
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'EVENTS.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'EVENTS.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="Name"
-                                           name="name"
-                                           formControlName="name"
-                                           required>
+                                    <input matInput placeholder="{{ 'EVENTS.NAME' | translate }}" name="name"
+                                        formControlName="name" required>
                                 </mat-form-field>
-
                                 <mat-form-field appearance="outline" floatLabel="always" class="select_list">
                                     <mat-label>{{ 'EVENTS.MAINTSERVICE' | translate }}</mat-label>
-                                    <mat-select  (click)="showCompanyList('maintservice_clist')" formControlName="maintservice">
-                                        <div class="filter_company_input" >
-                                            <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                    <mat-select (click)="showCompanyList('maintservice_clist')"
+                                        formControlName="maintservice">
+                                        <div class="filter_company_input">
+                                            <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                                (keyup)="onKey($event)">
                                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                                         </div>
-
-                                        <div  style="width: 100%; overflow: auto;">
-                                            <mat-table [dataSource]="dataSourceMaintService" class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <div style="width: 100%; overflow: auto;">
+                                            <mat-table [dataSource]="dataSourceMaintService"
+                                                class="vehicles-table font-size-10 mat-elevation-z8">
                                                 <ng-container matColumnDef="name">
-                                                    <td mat-cell *matCellDef="let maintservice;"  style="border: 0px;">
-                                                        <mat-option  [value]="maintservice.id">{{maintservice.name}}</mat-option>
+                                                    <td mat-cell *matCellDef="let maintservice;" style="border: 0px;">
+                                                        <mat-option [value]="maintservice.id">{{maintservice.name}}
+                                                        </mat-option>
                                                     </td>
                                                 </ng-container>
-                                                <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                <tr class="company_list" style="height: 15px;" mat-row
+                                                    *matRowDef="let row; columns: displayedColumns;"></tr>
                                             </mat-table>
                                         </div>
-                                        <mat-paginator style=" height: 40px;"
-                                            #paginatorMaintService
-                                            class="table_paginator_detail"
-                                            [length]="dataSourceMaintService.totalLength"
-                                            [pageSize]="10"
-                                            [hidePageSize]="true"
-                                            showFirstLastButtons
-                                            sticky="true"
-                                        ></mat-paginator>
-                                      
+                                        <mat-paginator style=" height: 40px;" #paginatorMaintService
+                                            class="table_paginator_detail" [length]="dataSourceMaintService.totalLength"
+                                            [pageSize]="10" [hidePageSize]="true" showFirstLastButtons sticky="true">
+                                        </mat-paginator>
                                     </mat-select>
                                 </mat-form-field>
-
-                                <div class="h3 p-12"><span>The Maintencance of the unit must be carried out after: </span></div>
+                                <div class="h3 p-12"><span>{{ 'EVENTS.CONDITIONTEXT' | translate }}:
+                                    </span></div>
                                 <div class="p-24 w-100-p" fxLayout="column" fxLayoutAlign="center start">
-                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column" fxLayoutAlign="center center" class="w-70-p">
-                                        <mat-checkbox (change)="selectOdo($event)" formControlName="checkodo" class="checkodo"></mat-checkbox>
-
-                                        <mat-form-field appearance="outline" floatLabel="always" class="odomultiple mx-12" fxFlex="30">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column"
+                                        fxLayoutAlign="center center" class="w-70-p">
+                                        <mat-checkbox (change)="selectOdo($event)" formControlName="checkodo"
+                                            class="checkodo"></mat-checkbox>
+                                        <mat-form-field appearance="outline" floatLabel="always"
+                                            class="odomultiple mx-12" fxFlex="30">
                                             <mat-select class="odomultiple_select" [(value)]="odomultiple">
                                                 <mat-option class="odomultiple_every" value="0">Every</mat-option>
-                                                <mat-option class="odomultiple_multiple" value="1">On multiples of</mat-option>
+                                                <mat-option class="odomultiple_multiple" value="1">On multiples of
+                                                </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="odointerval mr-12" floatLabel="always" fxFlex="20">
-                                            <input matInput  formControlName="odointervalinput"  type="number" min="0" style="text-align: center;">
+                                        <mat-form-field appearance="outline" class="odointerval mr-12"
+                                            floatLabel="always" fxFlex="20">
+                                            <input matInput formControlName="odointervalinput" type="number" min="0"
+                                                style="text-align: center;">
                                         </mat-form-field>
 
-                                        <mat-form-field appearance="outline" floatLabel="always" class="odounit" fxFlex="30">
+                                        <mat-form-field appearance="outline" floatLabel="always" class="odounit"
+                                            fxFlex="30">
                                             <mat-select class="odounit_select" [(value)]="odounit">
                                                 <mat-option class="odounit_km" value="1">kilometers</mat-option>
                                                 <mat-option class="odounit_mile" value="2">miles</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-
-                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column" fxLayoutAlign="center center" class="w-70-p">
-                                        <mat-checkbox (change)="selectDay($event)" formControlName="checkday" class="checkday"></mat-checkbox>
-
-                                        <mat-form-field appearance="outline" class="daymultiple mx-12" floatLabel="always" fxFlex="30">
-                                            <input matInput  formControlName="daymultiple" >
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column"
+                                        fxLayoutAlign="center center" class="w-70-p">
+                                        <mat-checkbox (change)="selectDay($event)" formControlName="checkday"
+                                            class="checkday"></mat-checkbox>
+                                        <mat-form-field appearance="outline" class="daymultiple mx-12"
+                                            floatLabel="always" fxFlex="30">
+                                            <input matInput formControlName="daymultiple">
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="dayinterval mr-12" floatLabel="always" fxFlex="20">
-                                            <input matInput  formControlName="dayintervalinput"  type="number" min="0" style="text-align: center;">
+                                        <mat-form-field appearance="outline" class="dayinterval mr-12"
+                                            floatLabel="always" fxFlex="20">
+                                            <input matInput formControlName="dayintervalinput" type="number" min="0"
+                                                style="text-align: center;">
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" floatLabel="always" class="odounit" fxFlex="30">
+                                        <mat-form-field appearance="outline" floatLabel="always" class="odounit"
+                                            fxFlex="30">
                                             <mat-select class="odounit_select" [(value)]="dayunit">
                                                 <mat-option class="dayunit_day" value="1">Days</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-
-                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column" fxLayoutAlign="center center" class="w-70-p">
-                                        <mat-checkbox (change)="selectHour($event)" formControlName="checkhour" class="checkhour"></mat-checkbox>
-
-                                        <mat-form-field appearance="outline" floatLabel="always" class="hourmultiple mx-12" fxFlex="30">
+                                    <div fxLayout="row" fxLayout.xs="column" fxLayout.lt-md="column"
+                                        fxLayoutAlign="center center" class="w-70-p">
+                                        <mat-checkbox (change)="selectHour($event)" formControlName="checkhour"
+                                            class="checkhour"></mat-checkbox>
+                                        <mat-form-field appearance="outline" floatLabel="always"
+                                            class="hourmultiple mx-12" fxFlex="30">
                                             <mat-select class="hourmultiple_select" [(value)]="hourmultiple">
                                                 <mat-option class="hourmultiple_every" value="0">Every</mat-option>
-                                                <mat-option class="hourmultiple_multiple" value="1">On multiples of</mat-option>
+                                                <mat-option class="hourmultiple_multiple" value="1">On multiples of
+                                                </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="hourofuseinterval mr-12" floatLabel="always" fxFlex="20">
-                                            <input matInput  formControlName="hourofuseintervalinput"  type="number" min="0" style="text-align: center;">
+                                        <mat-form-field appearance="outline" class="hourofuseinterval mr-12"
+                                            floatLabel="always" fxFlex="20">
+                                            <input matInput formControlName="hourofuseintervalinput" type="number"
+                                                min="0" style="text-align: center;">
                                         </mat-form-field>
-
-                                        <mat-form-field appearance="outline" class="hourofuseinterval" floatLabel="always" fxFlex="30">
-                                            <input matInput  formControlName="hourofuseunit"  >
+                                        <mat-form-field appearance="outline" class="hourofuseinterval"
+                                            floatLabel="always" fxFlex="30">
+                                            <input matInput formControlName="hourofuseunit">
                                         </mat-form-field>
                                     </div>
                                 </div>
                             </div>
-
                         </mat-tab>
-
                         <mat-tab label="{{ 'EVENTS.UNIT' | translate }}">
-                            <div class="tab-content p-24 pt-40" fusePerfectScrollbar fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
+                            <div class="tab-content p-24 pt-40" fusePerfectScrollbar fxLayout="row"
+                                fxLayout.lt-md="column" fxLayoutAlign="space-between">
                                 <div class="select_company_group pb-12" fxLayout="column" fxFlex="30">
-                                    <mat-form-field appearance="outline" floatLabel="always" class="select_list" *ngIf="pageType == 'new'">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="select_list"
+                                        *ngIf="pageType == 'new'">
                                         <mat-label>{{ 'EVENTS.COMPANY' | translate }}</mat-label>
-                                        <mat-select  (click)="showCompanyList('company_clist')" (selectionChange)="onCompanyChange($event)" formControlName="company">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                        <mat-select (click)="showCompanyList('company_clist')"
+                                            (selectionChange)="onCompanyChange($event)" formControlName="company">
+                                            <div class="filter_company_input">
+                                                <input matInput formControlName="filterstring" #filter
+                                                    placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceCompany" class="vehicles-table font-size-10 mat-elevation-z8">
+                                            <div style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceCompany"
+                                                    class="vehicles-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let company;"  style="border: 0px;">
-                                                            <mat-option  [value]="company.id">{{company.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let company;" style="border: 0px;">
+                                                            <mat-option [value]="company.id">{{company.name}}
+                                                            </mat-option>
                                                         </td>
                                                     </ng-container>
-                                                    <tr  class="company_list" style="height: 15px;" mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    <tr class="company_list" style="height: 15px;" mat-row
+                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorCompany
-                                                class="table_paginator_detail"
-                                                [length]="dataSourceCompany.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                                sticky="true"
-                                            ></mat-paginator>
-                                          
+                                            <mat-paginator style=" height: 40px;" #paginatorCompany
+                                                class="table_paginator_detail" [length]="dataSourceCompany.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons
+                                                sticky="true"></mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
-
-                                    <mat-form-field appearance="outline" floatLabel="always"  *ngIf="pageType == 'edit'" >
+                                    <mat-form-field appearance="outline" floatLabel="always" *ngIf="pageType == 'edit'">
                                         <mat-label>{{ 'EVENTS.COMPANY' | translate }}</mat-label>
-                                        <input matInput placeholder="Company"
-                                                name="companyInput"
-                                                formControlName="companyInput">
+                                        <input matInput placeholder="Company" name="companyInput"
+                                            formControlName="companyInput">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always">
                                         <mat-label>{{ 'EVENTS.GROUP' | translate }}</mat-label>
-                                        <mat-select formControlName="group"  (click)="showCompanyList('group_clist')" (selectionChange)="onGroupChange($event)">
-                                            <div class="filter_company_input" >
-                                                <input matInput  formControlName="filterstring" #filter placeholder="Filter" (keyup) = "onKey($event)">
+                                        <mat-select formControlName="group" (click)="showCompanyList('group_clist')"
+                                            (selectionChange)="onGroupChange($event)">
+                                            <div class="filter_company_input">
+                                                <input matInput formControlName="filterstring" #filter
+                                                    placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
-
                                             <mat-option value="none"></mat-option>
-
-                                            <div  style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceGroup"  class="vehicles-table font-size-10 mat-elevation-z8" >
+                                            <div style="width: 100%; overflow: auto;">
+                                                <mat-table [dataSource]="dataSourceGroup"
+                                                    class="vehicles-table font-size-10 mat-elevation-z8">
                                                     <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let group"  style="border: 0px;">
-                                                            <mat-option  style="width: 100%; height: auto; padding: 0px;" [value]="group.id">{{group.name}}</mat-option>
+                                                        <td mat-cell *matCellDef="let group" style="border: 0px;">
+                                                            <mat-option style="width: 100%; height: auto; padding: 0px;"
+                                                                [value]="group.id">{{group.name}}</mat-option>
                                                         </td>
                                                     </ng-container>
-                                                    <tr  class="company_list" style="height: 15px; " mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                                                    <tr class="company_list" style="height: 15px; " mat-row
+                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
                                                 </mat-table>
                                             </div>
-                                        
-                                            <mat-paginator style=" height: 40px;"
-                                                #paginatorGroup
-                                                class="table_paginator"
-                                                [length]="dataSourceGroup.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                                showFirstLastButtons
-                                            ></mat-paginator>
+                                            <mat-paginator style=" height: 40px;" #paginatorGroup
+                                                class="table_paginator" [length]="dataSourceGroup.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
+                                            </mat-paginator>
                                         </mat-select>
                                     </mat-form-field>
-
                                     <div fxLayout="row" fxLayoutAlign="start" class="ml-12 p-24">
                                         <mat-checkbox (change)="selectWholeCompany($event)"
-                                            formControlName="wholeCompany"
-                                            > &nbsp;Apply To all Vehicles
+                                            formControlName="wholeCompany">
+                                            &nbsp;{{ 'EVENTS.APPLYTOALLVEHICLES' | translate }}
                                         </mat-checkbox>
                                     </div>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between" fxFlex="68">
                                     <div class="includedItem" fxFlex="49" class="">
-                                        <div class="included-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                        <div class="included-card"
+                                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                                 <div class="filter_company_input" fxFlex="80">
-                                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onIncludedFilter($event)">
+                                                    <input matInput formControlName="filterstring" #filter
+                                                        placeholder="{{ 'EVENTS.SEARCH' | translate }}"
+                                                        (keyup)="onIncludedFilter($event)">
                                                     <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                                </div> 
-                
+                                                </div>
                                                 <button mat-raised-button
-                                                        class="save-mainteventgroup-button accent my-20"
-                                                        (click)="deleteItems()"
-                                                        [disabled]="eventForm.invalid"
-                                                        fxFlex="20"
-                                                        style="margin: 10px; color: antiquewhite;">
+                                                    class="save-mainteventgroup-button accent my-20"
+                                                    (click)="deleteItems()" [disabled]="eventForm.invalid" fxFlex="20"
+                                                    style="margin: 10px; color: antiquewhite;">
                                                     <span>{{ 'EVENTS.DELETE' | translate }}</span>
                                                 </button>
                                             </div>
-                    
                                             <div class="ItemGroup_table" style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceIncluded" fusePerfectScrollbar *ngIf="!loadUnitList_flag" >
-                                                    <ng-container matColumnDef="id" >
-                                                        <mat-cell *matCellDef="let includedmaintunit" style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1;">
+                                                <mat-table [dataSource]="dataSourceIncluded" fusePerfectScrollbar
+                                                    *ngIf="!loadUnitList_flag">
+                                                    <ng-container matColumnDef="id">
+                                                        <mat-cell *matCellDef="let includedmaintunit"
+                                                            style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1;">
                                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                                 (change)="$event ? includedSelection.toggle(includedmaintunit.id) : null"
                                                                 [checked]="includedSelection.isSelected(includedmaintunit.id)">
                                                             </mat-checkbox>
                                                         </mat-cell>
                                                     </ng-container>
-                
                                                     <ng-container matColumnDef="name">
                                                         <mat-cell *matCellDef="let includedmaintunit" class="p-0 ml-12">
-                                                            <p class="included text-truncate">{{includedmaintunit.name}}</p>
+                                                            <p class="included text-truncate">{{includedmaintunit.name}}
+                                                            </p>
                                                         </mat-cell>
                                                     </ng-container>
-                
-                                                    <mat-row  *matRowDef="let included; columns: displayedUnitColumns;" matRipple style="border-bottom-width: 0px;">
+                                                    <mat-row *matRowDef="let included; columns: displayedUnitColumns;"
+                                                        matRipple style="border-bottom-width: 0px;">
                                                     </mat-row>
                                                 </mat-table>
-
-                                                <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90); height: 430px;">
+                                                <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row"
+                                                    fxLayoutAlign="center center"
+                                                    style="color:rgb(90, 90, 90); height: 430px;">
                                                     <h1>No Data Found</h1>
                                                 </div>
                                             </div>
-                
-                                            <mat-paginator 
-                                                #paginatorIncluded
-                                                showFirstLastButtons
-                                                class="table_paginator_detail"
-                                                [length]="dataSourceIncluded.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                            ></mat-paginator>
+                                            <mat-paginator #paginatorIncluded showFirstLastButtons
+                                                class="table_paginator_detail" [length]="dataSourceIncluded.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true"></mat-paginator>
                                         </div>
                                     </div>
-                
                                     <div class="excludedItem" fxFlex="49" class="">
-                                        <div class="excluded-card" style="border: 1px solid #3b3b3b; border-radius: 5px;">
-                                            <div  fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                        <div class="excluded-card"
+                                            style="border: 1px solid #3b3b3b; border-radius: 5px;">
+                                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                                 <div class="filter_company_input" fxFlex="80">
-                                                    <input matInput  formControlName="filterstring" #filter placeholder="Search" (keyup) = "onExcludedFilter($event)">
+                                                    <input matInput formControlName="filterstring" #filter
+                                                        placeholder="{{ 'EVENTS.SEARCH' | translate }}"
+                                                        (keyup)="onExcludedFilter($event)">
                                                     <mat-icon (click)="clearFilter()">clear</mat-icon>
                                                 </div>
-                
                                                 <button mat-raised-button
-                                                        class="save-mainteventgroup-button accent my-20"
-                                                        (click)="addItems()"
-                                                        [disabled]="eventForm.invalid"
-                                                        fxFlex="20"
-                                                        style="margin: 10px; color: antiquewhite;">
+                                                    class="save-mainteventgroup-button accent my-20"
+                                                    (click)="addItems()" [disabled]="eventForm.invalid" fxFlex="20"
+                                                    style="margin: 10px; color: antiquewhite;">
                                                     <span>{{ 'EVENTS.ADD' | translate }}</span>
                                                 </button>
                                             </div>
-                    
                                             <div class="ItemGroup_table" style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceExcluded" fusePerfectScrollbar *ngIf="!loadUnitList_flag"  >
+                                                <mat-table [dataSource]="dataSourceExcluded" fusePerfectScrollbar
+                                                    *ngIf="!loadUnitList_flag">
                                                     <ng-container matColumnDef="id">
-                                                        <mat-cell *matCellDef="let excludedmaintunit" style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1">
+                                                        <mat-cell *matCellDef="let excludedmaintunit"
+                                                            style="flex-basis: 20%; flex-grow: 0; flex-shrink: 1">
                                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                                 (change)="$event ? excludedSelection.toggle(excludedmaintunit.id) : null"
                                                                 [checked]="excludedSelection.isSelected(excludedmaintunit.id)">
                                                             </mat-checkbox>
                                                         </mat-cell>
                                                     </ng-container>
-                
                                                     <ng-container matColumnDef="name">
                                                         <mat-cell *matCellDef="let excludedmaintunit" class="p-0 ml-12">
-                                                            <p class="excluded text-truncate">{{excludedmaintunit.name}}</p>
+                                                            <p class="excluded text-truncate">{{excludedmaintunit.name}}
+                                                            </p>
                                                         </mat-cell>
                                                     </ng-container>
-                                                    <mat-row  *matRowDef="let excluded; columns: displayedUnitColumns;" matRipple style="border-bottom-width: 0px;">
+                                                    <mat-row *matRowDef="let excluded; columns: displayedUnitColumns;"
+                                                        matRipple style="border-bottom-width: 0px;">
                                                     </mat-row>
                                                 </mat-table>
-
-                                                <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90); height: 430px;">
+                                                <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row"
+                                                    fxLayoutAlign="center center"
+                                                    style="color:rgb(90, 90, 90); height: 430px;">
                                                     <h1>No Data Found</h1>
                                                 </div>
                                             </div>
-                
-                                            <mat-paginator 
-                                                #paginatorExcluded
-                                                showFirstLastButtons
-                                                class="table_paginator_detail"
-                                                [length]="dataSourceExcluded.totalLength"
-                                                [pageSize]="10"
-                                                [hidePageSize]="true"
-                                            ></mat-paginator>
+                                            <mat-paginator #paginatorExcluded showFirstLastButtons
+                                                class="table_paginator_detail" [length]="dataSourceExcluded.totalLength"
+                                                [pageSize]="10" [hidePageSize]="true"></mat-paginator>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <div class="ev_unit_table" fxFlex="48" fxLayout="column" style="border-radius: 4px; border: 1px solid #2423233a; height: 500px;">
-                                    <div class="unit_evlist_header w-100-p"
-                                        style="background-color: rgb(225, 245, 254); height: 40px;"
-                                        fxLayout="row" fxLayoutAlign="end center" >
-                                        <div *ngIf="!loadUnitList_flag" class="p-4">
-                                            <button mat-raised-button class="save-event-button accent" (click)="saveUnits()">
-                                                <span>{{ 'EVENTS.SAVE' | translate }}</span>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <mat-table class="unit_evlist font-size-10" *ngIf="!loadUnitList_flag"
-                                            #table [dataSource]="dataSourceUnit"
-                                            [@animateStagger]="{value:'50'}"
-                                            fusePerfectScrollbar style="width: 100%; height: 430px; overflow: auto;">
-                                        <ng-container matColumnDef="id">
-                                            <mat-cell *matCellDef="let unit" style="flex-basis: 30%; flex-grow: 0; flex-shrink: 1; margin-left: 12px; ">
-                                                <mat-checkbox
-                                                    labelPosition="after"
-                                                    (click)="$event.stopPropagation()"
-                                                    [checked]="unitSelection.isSelected(unit)"
-                                                    >
-                                                </mat-checkbox>
-                                            </mat-cell>
-                                        </ng-container>
-    
-                                        <ng-container matColumnDef="name">
-                                            <mat-cell *matCellDef="let unit" class="p-0">
-                                                <p class="report text-truncate">{{unit.name}}</p>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <mat-row class="unit" *matRowDef="let unit; columns: displayedUnitColumns;" matRipple style="border-bottom-width: 0px;">
-                                        </mat-row>
-                                    </mat-table>
-
-                                    <div *ngIf="loadUnitList_flag" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90); height: 430px;">
-                                        <h1>No Data Found</h1>
-                                    </div>
-
-                                    <div class="unit_list_pagination_container">
-                                        <mat-paginator #paginatorUnit
-                                                        showFirstLastButtons
-                                                        class="unit_table_paginator"
-                                                        [length]="dataSourceUnit.totalLength"
-                                                        [hidePageSize] = "true"
-                                                        [pageSize]="20"
-                                                        (click)="paginatorClick(paginatorUnit)"
-                                                        >
-                                        </mat-paginator>
-                                    </div>
-                                </div> -->
                             </div>
-
                         </mat-tab>
-
                     </mat-tab-group>
                 </form>
             </div>
@@ -421,4 +336,3 @@
     </div>
     <!-- / CENTER -->
 </div>
-

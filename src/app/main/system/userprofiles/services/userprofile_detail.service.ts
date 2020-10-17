@@ -20,7 +20,6 @@ export class UserProfileDetailService {
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         if (name == '') {
             let params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())

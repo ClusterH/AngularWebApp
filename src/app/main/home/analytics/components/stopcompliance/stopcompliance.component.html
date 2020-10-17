@@ -1,0 +1,91 @@
+<div class="stopcompliance-clip h-100-p w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="h-100-p w-24-p" *ngIf="barchart">
+        <canvas baseChart [datasets]="barchart.data.datasets" [labels]="barchart.data.labels"
+            [options]="barchart.options" [chartType]="barchart.type">
+        </canvas>
+    </div>
+    <div class="w-16-p primary-50-bg visited-percentage m-12 py-24">
+        <div class="font-size-54 font-weight-700 line-height-1">{{percentage_widget.visitedper}}%</div>
+        <div class="font-size-32 font-weight-400" style="text-align: center;">stops completed</div>
+    </div>
+
+    <div class="unit-table-section w-60-p" *ngIf="dataSource">
+        <mat-table class="unit-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="percentage"
+            matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+            style="width: 100%;">
+            <ng-container matColumnDef="unit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Unit
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.unit}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="driver">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Driver
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.driver}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="planed">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Planed
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.planed}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="visited">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>visited
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.visited}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="percentage">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>percentage
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.percentage}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="unauth">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>UnAuthorized
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.unauth}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="outofroute">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Out Of Route
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.outofroute}}</p>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let vehicle; columns: displayedColumns;" class="vehicle font-size-10" matRipple>
+            </mat-row>
+        </mat-table>
+    </div>
+
+    <!-- <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+        <div class="pr-16">
+            <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                {{widgets.widget2.stopcompliance.value}}
+    </div>
+</div>
+<div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex="row" fxLayoutAlign="start center" class="green-fg" *ngIf="widgets.widget2.stopcompliance.ofTarget > 0">
+        <mat-icon class="green-fg mr-4">trending_up</mat-icon>
+        <span>{{widgets.widget2.stopcompliance.ofTarget}}%</span>
+    </div>
+    <div fxFlex="row" fxLayoutAlign="start center" class="red-fg" *ngIf="widgets.widget2.stopcompliance.ofTarget < 0">
+        <mat-icon class="red-fg mr-4">trending_down</mat-icon>
+        <span>{{widgets.widget2.stopcompliance.ofTarget}}%</span>
+    </div>
+    <div class="ml-4 text-nowrap">of target</div>
+</div>
+</div> -->
+
+</div>
+<!-- / Widget 2 -->

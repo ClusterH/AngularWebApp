@@ -1,15 +1,18 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { ActivatedRoute } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
-
-import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
-import { Card } from 'app/main/logistic/jobmanagement/scrumboard/card.model';
 import { ScrumboardCardDialogComponent } from 'app/main/logistic/jobmanagement/scrumboard/board/dialogs/card/card.component';
+import { Card } from 'app/main/logistic/jobmanagement/scrumboard/card.model';
+import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { locale as reportEnglish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/en';
+import { locale as reportFrench } from 'app/main/logistic/jobmanagement/scrumboard/i18n/fr';
+import { locale as reportPortuguese } from 'app/main/logistic/jobmanagement/scrumboard/i18n/pt';
+import { locale as reportSpanish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/sp';
 
 @Component({
     selector: 'scrumboard-board-list',
@@ -20,21 +23,13 @@ import { ScrumboardCardDialogComponent } from 'app/main/logistic/jobmanagement/s
 export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
     board: any;
     dialogRef: any;
-
     draggedCardId: string = '';
     destinationListId: string = '';
-
-    @Input()
-    list;
-
+    @Input() list;
     @ViewChild(FusePerfectScrollbarDirective)
     listScroll: FusePerfectScrollbarDirective;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    // Private
     private _unsubscribeAll: Subject<any>;
-
     /**
      * Constructor
      *
@@ -45,10 +40,11 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _scrumboardService: ScrumboardService,
-        private _matDialog: MatDialog
+        private _matDialog: MatDialog,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-        // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -60,18 +56,13 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         this._scrumboardService.onBoardChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(board => {
-
-                this.board = board;
-            });
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(board => { this.board = board; });
     }
 
     /**
      * On destroy
      */
     ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
@@ -96,15 +87,9 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
      * @param newCardName
      */
     onCardAdd(newCardName): void {
-        if (newCardName === '') {
-            return;
-        }
-
+        if (newCardName === '') { return; }
         let due = this.dateFormat(new Date());
-        console.log(due);
-
         this._scrumboardService.addCard(this.board.id, this.list.id, new Card({ name: newCardName, due: due }));
-
         setTimeout(() => {
             this.listScroll.scrollToBottom(0, 400);
         });
@@ -112,7 +97,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
 
     dateFormat(date: any) {
         let str = '';
-
         if (date != '') {
             str =
                 ("00" + (date.getMonth() + 1)).slice(-2)
@@ -121,8 +105,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
                 + ("00" + date.getHours()).slice(-2) + ":"
                 + ("00" + date.getMinutes()).slice(-2)
         }
-
-
         return str;
     }
 
@@ -135,9 +117,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
         this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-
         this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete the list and it\'s all cards?';
-
         this.confirmDialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 this._scrumboardService.removeList(listId);
@@ -158,10 +138,7 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
                 listId: this.list.id
             }
         });
-        this.dialogRef.afterClosed()
-            .subscribe(response => {
-
-            });
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(response => { });
     }
 
     /**
@@ -177,36 +154,17 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
 
     onDropCard(ev, list): void {
         console.log("drop card: ", ev, list.id);
-
         this.destinationListId = list.id;
-
         this._scrumboardService.draggedCardId
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(cardId => {
-
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(cardId => {
                 this.draggedCardId = cardId;
             });
-
         console.log(this.draggedCardId, this.destinationListId);
-
         this._scrumboardService.cardMove(this.draggedCardId, this.destinationListId);
-        // .subscribe((res: any) => {
-        //     console.log(res);
-        // });
-        // this._scrumboardService.updateBoard(this.board);
     }
 
     onDragCard(ev, cardid, listid): void {
         console.log("drag card: ", ev, cardid, listid);
-
         this._scrumboardService.draggedCardId.next(cardid);
-
-        // this._scrumboardService.updateBoard(this.board);
     }
-
-    // onDrop(ev, list, cardid): void
-    // {
-    //     console.log("drag card: ", ev, list.id, cardid);
-    //     // this._scrumboardService.updateBoard(this.board);
-    // }
 }

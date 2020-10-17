@@ -43,7 +43,6 @@ export class ScrumboardService implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         this.routeParams = route.params;
-
         return new Promise((resolve, reject) => {
             Promise.all([
                 this.getBoards()
@@ -66,13 +65,10 @@ export class ScrumboardService implements Resolve<any>
             let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
             let userid = 345;
             // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
-
                 .set('method', "GetBoards");
-
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
@@ -80,13 +76,10 @@ export class ScrumboardService implements Resolve<any>
                 .subscribe((response: any) => {
                     if (response.responseCode == 100) {
                         this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
-
                         console.log(this.boards);
-
                         this.onBoardsChanged.next(this.boards);
                         resolve(this.boards);
                     }
-
                 }, reject);
         });
     }
@@ -99,11 +92,9 @@ export class ScrumboardService implements Resolve<any>
      */
     getBoard(boardId): Promise<any> {
         return new Promise((resolve, reject) => {
-
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
-
                 .set('method', "GetBoards");
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
@@ -133,19 +124,13 @@ export class ScrumboardService implements Resolve<any>
      */
     addCard(boardId, listId, newCard): Promise<any> {
         return new Promise((resolve, reject) => {
-
             this.board.lists.map((list) => {
-
                 if (list.id === listId) {
-
                     let id = 0;
-                    // newCard.due = new Date();
                     console.log(newCard.due);
-
                     let headers = new HttpHeaders();
                     headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
                     let params = new HttpParams()
-
                         .set('id', id.toString())
                         .set('name', newCard.name)
                         .set('description', newCard.description)
@@ -157,34 +142,21 @@ export class ScrumboardService implements Resolve<any>
                         .set('listid', listId.toString())
                         .set('boardid', boardId.toString())
                         .set('method', "boardcard_save");
-
-                    console.log(params);
-
-
-
                     this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     })
                         .subscribe((response: any) => {
-
                             this.newCardID = response.TrackingXLAPI.DATA[0].id;
                             newCard.id = this.newCardID;
-
                             list.idcards.push(this.newCardID);
-
                             if (this.board.cards.length == 0) {
                                 let card_array = [];
-
-
                                 card_array.push(newCard);
-
                                 this.board.cards.push(card_array);
-
                             } else {
                                 this.board.cards[0].push(newCard);
                             }
-
                             this.onBoardChanged.next(this.board);
                             resolve(this.board);
                         }, reject);
@@ -201,55 +173,41 @@ export class ScrumboardService implements Resolve<any>
      */
     addList(newList, boardid): Promise<any> {
         return new Promise((resolve, reject) => {
-
             let id = 0;
-
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
-
                 .set('id', id.toString())
                 .set('name', newList.name)
                 .set('boardid', boardid.toString())
                 .set('method', "boardlist_save");
-
-
-
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
                 .subscribe((response: any) => {
-
                     newList.id = response.TrackingXLAPI.DATA[0].id;
                     this.board.lists.push(newList);
                     this.onBoardChanged.next(this.board);
                     resolve(this.board);
                 }, reject);
         });
-        // return this.updateBoard();
     }
 
     updateList(list, boardid): Promise<any> {
         return new Promise((resolve, reject) => {
-
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
-
                 .set('id', list.id.toString())
                 .set('name', list.name)
                 .set('boardid', boardid.toString())
                 .set('method', "boardlist_save");
-
-
-
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
                 .subscribe((response: any) => {
-
                     // this.board.lists.push(list);
                     this.onBoardChanged.next(this.board);
                     resolve(this.board);
@@ -273,29 +231,19 @@ export class ScrumboardService implements Resolve<any>
         }
 
         const index = this.board.lists.indexOf(list);
-
         this.board.lists.splice(index, 1);
-
-
         let company_id = 115;
         // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-
             .set('id', listId.toString())
             .set('method', "boardlist_delete");
-
-
-
         this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
         })
             .subscribe((response: any) => {
-
-
                 // resolve(this.board);
             });
 
@@ -312,7 +260,6 @@ export class ScrumboardService implements Resolve<any>
         const card = this.board.cards.find((_card) => {
             return _card.id === cardId;
         });
-
         if (listId) {
             const list = this.board.lists.find((_list) => {
                 return listId === _list.id;
@@ -321,26 +268,15 @@ export class ScrumboardService implements Resolve<any>
         }
 
         this.board.cards.splice(this.board.cards.indexOf(card), 1);
-
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-
             .set('id', cardId.toString())
             .set('method', "boardcard_delete");
-
-
-
         this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
-        })
-            .subscribe((response: any) => {
-
-
-                // resolve(this.board);
-            });
+        }).subscribe((response: any) => { });
 
         this.updateBoard(this.board);
     }
@@ -352,7 +288,6 @@ export class ScrumboardService implements Resolve<any>
      */
     updateCard(card, listId, boardId): Promise<any> {
         console.log(card, listId, boardId);
-
         this.board.cards.map((_card) => {
             if (_card.id === card.id) {
                 return card;
@@ -360,9 +295,7 @@ export class ScrumboardService implements Resolve<any>
         });
 
         return new Promise((resolve, reject) => {
-
             this.board.lists.map((list) => {
-
                 if (list.id === listId) {
                     let headers = new HttpHeaders();
                     headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
@@ -386,31 +319,12 @@ export class ScrumboardService implements Resolve<any>
                             console.log(response);
                             this.newCardID = response.TrackingXLAPI.DATA[0].id;
                             card.id = this.newCardID;
-
-                            // list.idcards.push(this.newCardID);
-
-                            // if (this.board.cards.length == 0) {
-                            //     let card_array = [];
-
-
-                            //     card_array.push(card);
-
-                            //     this.board.cards.push(card_array);
-
-                            // } else {
-                            //     this.board.cards[0].push(card);
-                            // }
-
-
-
                             this.onBoardChanged.next(this.board);
                             resolve(this.board);
                         }, reject);
                 }
             });
         });
-
-        // this.updateBoard(this.board);
     }
 
     /**
@@ -420,12 +334,9 @@ export class ScrumboardService implements Resolve<any>
      * @returns {Promise<any>}
      */
     createNewBoard(board): Promise<any> {
-
         return new Promise((resolve, reject) => {
             let id = 0;
             let company_id = 115;
-            // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
@@ -434,41 +345,19 @@ export class ScrumboardService implements Resolve<any>
                 .set('uri', "untitled-board")
                 .set('companyid', company_id.toString())
                 .set('method', "board_save");
-
-
-
-            // let param_post = {
-            //     conncode: conncode.toString(),
-            //     userid: userid.toString(),
-            //     id: id.toString(),
-            //     name: 'UndefinedName',
-            //     uri: 'untitled-board',
-            //     companyid: company_id.toString(),
-            //     method: 'board_save'
-            // }
-
-            // let options = {
-            //     headers: headers
-            // };
-
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
-            })
-                // this._httpClient.post('api/scrumboard-boards/' + board.id, board)
-                .subscribe((response: any) => {
-
-                    this.newBoardID = Number(response.TrackingXLAPI.DATA[0].id);
-                    board.id = this.newBoardID;
-                    this.board = board;
-
-                    resolve(this.board);
-                }, reject);
+            }).subscribe((response: any) => {
+                this.newBoardID = Number(response.TrackingXLAPI.DATA[0].id);
+                board.id = this.newBoardID;
+                this.board = board;
+                resolve(this.board);
+            }, reject);
         });
     }
 
     updateBoard(board: any): Promise<any> {
-
         return new Promise((resolve, reject) => {
             let company_id = 115;
             // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
@@ -480,15 +369,13 @@ export class ScrumboardService implements Resolve<any>
                 .set('uri', board.uri)
                 .set('companyid', company_id.toString())
                 .set('method', "board_save");
-
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
-            })
-                .subscribe((response: any) => {
-                    this.board = board;
-                    resolve(this.board);
-                }, reject);
+            }).subscribe((response: any) => {
+                this.board = board;
+                resolve(this.board);
+            }, reject);
         });
     }
 
@@ -502,13 +389,10 @@ export class ScrumboardService implements Resolve<any>
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
-            })
-                .subscribe((response: any) => {
-
-                    resolve(response);
-                }, reject);
+            }).subscribe((response: any) => {
+                resolve(response);
+            }, reject);
         });
-
     }
 
     saveBoardSetting(color, subscribed, cardcoverimages): Promise<any> {
@@ -571,7 +455,6 @@ export class ScrumboardService implements Resolve<any>
                 params: params
             }).subscribe((res: any) => {
                 console.log(res);
-
                 resolve(res);
             }, reject);
         });
@@ -662,7 +545,6 @@ export class ScrumboardService implements Resolve<any>
                 params: params
             }).subscribe((res: any) => {
                 console.log(res);
-
                 resolve(res);
             }, reject);
         });
@@ -681,7 +563,6 @@ export class ScrumboardService implements Resolve<any>
                 params: params
             }).subscribe((res: any) => {
                 console.log(res);
-
                 resolve(res);
             }, reject);
         });
@@ -702,7 +583,6 @@ export class ScrumboardService implements Resolve<any>
                 params: params
             }).subscribe((res: any) => {
                 console.log(res);
-
                 resolve(res);
             }, reject);
         });

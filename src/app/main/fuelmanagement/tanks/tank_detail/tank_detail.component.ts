@@ -58,14 +58,11 @@ export class TankDetailComponent implements OnInit, OnDestroy {
             console.log(data);
             this.tank = data;
         });
-        // this.tank = localStorage.getItem("tank_detail") ? JSON.parse(localStorage.getItem("tank_detail")) : '';
-        if (isEmpty(this.tank)) {
-            this.pageType = 'new';
-        } else {
+        if (isEmpty(this.tank)) { this.pageType = 'new'; }
+        else {
             this.pageType = 'edit';
             this.getTankHistory('today');
         }
-
         this.filter_string = '';
     }
 
@@ -106,7 +103,6 @@ export class TankDetailComponent implements OnInit, OnDestroy {
             // dateAxis.renderer.fullWidthTooltip = true;
             // valueAxis.adjustMinMax(0, 10000, 100, 100, true);
             // valueAxis.strictMinMax = true;
-
             // Create series
             let series = chart.series.push(new am4charts.LineSeries());
             series.dataFields.valueY = "level";
@@ -118,7 +114,6 @@ export class TankDetailComponent implements OnInit, OnDestroy {
             series.tooltip.background.cornerRadius = 20;
             series.tooltip.background.fillOpacity = 0.5;
             series.tooltip.label.padding(12, 12, 12, 12);
-
             // Add scrollbar
             let scrollbarX = new am4charts.XYChartScrollbar();
             scrollbarX.series.push(series);
@@ -136,9 +131,6 @@ export class TankDetailComponent implements OnInit, OnDestroy {
         const userID: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.tankDetail.name = this.tankForm.get('name').value || '';
         this.tankDetail.isactive = this.tank.isactive || true;
-        // this.tankDetail.deletedwhen      = this.tank.deletedwhen || '';
-        // this.tankDetail.deletedby        = this.tank.deletedby || 0;
-
         if (mode == "save") {
             this.tankDetail.id = this.tank.id;
             this.tankDetail.createdwhen = this.tank.createdwhen;
@@ -156,13 +148,11 @@ export class TankDetailComponent implements OnInit, OnDestroy {
 
     dateFormat(date: any) {
         let str = '';
-
         if (date != '') {
             str =
                 ("00" + (date.getMonth() + 1)).slice(-2)
                 + "/" + ("00" + date.getDate()).slice(-2)
                 + "/" + date.getFullYear();
-
             if (date.getHours() < 12) {
                 str = str + " "
                     + ("00" + date.getHours()).slice(-2) + ":"
@@ -175,14 +165,12 @@ export class TankDetailComponent implements OnInit, OnDestroy {
                     + ":" + ("00" + date.getSeconds()).slice(-2) + " " + 'PM';
             }
         }
-
         return str;
     }
 
     saveTank(): void {
         let today = new Date().toISOString();
         this.getValues(today, "save");
-
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
@@ -198,7 +186,6 @@ export class TankDetailComponent implements OnInit, OnDestroy {
     addTank(): void {
         let today = new Date().toISOString();
         this.getValues(today, "add");
-
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
@@ -214,20 +201,13 @@ export class TankDetailComponent implements OnInit, OnDestroy {
     goBackUnit() {
         const dialogConfig = new MatDialogConfig();
         let flag = 'goback';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            tank: "", flag: flag
-        };
-
+        dialogConfig.data = { tank: "", flag: flag };
         dialogConfig.disableClose = false;
-
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result) {
-
+            if (result == 'goback') {
+                this.router.navigate(['fuelmanagement/tanks/tanks']);
             }
         });
     }
@@ -243,25 +223,20 @@ export class TankDetailComponent implements OnInit, OnDestroy {
                 ) {
                     return;
                 }
-
                 // To only draw at the end of animation, check for easing === 1
                 const ctx = chart.ctx;
-
                 chart.data.datasets.forEach(function (dataset, i): any {
                     const meta = chart.getDatasetMeta(i);
                     if (!meta.hidden) {
                         meta.data.forEach(function (element, index): any {
-
                             // Draw the text in black, with the specified font
                             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
                             const fontSize = 13;
                             const fontStyle = 'normal';
                             const fontFamily = 'Roboto, Helvetica Neue, Arial';
                             ctx.font = (window as any).Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
-
                             // Just naively convert to string for now
                             const dataString = dataset.data[index].toString();
-
                             // Make sure alignment settings are correct
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
@@ -269,16 +244,13 @@ export class TankDetailComponent implements OnInit, OnDestroy {
                             const startY = 24;
                             const position = element.tooltipPosition();
                             ctx.fillText(dataString, position.x, startY);
-
                             ctx.save();
-
                             ctx.beginPath();
                             ctx.setLineDash([5, 3]);
                             ctx.moveTo(position.x, startY + padding);
                             ctx.lineTo(position.x, position.y - padding);
                             ctx.strokeStyle = 'rgba(255,255,255,0.12)';
                             ctx.stroke();
-
                             ctx.restore();
                         });
                     }
@@ -290,109 +262,72 @@ export class TankDetailComponent implements OnInit, OnDestroy {
     getTankHistory(date: any) {
         let fromdate: string;
         let todate: string;
-
         let data: [];
-        // let subject = new Subject<any>();
-
         if (date == 'today') {
             let todayDate = new Date();
             todayDate.setDate(todayDate.getDate() - 10);
-
             todate = this.dateFormat(todayDate);
             // todate = this.dateFormat(todayDate).substr(0, 10) + " " + '00:10:00 AM'
             fromdate = todate.substr(0, 10) + " " + '00:00:00 AM';
-
             this.dateOption = 'today';
-
-            this.getHistoryData(date, fromdate, todate)
-                .subscribe((res: any) => {
-                    this.generateChartData(res);
-                });
-
-
+            this.getHistoryData(date, fromdate, todate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                this.generateChartData(res);
+            });
         } else if (date == 'yesterday') {
             let yesterdayDate = new Date();
-
             yesterdayDate.setDate(yesterdayDate.getDate() - 8);
-
             todate = this.dateFormat(yesterdayDate);
             fromdate = todate.substr(0, 10) + " " + '00:00:00 AM';
-
             this.dateOption = 'yesterday';
-
-            this.getHistoryData(date, fromdate, todate)
-                .subscribe((res: any) => {
-                    this.generateChartData(res);
-                });
-
+            this.getHistoryData(date, fromdate, todate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                this.generateChartData(res);
+            });
         } else if (date == 'this_week') {
             let curr = new Date; // get current date
             let first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
             let last = first + 6; // last day is the first day + 6
-
             fromdate = this.dateFormat(new Date(curr.setDate(first)));
             todate = this.dateFormat(new Date(curr.setDate(last)));
-
             this.dateOption = 'this_week';
-
-            this.getHistoryData(date, fromdate, todate)
-                .subscribe((res: any) => {
-                    this.generateChartData(res);
-                });
-
+            this.getHistoryData(date, fromdate, todate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                this.generateChartData(res);
+            });
         } else if (date == 'last_week') {
             let curr = new Date; // get current date
             let first = curr.getDate() - curr.getDay() - 7; // First day is the day of the month - the day of the week
             let last = first + 6; // last day is the first day + 6
-
             fromdate = this.dateFormat(new Date(curr.setDate(first)));
             todate = this.dateFormat(new Date(curr.setDate(last)));
-
             this.dateOption = 'last_week';
-
-            this.getHistoryData(date, fromdate, todate)
-                .subscribe((res: any) => {
-                    this.generateChartData(res);
-                });
-
+            this.getHistoryData(date, fromdate, todate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                this.generateChartData(res);
+            });
         } else if (date == 'date_range') {
             this.dateOption = 'date_range';
-
-            this.getHistoryData(date, this.fromDate, this.toDate)
-                .subscribe((res: any) => {
-                    this.generateChartData(res);
-                });
+            this.getHistoryData(date, this.fromDate, this.toDate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                this.generateChartData(res);
+            });
         }
-
     }
 
     getHistoryData(dateOption: string, fromdate: string, todate: string): Observable<any> {
         let volume_data: [];
         let subject = new Subject<any>();
-
-        this.tankDetailService.getTankHistory(this.tank.id, fromdate, todate)
-            .subscribe((res: any) => {
-
-                if (res.responseCode == 100) {
-                    this.noData = true;
-
-                    volume_data = res.TrackingXLAPI.DATA;
-
-                    subject.next(volume_data);
-
-                } else {
-                    this.noData = false;
-                }
-            });
-
+        this.tankDetailService.getTankHistory(this.tank.id, fromdate, todate).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+            if (res.responseCode == 100) {
+                this.noData = true;
+                volume_data = res.TrackingXLAPI.DATA;
+                subject.next(volume_data);
+            } else {
+                this.noData = false;
+            }
+        });
         return subject.asObservable();
     }
 
     rangeChange($event) {
         this.fromDate = $event.value.begin.toISOString();
         this.toDate = $event.value.end.toISOString();
-
         this.getTankHistory('date_range');
-
     }
 }

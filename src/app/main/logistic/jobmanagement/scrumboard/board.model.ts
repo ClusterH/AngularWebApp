@@ -1,10 +1,7 @@
-import { FuseUtils } from '@fuse/utils';
-
 import { List } from './list.model';
 import { Card } from './card.model';
 
-export class Board
-{
+export class Board {
     name: string;
     uri: string;
     id: string;
@@ -31,14 +28,13 @@ export class Board
      *
      * @param board
      */
-    constructor(board)
-    {
+    constructor(board) {
         this.name = board.name || 'Untitled Board';
         this.uri = board.uri || 'untitled-board';
         this.id = board.id || 0;
         this.settings = board.settings || {
-            color          : '',
-            subscribed     : true,
+            color: '',
+            subscribed: true,
             cardcoverimages: true
         };
         this.lists = [];

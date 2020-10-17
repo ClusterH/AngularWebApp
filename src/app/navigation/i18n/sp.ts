@@ -3,7 +3,7 @@ export const locale = {
     data: {
         'NAV': {
             "HOME": "Hogar",
-            "DASHBOARD": "Dashboard",
+            "DASHBOARD": "Tablero",
             "GOOGLE": "Google",
             "OSM": "OSM",
 
@@ -54,19 +54,20 @@ export const locale = {
             "FUELMANAGEMENT": "Gestión de combustible",
             "TANKS": "Tanques",
             "FUELINGREGISTRY": "Registro de combustible",
-            
+
             "SETTING": "Configuración",
             "MYACCOUNT": "Mi cuenta",
             "USERSETTING": "Configuración de usuario",
 
-            'SAMPLE'        : {
+            'SAMPLE': {
                 'TITLE': 'Sample',
                 'BADGE': '25'
             },
 
             "SYSTEM": "Sistema",
+            "DASHBOARDS": "Tableros",
             "PRIVILEGES": "Privilegios",
-            "USER_ROLES" : "Roles de usuario",
+            "USER_ROLES": "Roles de usuario",
             "UNITTYPES": "Tipos de unidad",
             "DEVICES": "Dispositivos",
             "SIMS": "SIMs",
@@ -77,7 +78,7 @@ export const locale = {
             "COMMANDS": "Comandos",
             "SYSTEM_COMMANDS": "Comandos del Sistema",
             "CONNECTIONS": "Conexiones",
-            "DEV_CONFIG" : "Configuraciones de Dispositivos"
+            "DEV_CONFIG": "Configuraciones de Dispositivos"
         }
     }
 };

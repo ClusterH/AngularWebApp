@@ -16,7 +16,7 @@ import { TankDetailDataSource } from "app/main/fuelmanagement/tanks/services/tan
 import { Observable, Subject, merge } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
     selector: 'fuelmanagement-tank-detail',
@@ -73,7 +73,6 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         } else {
             this.pageType = 'edit';
         }
-
         this.filter_string = '';
     }
 
@@ -83,10 +82,9 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         this.dataSourceVolumeUnit = new TankDetailDataSource(this.tankDetailService);
         this.dataSourceLevelUnit = new TankDetailDataSource(this.tankDetailService);
         this.dataSourceTempUnit = new TankDetailDataSource(this.tankDetailService);
-
         this.dataSourceCompany.loadTankDetail(0, 10, this.tank.company, "company_clist");
         if (isEmpty(this.tank)) {
-            this.dataSourceGroup.loadGroupDetail(0, 10, this.tank.group, '0', "group_clist");
+            this.dataSourceGroup.loadGroupDetail(0, 10, this.tank.group, 0, "group_clist");
         } else {
             this.dataSourceGroup.loadGroupDetail(0, 10, this.tank.group, this.tank.companyid, "group_clist");
         }
@@ -111,6 +109,7 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         });
 
         this.setValues();
+        this.tank_detail = this.tankForm.value;
     }
 
     ngAfterViewInit() {
@@ -137,11 +136,11 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
                 this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
             }
         } else if (method_string == 'fuelunit') {
-            this.dataSourceVolumeUnit.loadTankDetail(0, 10, this.filter_string, `${method_string}_clist`)
+            this.dataSourceVolumeUnit.loadTankDetail(0, 10, '', `${method_string}_clist`)
         } else if (method_string == 'lengthunit') {
-            this.dataSourceLevelUnit.loadTankDetail(0, 10, this.filter_string, `${method_string}_clist`)
+            this.dataSourceLevelUnit.loadTankDetail(0, 10, '', `${method_string}_clist`)
         } else if (method_string == 'tempunit') {
-            this.dataSourceTempUnit.loadTankDetail(0, 10, this.filter_string, `${method_string}_clist`)
+            this.dataSourceTempUnit.loadTankDetail(0, 10, '', `${method_string}_clist`)
         }
     }
 
@@ -197,11 +196,6 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         }
     }
 
-    compareFunction(o1: any, o2: any) {
-        console.log(o1, o2);
-        return (o1.name == o2.name && o1.id == o2.id);
-    }
-
     onCompanyChange(event: any) {
         let current_companyID = this.tankForm.get('company').value;
         this.dataSourceGroup.loadGroupDetail(0, 10, "", current_companyID, "group_clist");
@@ -212,7 +206,7 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         console.log(lastreport);
         console.log('setValue===>>>', this.tank);
         this.tankForm.get('name').setValue(this.tank.name);
-        this.tankForm.get('company').setValue(this.tank.companyid);
+        this.tankForm.get('company').setValue(Number(this.tank.companyid));
         this.tankForm.get('group').setValue(Number(this.tank.groupid));
         this.tankForm.get('volume').setValue(Number(this.tank.volume));
         this.tankForm.get('volumeunit').setValue(Number(this.tank.volumeunitid));
@@ -301,7 +295,6 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
     addTank(): void {
         let today = new Date().toISOString();
         this.getValues(today, "add");
-
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
@@ -315,23 +308,24 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
-
-        dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            tank: "", flag: flag
-        };
-
-        dialogConfig.disableClose = false;
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result) {
-
-            }
-        });
+        this.filter_string = '';
+        this.tankForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.tankForm.value;
+        console.log(this.tank_detail, currentState);
+        if (isEqual(this.tank_detail, currentState)) {
+            this.router.navigate(['fuelmanagement/tanks/tanks']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = { tank: "", flag: flag };
+            dialogConfig.disableClose = false;
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['fuelmanagement/tanks/tanks']);
+                }
+            });
+        }
     }
 }

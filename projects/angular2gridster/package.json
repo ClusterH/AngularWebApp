@@ -1,0 +1,7 @@
+{
+    "name": "angular2gridster",
+    "peerDependencies": {
+        "@angular/common": "^9.0.4",
+        "@angular/core": "^9.0.4"
+    }
+}

@@ -23,47 +23,36 @@ export class ZonegroupDetailService {
     }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         if (name == '') {
             if (method == "GetGroupIncludedZONEs" || method == "GetGroupExcludedZONEs") {
                 if (this.current_CompanyID > 0) {
-
                     let params = new HttpParams()
-
                         .set('pageindex', (pageindex + 1).toString())
                         .set('pagesize', pagesize.toString())
                         .set('companyid', this.current_CompanyID.toString())
                         .set('method', method.toString());
-
                     return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
                 } else if (this.current_zoneGroupID > 0) {
-
                     let params = new HttpParams()
-
                         .set('pageindex', (pageindex + 1).toString())
                         .set('pagesize', pagesize.toString())
                         .set('zonegroupid', this.current_zoneGroupID.toString())
                         .set('method', method.toString());
-
                     return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
                 }
             } else {
-
                 let params = new HttpParams()
-
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
-
                 return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                     headers: headers,
                     params: params
@@ -72,29 +61,23 @@ export class ZonegroupDetailService {
         } else {
             if (method == "GetGroupIncludedZONEs" || method == "GetGroupExcludedZONEs") {
                 if (this.current_CompanyID > 0) {
-
                     let params = new HttpParams()
-
                         .set('pageindex', (pageindex + 1).toString())
                         .set('pagesize', pagesize.toString())
                         .set('name', `^${name}^`)
                         .set('companyid', this.current_CompanyID.toString())
                         .set('method', method.toString());
-
                     return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
-
                 } else if (this.current_zoneGroupID > 0) {
                     let params = new HttpParams()
-
                         .set('pageindex', (pageindex + 1).toString())
                         .set('pagesize', pagesize.toString())
                         .set('name', `^${name}^`)
                         .set('zonegroupid', this.current_zoneGroupID.toString())
                         .set('method', method.toString());
-
                     return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                         headers: headers,
                         params: params
@@ -102,12 +85,10 @@ export class ZonegroupDetailService {
                 }
             } else {
                 let params = new HttpParams()
-
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-
                 return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                     headers: headers,
                     params: params
@@ -118,9 +99,7 @@ export class ZonegroupDetailService {
 
     saveZonegroupDetail(zonegroupDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-
             .set('id', zonegroupDetail.id.toString())
             .set('name', zonegroupDetail.name.toString())
             .set('companyid', zonegroupDetail.companyid.toString())
@@ -132,7 +111,6 @@ export class ZonegroupDetailService {
             .set('lastmodifieddate', zonegroupDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', zonegroupDetail.lastmodifiedby.toString())
             .set('method', 'zonegroup_save');
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
@@ -140,29 +118,35 @@ export class ZonegroupDetailService {
     }
 
     addZoneToGroup(zoneArray: any = []): Observable<any> {
-
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
-        const params_data = {
-            'data': zoneArray,
-            'method': 'zonegroup_AddZONE'
+        let token: string = localStorage.getItem('current_token') || '';
+        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const body = {
+            "data": zoneArray,
+            "method": "zonegroup_AddZONE",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
         }
-
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
-            headers: header_detail
+        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+            headers: header_detail,
         });
     }
 
     deleteZoneToGroup(zoneArray: any = []): Observable<any> {
-
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
-        const params_data = {
-            'data': zoneArray,
-            'method': 'zonegroup_DeleteZONE'
+        let token: string = localStorage.getItem('current_token') || '';
+        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const body = {
+            "data": zoneArray,
+            "method": "zonegroup_DeleteZONE",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
         }
-
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?' + JSON.stringify(params_data), {
+        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }

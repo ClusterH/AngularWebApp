@@ -6,63 +6,48 @@ import { List } from 'app/main/logistic/jobmanagement/scrumboard/list.model';
 import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { locale as reportEnglish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/en';
+import { locale as reportFrench } from 'app/main/logistic/jobmanagement/scrumboard/i18n/fr';
+import { locale as reportPortuguese } from 'app/main/logistic/jobmanagement/scrumboard/i18n/pt';
+import { locale as reportSpanish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/sp';
 
 @Component({
-    selector     : 'scrumboard-board',
-    templateUrl  : './board.component.html',
-    styleUrls    : ['./board.component.scss'],
+    selector: 'scrumboard-board',
+    templateUrl: './board.component.html',
+    styleUrls: ['./board.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class ScrumboardBoardComponent implements OnInit, OnDestroy
-{
+export class ScrumboardBoardComponent implements OnInit, OnDestroy {
     board: any;
-
-    // Private
     private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _location: Location,
-        private _scrumboardService: ScrumboardService
-    )
-    {
-        // Set the private defaults
+        private _scrumboardService: ScrumboardService,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    ) {
         this._unsubscribeAll = new Subject();
+        this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this._scrumboardService.onBoardChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(board => {
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(board => {
                 this.board = board;
-
-                this._scrumboardService.getBoardMembers()
-                .then((res: any) => {
+                this._scrumboardService.getBoardMembers().then((res: any) => {
                     console.log(res);
                     this.board.members = res.TrackingXLAPI.DATA;
-
                 });
-
-                console.log(this.board);
-                
             });
     }
 
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
+    ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
@@ -76,14 +61,9 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      *
      * @param newListName
      */
-    onListAdd(newListName): void
-    {
-        if ( newListName === '' )
-        {
-            return;
-        }
-
-        this._scrumboardService.addList(new List({name: newListName}), this.board.id);
+    onListAdd(newListName): void {
+        if (newListName === '') { return; }
+        this._scrumboardService.addList(new List({ name: newListName }), this.board.id);
     }
 
     /**
@@ -91,8 +71,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      *
      * @param newName
      */
-    onBoardNameChanged(newName): void
-    {
+    onBoardNameChanged(newName): void {
         this._scrumboardService.updateBoard(this.board);
         this._location.go('logistic/scrumboard/boards/' + this.board.id + '/' + this.board.uri);
     }
@@ -102,8 +81,6 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy
      *
      * @param ev
      */
-    onDrop(ev): void
-    {
-        // this._scrumboardService.updateBoard(this.board);
+    onDrop(ev): void {
     }
 }

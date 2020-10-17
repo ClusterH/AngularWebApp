@@ -51,22 +51,23 @@ export const locale = {
             "BOARD": "Board",
             "LIST": "Lista",
 
-            
+
             "FUELMANAGEMENT": "Fuel Management",
             "TANKS": "Tanques",
             "FUELINGREGISTRY": "Fueling Registry",
-            
+
             "SETTING": "Setting",
             "MYACCOUNT": "Minha conta",
             "USERSETTING": "Configuração do usuário",
-            'SAMPLE'        : {
+            'SAMPLE': {
                 'TITLE': 'Sample',
                 'BADGE': '25'
             },
 
             "SYSTEM": "System",
+            "DASHBOARDS": "Painels",
             "PRIVILEGES": "Privilégios",
-            "USER_ROLES" : "Funções do usuário",
+            "USER_ROLES": "Funções do usuário",
             "UNITTYPES": "Tipos de unidades",
             "DEVICES": "Dispositivos",
             "SIMS": "SIMs",
@@ -77,7 +78,7 @@ export const locale = {
             "COMMANDS": "Comandos",
             "SYSTEM_COMMANDS": "Comandos do sistema",
             "CONNECTIONS": "Connections",
-            "DEV_CONFIG" : "Configurações de dispositivos"
+            "DEV_CONFIG": "Configurações de dispositivos"
         }
     }
 };

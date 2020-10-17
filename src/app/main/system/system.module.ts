@@ -12,6 +12,7 @@ const routes = [
     { path: 'connections', loadChildren: () => import('./connections/connections.module').then(m => m.ConnectionsModule) },
     { path: 'userprofiles', loadChildren: () => import('./userprofiles/userprofiles.module').then(m => m.UserProfilesModule) },
     { path: 'privileges', loadChildren: () => import('./privileges/privileges.module').then(m => m.PrivilegesModule) },
+    { path: 'dashboards', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule) },
     { path: 'devconfigs', loadChildren: () => import('./devconfigs/devconfigs.module').then(m => m.DevConfigsModule) },
     { path: 'syscommands', loadChildren: () => import('./syscommands/syscommands.module').then(m => m.SysCommandsModule) },
     { path: 'commands', loadChildren: () => import('./commands/commands.module').then(m => m.CommandsModule) },

@@ -2,7 +2,6 @@ import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
 import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service'
-import { FuelregistriesComponent } from "app/main/fuelmanagement/fuelregistries/fuelregistries/fuelregistries.component";
 
 export class FuelregistriesDataSource extends DataSource<any> {
     public fuelregistriesSubject = new BehaviorSubject<any>([]);
@@ -13,9 +12,7 @@ export class FuelregistriesDataSource extends DataSource<any> {
     page_index: number;
     private _unsubscribeAll: Subject<any>;
 
-    constructor(
-        private _adminFuelregistriesService: FuelregistriesService,
-    ) {
+    constructor(private _adminFuelregistriesService: FuelregistriesService) {
         super();
         this._unsubscribeAll = new Subject();
     }

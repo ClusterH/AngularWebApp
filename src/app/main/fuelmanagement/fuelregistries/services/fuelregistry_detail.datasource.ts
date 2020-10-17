@@ -15,9 +15,7 @@ export class FuelregistryDetailDataSource extends DataSource<any> {
     selected_method_id: number;
     private _unsubscribeAll: Subject<any>;
 
-    constructor(
-        private fuelregistryDetailService: FuelregistryDetailService,
-    ) {
+    constructor(private fuelregistryDetailService: FuelregistryDetailService) {
         super();
         this.flag = false; this._unsubscribeAll = new Subject();
     }

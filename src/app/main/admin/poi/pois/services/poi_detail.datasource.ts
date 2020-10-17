@@ -5,7 +5,6 @@ import { catchError, finalize, takeUntil } from "rxjs/operators";
 
 export class PoiDetailDataSource extends DataSource<any> {
     private poisSubject = new BehaviorSubject<any>([]); private loadingSubject = new BehaviorSubject<boolean>(false);
-
     public loading$ = this.loadingSubject.asObservable();
     totalLength: number;
     total_page: number;
@@ -24,7 +23,6 @@ export class PoiDetailDataSource extends DataSource<any> {
     loadPoiDetail(pageindex: number, pagesize: number, name: string, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
-        // use pipe operator to chain functions with Observable type
         this.poiDetailService.getCompanies(pageindex, pagesize, name, method)
             .pipe(
                 catchError(() => of([])),
@@ -42,7 +40,6 @@ export class PoiDetailDataSource extends DataSource<any> {
     loadGroupDetail(pageindex: number, pagesize: number, name: string, companyid: number, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
-        // use pipe operator to chain functions with Observable type
         this.poiDetailService.getGroups(pageindex, pagesize, name, companyid)
             .pipe(
                 catchError(() => of([])),

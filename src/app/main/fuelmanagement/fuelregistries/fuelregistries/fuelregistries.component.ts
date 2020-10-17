@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
 import { locale as fuelregistriesEnglish } from 'app/main/fuelmanagement/fuelregistries/i18n/en';
 import { locale as fuelregistriesFrench } from 'app/main/fuelmanagement/fuelregistries/i18n/fr';
 import { locale as fuelregistriesPortuguese } from 'app/main/fuelmanagement/fuelregistries/i18n/pt';
@@ -16,7 +15,7 @@ import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/se
 import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistry_detail.service';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
@@ -26,12 +25,10 @@ import { CourseDialogComponent } from "../dialog/dialog.component";
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class FuelregistriesComponent implements OnInit {
+export class FuelregistriesComponent implements OnInit, OnDestroy {
     dataSource: FuelregistriesDataSource;
-
     @Output()
     pageEvent: PageEvent;
-
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -39,11 +36,8 @@ export class FuelregistriesComponent implements OnInit {
     filter_string: string = '';
     index_number: number = 1;
     currentFuelregistry: any;
-
     fuelregistry: any;
-
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -71,12 +65,8 @@ export class FuelregistriesComponent implements OnInit {
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
-
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).fuelregistries;
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(fuelregistriesEnglish, fuelregistriesSpanish, fuelregistriesFrench, fuelregistriesPortuguese);
-
         this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
@@ -88,15 +78,11 @@ export class FuelregistriesComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
         merge(this.sort.sortChange, this.paginator.page)
             .pipe(tap(() => this.dataSource.loadFuelregistries(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Fuelregistry_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
@@ -109,8 +95,12 @@ export class FuelregistriesComponent implements OnInit {
         this.dataSource.loadFuelregistries(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Fuelregistry_TList");
     }
 
-    selectedFilter() {
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
 
+    selectedFilter() {
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -120,7 +110,6 @@ export class FuelregistriesComponent implements OnInit {
     }
 
     actionPageIndexbutton(pageIndex: number) {
-
         this.dataSource.loadFuelregistries(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Fuelregistry_Tlist");
     }
 
@@ -131,45 +120,29 @@ export class FuelregistriesComponent implements OnInit {
     }
 
     addNewFuelregistry() {
-        this.fuelregistryDetailService.fuelregistry_detail = '';
-        localStorage.removeItem("fuelregistry_detail");
         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail']);
     }
 
     editShowFuelregistryDetail(fuelregistry: any) {
-        this.fuelregistryDetailService.fuelregistry_detail = fuelregistry;
-
-        localStorage.setItem("fuelregistry_detail", JSON.stringify(fuelregistry));
-
-        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail']);
+        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail'], { queryParams: fuelregistry });
     }
 
     deleteFuelregistry(fuelregistry): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            fuelregistry, flag: this.flag
-        };
-
+        dialogConfig.data = { fuelregistry, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             console.log(result);
-
             if (result) {
                 let deleteRegistry = this._adminFuelregistriesService.fuelregistryList.findIndex((registry: any) => registry.id == fuelregistry.id);
                 console.log(deleteRegistry);
-
                 if (deleteRegistry > -1) {
                     this._adminFuelregistriesService.fuelregistryList.splice(deleteRegistry, 1);
                     console.log(this._adminFuelregistriesService.fuelregistryList);
-
                     this.dataSource.fuelregistriesSubject.next(this._adminFuelregistriesService.fuelregistryList);
                 }
-
             }
         });
     }
@@ -177,18 +150,12 @@ export class FuelregistriesComponent implements OnInit {
     duplicateFuelregistry(fuelregistry): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            fuelregistry, flag: this.flag
-        };
-
+        dialogConfig.data = { fuelregistry, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-
+                this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail'], { queryParams: fuelregistry });
             }
         });
     }

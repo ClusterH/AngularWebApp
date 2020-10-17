@@ -1,37 +1,35 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { fuseAnimations } from '@fuse/animations';
 import { ScrumboardService } from 'app/main/logistic/jobmanagement/scrumboard/scrumboard.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { locale as reportEnglish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/en';
+import { locale as reportFrench } from 'app/main/logistic/jobmanagement/scrumboard/i18n/fr';
+import { locale as reportPortuguese } from 'app/main/logistic/jobmanagement/scrumboard/i18n/pt';
+import { locale as reportSpanish } from 'app/main/logistic/jobmanagement/scrumboard/i18n/sp';
 
 @Component({
-    selector     : 'scrumboard-board-settings',
-    templateUrl  : './settings.component.html',
-    styleUrls    : ['./settings.component.scss'],
+    selector: 'scrumboard-board-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestroy
-{
+export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestroy {
     board: any;
     view: string;
-
-    // Private
     private _unsubscribeAll: Subject<any>;
 
     constructor(
         private scrumboardService: ScrumboardService,
-        private  _router: Router,
-
-    )
-    {
-        // Set the defaults
+        private _router: Router,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    ) {
         this.view = 'main';
-
-        // Set the private defaults
         this._unsubscribeAll = new Subject();
+        this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -41,11 +39,9 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         this.scrumboardService.onBoardChanged
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(board => {
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(board => {
                 this.board = board;
             });
     }
@@ -53,9 +49,7 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
+    ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
@@ -67,24 +61,19 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     /**
      * Toggle card cover
      */
-    toggleCardCover(): void
-    {
+    toggleCardCover(): void {
         this.board.settings.cardcoverimages = !this.board.settings.cardcoverimages;
-        // this.scrumboardService.updateBoard(this.board);
     }
 
     /**
      * Toggle subscription
      */
-    toggleSubscription(): void
-    {
+    toggleSubscription(): void {
         this.board.settings.subscribed = !this.board.settings.subscribed;
-        // this.scrumboardService.updateBoard(this.board);
     }
+
     deleteBoard(): void {
-        this.scrumboardService.deleteBoard(this.board.id)
-        .then((res: any) => {
-            
+        this.scrumboardService.deleteBoard(this.board.id).then((res: any) => {
             this._router.navigate(['logistic/scrumboard/boards']);
         })
     }
@@ -92,8 +81,8 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     setting_save() {
         console.log(this.board.settings);
         this.scrumboardService.saveBoardSetting(this.board.settings.color, this.board.settings.subscribed, this.board.settings.cardcoverimages)
-        .then(res => {
-            console.log(res);
-        })
+            .then(res => {
+                console.log(res);
+            })
     }
 }

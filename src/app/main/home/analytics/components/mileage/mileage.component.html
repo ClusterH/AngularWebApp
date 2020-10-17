@@ -1,0 +1,68 @@
+<div class="mileage-clip w-100-p h-100-p">
+    <div class="detail-popup-menu">
+        <!-- <button mat-icon-button [matMenuTriggerFor]="card20Menu" aria-label="more">
+            <mat-icon>more_vert</mat-icon>
+        </button> -->
+        <button mat-icon-button aria-label="more" (click)="showDetail()">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <!-- <mat-menu #card20Menu="matMenu">
+            <div class="unit-table-section w-100-p" *ngIf="dataSource">
+                <mat-table class="unit-table font-size-10" #table [dataSource]="dataSource" matSort
+                    matSortActive="percentage" matSortDirection="asc" matSortDisableClear
+                    [@animateStagger]="{value:'50'}" fusePerfectScrollbar style="width: 100%;"
+                    (click)="$event.stopPropagation()">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">
+                            <p class="name text-truncate">{{vehicle.name}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="distance">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Distance
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">
+                            <p class="name text-truncate">{{vehicle.distance}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="distanceunits">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">
+                            <p class="name text-truncate">{{vehicle.distanceunits}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="from">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>From
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">
+                            <p class="name text-truncate">{{vehicle.from}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="to">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>To
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">
+                            <p class="name text-truncate">{{vehicle.to}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                    <mat-row *matRowDef="let vehicle; columns: displayedColumns;" class="vehicle font-size-10"
+                        matRipple>
+                    </mat-row>
+                </mat-table>
+                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50 ,100]" showFirstLastButtons
+                    (click)="$event.stopPropagation(); paginationClick()"></mat-paginator>
+            </div>
+        </mat-menu> -->
+    </div>
+    <div class="w-100-p h-100-p" fxLayout="row" fxLayoutAlign="center center">
+        <div class="font-size-54 font-weight-600 line-height-1 accent-900-fg">
+            {{distance}}
+        </div>
+        <div class="font-size-48 font-weight-300 line-height-1">
+            {{distanceUnit}}
+        </div>
+    </div>
+</div>

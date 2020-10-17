@@ -15,11 +15,7 @@ export class TankDetailService {
      *
      * @param {HttpClient} _httpClient
      */
-    constructor(
-        private _httpClient: HttpClient
-    ) {
-        // Set the defaults
-    }
+    constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
@@ -44,7 +40,6 @@ export class TankDetailService {
                 params: params
             });
         }
-
     }
 
     getGroups(pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {

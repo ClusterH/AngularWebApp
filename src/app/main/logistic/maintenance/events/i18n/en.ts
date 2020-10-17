@@ -9,6 +9,7 @@ export const locale = {
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
+            "SEARCH": "Search",
 
             "NAME": "Name",
             "COMPANY": "Company",
@@ -16,7 +17,8 @@ export const locale = {
             "DESCRIPTION": "Description",
             "UNIT": "Unit",
             "MAINTSERVICE": "Service",
-
+            "CONDITIONTEXT": "The Maintencance of the unit must be carried out after",
+            "APPLYTOALLVEHICLES": "Apply To All Vehicles",
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",
             "AUDIT": "Audit",

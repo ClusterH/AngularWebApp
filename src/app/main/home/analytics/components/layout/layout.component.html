@@ -1,0 +1,25 @@
+<ngx-gridster [options]="gridsterOptions" [draggableOptions]="gridsterDraggableOptions" #gridster class="dashboard">
+    <ngx-gridster-item *ngFor="let widget of widgets; let indx = index" #itemComp [options]="itemOptions"
+        [dragAndDrop]="isEditClips" [resizable]="isEditClips" [(x)]="widget.x" [(y)]="widget.y" [(w)]="widget.w"
+        [(h)]="widget.h" (change)="itemChange($event, gridster)">
+        <div class="panel-heading">
+            <h5 class="panel-title">{{ widget.clip }}</h5>
+            <div class="set-size-control pr-12" *ngIf="isEditClips">
+                <mat-icon class="active-icon s-16 delete_icon" (click)="remove($event, indx, widget)">delete
+                </mat-icon>
+                <img src="assets/icons/dashboard/w-inc.png" class="w-16 size-control-arrow w-inc"
+                    (click)="setWidth(widget, 1, $event, gridster)">
+                <img src="assets/icons/dashboard/w-dec.png" class="w-16 size-control-arrow"
+                    (click)="setWidth(widget, -1, $event, gridster)">
+                <img src="assets/icons/dashboard/h-inc.png" class="w-16 size-control-arrow"
+                    (click)="setHeight(widget, 1, $event, gridster)">
+                <img src="assets/icons/dashboard/h-dec.png" class="w-16 size-control-arrow"
+                    (click)="setHeight(widget, -1, $event, gridster)">
+            </div>
+        </div>
+        <div class="panel-body">
+            <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(widget.id)"></ng-container>
+            <!-- <button (click)="layoutService.deleteItem(widget)">Delete Item</button> -->
+        </div>
+    </ngx-gridster-item>
+</ngx-gridster>

@@ -20,7 +20,6 @@ export class JobsService {
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -134,7 +133,6 @@ export class JobsService {
         let token: string = localStorage.getItem('current_token') || '';
         let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
         let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-
         const header_detail = new HttpHeaders()
             .append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"))
         const body = {
@@ -153,14 +151,11 @@ export class JobsService {
 
     deleteInstallationImages(id: any, images: any): Observable<any> {
         console.log(images);
-
         let token: string = localStorage.getItem('current_token') || '';
         let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
         let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const body = {
             "installationid": id,
             "data": images,

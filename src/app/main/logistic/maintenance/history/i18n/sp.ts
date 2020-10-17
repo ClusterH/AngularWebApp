@@ -1,28 +1,29 @@
 export const locale = {
     lang: 'sp',
     data: {
-        PENDINGS: {
-            "PENDINGS": "Mantenimiento pendiente",
-            "SEARCHFORPENDING": "Buscar un pendiente",
-            "NEWPENDING": "Nuevo pendiente",
-            "PENDINGDETAIL": "Detalle pendiente",
+        HISTORY: {
+            "HISTORY": "Mantenimiento del historial",
+            "SEARCHFORHISTORY": "Buscar un historial",
+            "NEWHISTORY": "Historia nueva",
+            "HISTORYDETAIL": "Detalle del historial",
             "SELECTFIELD": "Seleccionar campo",
             "SAVE": "GUARDAR",
-            "ADD": "AGREGAR",
+            "ADD": "AÑADIR",
 
+            "ATTENED": "Atendido",
             "NOTIFYDATE": "Fecha de notificación",
             "UNIT": "Unidad",
             "DESCRIPTION": "Descripción",
             "MAINTEVENT": "Evento de mantenimiento",
-            "PENDINGNOTIFICATION": "Notificaciones pendientes",
-            "PENDINGNOTIFICATIONDETAIL": "Total de notificaciones pendientes de atención",
+            "HISTORYNOTIFICATION": "Notificaciones del historial",
+            "HISTORYNOTIFICATIONDETAIL": "Total de notificaciones que son historial de atención",
             "CREATEDEVENTS": "Eventos creados",
-            "CREATEDEVENTSDETAIL": "Eventos creados para garantizar el funcionamiento de su flota",
+            "CREATEDEVENTSDETAIL": "Eventos creados para asegurar el funcionamiento de su flota",
             "POSTPONEDNOTIFICATION": "Notificaciones pospuestas",
-            "POSTPONEDNOTIFICATIONDETAIL": "Notificaciones que se ha planeado atender en fechas posteriores",
-            "SERVICEATTENTION": "Atención al servicio",
+            "POSTPONEDNOTIFICATIONDETAIL": "Notificaciones que se ha planificado atender en fechas posteriores",
+            "SERVICEATTENTION": "Atención de servicio",
             "ACTION": "Acción",
-            "COST": "costo",
+            "COST": "Costo",
             "DATE": "Fecha",
             "HOUR": "Hora",
             "DELAY": "Retraso",
@@ -30,16 +31,16 @@ export const locale = {
 
             "CLOSE": "Cerca",
 
-            "GENERAL": "General",
-            "AUDIT": "Auditoría",
-           
-            "DUPLICATE_CONFIRM_MESSAGE": "¿Estás seguro de Duplicar?",
-            "DELETE_CONFIRM_MESSAGE": "¿Estás seguro de eliminar?",
-            "GOBACK_CONFIRM_MESSAGE": "¿Estás seguro de que quieres descartar los cambios?",
-            "DUPLICATE": "Duplicado",
+            "GENERAL": "General",
+            "AUDIT": "Auditoría",
+
+            "DUPLICATE_CONFIRM_MESSAGE": "¿Estás seguro de Duplicado?",
+            "DELETE_CONFIRM_MESSAGE": "¿Estás seguro de Eliminar?",
+            "GOBACK_CONFIRM_MESSAGE": "¿Está seguro de que desea descartar los cambios?",
+            "DUPLICATE": "Duplicar",
             "DELETE": "Eliminar",
             "NO": "No",
-            "YES": "Si"
+            "YES": "Sí"
         }
     }
 };

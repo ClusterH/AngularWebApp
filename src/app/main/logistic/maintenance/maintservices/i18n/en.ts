@@ -17,6 +17,7 @@ export const locale = {
             "DESCRIPTION": "Description",
             "MAINTSERVICECREATE": "Create Service",
             "MAINTSERVICEEDIT": "Edit Service",
+            "SEARCH": "Search",
 
             "GENERAL": "General",
             "REGIONALIZATION": "Regionalization",

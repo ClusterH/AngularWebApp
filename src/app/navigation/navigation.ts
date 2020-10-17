@@ -431,6 +431,13 @@ export const navigation: FuseNavigation[] = [
         icon: 'personal_video',
         children: [
             {
+                id: 'dashboards',
+                title: 'Dashboards',
+                translate: 'NAV.DASHBOARDS',
+                type: 'item',
+                url: '/system/dashboards/dashboards'
+            },
+            {
                 id: 'privileges',
                 title: 'Privileges',
                 translate: 'NAV.PRIVILEGES',

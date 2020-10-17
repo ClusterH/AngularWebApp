@@ -1,0 +1,11 @@
+<div class="stopcompliancesm-clip h-100-p w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="visited-percentage m-12 py-24" fxFlex="40">
+        <div class="font-size-52 font-weight-700 line-height-1">{{percentage_widget.visitedper}}%</div>
+    </div>
+    <div class="" *ngIf="barchart" fxFlex="52">
+        <canvas baseChart [datasets]="barchart.data.datasets" [labels]="barchart.data.labels"
+            [options]="barchart.options" [chartType]="barchart.type">
+        </canvas>
+    </div>
+</div>
+<!-- / Widget 2 -->

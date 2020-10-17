@@ -1,0 +1,69 @@
+<div id="dialog_table">
+    <div class="content-card" style="width: 100%; overflow: auto;">
+        <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
+            <div class="spinner_container">
+                <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                </mat-spinner>
+            </div>
+        </div>
+        <mat-table class="vehicles-table font-size-10" #table [dataSource]="dataSource" matSort
+            matSortActive="lastreport" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}"
+            fusePerfectScrollbar style="width: 100%;">
+            <!-- Unit Column -->
+            <ng-container matColumnDef="unit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Unit
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.unit}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="company">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Company
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.company}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="lastreport">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Last Report
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.lastreport}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="odometer">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Odometer
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.odometer}}</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="ign">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Ignition
+                </mat-header-cell>
+                <mat-cell *matCellDef="let vehicle">
+                    <p class="name text-truncate">{{vehicle.ign}}</p>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let vehicle; columns: displayedColumns;" class="vehicle font-size-10" matRipple>
+            </mat-row>
+        </mat-table>
+    </div>
+    <div>
+        <div class="page_index">
+            <!-- <form> -->
+            <label>Page&nbsp;:&nbsp;&nbsp;</label>
+            <mat-form-field>
+                <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                    [(ngModel)]="dataSource.page_index">
+            </mat-form-field>
+            <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
+            <!-- </form> -->
+        </div>
+        <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+            [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            (page)="pageEvent = $event">
+        </mat-paginator>
+    </div>
+</div>

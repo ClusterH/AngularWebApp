@@ -1,40 +1,29 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
-import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
+import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
 
-import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
-
-export class ReportDataSource extends DataSource<any>
-{
+export class ReportDataSource extends DataSource<any> {
     private reportSubject = new BehaviorSubject<any>([]);
-    // private companySubject = new BehaviorSubject<any>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
     private _unsubscribeAll: Subject<any>;
-
-    // private loadingCompanySubject = new BehaviorSubject<boolean>(false);
     public loading$ = this.loadingSubject.asObservable();
     totalLength: number;
     total_page: number;
     page_index: number;
 
-
-    constructor(
-        private reportService: ReportService,
-
-    ) {
+    constructor(private reportService: ReportService) {
         super();
         this._unsubscribeAll = new Subject();
     }
 
     loadReport(pageindex: number, pagesize: number, categoryid: any, filterString: string, method: string) {
-
         this.loadingSubject.next(true);
         this.reportService.getReports(pageindex, pagesize, categoryid, filterString, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)), takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-
                 if (method == 'report_clist') {
                     this.reportService.report_cList = result.TrackingXLAPI.DATA;
                 }
@@ -47,15 +36,12 @@ export class ReportDataSource extends DataSource<any>
     }
 
     loadGroup(pageindex: number, pagesize: number, companyid: any, filterString: string, method: string) {
-
         this.loadingSubject.next(true);
         this.reportService.loadGroup(pageindex, pagesize, companyid, filterString, method)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)), takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-
-
                 this.reportSubject.next(result.TrackingXLAPI.DATA);
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
@@ -65,7 +51,6 @@ export class ReportDataSource extends DataSource<any>
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
         return this.reportSubject.asObservable();
-        // return this.companySubject.asObservable();
     }
 
     /**
@@ -74,6 +59,7 @@ export class ReportDataSource extends DataSource<any>
     disconnect(): void {
         this.reportSubject.complete();
         this.loadingSubject.complete();
-        // this.loadingCompanySubject.complete();
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }

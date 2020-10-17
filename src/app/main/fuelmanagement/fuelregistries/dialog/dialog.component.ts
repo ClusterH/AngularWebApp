@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -16,9 +16,8 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnInit {
+export class CourseDialogComponent implements OnDestroy {
     private _unsubscribeAll: Subject<any>;
-
     fuelregistry: any;
     flag: any;
     dataSource: FuelregistriesDataSource;
@@ -31,48 +30,31 @@ export class CourseDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) { fuelregistry, flag }
     ) {
         this._fuseTranslationLoaderService.loadTranslations(fuelregistriesEnglish, fuelregistriesSpanish, fuelregistriesFrench, fuelregistriesPortuguese);
-
         this.fuelregistry = fuelregistry;
         this.flag = flag;
     }
 
-    ngOnInit() {
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     save() {
         if (this.flag == "duplicate") {
-
             this.fuelregistry.id = 0;
             this.fuelregistry.datentime = '';
-
-            localStorage.setItem("fuelregistry_detail", JSON.stringify(this.fuelregistry));
-
             this.dialogRef.close();
-
-            this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail']);
         } else if (this.flag == "delete") {
-            // this.reloadComponent();
-
             this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         console.log(result);
-
                         this.dialogRef.close(result);
                     }
                 });
         }
     }
 
-    close() {
-        localStorage.removeItem("fuelregistry_detail");
-        this.dialogRef.close();
-    }
-
-    goback() {
-        this.dialogRef.close();
-        localStorage.removeItem("fuelregistry_detail");
-
-        this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
-    }
+    close() { this.dialogRef.close(); }
+    goback() { this.dialogRef.close('goback'); }
 }

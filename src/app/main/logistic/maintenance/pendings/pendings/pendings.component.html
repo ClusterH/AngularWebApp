@@ -1,14 +1,12 @@
 <div id="pendings" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center_table center">
-
-        <div class="dashboard mx-8 my-16" fxLayout="row" fxLayoutAlign="center center" style="height: 120px; min-height: 100px; max-height: 100px;">
-            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification pending_notification p-0">
+        <div class="dashboard mx-8 my-16" fxLayout="row" fxLayoutAlign="center center"
+            style="height: 120px; min-height: 100px; max-height: 100px;">
+            <div fxLayout="row" fxLayoutAlign="start" class="dashboard_notification pending_notification p-0">
                 <div class="color_header_pending p-0 m-0" fxFlex="5"></div>
                 <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
                     <img width="60%" src="assets/icons/maintenance/pending_maintenance.png">
@@ -19,8 +17,7 @@
                     <div class="h5">{{ 'PENDINGS.PENDINGNOTIFICATIONDETAIL' | translate }}</div>
                 </div>
             </div>
-
-            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification created_event">
+            <div fxLayout="row" fxLayoutAlign="start" class="dashboard_notification created_event">
                 <div class="color_header_created p-0 m-0" fxFlex="5"></div>
                 <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
                     <img width="60%" src="assets/icons/maintenance/created_maintenance.png">
@@ -31,8 +28,7 @@
                     <div class="h5">{{ 'PENDINGS.CREATEDEVENTSDETAIL' | translate }}</div>
                 </div>
             </div>
-
-            <div fxLayout="row" fxLayoutAlign="start"  class="dashboard_notification postponed_notification">
+            <div fxLayout="row" fxLayoutAlign="start" class="dashboard_notification postponed_notification">
                 <div class="color_header_postponed p-0 m-0" fxFlex="5"></div>
                 <div class="icon_section" fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
                     <img width="60%" src="assets/icons/maintenance/postponed_maintenance.png">
@@ -44,15 +40,11 @@
                 </div>
             </div>
         </div>
-
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
-
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -62,10 +54,9 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'PENDINGS.SELECTFIELD' | translate}}:</mat-label>
-
                     <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 170px;">
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
@@ -80,122 +71,92 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'PENDINGS.SEARCHFORPENDING' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'PENDINGS.SEARCHFORPENDING' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
-
-            <!-- ADD BUTTON -->
-            <!-- <button mat-fab
-                    [routerLink]="'/admin/pendings/pending_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    (click)="addNewPending()">
-               <mat-icon>add</mat-icon>
-
-            </button> -->
-            <!-- / ADD BUTTON -->
-
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                    <mat-spinner
-                        color="accent" 
-                        mode="indeterminate"
-                        diameter="50"
-                        style="margin:0 auto;">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
                     </mat-spinner>
                 </div>
             </div>
-
-            <mat-table class="pendings-table font-size-10"
-                        #table [dataSource]="dataSource"
-                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 100%;">
-
+            <mat-table class="pendings-table font-size-10" #table [dataSource]="dataSource" matSort matSortActive="id"
+                matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}" fusePerfectScrollbar
+                style="width: 100%;">
                 <!-- ID Column -->
-                <ng-container matColumnDef="id" >
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.ATTENED' | translate }}</mat-header-cell>
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.ATTENED' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let pending">
                         <img width="24" src="assets/icons/maintenance/attend.png" (click)="attendDetail(pending)">
                     </mat-cell>
                 </ng-container>
-
                 <!-- Unit Column -->
                 <ng-container matColumnDef="unit">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.UNIT' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.UNIT' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let pending">
                         <p class="unit text-truncate">{{pending.unit}}</p>
                     </mat-cell>
                 </ng-container>
-                
                 <!-- Description Column -->
                 <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.DESCRIPTION' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.DESCRIPTION' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let pending">
                         <p class="description text-truncate">
                             {{pending.description}}
                         </p>
                     </mat-cell>
                 </ng-container>
-               
                 <!-- MaintEvent Column -->
                 <ng-container matColumnDef="maintevent">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.MAINTEVENT' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let pending" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.MAINTEVENT' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let pending">
                         <p class="maintevent text-truncate">
                             {{pending.maintevent}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <!-- NotifyDate Column -->
                 <ng-container matColumnDef="notifydate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.NOTIFYDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let pending" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'PENDINGS.NOTIFYDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let pending">
                         <p class="notifydate text-truncate">
                             {{pending.notifydate}}
                         </p>
                     </mat-cell>
                 </ng-container>
-
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
-
-                <mat-row  *matRowDef="let pending; columns: displayedColumns;"
-                            class="pending font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let pending; columns: displayedColumns;" class="pending font-size-10" matRipple>
                 </mat-row>
-
             </mat-table>
-
         </div>
         <div>
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
-
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

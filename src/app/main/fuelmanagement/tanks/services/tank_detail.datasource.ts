@@ -1,8 +1,7 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
-import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
+import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
-import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service'
-import { TanksComponent } from "app/main/fuelmanagement/tanks/tanks/tanks.component";
 
 export class TankDetailDataSource extends DataSource<any> {
     private tanksSubject = new BehaviorSubject<any>([]);
@@ -25,7 +24,6 @@ export class TankDetailDataSource extends DataSource<any> {
     loadTankDetail(pageindex: number, pagesize: number, name: string, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
-        // use pipe operator to chain functions with Observable type
         this.tankDetailService.getCompanies(pageindex, pagesize, name, method)
             .pipe(
                 catchError(() => of([])),
@@ -43,7 +41,6 @@ export class TankDetailDataSource extends DataSource<any> {
     loadGroupDetail(pageindex: number, pagesize: number, name: string, companyid, method: string) {
         if (!name) { name = ''; }
         this.loadingSubject.next(true);
-        // use pipe operator to chain functions with Observable type
         this.tankDetailService.getGroups(pageindex, pagesize, name, companyid)
             .pipe(
                 catchError(() => of([])),

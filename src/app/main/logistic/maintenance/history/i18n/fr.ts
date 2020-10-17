@@ -1,44 +1,44 @@
 export const locale = {
     lang: 'fr',
     data: {
-        PENDINGS: {
-            "PENDINGS": "Pending Maintenance",
-            "SEARCHFORPENDING": "Rechercher une attente",
-            "NEWPENDING": "New Pending",
-            "PENDINGDETAIL": "Pending Detail",
+        HISTORY: {
+            "HISTORY": "Maintenance de l'historique",
+            "SEARCHFORHISTORY": "Rechercher un historique",
+            "NEWHISTORY": "New History",
+            "HISTORYDETAIL": "Détails de l'historique",
             "SELECTFIELD": "Sélectionner un champ",
-            "SAVE": "ENREGISTRER",
-            "ADD": "ADD",
+            "SAVE": "SAVE",
+            "ADD": "AJOUTER",
 
             "ATTENED": "Attened",
-            "NOTIFYDATE": "Notify Date",
+            "NOTIFYDATE": "Date de notification",
             "UNIT": "Unit",
             "DESCRIPTION": "Description",
             "MAINTEVENT": "Maint Event",
-            "PENDINGNOTIFICATION": "Notifications en attente",
-            "PENDINGNOTIFICATIONDETAIL": "Total des notifications en attente d'attention",
+            "HISTORYNOTIFICATION": "Notifications d'historique",
+            "HISTORYNOTIFICATIONDETAIL": "Total des notifications pour lesquelles votre attention a été signalée",
             "CREATEDEVENTS": "Événements créés",
-            "CREATEDEVENTSDETAIL": "Des événements créés pour assurer le fonctionnement de votre flotte",
+            "CREATEDEVENTSDETAIL": "Evénements créés pour assurer le fonctionnement de votre flotte",
             "POSTPONEDNOTIFICATION": "Notifications reportées",
-            "POSTPONEDNOTIFICATIONDETAIL": "Notifications dont il est prévu de s'occuper ultérieurement",
+            "POSTPONEDNOTIFICATIONDETAIL": "Notifications dont il était prévu de prendre en charge ultérieurement",
             "SERVICEATTENTION": "Service Attention",
             "ACTION": "Action",
             "COST": "Coût",
             "DATE": "Date",
-            "HOUR": "Heure",
+            "HOUR": "Hour",
             "DELAY": "Delay",
-            "REGISTER": "Inscription",
+            "REGISTER": "S'inscrire",
 
-            "CLOSE": "Close",
-                      
-            "GENERAL": "General",
-            "AUDIT": "Audit",
-           
-            "DUPLICATE_CONFIRM_MESSAGE": "Voulez-vous dupliquer?",
-            "DELETE_CONFIRM_MESSAGE": "Voulez-vous vraiment supprimer?",
-            "GOBACK_CONFIRM_MESSAGE": "Voulez-vous vraiment annuler les modifications?",
+            "CLOSE": "Fermer",
+
+            "GENERAL": "Général",
+            "AUDIT": "Audit",
+
+            "DUPLICATE_CONFIRM_MESSAGE": "Etes-vous sûr de dupliquer?",
+            "DELETE_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir supprimer?",
+            "GOBACK_CONFIRM_MESSAGE": "Êtes-vous sûr de vouloir annuler les modifications?",
             "DUPLICATE": "Duplicate",
-            "DELETE": "Delete",
+            "DELETE": "Supprimer",
             "NO": "Non",
             "YES": "Oui"
         }

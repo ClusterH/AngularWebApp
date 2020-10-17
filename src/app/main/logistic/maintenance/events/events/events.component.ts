@@ -1,28 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, OnDestroy, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { EventsService } from 'app/main/logistic/maintenance/events/services/events.service';
-import { EventsDataSource } from "app/main/logistic/maintenance/events/services/events.datasource";
-import { EventDetailService } from 'app/main/logistic/maintenance/events/services/event_detail.service';
-
-import { CourseDialogComponent } from "../dialog/dialog.component";
-
 import { locale as eventsEnglish } from 'app/main/logistic/maintenance/events/i18n/en';
-import { locale as eventsSpanish } from 'app/main/logistic/maintenance/events/i18n/sp';
 import { locale as eventsFrench } from 'app/main/logistic/maintenance/events/i18n/fr';
 import { locale as eventsPortuguese } from 'app/main/logistic/maintenance/events/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
+import { locale as eventsSpanish } from 'app/main/logistic/maintenance/events/i18n/sp';
+import { EventsDataSource } from "app/main/logistic/maintenance/events/services/events.datasource";
+import { EventsService } from 'app/main/logistic/maintenance/events/services/events.service';
+import { EventDetailService } from 'app/main/logistic/maintenance/events/services/event_detail.service';
+import * as $ from 'jquery';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'logistic-events',
@@ -31,12 +25,9 @@ import { Route } from '@angular/compiler/src/core';
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
     dataSource: EventsDataSource;
-
-    @Output()
-    pageEvent: PageEvent;
-
+    @Output() pageEvent: PageEvent;
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -44,11 +35,8 @@ export class EventsComponent implements OnInit {
     filter_string: string = '';
     index_number: number = 1;
     currentEvent: any;
-
     event: any;
-
     restrictValue: any;
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -57,9 +45,7 @@ export class EventsComponent implements OnInit {
         'company',
         'group',
     ];
-
     dialogRef: any;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     private _unsubscribeAll: Subject<any>;
 
@@ -76,13 +62,7 @@ export class EventsComponent implements OnInit {
     ) {
         this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).events;
-
-
-
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
-
         this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
@@ -94,18 +74,11 @@ export class EventsComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-
-
         merge(this.sort.sortChange, this.paginator.page)
             .pipe(tap(() => this.dataSource.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintevent_TList")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
@@ -114,18 +87,16 @@ export class EventsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
-
         this.dataSource = new EventsDataSource(this._adminEventsService);
         this.dataSource.loadEvents(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintevent_TList");
     }
 
-    onRowClicked(event) {
-
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     selectedFilter() {
-
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -135,7 +106,6 @@ export class EventsComponent implements OnInit {
     }
 
     actionPageIndexbutton(pageIndex: number) {
-
         this.dataSource.loadEvents(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintevent_TList");
     }
 
@@ -146,59 +116,23 @@ export class EventsComponent implements OnInit {
     }
 
     addNewEvent() {
-        this.eventDetailService.event_detail = '';
-        localStorage.removeItem("event_detail");
         this.router.navigate(['logistic/events/event_detail']);
     }
 
     editShowEventDetail(event: any) {
-        this.eventDetailService.event_detail = event;
-
-        localStorage.setItem("event_detail", JSON.stringify(event));
-
-        this.router.navigate(['logistic/events/event_detail']);
+        this.router.navigate(['logistic/events/event_detail'], { queryParams: event });
     }
 
     deleteEvent(event): void {
-
-
         this.dialogRef = this._matDialog.open(CourseDialogComponent, {
             panelClass: 'delete-dialog',
             disableClose: true,
-            data: {
-                eventDetail: event,
-                flag: 'delete'
-            }
+            data: { eventDetail: event, flag: 'delete' }
         });
 
-        this.dialogRef.afterClosed()
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll))
             .subscribe(res => {
-
                 this.dataSource.eventsSubject.next(res);
-
             });
     }
-
-    // duplicateEvent(event): void
-    // {
-    //     const dialogConfig = new MatDialogConfig();
-    //     this.flag = 'duplicate';
-
-    //     dialogConfig.disableClose = true;
-
-    //     dialogConfig.data = {
-    //         event, flag: this.flag
-    //     };
-
-    //     const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-    //     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-    //         if ( result )
-    //         {
-
-    //         } else {
-
-    //         }
-    //     });
-    // }
 }

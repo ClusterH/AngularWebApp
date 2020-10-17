@@ -14,7 +14,7 @@ export const locale = {
             "COMPANY": "Company",
             "GROUP": "Group",
             "DESCRIPTION": "Description",
-           
+
             "GENERAL": "General",
             "AUDIT": "Audit",
 
@@ -59,15 +59,15 @@ export const locale = {
             "FUELOUTSIDERANGECONDITION": "Outside a range",
             "ANYSENSOR": "Any Sensor",
             "SENSOR": "Sensor",
-            "ZONEEXITCONDITION":"Exiting",
-            "ZONEENTERCONDITION":"Entering",
-            "ZONEENTEROREXITCONDITION":"Entering or Exiting",
+            "ZONEEXITCONDITION": "Exiting",
+            "ZONEENTERCONDITION": "Entering",
+            "ZONEENTEROREXITCONDITION": "Entering or Exiting",
             "SENSORCONDITIONDETAIL1": "Alert when: ",
             "SENSORCONDITIONDETAIL2": "and",
             "DEVICECONDTITIONDETAIL": "If the device sends code(s)",
             "ROUTECONDITIONDETAIL": "If the Unit leaves it route",
             "TOWCONDITIONDETAIL": "If the Unit is towed",
-
+            "APPLYTOALL": "Apply To all Vehicles",
             "UNIT": "Unit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",

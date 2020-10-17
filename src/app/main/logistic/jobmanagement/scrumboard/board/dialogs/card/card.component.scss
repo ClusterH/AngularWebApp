@@ -1,12 +1,11 @@
 @import "src/@fuse/scss/fuse";
 
 .scrumboard-card-dialog {
-
-    @include media-breakpoint('xs') {
+    @include media-breakpoint("xs") {
         width: 100%;
     }
 
-    @include media-breakpoint('gt-xs') {
+    @include media-breakpoint("gt-xs") {
         width: 720px;
     }
 
@@ -14,9 +13,7 @@
         padding: 0;
 
         .mat-toolbar {
-
             .due-date {
-
                 .mat-form-field {
                     width: auto;
                     margin: 0 8px;
@@ -72,7 +69,6 @@
             }
 
             .sections {
-
                 .section {
                     border-bottom: 1px solid;
                     padding: 0 24px;
@@ -100,7 +96,6 @@
                     }
 
                     .labels {
-
                         .section-content {
                             padding: 8px 0 32px 0;
                         }
@@ -120,7 +115,6 @@
                     }
 
                     .members {
-
                         .section-content {
                             padding: 8px 0 32px 0;
                         }
@@ -145,7 +139,6 @@
                     }
 
                     .attachments {
-
                         .attachment {
                             padding: 0 24px 24px 0;
 
@@ -156,7 +149,6 @@
                             }
 
                             .attachment-content {
-
                                 .attachment-url,
                                 .attachment-name {
                                     font-weight: 600;
@@ -179,7 +171,6 @@
                     }
 
                     .checklist {
-
                         .checklist-progress {
                             margin: 0 0 16px 0;
 
@@ -192,13 +183,11 @@
                         }
 
                         .editable-wrap {
-                            flex: 1
+                            flex: 1;
                         }
 
                         .check-items {
-
                             .check-item {
-
                                 mat-checkbox {
                                     position: relative;
                                     top: -5px;
@@ -209,7 +198,6 @@
                                     }
 
                                     &.mat-checked {
-
                                         .mat-label {
                                             text-decoration: line-through;
                                         }
@@ -222,9 +210,7 @@
                                 }
 
                                 mat-form-field {
-
                                     &.mat-form-field-appearance-outline {
-
                                         .mat-form-field-outline {
                                             top: 0;
                                         }
@@ -245,9 +231,7 @@
                             margin: 32px 0 0 0;
 
                             mat-form-field {
-
                                 &.mat-form-field-appearance-outline {
-
                                     .mat-form-field-outline {
                                         top: 0;
                                     }
@@ -265,7 +249,6 @@
                     }
 
                     .comments {
-
                         .comment {
                             margin: 0 0 24px 0;
 
@@ -298,7 +281,6 @@
                                 margin: 0 0 24px 0;
 
                                 mat-form-field {
-
                                     .mat-form-field-wrapper {
                                         padding: 0;
                                     }
@@ -308,7 +290,6 @@
                     }
 
                     .activities {
-
                         .activity {
                             margin-bottom: 16px;
 
@@ -340,7 +321,6 @@
                 }
             }
         }
-
     }
 
     .dialog-content-wrapper {
@@ -362,7 +342,6 @@
 }
 
 .scrumboard-labels-menu {
-   
     .mat-menu-content {
         padding-bottom: 0;
 

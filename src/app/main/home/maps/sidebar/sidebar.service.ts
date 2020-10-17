@@ -7,9 +7,7 @@ import { UnitInfoSidebarComponent } from './sidebar.component';
 export class UnitInfoSidebarService {
     // Private
     private _registry: { [key: string]: UnitInfoSidebarComponent } = {};
-
     constructor() { }
-
     /**
      * Add the sidebar to the registry
      *
@@ -18,14 +16,11 @@ export class UnitInfoSidebarService {
      */
     register(key, sidebar): void {
         console.log('register sidebar', this._registry, key, sidebar);
-
         // Check if the key already being used
         if (this._registry[key]) {
             console.error(`The sidebar with the key '${key}' already exists. Either unregister it first or use a unique key.`);
-
             return;
         }
-
         // Add to the registry
         this._registry[key] = sidebar;
     }
@@ -36,13 +31,10 @@ export class UnitInfoSidebarService {
      * @param key
      */
     unregister(key): void {
-        console.log('unregister sidebar', this._registry, key);
-
         // Check if the sidebar exists
         if (!this._registry[key]) {
             console.warn(`The sidebar with the key '${key}' doesn't exist in the registry.`);
         }
-
         // Unregister the sidebar
         delete this._registry[key];
     }
@@ -57,7 +49,6 @@ export class UnitInfoSidebarService {
         // Check if the sidebar exists
         if (!this._registry[key]) {
             console.warn(`The sidebar with the key '${key}' doesn't exist in the registry.`);
-
             return;
         }
         // Return the sidebar

@@ -4,27 +4,21 @@ import { catchError, finalize, takeUntil } from "rxjs/operators";
 
 import { ZonegroupsService } from 'app/main/admin/geofences/zonegroups/services/zonegroups.service'
 
-export class ZonegroupsDataSource extends DataSource<any>
-{
+export class ZonegroupsDataSource extends DataSource<any> {
     public zonegroupsSubject = new BehaviorSubject<any>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
     private _unsubscribeAll: Subject<any>;
-
     public loading$ = this.loadingSubject.asObservable();
     totalLength: number;
     total_page: number;
     page_index: number;
 
-    constructor(
-        private _adminZonegroupsService: ZonegroupsService,
-
-    ) {
+    constructor(private _adminZonegroupsService: ZonegroupsService) {
         super();
         this._unsubscribeAll = new Subject();
     }
 
     loadZonegroups(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string) {
-
         this.loadingSubject.next(true);
         this._adminZonegroupsService.getZonegroups(pageindex, pagesize, orderby, orderdirection, filterItem, filterString, method)
             .pipe(
@@ -33,15 +27,10 @@ export class ZonegroupsDataSource extends DataSource<any>
             .subscribe((result: any) => {
                 this._adminZonegroupsService.zonegroupList = result.TrackingXLAPI.DATA;
                 this.zonegroupsSubject.next(result.TrackingXLAPI.DATA);
-
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
-
-            }
-            );
-
-
+            });
     }
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {

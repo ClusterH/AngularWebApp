@@ -1,26 +1,21 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { fromEvent, merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { PendingsService } from 'app/main/logistic/maintenance/pendings/services/pendings.service';
-import { PendingsDataSource } from "app/main/logistic/maintenance/pendings/services/pendings.datasource";
-
-import { AttendDialogComponent } from "../dialog/dialog.component";
-
 import { locale as pendingsEnglish } from 'app/main/logistic/maintenance/pendings/i18n/en';
-import { locale as pendingsSpanish } from 'app/main/logistic/maintenance/pendings/i18n/sp';
 import { locale as pendingsFrench } from 'app/main/logistic/maintenance/pendings/i18n/fr';
 import { locale as pendingsPortuguese } from 'app/main/logistic/maintenance/pendings/i18n/pt';
+import { locale as pendingsSpanish } from 'app/main/logistic/maintenance/pendings/i18n/sp';
+import { PendingsDataSource } from "app/main/logistic/maintenance/pendings/services/pendings.datasource";
+import { PendingsService } from 'app/main/logistic/maintenance/pendings/services/pendings.service';
+import * as $ from 'jquery';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { AttendDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'logistic-pendings',
@@ -29,12 +24,9 @@ import { locale as pendingsPortuguese } from 'app/main/logistic/maintenance/pend
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class PendingsComponent implements OnInit {
+export class PendingsComponent implements OnInit, OnDestroy {
     dataSource: PendingsDataSource;
-
-    @Output()
-    pageEvent: PageEvent;
-
+    @Output() pageEvent: PageEvent;
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -42,15 +34,11 @@ export class PendingsComponent implements OnInit {
     filter_string: string = '';
     index_number: number = 1;
     currentUser: any;
-
     pending: any;
-
     restrictValue: any;
-
     dash_pending: string = '';
     dash_created: string = '';
     dash_postponed: string = '';
-
     flag: string = '';
     displayedColumns = [
         'id',
@@ -59,10 +47,7 @@ export class PendingsComponent implements OnInit {
         'description',
         'maintevent',
     ];
-
     dialogRef: any;
-
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     private _unsubscribeAll: Subject<any>;
 
@@ -76,14 +61,8 @@ export class PendingsComponent implements OnInit {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-
-        // this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).pendings;
-
-
-
-        //Load the translations
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(pendingsEnglish, pendingsSpanish, pendingsFrench, pendingsPortuguese);
-
         this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
@@ -95,18 +74,11 @@ export class PendingsComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
 
     ngAfterViewInit() {
-
-
         var node = $("div.page_index");
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-
-
         merge(this.sort.sortChange, this.paginator.page)
             .pipe(tap(() => this.dataSource.loadPendings(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
@@ -115,31 +87,26 @@ export class PendingsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
-
         this.dataSource = new PendingsDataSource(this.pendingsService);
         this.dataSource.loadPendings(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "maintenancepending_TList");
-
         this.getDash();
     }
 
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     getDash() {
-        this.pendingsService.getDashboard()
+        this.pendingsService.getDashboard().pipe(takeUntil(this._unsubscribeAll))
             .subscribe((res: any) => {
-
-
                 this.dash_pending = res.TrackingXLAPI.DATA[0].pending;
                 this.dash_created = res.TrackingXLAPI.DATA[0].created;
                 this.dash_postponed = res.TrackingXLAPI.DATA[0].postponed;
             });
     }
 
-    onRowClicked(pending) {
-
-    }
-
     selectedFilter() {
-
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
@@ -149,7 +116,6 @@ export class PendingsComponent implements OnInit {
     }
 
     actionPageIndexbutton(pageIndex: number) {
-
         this.dataSource.loadPendings(pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "maintenancepending_TList");
     }
 
@@ -160,19 +126,13 @@ export class PendingsComponent implements OnInit {
     }
 
     attendDetail(pending: any) {
-
-
         this.dialogRef = this._matDialog.open(AttendDialogComponent, {
             panelClass: 'attend-form-dialog',
-            data: {
-                attend: pending,
-            }
+            data: { attend: pending }
         });
 
-        this.dialogRef.afterClosed()
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll))
             .subscribe(res => {
-
-
                 // if ( !res ) {
                 //     return;
                 // }

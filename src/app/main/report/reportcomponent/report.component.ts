@@ -31,7 +31,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     currentCategory: any;
     currentCategoryID: number;
     currentCategoryName: string;
-
     // Vertical Stepper
     reportStep: FormGroup;
     companyStep: FormGroup;
@@ -45,7 +44,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     tempStep: FormGroup;
     timeStep: FormGroup;
     outputStep: FormGroup;
-
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -65,28 +63,17 @@ export class ReportComponent implements OnInit, OnDestroy {
     public loadingSubjectMaxTime = new BehaviorSubject<boolean>(false);
     public loadingSubjectMinTime = new BehaviorSubject<boolean>(false);
     public loadingSubjectOutPut = new BehaviorSubject<boolean>(false);
-
     private loadingReport = new BehaviorSubject<any>([]);
-
     dataSource: ReportDataSource;
-
     dataSourceReport: ReportDataSource;
     dataSourceCompany: ReportDataSource;
     dataSourceGroup: ReportDataSource;
     dataSourceUnit: ReportDataSource;
     dataSourceDriver: ReportDataSource;
     dataSourceEvent: ReportDataSource;
-
     filter_string: string = '';
     method_string: string = 'report';
-
-
-
-    reportColumns = [
-        'id',
-        'name',
-    ];
-
+    reportColumns = ['id', 'name'];
     public mask = {
         mask: [/[0-9]/, /[0-9]/, ':', /[0-5]/, /[0-9]/]
     };
@@ -95,9 +82,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     selectedIndex: number = 0;
     selectedRange: string = '';
     showRangePicker: boolean = false;
-
     entered_report_param: ReportDetail = {};
-
     reportSelection = new SelectionModel<Element>(false, []);
     companywholeSelection = new SelectionModel<Element>(false, []);
     companySelection = new SelectionModel<Element>(false, []);
@@ -105,27 +90,19 @@ export class ReportComponent implements OnInit, OnDestroy {
     unitSelection = new SelectionModel<Element>(false, []);
     driverSelection = new SelectionModel<Element>(false, []);
     eventSelection = new SelectionModel<Element>(false, []);
-
     isWholeCompany: boolean = false;
     isWholeGroup: boolean = false;
     editable: boolean = true;
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    @ViewChild(MatPaginator, { static: true })
-    paginatorReport: MatPaginator;
-    @ViewChild('paginatorCompany', { read: MatPaginator })
-    paginatorCompany: MatPaginator;
-    @ViewChild('paginatorGroup', { read: MatPaginator })
-    paginatorGroup: MatPaginator;
-    @ViewChild('paginatorUnit', { read: MatPaginator })
-    paginatorUnit: MatPaginator;
-    @ViewChild('paginatorDriver', { read: MatPaginator })
-    paginatorDriver: MatPaginator;
-    @ViewChild('paginatorEvent', { read: MatPaginator })
-    paginatorEvent: MatPaginator;
-
+    @ViewChild(MatPaginator, { static: true }) paginatorReport: MatPaginator;
+    @ViewChild('paginatorCompany', { read: MatPaginator }) paginatorCompany: MatPaginator;
+    @ViewChild('paginatorGroup', { read: MatPaginator }) paginatorGroup: MatPaginator;
+    @ViewChild('paginatorUnit', { read: MatPaginator }) paginatorUnit: MatPaginator;
+    @ViewChild('paginatorDriver', { read: MatPaginator }) paginatorDriver: MatPaginator;
+    @ViewChild('paginatorEvent', { read: MatPaginator }) paginatorEvent: MatPaginator;
     @ViewChild('stepper') private myStepper: MatStepper;
+
     constructor(
         private reportService: ReportService,
         private reportResultService: ReportResultService,
@@ -135,40 +112,22 @@ export class ReportComponent implements OnInit, OnDestroy {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-
-
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
-
-        // Set the private defaults
         this._unsubscribeAll = new Subject();
-
         this.filter_string = '';
         this.isWholeCompany = false;
         this.editable = true;
-
     }
-
-    // reloadComponent(param: any) {
-    //     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    //     this.router.onSameUrlNavigation = 'reload';
-    //     this.router.navigate([`/report/reportcomponent/${param}`]);
-    // }
-
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(routeParams => {
-
-            // this.reloadComponent(routeParams.id);
             this.currentCategory = routeParams.id;
             this.currentCategoryID = this.currentCategory.split('_')[0];
             this.currentCategoryName = this.currentCategory.split('_')[1];
             this.initBehaviorSubjects();
-
-
             this.dataSourceReport = new ReportDataSource(this.reportService);
             this.dataSourceCompany = new ReportDataSource(this.reportService);
             this.dataSourceGroup = new ReportDataSource(this.reportService);
@@ -178,7 +137,6 @@ export class ReportComponent implements OnInit, OnDestroy {
             setTimeout(() => {
                 this.dataSourceReport.loadReport(0, 5, this.currentCategoryID, '', "report_clist");
             });
-
             // Vertical Stepper form stepper
             this.reportStep = this._formBuilder.group({
                 report: [null, Validators.required],
@@ -187,7 +145,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 
             this.companyStep = this._formBuilder.group({
                 filterstring: [null],
-                // company: [null, Validators.required],
                 wholeCompany: null
             });
 
@@ -238,8 +195,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 
             this.outputStep = this._formBuilder.group({
                 screen: [null],
-                // excel : [null],
-                // pdf : [null],
             });
 
             this.dateStep.get('selectDate').setValue('today');
@@ -254,22 +209,24 @@ export class ReportComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngAfterViewInit() {
+        setTimeout(() => {
+            merge(this.paginatorReport.page)
+                .pipe(tap(() => { this.loadReport(this.method_string) }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
+        })
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     selectWholeCompany() {
         this.isWholeCompany = this.companyStep.get('wholeCompany').value;
-
-
         if (this.isWholeCompany) {
             this.loadingSubjectGroup.next(false);
             this.loadingSubjectUnit.next(false);
         } else {
-
-            // this.dataSourceUnit = new ReportDataSource(this.reportService);
-
-            // setTimeout(() => {
-            //     this.dataSourceGroup.loadGroup0, 5, 0, '', 'group_clist');
-            //     this.dataSourceUnit.loadReport0, 5, 0, '', 'unit_clist');
-            // });
-
             this.loadingSubjectGroup.next(true);
             this.loadingSubjectUnit.next(true);
         }
@@ -277,29 +234,19 @@ export class ReportComponent implements OnInit, OnDestroy {
 
     selectWholeGroup() {
         this.isWholeGroup = this.groupStep.get('wholeGroup').value;
-
-
         if (this.isWholeGroup) {
             this.loadingSubjectUnit.next(false);
         } else {
-            // this.dataSourceUnit = new ReportDataSource(this.reportService);
-
-            // setTimeout(() => {
-            //     this.dataSourceUnit.loadReport0, 5, 0, '', 'unit_clist');
-            // });
-
             this.loadingSubjectUnit.next(true);
         }
     }
 
     checkOneCompany() {
-
         if (this.companySelection.selected.length == 0) {
             alert("Please choose one company");
         } else {
             if (!this.isWholeCompany) {
                 this.dataSourceGroup = new ReportDataSource(this.reportService);
-
                 this.dataSourceGroup.loadGroup(0, 5, this.companySelection.selected[0].id, '', 'group_clist')
                 this.myStepper.selected.completed = true;
             }
@@ -309,17 +256,14 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
 
     checkOneGroup() {
-
         if (this.groupSelection.selected.length == 0) {
             alert("Please choose one group");
         } else {
             if (!this.isWholeGroup) {
                 this.dataSourceUnit = new ReportDataSource(this.reportService);
-
                 this.dataSourceUnit.loadGroup(0, 5, this.groupSelection.selected[0].id, '', 'unit_clist')
                 this.myStepper.selected.completed = true;
             }
-
             this.myStepper.next();
         }
     }
@@ -327,8 +271,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     checkDateTime() {
         let fromDate = this.dateStep.get('start');
         let endDate = this.dateStep.get('end');
-
-
         if (this.loadingSubjectDateRange.getValue() && (fromDate.value == null || endDate.value == null)) {
             alert("Please choose Date correctly");
         } else {
@@ -337,7 +279,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
 
     isCheckedRow(row: any): boolean {
-        //
         if (this.method_string == 'company') {
             const found = this.companySelection.selected.find(el => el.id === row.id);
             if (found) { return true; }
@@ -362,23 +303,6 @@ export class ReportComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngAfterViewInit() {
-
-        setTimeout(() => {
-            merge(this.paginatorReport.page)
-                .pipe(
-                    tap(() => {
-                        this.loadReport(this.method_string)
-                    }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
-        })
-    }
-
-    ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
     loadReport(method_string: string) {
         if (method_string == 'report') {
             this.dataSourceReport.loadReport(this.paginatorReport.pageIndex, this.paginatorReport.pageSize, this.currentCategoryID, this.filter_string, `${method_string}_clist`)
@@ -400,23 +324,18 @@ export class ReportComponent implements OnInit, OnDestroy {
             case 'report':
                 this.paginatorReport.pageIndex = 0;
                 break;
-
             case 'company':
                 this.paginatorCompany.pageIndex = 0;
                 break;
-
             case 'group':
                 this.paginatorGroup.pageIndex = 0;
                 break;
-
             case 'unit':
                 this.paginatorUnit.pageIndex = 0;
                 break;
-
             case 'driver':
                 this.paginatorDriver.pageIndex = 0;
                 break;
-
             case 'event':
                 this.paginatorEvent.pageIndex = 0;
                 break;
@@ -426,42 +345,30 @@ export class ReportComponent implements OnInit, OnDestroy {
     onKeyFilter(event: any, method: string) {
         this.filter_string = event.target.value;
         this.method_string = method;
-
-
-
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-
             this.managePageIndex(this.method_string);
             this.loadReport(this.method_string);
         }
-
-
     }
 
     clearFilter(method: string) {
-
         this.filter_string = '';
         switch (method) {
             case 'report':
                 this.reportStep.get('filterstring').setValue(this.filter_string);
                 break;
-
             case 'company':
                 this.companyStep.get('filterstring').setValue(this.filter_string);
                 break;
-
             case 'group':
                 this.groupStep.get('filterstring').setValue(this.filter_string);
                 break;
-
             case 'unit':
                 this.unitStep.get('filterstring').setValue(this.filter_string);
                 break;
-
             case 'driver':
                 this.driverStep.get('filterstring').setValue(this.filter_string);
                 break;
-
             case 'event':
                 this.eventStep.get('filterstring').setValue(this.filter_string);
                 break;
@@ -476,15 +383,10 @@ export class ReportComponent implements OnInit, OnDestroy {
             alert("Please select one Report!");
             this.initBehaviorSubjects();
         } else {
-
-
             let selectedReportid = Number(this.reportSelection.selected[0]);
             this.selectedReport = this.reportService.report_cList.find(i => i.id == selectedReportid);
-
-
-            this.reportService.getReportParams(selectedReportid, this.selectedReport.apimethod)
+            this.reportService.getReportParams(selectedReportid, this.selectedReport.apimethod).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((res: any) => {
-
                     for (let i = 0; i < res.TrackingXLAPI.DATA.length; i++) {
                         this.loadingReport.next(res.TrackingXLAPI.DATA[i].Data);
                     }
@@ -495,59 +397,40 @@ export class ReportComponent implements OnInit, OnDestroy {
                     this.loadingSubjectCompany.next(true);
                     this.dataSourceCompany = new ReportDataSource(this.reportService);
                     this.dataSourceCompany.loadReport(0, 5, 0, this.filter_string, 'company_clist');
-
-
-
                 } else if (params == 'groupids') {
                     this.loadingSubjectGroup.next(true);
-
                 } else if (params == 'unitids') {
                     this.loadingSubjectUnit.next(true);
-
                 } else if (params == 'driverids') {
                     this.loadingSubjectDriver.next(true);
-
                 } else if (params == 'datefrom' || params == 'dateto') {
                     this.loadingSubjectDate.next(true);
-
                 } else if (params == 'eventids') {
                     this.loadingSubjectEvent.next(true);
-
                 } else if (params == 'maxspeed') {
                     this.loadingSubjectMaxSpeed.next(true);
-
                 } else if (params == 'minspeed') {
                     this.loadingSubjectMinSpeed.next(true);
-
                 } else if (params == 'maxdistance') {
                     this.loadingSubjectMaxDistance.next(true);
-
                 } else if (params == 'mindistance') {
                     this.loadingSubjectMinDistance.next(true);
-
                 } else if (params == 'maxtemp') {
                     this.loadingSubjectMaxTemp.next(true);
-
                 } else if (params == 'mintemp') {
                     this.loadingSubjectMinTemp.next(true);
-
                 } else if (params == 'maxtime') {
                     this.loadingSubjectMaxTime.next(true);
-
                 } else if (params == 'mintime') {
                     this.loadingSubjectMinTime.next(true);
-
                 }
-
             })
         }
     }
 
     selectionChange($event: StepperSelectionEvent): void {
-
         if ($event.selectedIndex == 1) {
             this.method_string = 'company';
-            // this.paginatorCompany.pageIndex = 0;
         } else if ($event.selectedIndex == 2) {
             this.method_string = 'group';
         } else if ($event.selectedIndex == 3) {
@@ -557,11 +440,9 @@ export class ReportComponent implements OnInit, OnDestroy {
         } else if ($event.selectedIndex == 6) {
             this.method_string = 'event'
         }
-        //
     }
 
     initBehaviorSubjects() {
-
         this.loadingSubjectCompany.next(false);
         this.loadingSubjectGroup.next(false);
         this.loadingSubjectUnit.next(false);
@@ -576,20 +457,9 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.loadingSubjectMaxTime.next(false);
         this.loadingSubjectMinTime.next(false);
         this.loadingSubjectOutPut.next(false);
-
-        // this.company_flag = false;
-        // this.loadingReport.complete();
-
-        // if (this.myStepper.selectedIndex != 0) {
-        //     this.myStepper.selectedIndex = 0;
-        // };
-
-        // this.selectedIndex = 0;
     }
 
     paginatorClick(paginator) {
-
-
         if (this.method_string == 'company') {
             this.dataSourceCompany.loadReport(paginator.pageIndex, paginator.pageSize, 0, this.filter_string, `${this.method_string}_clist`)
         } else if (this.method_string == 'group') {
@@ -605,7 +475,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 
     dateFormat(date: any) {
         let str = '';
-
         if (date != '') {
             str =
                 ("00" + (date.getMonth() + 1)).slice(-2)
@@ -615,9 +484,6 @@ export class ReportComponent implements OnInit, OnDestroy {
                 + ("00" + date.getMinutes()).slice(-2)
                 + ":" + ("00" + date.getSeconds()).slice(-2);
         }
-
-
-
         return str;
     }
 
@@ -626,25 +492,16 @@ export class ReportComponent implements OnInit, OnDestroy {
         if (date != '') {
             str = ("00" + (date.getMonth() + 1)).slice(-2) + "/" + ("00" + date.getDate()).slice(-2) + "/" + date.getFullYear();
         }
-
-
-
         return str;
     }
 
     paramTimeFormat(time) {
-        // Check correct time format and split into components
         time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
         if (time.length > 1) { // If time format correct
             time = time.slice(1); // Remove full string match value
-
-
             time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
             time[0] = +(time[0] % 12) < 10 ? '0' + time[0] % 12 : time[0] % 12 || 12; // Adjust hours
         }
-
-
         return time.join(''); // return adjusted time or original string
     }
 
@@ -653,15 +510,11 @@ export class ReportComponent implements OnInit, OnDestroy {
         if (date != '') {
             str = ("00" + date.getHours()).slice(-2) + ":" + ("00" + date.getMinutes()).slice(-2);
         }
-
-
-
         return this.paramTimeFormat(str);
     }
 
 
     onDateRangeChange($event) {
-
         if (this.selectedRange == 'daterange') {
             this.showRangePicker = true;
             this.loadingSubjectDateRange.next(true);
@@ -672,8 +525,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
 
     finishVerticalStepper(): void {
-
-
         this.entered_report_param.reportname = this.selectedReport.apimethod || null;
         this.entered_report_param.runondate = this.paramDateFormat(new Date()) + " " + this.currentTimeFormat(new Date());
         this.entered_report_param.companyid = this.companySelection.selected[0] ? this.companySelection.selected[0].id : null
@@ -699,8 +550,6 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.entered_report_param.maxtime = this.timeStep.get('maxtime').value ? Number(this.timeStep.get('maxtime').value.split(':')[0]) * 60 + Number(this.timeStep.get('maxtime').value.split(':')[1]) : null;
         this.entered_report_param.mintime = this.timeStep.get('mintime').value ? Number(this.timeStep.get('mintime').value.split(':')[0]) * 60 + Number(this.timeStep.get('mintime').value.split(':')[1]) : null;
 
-
-
         for (let param in this.entered_report_param) {
             if (this.entered_report_param[param] === null) {
                 delete this.entered_report_param[param];
@@ -708,15 +557,10 @@ export class ReportComponent implements OnInit, OnDestroy {
         }
 
         localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));
-
-
-
         this.router.navigate(['report/reportresult']);
-
     }
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
-
         return this.loadingReport.asObservable();
     }
 
@@ -724,7 +568,6 @@ export class ReportComponent implements OnInit, OnDestroy {
      * Disconnect
      */
     disconnect(): void {
-
         this.loadingReport.complete();
         this.loadingSubjectCompany.complete();
         this.loadingSubjectGroup.complete();

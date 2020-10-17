@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -15,8 +15,7 @@ export class AnalyticsDashboardService implements Resolve<any>
      */
     constructor(
         private _httpClient: HttpClient
-    )
-    {
+    ) {
     }
 
     /**
@@ -26,12 +25,10 @@ export class AnalyticsDashboardService implements Resolve<any>
      * @param {RouterStateSnapshot} state
      * @returns {Observable<any> | Promise<any> | any}
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
-    {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         return new Promise((resolve, reject) => {
 
             Promise.all([
-                this.getWidgets()
             ]).then(
                 () => {
                     resolve();
@@ -46,14 +43,94 @@ export class AnalyticsDashboardService implements Resolve<any>
      *
      * @returns {Promise<any>}
      */
-    getWidgets(): Promise<any>
-    {
-        return new Promise((resolve, reject) => {
-            this._httpClient.get('api/analytics-dashboard-widgets')
-                .subscribe((response: any) => {
-                    this.widgets = response;
-                    resolve(response);
-                }, reject);
+
+    dashboardClist(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        if (name == '') {
+            let params = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('method', method);
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
+                params: params
+            });
+        } else {
+            let params = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${name}^`)
+                .set('method', method);
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
+                params: params
+            });
+        }
+    }
+
+    getDashboardClips(): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('method', 'GetDashboardClips');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
         });
     }
+
+    dashboardSave(dashboard): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', dashboard.id.toString())
+            .set('name', dashboard.name.toString())
+            .set('isactive', dashboard.isactive.toString())
+            .set('timeselection', dashboard.timeselection.toString())
+            .set('groupselection', dashboard.groupselection.toString())
+            .set('method', 'dashboard_save');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+    dashboardDelete(dashboardid): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', dashboardid.toString())
+            .set('method', 'dashboard_delete');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    dashboard_clip_save(widgets: any = []): Observable<any> {
+        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let token: string = localStorage.getItem('current_token') || '';
+        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const body = {
+            "data": widgets,
+            "method": "dashboard_clip_save",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
+        }
+        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+            headers: header_detail,
+        });
+    }
+
+    // getWidgets(): Promise<any> {
+    //     return new Promise((resolve, reject) => {
+    //         this._httpClient.get('api/analytics-dashboard-widgets')
+    //             .subscribe((response: any) => {
+    //                 this.widgets = response;
+    //                 resolve(response);
+    //             }, reject);
+    //     });
+    // }
 }

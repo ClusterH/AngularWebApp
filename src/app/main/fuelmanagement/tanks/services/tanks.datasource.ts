@@ -1,8 +1,7 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
-import { Observable, BehaviorSubject, of, Subject } from 'rxjs';
+import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
-import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service'
-import { TanksComponent } from "app/main/fuelmanagement/tanks/tanks/tanks.component";
 
 export class TanksDataSource extends DataSource<any> {
     private tanksSubject = new BehaviorSubject<any>([]);

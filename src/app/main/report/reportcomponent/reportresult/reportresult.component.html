@@ -1,28 +1,25 @@
 <div id="result" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center_table center">
-
         <!-- HEADER -->
-        <div class="header accent mb-12 py-12" 
-             fxLayout="column" fxLayoutAlign="center start"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
-
+        <div class="header accent mb-12 py-12" fxLayout="column" fxLayoutAlign="center start" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
             <!-- APP TITLE -->
             <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start start">
                 <div class="" fxLayout="column" fxLayoutAlign="start start">
-                    <h3><strong>Report Type:</strong></h3>
-                    <span><strong>Run On:</strong></span>
-                    <span><strong>Company:</strong></span>
-                    <span *ngIf="entered_report_params.groupname"><strong>Group:</strong></span>
-                    <span *ngIf="entered_report_params.unitname"><strong>Unit:</strong></span>
-                    <span><strong>From:</strong></span>
-                    <span><strong>To:</strong></span>
-                    <span><strong>Total:</strong></span>
+                    <h3><strong>{{ 'REPORT.REPORTTYPE' | translate }}:</strong></h3>
+                    <span><strong>{{ 'REPORT.RUNON' | translate }}:</strong></span>
+                    <span><strong>{{ 'REPORT.COMPANY' | translate }}:</strong></span>
+                    <span
+                        *ngIf="entered_report_params.groupname"><strong>{{ 'REPORT.GROUP' | translate }}:</strong></span>
+                    <span
+                        *ngIf="entered_report_params.unitname"><strong>{{ 'REPORT.UNIT' | translate }}:</strong></span>
+                    <span><strong>{{ 'REPORT.FROM' | translate }}:</strong></span>
+                    <span><strong>{{ 'REPORT.TO' | translate }}:</strong></span>
+                    <span><strong>{{ 'REPORT.TOTAL' | translate }}:</strong></span>
                 </div>
                 <div class="ml-20" fxLayout="column" fxLayoutAlign="start start">
                     <h3>{{reportName}}</h3>
@@ -34,7 +31,7 @@
                     <span>{{entered_report_params.dateto}}</span>
                     <span>{{dataSource.totalLength}}</span>
                 </div>
-                    
+
                 <!-- <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon> -->
@@ -42,77 +39,55 @@
                     {{ 'USERS.USERS' | translate }}
                 </span> -->
             </div>
-
             <div fxLayout="row" fxLayoutAlign="start start">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     picture_as_pdf
                 </mat-icon>
-
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     picture_as_pdf
                 </mat-icon>
             </div>
         </div>
-
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                    <mat-spinner
-                        color="accent" 
-                        mode="indeterminate"
-                        diameter="50"
-                        style="margin:0 auto;">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
                     </mat-spinner>
                 </div>
             </div>
-
-            <mat-table class="report-table font-size-10" *ngIf="dataSource.totalLength > 0"
-                        #table [dataSource]="dataSource"
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 100%;">
-
-                <ng-container *ngFor="let disCol of dataSource.displayedColumns" matColumnDef={{disCol}} >
+            <mat-table class="report-table font-size-10" *ngIf="dataSource.totalLength > 0" #table
+                [dataSource]="dataSource" [@animateStagger]="{value:'50'}" fusePerfectScrollbar style="width: 100%;">
+                <ng-container *ngFor="let disCol of dataSource.displayedColumns" matColumnDef={{disCol}}>
                     <mat-header-cell *matHeaderCellDef>{{disCol}}</mat-header-cell>
                     <mat-cell *matCellDef="let report">{{report[disCol]}}</mat-cell>
                 </ng-container>
-
                 <mat-header-row *matHeaderRowDef="dataSource.displayedColumns; sticky:true"></mat-header-row>
-
-                <mat-row  *matRowDef="let report; columns: dataSource.displayedColumns;"
-                            class="report font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let report; columns: dataSource.displayedColumns;" class="report font-size-10"
+                    matRipple>
                 </mat-row>
-
             </mat-table>
-
-            <div *ngIf="dataSource.totalLength == 0" class="m-24" fxLayout="row" fxLayoutAlign="center center" style="color:rgb(90, 90, 90);">
-                <h1>No Data Found</h1>
+            <div *ngIf="dataSource.totalLength == 0" class="m-24" fxLayout="row" fxLayoutAlign="center center"
+                style="color:rgb(90, 90, 90);">
+                <h1>{{ 'REPORT.NOFOUNDDATA' | translate }}</h1>
             </div>
-
         </div>
         <div>
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
-
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

@@ -1,71 +1,60 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRippleModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
 import { NgxDnDModule } from '@swimlane/ngx-dnd';
-
-import { FuseSharedModule } from '@fuse/shared.module';
-import { FuseSidebarModule } from '@fuse/components';
-
 import { TodoService } from 'app/main/logistic/jobmanagement/todo/todo.service';
 import { TodoComponent } from 'app/main/logistic/jobmanagement/todo/todo.component';
 import { TodoMainSidebarComponent } from 'app/main/logistic/jobmanagement/todo/sidebars/main/main-sidebar.component';
 import { TodoListItemComponent } from 'app/main/logistic/jobmanagement/todo/todo-list/todo-list-item/todo-list-item.component';
 import { TodoListComponent } from 'app/main/logistic/jobmanagement/todo/todo-list/todo-list.component';
 import { TodoDetailsComponent } from 'app/main/logistic/jobmanagement/todo/todo-details/todo-details.component';
+import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes: Routes = [
     {
-        path     : 'all',
+        path: 'all',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path     : 'all/:todoId',
+        path: 'all/:todoId',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path     : 'tag/:tagHandle',
+        path: 'tag/:tagHandle',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path     : 'tag/:tagHandle/:todoId',
+        path: 'tag/:tagHandle/:todoId',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path     : 'filter/:filterHandle',
+        path: 'filter/:filterHandle',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path     : 'filter/:filterHandle/:todoId',
+        path: 'filter/:filterHandle/:todoId',
         component: TodoComponent,
-        resolve  : {
+        resolve: {
             todo: TodoService
         }
     },
     {
-        path      : '**',
+        path: '**',
         redirectTo: 'all'
     }
 ];
@@ -78,28 +67,12 @@ const routes: Routes = [
         TodoListComponent,
         TodoDetailsComponent
     ],
-    imports     : [
+    imports: [
         RouterModule.forChild(routes),
-
-        MatButtonModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
         MatMenuModule,
-        MatRippleModule,
-        MatSelectModule,
-
         NgxDnDModule,
-
-        FuseSharedModule,
-        FuseSidebarModule
+        SharedModule
     ],
-    providers   : [
-        TodoService
-    ]
+    providers: [TodoService]
 })
-export class TodoModule
-{
-}
+export class TodoModule { }

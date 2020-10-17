@@ -1,64 +1,52 @@
 <div [ngSwitch]="view" class="views" (click)="$event.stopPropagation()">
-
     <div class="view" *ngSwitchCase="'main'" [@slideInLeft]>
-
         <!-- SIDENAV HEADER -->
         <div class="header px-24" [ngClass]="board.settings.color" fxLayout="column" fxLayoutAlign="center center">
-            <div>Settings</div>
+            <div class="h2">{{ 'BOARD.SETTINGS' | translate }}</div>
         </div>
         <!-- / SIDENAV HEADER -->
-
         <!-- SIDENAV CONTENT -->
         <div class="content py-16" fusePerfectScrollbar>
-
             <div class="nav material2">
                 <div class="nav-item">
                     <div class="nav-link" matRipple (click)="view = 'board-color'">
                         <mat-icon class="nav-link-icon">color_lens</mat-icon>
-                        <p class="title">Board Color</p>
+                        <p class="title">{{ 'BOARD.BOARDCOLOR' | translate }}</p>
                     </div>
                 </div>
-
                 <div class="nav-item">
                     <div class="nav-link" matRipple (click)="toggleCardCover()">
                         <mat-icon class="nav-link-icon">photo</mat-icon>
-                        <p fxFlex class="title">Card Cover Images</p>
+                        <p fxFlex class="title">{{ 'BOARD.CARDCOVERIMAGES' | translate }}</p>
                         <mat-icon *ngIf="board.settings.cardcoverimages" class="s-18">check</mat-icon>
                     </div>
                 </div>
-
                 <div class="nav-item">
                     <div class="nav-link" matRipple (click)="toggleSubscription()">
                         <mat-icon class="nav-link-icon">remove_red_eye</mat-icon>
-                        <p fxFlex class="title">Subscribe</p>
+                        <p fxFlex class="title">{{ 'BOARD.SUBSCRIBE' | translate }}</p>
                         <mat-icon *ngIf="board.settings.subscribed" class="s-18">check</mat-icon>
                     </div>
                 </div>
-
                 <div class="nav-item" style="visibility: hidden;">
                     <div class="nav-link" matRipple>
                         <mat-icon class="nav-link-icon">file_copy</mat-icon>
                         <p class="title">Copy Board</p>
                     </div>
                 </div>
-
                 <div class="nav-item">
                     <div class="nav-link" matRipple (click)="deleteBoard()">
                         <mat-icon class="nav-link-icon">delete</mat-icon>
-                        <p class="title">Delete Board</p>
+                        <p class="title">{{ 'BOARD.DELETEBOARD' | translate }}</p>
                     </div>
                 </div>
-
                 <mat-divider></mat-divider>
-
-                    <!-- BOARD SETTING SAVE BUTTON -->
+                <!-- BOARD SETTING SAVE BUTTON -->
                 <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="2" fxFlexOrder.gt-xs="1">
-                    <button mat-raised-button class="header-boards-button mt-12"
-                            [ngClass]="board.settings.color+'-800'"
-                            (click)="setting_save()"
-                            aria-label="boards button">
+                    <button mat-raised-button class="header-boards-button mt-12" [ngClass]="board.settings.color+'-800'"
+                        (click)="setting_save()" aria-label="boards button">
                         <mat-icon class="mr-8">save</mat-icon>
-                        <span>SAVE</span>
+                        <span>{{ 'BOARD.SAVE' | translate }}</span>
                     </button>
                 </div>
                 <!-- / BOARD SETTING SAVE BUTTON -->
@@ -66,23 +54,19 @@
         </div>
         <!-- / SIDENAV CONTENT -->
     </div>
-
     <div class="view" *ngSwitchCase="'board-color'" [@slideInRight]>
-
         <!-- SIDENAV HEADER -->
         <div class="header px-24" [ngClass]="board.settings.color" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>Background Color</div>
+            <div class="h3">{{ 'BOARD.BACKGROUNDCOLOR' | translate }}</div>
             <button mat-icon-button (click)="view ='main'">
                 <mat-icon class="s-16">arrow_back</mat-icon>
             </button>
         </div>
         <!-- / SIDENAV HEADER -->
-
         <!-- SIDENAV CONTENT -->
         <div class="content p-8" fusePerfectScrollbar>
             <scrumboard-board-color-selector></scrumboard-board-color-selector>
         </div>
         <!-- / SIDENAV CONTENT -->
-
     </div>
 </div>

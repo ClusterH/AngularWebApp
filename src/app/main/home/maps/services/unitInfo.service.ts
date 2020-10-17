@@ -23,8 +23,6 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('id', unitid.toString())
             .set('method', 'GetUnitInfo_v1');
-        console.log(params);
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
@@ -39,8 +37,6 @@ export class UnitInfoService {
             .set('validitytime', validitytime.toString())
             .set('emailaddress', emailaddress.toString())
             .set('method', 'ShareLocation');
-        console.log(params);
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
@@ -53,8 +49,6 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('unitid', unitid.toString())
             .set('method', 'LocateUnit');
-        console.log(params);
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
@@ -69,8 +63,6 @@ export class UnitInfoService {
             .set('pageindex', pageindex.toString())
             .set('pagesize', pagesize.toString())
             .set('method', 'GetUnitPOIs');
-        console.log(params);
-
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
@@ -81,7 +73,6 @@ export class UnitInfoService {
         return new Promise((resolve, reject) => {
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
             if (param.historytype == '4') {
                 console.log(param.historytype);
                 let params = new HttpParams()
@@ -90,8 +81,6 @@ export class UnitInfoService {
                     .set('datefrom', param.datefrom.toString())
                     .set('dateto', param.dateto.toString())
                     .set('method', method);
-                console.log(params);
-
                 this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                     headers: headers,
                     params: params
@@ -103,8 +92,6 @@ export class UnitInfoService {
                     .set('unitid', param.unitid.toString())
                     .set('historytype', param.historytype.toString())
                     .set('method', method);
-                console.log(params);
-
                 return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                     headers: headers,
                     params: params

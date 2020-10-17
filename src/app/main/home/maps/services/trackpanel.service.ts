@@ -17,14 +17,12 @@ export class TrackPanelService {
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             this.params = new HttpParams()
-
                 .set('pageindex', pageindex.toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method);
             console.log(this.params);
         } else {
             this.params = new HttpParams()
-
                 .set('pageindex', pageindex.toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', name.toString())

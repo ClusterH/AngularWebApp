@@ -10,9 +10,7 @@ export class VehMarkersDataSource extends DataSource<any> {
     public loading$ = this.loadingSubject.asObservable();
     private _unsubscribeAll: Subject<any>;
 
-    constructor(
-        private _adminVehMarkersService: VehMarkersService,
-    ) {
+    constructor(private _adminVehMarkersService: VehMarkersService) {
         super();
         this._unsubscribeAll = new Subject();
     }

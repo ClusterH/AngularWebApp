@@ -27,7 +27,7 @@ export const locale = {
             "CREATEDBYNAME": "CreatedByName",
             "LASTMODIFIEDDATE": "LastModifiedDate",
             "LASTMODIFIEDBYNAME": "LastModifiedByName",
-
+            "NODATAFOUND": "No Data Found!",
             "GENERAL": "General",
             "AUDIT": "Audit",
 
@@ -38,9 +38,6 @@ export const locale = {
             "DELETE": "Delete",
             "NO": "No",
             "YES": "Yes"
-
-
-
         }
     }
 };

@@ -14,9 +14,9 @@ export const locale = {
             "COMPANY": "Empresa",
             "GROUP": "Grupo",
             "DESCRIPTION": "Descripción",
-           
-            "GENERAL": "General",
-            "AUDIT": "Auditoría",
+
+            "GENERAL": "General",
+            "AUDIT": "Auditoría",
 
             "CONDITION": "Condición",
             "EV_SPEED": "Velocidad",
@@ -59,15 +59,15 @@ export const locale = {
             "FUELOUTSIDERANGECONDITION": "Fuera de un rango",
             "ANYSENSOR": "Cualquier sensor",
             "SENSOR": "Sensor",
-            "ZONEEXITCONDITION":"Saliendo",
-            "ZONEENTERCONDITION":"Entrando",
-            "ZONEENTEROREXITCONDITION":"Entrar o salir",
+            "ZONEEXITCONDITION": "Saliendo",
+            "ZONEENTERCONDITION": "Entrando",
+            "ZONEENTEROREXITCONDITION": "Entrar o salir",
             "SENSORCONDITIONDETAIL1": "Alerta cuando: ",
             "SENSORCONDITIONDETAIL2": "y",
             "DEVICECONDTITIONDETAIL": "Si el dispositivo envía código (s)",
             "ROUTECONDITIONDETAIL": "Si la Unidad sale de la ruta",
             "TOWCONDITIONDETAIL": "Si se remolca la unidad",
-
+            "APPLYTOALL": "Aplicar a todos los vehículos",
             "UNIT": "Unidad",
 
             "DUPLICATE_CONFIRM_MESSAGE": "¿Estás seguro de Duplicar?",
