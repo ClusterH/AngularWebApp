@@ -148,7 +148,7 @@ export class EventDetailService {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params_detail = new HttpParams;
         params_detail = param;
-        console.log(params_detail);
+
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?', {
             headers: header_detail,
             params: params_detail
@@ -159,7 +159,7 @@ export class EventDetailService {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params_detail = new HttpParams;
         params_detail = eventDetail;
-        console.log(params_detail);
+
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx?', {
             headers: header_detail,
             params: params_detail

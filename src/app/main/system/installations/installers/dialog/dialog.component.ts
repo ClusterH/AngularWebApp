@@ -56,7 +56,7 @@ export class InstallerDialogComponent implements OnInit {
 
         if (this.flag == 'edit') {
             this.installer = _data.installerDetail;
-            console.log('dialog===>>>', this.installer);
+
 
         } else {
 

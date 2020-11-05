@@ -32,19 +32,19 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    // console.log(event);
+                    //
                     if (event.body.responseCode == 211 || event.body.responseCode == 210) {
-                        // console.log('211=======>>> interceptor');
+                        //
                         localStorage.removeItem('current_token');
                         alert('Your user has signed in from a different device');
                         this.router.navigate(['/login']);
                     } else if (event.body.responseCode == 100) {
-                        // console.log('100=======>>> interceptor');
+                        //
                         localStorage.setItem('current_token', event.body.token);
                     }
 
                     // if (event.body.token != '') {
-                    //     console.log('211=======>>> interceptor');
+                    //
                     //     localStorage.setItem('current_token', event.body.token);
                     // }
 

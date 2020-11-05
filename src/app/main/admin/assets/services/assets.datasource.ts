@@ -26,7 +26,7 @@ export class AssetsDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll)
             ).subscribe((result: any) => {
-                console.log(result);
+
                 this._adminAssetsService.assetList = result.TrackingXLAPI.DATA;
                 this.assetsSubject.next(this._adminAssetsService.assetList);
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;

@@ -132,10 +132,10 @@ export class CommandsComponent implements OnInit, OnDestroy {
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-                console.log(result);
+
                 let deleteCommand = this._systemCommandsService.commandList.findIndex((deletedcommand: any) => deletedcommand.id == command.id);
                 if (deleteCommand > -1) {
-                    console.log(deleteCommand, this._systemCommandsService.commandList);
+
                     this._systemCommandsService.commandList.splice(deleteCommand, 1);
                     this.dataSource.commandsSubject.next(this._systemCommandsService.commandList);
                     this.dataSource.totalLength = this.dataSource.totalLength - 1;

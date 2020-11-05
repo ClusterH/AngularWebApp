@@ -17,7 +17,7 @@ export class FuelregistryDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getDetails(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        console.log(pageindex, pagesize, name, method);
+
         if (method == 'totank_clist' || method == 'fromtank_clist') {
             method = 'fueltank_clist';
         }

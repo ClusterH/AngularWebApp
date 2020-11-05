@@ -65,7 +65,7 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(tanksEnglish, tanksSpanish, tanksFrench, tanksPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.tank = data;
         });
         if (isEmpty(this.tank)) {
@@ -165,18 +165,18 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        console.log(this.tankDetailService.unit_clist_item);
+
         let methodString = item;
         this.method_string = item.split('_')[0];
-        console.log(this.method_string);
+
         let selected_element_id = this.tankForm.get(`${this.method_string}`).value;
         let clist = this.tankDetailService.unit_clist_item[methodString];
-        console.log(selected_element_id, 'clist===>>>', clist);
+
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-        console.log(currentOptionID);
+
         this.tankForm.get('filterstring').setValue(clist[currentOptionID].name);
         this.filter_string = clist[currentOptionID].name;
-        console.log(this.filter_string);
+
         this.managePageIndex(this.method_string);
         this.loadTankDetail(this.method_string);
     }
@@ -203,8 +203,8 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
 
     setValues() {
         let lastreport = this.tank.lastreport ? new Date(`${this.tank.lastreport}`) : '';
-        console.log(lastreport);
-        console.log('setValue===>>>', this.tank);
+
+
         this.tankForm.get('name').setValue(this.tank.name);
         this.tankForm.get('company').setValue(Number(this.tank.companyid));
         this.tankForm.get('group').setValue(Number(this.tank.groupid));
@@ -282,7 +282,7 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            console.log(this.tankDetail);
+
             this.tankDetailService.saveTankDetail(this.tankDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                 if ((result.responseCode == 200) || (result.responseCode == 100)) {
                     alert("Success!");
@@ -311,7 +311,7 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.tankForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.tankForm.value;
-        console.log(this.tank_detail, currentState);
+
         if (isEqual(this.tank_detail, currentState)) {
             this.router.navigate(['fuelmanagement/tanks/tanks']);
         } else {

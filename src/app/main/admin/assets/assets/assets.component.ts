@@ -118,7 +118,7 @@ export class AssetsComponent implements OnInit, OnDestroy {
     }
 
     deleteAsset(asset: any): void {
-        console.log(asset)
+
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
         dialogConfig.disableClose = true;

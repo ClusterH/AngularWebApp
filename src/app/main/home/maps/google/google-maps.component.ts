@@ -45,6 +45,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     lng: number;
     dataSource: VehMarkersDataSource;
     vehmarkers: any = [];
+    vehmarkers_temp: any = [];
+    unitClist: any = [];
     tmpVehmarkers: marker[];
     zones: marker[];
     routes: marker[];
@@ -70,22 +72,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     @ViewChild('AgmMap') agmMap: AgmMap;
 
-    // managerOptions = {
-    //     drawingControl: true,
-    //     drawingControlOptions: {
-    //       drawingModes: ['polygon'],
-    //       position: google.maps.ControlPosition.BOTTOM_LEFT
-    //     },
-    //     polygonOptions: {
-    //       draggable: true,
-    //       editable: true
-    //     },
-    //     drawingMode: "polygon"
-    //   };
-
-    /**
-     * Constructor
-     */
     constructor(
         private _adminVehMarkersService: VehMarkersService
         , private _adminZonesService: ZonesService
@@ -134,14 +120,13 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             this._adminZonesService.getZones(),
             this._adminRoutesService.getRoutes(),
         ).pipe(takeUntil(this._unsubscribeAll)).subscribe(([marker, zone, route]) => {
-            console.log('marker==========', marker);
-            console.log('zone==========', zone);
-            console.log('route==========', route);
             // this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
             this.vehmarkers = marker.TrackingXLAPI.DATA;
             this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
             this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
-            console.log(route.TrackingXLAPI.DATA[0]);
+            console.log(this.vehmarkers);
+            this.vehmarkers_temp = this.vehmarkers.map(unit => ({ ...unit }));
+            this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
         });
     }
 
@@ -168,7 +153,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     onMapReady(map: any) {
-        console.log(map);
+
         this.map = map;
     }
 
@@ -185,19 +170,12 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     toggleSidebarOpen(key, id?): void {
         if (key == 'unitInfoPanel') {
-            console.log('map->current Unit=====>', id)
             this.unitInfoService.getUnitInfo(id)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
-                    console.log(res);
                     this.currentUnit = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).unit;
-                    console.log(this.currentUnit);
                     this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
-                    console.log(this.currentOperator);
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
-                    console.log(this.currentEvents);
-
                 });
-
             this._unitInfoSidebarService.getSidebar(key).toggleOpen();
         } else if (key == 'filterPanel') {
             if (this.showFilters) {
@@ -273,12 +251,28 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     filterToggleOff(event) {
-        console.log(event);
         this.showFilters = false;
+        this.lat = 25.7959;
+        this.lng = -80.2871;
+        this.zoom = 12;
+    }
+    filterUnits(event: any) {
+        console.log(event);
+        this.vehmarkers_temp = event;
+        this.lat = 25.7959;
+        this.lng = -80.2871;
+        this.zoom = 12;
+    }
+
+    unitLocateNow(event: any) {
+        console.log(event);
+        this.lat = event.lat;
+        this.lng = event.lng;
+        this.zoom = 16;
     }
 
     unitInfoToggleOff(event) {
-        console.log('unitInfoPanel Closed =======>', event);
+
     }
 
     setVisible(value) {
@@ -367,16 +361,9 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     };
 
     showEventLocation(event: any) {
-        console.log(event);
         this.eventLocation = event;
         this.isClickedEvent = true;
-        // this.agmMap.mapReady.subscribe(map => {
-        //     const bounds: LatLngBounds = new google.maps.LatLngBounds();
-        //     for (let mm of this.eventLocation) {
-        //         bounds.extend(new google.maps.LatLng(mm.latitude, mm.longitude));
-        //     }
-        //     map.fitBounds(bounds);
-        // });
+
         this.lat = event[0].latitude;
         this.lng = event[0].longitude;
     }
@@ -388,29 +375,29 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     showHideTrackPolyline(event: any) {
         // this.agmMap.fitBounds('true');
-        console.log(event);
+
 
         if (event.option == 'showhide' || event.option == 'delete') {
             if (event.tracks.length == 0) {
                 this.isTrackUnitHistory = false;
-                console.log('empty map===>>>');
+
                 this.cleanTrackLocation(event.option);
             } else {
-                console.log(event);
+
                 this.isTrackUnitHistory = true;
                 this.trackHistoryPolylines = event.tracks;
             }
         } else if (event.option == 'add') {
             this.trackHistoryPolylines = [];
             this.isTrackUnitHistory = true;
-            console.log(event);
+
             this.trackHistoryPolylines = event.tracks;
-            console.log(this.trackHistoryPolylines);
+
         }
     }
 
     cleanTrackLocation(option?: any) {
-        console.log('clean TrackHistories')
+
         this.isTrackUnitHistory = false;
         if (option == 'delete') {
             this.unitInfoService.TrackHistoryList.next(null);
@@ -423,7 +410,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         // for (let mm of this.vehmarkers) {
         bounds.extend(new google.maps.LatLng(this.lat, this.lng));
         // }
-        console.log(bounds);
+
         this.map.fitBounds(bounds);
 
         let zoomChangeBoundsListener = google.maps.event.addListenerOnce(this.map, 'bounds_changed', function (event) {
@@ -435,7 +422,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     centerTrackLocation(event: any) {
-        console.log(event);
+
         this.isTrackUnitHistory = true;
         if (event.option == 'trackList') {
             const bounds: LatLngBounds = new google.maps.LatLngBounds();
@@ -443,7 +430,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                 bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
             }
 
-            console.log(bounds);
+
             this.map.fitBounds(bounds);
         } else if (event.option == 'trackItem') {
             this.lat = Number(event.track.lat);

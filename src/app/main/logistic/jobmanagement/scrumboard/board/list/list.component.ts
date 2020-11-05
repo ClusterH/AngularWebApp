@@ -148,23 +148,23 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
      */
     // onDrop(ev, cardid, listid): void
     // {
-    //     console.log("card: ", ev, cardid, listid);
+    //
     //     // this._scrumboardService.updateBoard(this.board);
     // }
 
     onDropCard(ev, list): void {
-        console.log("drop card: ", ev, list.id);
+
         this.destinationListId = list.id;
         this._scrumboardService.draggedCardId
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(cardId => {
                 this.draggedCardId = cardId;
             });
-        console.log(this.draggedCardId, this.destinationListId);
+
         this._scrumboardService.cardMove(this.draggedCardId, this.destinationListId);
     }
 
     onDragCard(ev, cardid, listid): void {
-        console.log("drag card: ", ev, cardid, listid);
+
         this._scrumboardService.draggedCardId.next(cardid);
     }
 }

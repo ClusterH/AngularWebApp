@@ -85,7 +85,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     ngAfterViewInit() { }
 
     ngOnChanges() {
-        console.log(this.currentUnit);
+
         this.goOptionPanel('mainpanel');
         this.playbackDateRange = '0';
     }
@@ -98,7 +98,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
 
     showEventLocation(event, method) {
         if (method == 'every') {
-            console.log(event.latitude, event.longitude);
+
             let eventGeoLocation = [];
             eventGeoLocation[0] = {
                 latitude: event.latitude,
@@ -127,7 +127,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     sendLinkEmail() {
-        console.log(this.linkedEmail, this.expireTime, this.expireTimeUnit);
+
         if (this.expireTimeUnit == 'minutes') {
             let temp = this.expireTime * 60;
             this.expireTime = temp;
@@ -138,7 +138,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
 
         this.unitInfoService.sendShareLocation(this.currentUnit.id, this.expireTime, this.linkedEmail)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                console.log(res);
+
                 if (res.TrackingXLAPI.DATA[0].result == '1') {
                     alert('Link was sent!');
                     this.currentChannel = 'mainpanel';
@@ -149,7 +149,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     showPositionDialog(option: string) {
-        console.log(option);
+
         if (option == 'direction') {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = 'custom-dialog-container';
@@ -157,7 +157,7 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
             dialogConfig.data = { unit: { id: this.currentUnit.id, name: this.currentUnit.name, latitude: Number(this.currentUnit.latitude), longitude: Number(this.currentUnit.longitude) }, flag: option };
             const dialogRef = this._matDialog.open(AutocompleteDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-                console.log(result);
+
             });
         } else {
             const dialogConfig = new MatDialogConfig();
@@ -166,13 +166,13 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
             dialogConfig.data = { unit: { name: this.currentUnit.name, latitude: Number(this.currentUnit.latitude), longitude: Number(this.currentUnit.longitude) }, flag: option };
             const dialogRef = this._matDialog.open(UnitLinkDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-                console.log(result);
+
             });
         }
     }
 
     onChangePlaybackDateOption(event: any) {
-        console.log(event);
+
     }
 
     playbackHistory() {
@@ -186,13 +186,13 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            console.log(this.playbackDateRange);
+
             params.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) + " " + this.paramTimeFormat(this.dateStep.get('starttime').value);
             params.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) + " " + this.paramTimeFormat(this.dateStep.get('endtime').value);
         }
 
         this.unitInfoService.playbackHistory(params, 'GetTrackIDandName').then(idandname => {
-            console.log(idandname);
+
             if (idandname.responseCode == 100) {
                 // this.unitInfoService.TrackID = res.TrackingXLAPI.DATA[0].id;
                 // this.unitInfoService.TrackName = res
@@ -200,9 +200,9 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
                     .then(history => {
                         if (history.responseCode == 100) {
                             this.count = this.count + 1;
-                            console.log(history, this.count);
+
                             let color = this.random_rgba();
-                            console.log(color);
+
                             this.unitInfoService.TrackHistoryList.next({
                                 id: idandname.TrackingXLAPI.DATA[0].id,
                                 name: idandname.TrackingXLAPI.DATA[0].name,

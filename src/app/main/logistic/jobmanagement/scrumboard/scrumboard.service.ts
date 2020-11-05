@@ -76,7 +76,7 @@ export class ScrumboardService implements Resolve<any>
                 .subscribe((response: any) => {
                     if (response.responseCode == 100) {
                         this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
-                        console.log(this.boards);
+
                         this.onBoardsChanged.next(this.boards);
                         resolve(this.boards);
                     }
@@ -127,7 +127,7 @@ export class ScrumboardService implements Resolve<any>
             this.board.lists.map((list) => {
                 if (list.id === listId) {
                     let id = 0;
-                    console.log(newCard.due);
+
                     let headers = new HttpHeaders();
                     headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
                     let params = new HttpParams()
@@ -287,7 +287,7 @@ export class ScrumboardService implements Resolve<any>
      * @param newCard
      */
     updateCard(card, listId, boardId): Promise<any> {
-        console.log(card, listId, boardId);
+
         this.board.cards.map((_card) => {
             if (_card.id === card.id) {
                 return card;
@@ -316,7 +316,7 @@ export class ScrumboardService implements Resolve<any>
                         params: params
                     })
                         .subscribe((response: any) => {
-                            console.log(response);
+
                             this.newCardID = response.TrackingXLAPI.DATA[0].id;
                             card.id = this.newCardID;
                             this.onBoardChanged.next(this.board);
@@ -410,7 +410,7 @@ export class ScrumboardService implements Resolve<any>
                 params: params
             })
                 .subscribe((response: any) => {
-                    console.log(response);
+
                     this.board.settings.color = color;
                     this.board.settings.subscribed = subscribed;
                     this.board.settings.cardcoverimages = cardcoverimages;
@@ -426,19 +426,19 @@ export class ScrumboardService implements Resolve<any>
             .set('cardid', cardId)
             .set('listid', listId)
             .set('method', "boardcard_move");
-        console.log(cardId, listId);
+
         this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params
         }).subscribe((res: any) => {
-            console.log(res);
+
         });
     }
 
     saveBoardLabel(label, boardId): Promise<any> {
         return new Promise((resolve, reject) => {
             if (label.id == '') {
-                console.log("new label? : ", label.id)
+
                 label.id = '0';
             }
 
@@ -454,7 +454,7 @@ export class ScrumboardService implements Resolve<any>
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 resolve(res);
             }, reject);
         });
@@ -471,7 +471,7 @@ export class ScrumboardService implements Resolve<any>
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 resolve(res);
             }, reject);
         });
@@ -544,7 +544,7 @@ export class ScrumboardService implements Resolve<any>
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 resolve(res);
             }, reject);
         });
@@ -562,7 +562,7 @@ export class ScrumboardService implements Resolve<any>
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 resolve(res);
             }, reject);
         });
@@ -582,7 +582,7 @@ export class ScrumboardService implements Resolve<any>
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 resolve(res);
             }, reject);
         });

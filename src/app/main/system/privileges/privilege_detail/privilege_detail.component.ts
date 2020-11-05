@@ -56,7 +56,7 @@ export class PrivilegeDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(privilegesEnglish, privilegesSpanish, privilegesFrench, privilegesPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.privilege = data;
         });
 
@@ -260,7 +260,7 @@ export class PrivilegeDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.privilegeForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.privilegeForm.value;
-        console.log(this.privilege_detail, currentState);
+
         if (isEqual(this.privilege_detail, currentState)) {
             this.router.navigate(['system/privileges/privileges']);
         } else {

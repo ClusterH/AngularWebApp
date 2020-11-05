@@ -7,10 +7,10 @@
         <!-- CONTENT HEADER -->
         <div class="header accent p-24">
             <div class="title-clips h-52" fxLayout="row" fxLayoutAlign="start center">
-                <div class="h1" fxFlex="30">Dashboards</div>
+                <div class="h1" fxFlex="30">{{ 'ANAYLYTICS.DASHBOARDS' | translate }}</div>
                 <div class="clip-list" *ngIf="isEditClips">
                     <div *ngFor="let clip of dashboardclips_Clist" class="draggable" draggable="true"
-                        (dragend)="addNewWidget(clip)" (click)="addNewWidget(clip)">
+                        (dragend)="addNewWidget(clip)" (click)="addNewWidget(clip)" [matTooltip]="clip.name">
                         <img [src]="clip_img_url + clip.name + '.png'"
                             class="w-40 mat-elevation-z8 chart-icon line-chart">
                     </div>
@@ -21,14 +21,15 @@
                     <div class="time-filter-option" fxLayout="row" fxFlex="50">
                         <form class="time-filter-form" fxLayout="row" fxLayoutAlign="start center">
                             <!-- FILTER ITEM -->
-                            <mat-label style="min-width: max-content;">Time:&nbsp;&nbsp;</mat-label>
+                            <mat-label style="min-width: max-content;">{{ 'ANAYLYTICS.TIME' | translate }}:&nbsp;&nbsp;
+                            </mat-label>
                             <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 140px;">
-                                <mat-select [(value)]="selectedTime">
-                                    <mat-option>None</mat-option>
-                                    <mat-option value="today">Today</mat-option>
-                                    <mat-option value="this_week">This Week</mat-option>
-                                    <mat-option value="this_month">This Month</mat-option>
-                                    <mat-option value="date_range">Date Range</mat-option>
+                                <mat-select [(value)]="selectedTime" (selectionChange)="onChangeToggle($event)">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option value="today">{{ 'ANAYLYTICS.TODAY' | translate }}</mat-option>
+                                    <mat-option value="this_week">{{ 'ANAYLYTICS.THISWEEK' | translate }}</mat-option>
+                                    <mat-option value="this_month">{{ 'ANAYLYTICS.THISMONTH' | translate }}</mat-option>
+                                    <mat-option value="date_range">{{ 'ANAYLYTICS.DATERANGE' | translate }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </form>
@@ -50,34 +51,42 @@
                     <div class="group-filter-option" fxLayout="row" fxFlex="50">
                         <form class="group-filter-form" fxLayout="row" fxLayoutAlign="start center">
                             <!-- FILTER ITEM -->
-                            <mat-label style="min-width: max-content;">Group:</mat-label>
+                            <mat-label style="min-width: max-content;">{{ 'ANAYLYTICS.GROUP' | translate }}:</mat-label>
                             <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 140px;">
-                                <mat-select [(value)]="selectedGroup">
-                                    <mat-option>None</mat-option>
-                                    <mat-option value="vehicle">Vehicle</mat-option>
-                                    <mat-option value="company">Company</mat-option>
-                                    <mat-option value="group">Group</mat-option>
-                                    <mat-option value="vehicletype">Vehicle Type</mat-option>
-                                    <mat-option value="serviceplan">Service Plan</mat-option>
+                                <mat-select [(value)]="selectedGroup" (selectionChange)="onChangeToggle($event)">
+                                    <mat-option value=""></mat-option>
+                                    <mat-option value="vehicle">{{ 'ANAYLYTICS.VEHICLE' | translate }}</mat-option>
+                                    <mat-option value="company">{{ 'ANAYLYTICS.COMPANY' | translate }}</mat-option>
+                                    <mat-option value="group">{{ 'ANAYLYTICS.GROUP' | translate }}</mat-option>
+                                    <mat-option value="vehicletype">{{ 'ANAYLYTICS.VEHICLETYPE' | translate }}
+                                    </mat-option>
+                                    <mat-option value="serviceplan">{{ 'ANAYLYTICS.SERVICEPLAN' | translate }}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </form>
                     </div>
                 </div>
+                <!-- <div class="isSelection-toggle" *ngIf="!isEditClips">
+                    <mat-slide-toggle class="tp-margin primary-fg mr-12" [checked]="isToggled"
+                        (change)="onChangeToggle($event)">
+
+                    </mat-slide-toggle>
+                </div> -->
                 <div class="add-edit-button" *ngIf="!isEditClips" fxFlex="15">
                     <button mat-raised-button class="add-new-widget mr-4" (click)="addDashboard()">
-                        <span>&nbsp;&nbsp;ADD&nbsp;&nbsp;</span>
+                        <span>&nbsp;&nbsp;{{ 'ANAYLYTICS.ADD' | translate }}&nbsp;&nbsp;</span>
                     </button>
                     <button mat-raised-button class="add-new-widget mr-4" (click)="editDashboard()">
-                        <span>&nbsp;&nbsp;EDIT&nbsp;&nbsp;</span>
+                        <span>&nbsp;&nbsp;{{ 'ANAYLYTICS.EDIT' | translate }}&nbsp;&nbsp;</span>
                     </button>
                 </div>
                 <div class="save-cancel-button" *ngIf="isEditClips" fxFlex="15">
                     <button mat-raised-button class="save-dashboard-button mr-4" (click)="saveDashboardClips()">
-                        <span>&nbsp;&nbsp;SAVE&nbsp;&nbsp;</span>
+                        <span>&nbsp;&nbsp;{{ 'ANAYLYTICS.SAVE' | translate }}&nbsp;&nbsp;</span>
                     </button>
                     <button mat-raised-button class="save-dashboard-button" (click)="cancelDashboardClips()">
-                        <span>CANCEL</span>
+                        <span>{{ 'ANAYLYTICS.CANCEL' | translate }}</span>
                     </button>
                 </div>
             </div>
@@ -87,12 +96,6 @@
         <div class="content-card">
             <!-- CONTENT -->
             <div class="content">
-                <!-- <div class="spinner_overlay" *ngIf="loading$ | async">
-                    <div class="spinner_container">
-                        <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
-                        </mat-spinner>
-                    </div>
-                </div> -->
                 <mat-tab-group #tabs *ngIf="loading$ | async" (selectedTabChange)="tabChanged($event)"
                     [(selectedIndex)]="activatedTabIndex">
                     <mat-tab *ngFor="let dashboard of dashboard_Clist; let i = index" [label]="dashboard.name"
@@ -107,7 +110,7 @@
                         </ng-template>
                         <div class="tab-content p-0">
                             <app-layout [isEditClips]="isEditClips" [widgets]="currentTab_widgets"
-                                (editedDashboard)='checkingEdited($event)'>
+                                (editedDashboard)='checkingEdited($event)' (deleteWidgetId)='deleteWidget($event)'>
                             </app-layout>
                         </div>
                     </mat-tab>

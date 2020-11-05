@@ -1,0 +1,18 @@
+<div class="mpg-clip w-100-p h-100-p pt-24">
+    <div class="clip-icon">
+        <img src="assets/icons/dashboard/fuel_clip_icon1.png" class="w-15-p">
+    </div>
+    <div class="detail-popup-menu">
+        <button mat-icon-button aria-label="more" (click)="showDetail()">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <div class="w-100-p h-100-p" fxLayout="column" fxLayoutAlign="center center">
+        <div class="deep-orange-700-fg font-size-72 line-height-72">
+            {{mpg}}
+        </div>
+        <div class="h3 font-weight-500 secondary-text">
+            {{mpgUnits}}
+        </div>
+    </div>
+</div>

@@ -75,7 +75,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(eventsEnglish, eventsSpanish, eventsFrench, eventsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.event = data;
         });
         this.userObjectList = JSON.parse(localStorage.getItem('userObjectList'));
@@ -630,7 +630,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
     goBackUnit() {
         const currentState = this.eventForm.value;
-        console.log(this.event_temp, currentState);
+
         if (isEqual(this.event_temp, currentState)) {
             this.router.navigate(['logistic/events/events']);
         } else {

@@ -283,7 +283,7 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.poiForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.poiForm.value;
-        console.log(this.poi_detail, currentState);
+
         if (isEqual(this.poi_detail, currentState)) {
             this.router.navigate(['admin/poi/pois/pois']);
         } else {

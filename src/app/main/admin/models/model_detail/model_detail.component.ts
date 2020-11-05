@@ -53,7 +53,7 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(modelsEnglish, modelsSpanish, modelsFrench, modelsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.model = data;
         });
         if (isEmpty(this.model)) {
@@ -232,7 +232,7 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.modelForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.modelForm.value;
-        console.log(this.model_detail, currentState);
+
         if (isEqual(this.model_detail, currentState)) {
             this.router.navigate(['admin/models/models']);
         } else {

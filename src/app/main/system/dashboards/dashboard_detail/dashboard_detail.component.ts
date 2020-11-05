@@ -56,7 +56,7 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(dashboardsEnglish, dashboardsSpanish, dashboardsFrench, dashboardsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.dashboard = data;
         });
 
@@ -260,7 +260,7 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.dashboardForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.dashboardForm.value;
-        console.log(this.dashboard_detail, currentState);
+
         if (isEqual(this.dashboard_detail, currentState)) {
             this.router.navigate(['system/dashboards/dashboards']);
         } else {

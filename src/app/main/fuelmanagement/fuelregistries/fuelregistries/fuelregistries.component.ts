@@ -134,13 +134,13 @@ export class FuelregistriesComponent implements OnInit, OnDestroy {
         dialogConfig.data = { fuelregistry, flag: this.flag };
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            console.log(result);
+
             if (result) {
                 let deleteRegistry = this._adminFuelregistriesService.fuelregistryList.findIndex((registry: any) => registry.id == fuelregistry.id);
-                console.log(deleteRegistry);
+
                 if (deleteRegistry > -1) {
                     this._adminFuelregistriesService.fuelregistryList.splice(deleteRegistry, 1);
-                    console.log(this._adminFuelregistriesService.fuelregistryList);
+
                     this.dataSource.fuelregistriesSubject.next(this._adminFuelregistriesService.fuelregistryList);
                 }
             }

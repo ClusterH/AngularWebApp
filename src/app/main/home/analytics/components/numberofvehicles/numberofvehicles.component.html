@@ -1,15 +1,19 @@
 <div class="numberofvehicles-clip w-100-p h-100-p">
+    <div class="clip-icon">
+        <img src="assets/icons/dashboard/vehicle_clip_icon1.png" class="w-15-p">
+    </div>
     <div class="detail-popup-menu">
         <button mat-icon-button aria-label="more" (click)="showDetail()">
             <mat-icon>more_vert</mat-icon>
         </button>
     </div>
-    <div class="w-100-p h-100-p" fxLayout="row" fxLayoutAlign="center center">
-        <div class="font-size-54 font-weight-600 line-height-1 accent-900-fg">
-            {{vehcount}}/
+    <div class="w-100-p h-100-p" style="position: relative;">
+        <div class="font-size-72 line-height-72 accent-700-fg h-100-p" fxLayout="row" fxLayoutAlign="center center">
+            {{vehcount}}
         </div>
-        <div class="font-size-48 font-weight-300 line-height-1">
-            {{vehon}}
+        <div class="pt-12 pl-4 unit-ignition w-100-p" fxLayout="row" fxLayoutAlign="start center">
+            <span class="h4 secondary-text text-truncate">{{ 'ANAYLYTICS.IGNITIONON' | translate }}:</span><span
+                class="h4 ml-8">{{vehon}}</span>
         </div>
     </div>
 </div>

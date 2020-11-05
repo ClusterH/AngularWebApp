@@ -44,7 +44,7 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.unit = unit;
         this.flag = flag;
-        console.log(this.unit, this.flag);
+
     }
 
     ngOnInit() {
@@ -63,14 +63,14 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
         } else if (this.flag == 'direction') {
             this.mapsAPILoader.load().then(() => {
                 // let temp = this.search.map(res => {
-                //     console.log(res);
+                //
                 // })
                 let input = document.getElementById('testtttt');
-                console.log('search==>', this.search);
-                console.log('search==>', input);
+
+
                 let autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement);
-                console.log("autocomplete=>>>>", autocomplete);
-                console.log("searchElementRef=>>>>", this.search.nativeElement);
+
+
                 autocomplete.addListener("place_changed", () => {
                     this.ngZone.run(() => {
                         //get the place result
@@ -85,7 +85,7 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
                         this.latitude = place.geometry.location.lat();
                         this.longitude = place.geometry.location.lng();
                         // this.zoom = 12;
-                        console.log(this.latitude, this.longitude);
+
                     });
                 });
             });

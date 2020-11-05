@@ -62,7 +62,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(devicesEnglish, devicesSpanish, devicesFrench, devicesPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.device = data;
         });
 
@@ -296,7 +296,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.deviceForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.deviceForm.value;
-        console.log(this.device_detail, currentState);
+
         if (isEqual(this.device_detail, currentState)) {
             this.router.navigate(['system/devices/devices']);
         } else {

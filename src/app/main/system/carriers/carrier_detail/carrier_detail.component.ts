@@ -49,7 +49,7 @@ export class CarrierDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(carriersEnglish, carriersSpanish, carriersFrench, carriersPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.carrier = data;
         });
 
@@ -165,7 +165,7 @@ export class CarrierDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.carrierForm.value;
-        console.log(this.carrier_detail, currentState);
+
         if (isEqual(this.carrier_detail, currentState)) {
             this.router.navigate(['system/carriers/carriers']);
         } else {

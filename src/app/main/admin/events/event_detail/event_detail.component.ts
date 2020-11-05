@@ -155,7 +155,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         this.unitSelection.isSelected = this.isCheckedRow.bind(this);
         this.setValues();
         this.event_Temp = this.eventForm.value;
-        console.log(this.event_Temp);
+
     }
 
     isCheckedRow(row: any): boolean {
@@ -938,7 +938,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.eventForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.eventForm.value;
-        console.log(this.event_Temp, currentState);
+
         if (isEqual(this.event_Temp, currentState)) {
             this.router.navigate(['admin/events/events']);
         } else {

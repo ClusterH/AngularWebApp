@@ -139,7 +139,7 @@ export class InstallersComponent implements OnInit {
     }
 
     editShowInstallerDetail(installer: any) {
-        console.log('installers===>>>', installer);
+
         this.dialogRef = this._matDialog.open(InstallerDialogComponent, {
             panelClass: 'installer-dialog',
             disableClose: true,

@@ -54,7 +54,7 @@ export class ServiceplanDetailComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(serviceplansEnglish, serviceplansSpanish, serviceplansFrench, serviceplansPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.serviceplan = data;
         });
 
@@ -233,7 +233,7 @@ export class ServiceplanDetailComponent implements OnInit {
         this.filter_string = '';
         this.serviceplanForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.serviceplanForm.value;
-        console.log(this.serviceplan_detail, currentState);
+
         if (isEqual(this.serviceplan_detail, currentState)) {
             this.router.navigate(['system/serviceplans/serviceplans']);
         } else {

@@ -116,12 +116,12 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
 
     editShowVehicleDetail(vehicle: any) {
-        console.log(vehicle);
+
         this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
     }
 
     deleteVehicle(vehicle: any): void {
-        console.log(vehicle)
+
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
         dialogConfig.disableClose = true;

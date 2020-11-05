@@ -1,28 +1,21 @@
 <div id="countdown" class="page-layout simple fullwidth docs">
     <mat-toolbar class="p-0 mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start center">
-
             <div fxLayout="row" fxLayoutAlign="start center">
-
                 <button mat-icon-button class="navbar-toggle-button" *ngIf="!hiddenNavbar && !rightNavbar"
                     (click)="toggleFuseSidebarOpen('navbar')" fxHide.gt-md>
                     <mat-icon class="secondary-text">menu</mat-icon>
                 </button>
-
                 <div class="toolbar-separator" *ngIf="!hiddenNavbar && !rightNavbar" fxHide.gt-md></div>
-
                 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="horizontalNavbar">
                     <div class="logo ml-16">
                         <img class="logo-icon" src="assets/images/logos/fuse.svg">
                     </div>
                 </div>
-
                 <div class="px-8 px-md-16">
                     <fuse-shortcuts [navigation]="navigation"></fuse-shortcuts>
                 </div>
-
             </div>
-
             <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="start center">
                 <div fxFlex="0 1 auto">
                     <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple
@@ -51,7 +44,6 @@
                         </mat-button-toggle>
                     </mat-button-toggle-group>
                 </div>
-
                 <div fxFlex fxLayout="row" fxLayoutAlign="space-between" class="ml-24">
                     <mat-select name="countryString" [(value)]="selectedCountry" placeholder="Country"
                         appearance="outline" fxFlex="48">
@@ -65,11 +57,8 @@
                         <mat-option [value]="'CA'">Canada</mat-option>
                     </mat-select>
                 </div>
-
             </div>
-
             <div class="mr-12" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
-
                 <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <img class="avatar mr-0 mr-sm-16" src="assets/images/avatars/Velazquez.jpg">
@@ -77,48 +66,36 @@
                         <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                     </div>
                 </button>
-
                 <mat-menu #userMenu="matMenu" [overlapTrigger]="false">
-
                     <button mat-menu-item>
                         <mat-icon>account_circle</mat-icon>
                         <span>My Profile</span>
                     </button>
-
                     <button mat-menu-item class="">
                         <mat-icon>mail</mat-icon>
                         <span>Inbox</span>
                     </button>
-
                     <button mat-menu-item class="" (click)="logOut()" [routerLink]="'/login'">
                         <mat-icon>exit_to_app</mat-icon>
                         <span>Logout</span>
                     </button>
-
                 </mat-menu>
-
                 <div class="toolbar-separator"></div>
-
                 <button mat-button fxHide fxShow.gt-xs class="language-button" [matMenuTriggerFor]="languageMenu">
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <img class="flag mr-8" [src]="'assets/icons/flags/'+selectedLanguage.flag+'.png'">
                         <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
                     </div>
                 </button>
-
                 <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
-
                     <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
                         <span fxLayout="row" fxLayoutAlign="start center">
                             <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
                             <span class="iso">{{lang.title}}</span>
                         </span>
                     </button>
-
                 </mat-menu>
-
                 <div class="toolbar-separator" fxHide fxShow.gt-xs></div>
-
                 <button mat-icon-button class="track-panel-toggle-button" (click)="toggleSidebarOpen('trackPanel')"
                     aria-label="Toggle track panel">
                     <mat-icon class="secondary-text">gesture</mat-icon>
@@ -129,40 +106,9 @@
                 </button>
             </div>
         </div>
-
     </mat-toolbar>
-    <!-- HEADER -->
-    <!-- <div class="header accent p-24 h-160" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
-         fxLayoutAlign.gt-xs="space-between center">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="secondary-text s-18">home</mat-icon>
-                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">Google Map</span> -->
-    <!-- <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
-                <span class="secondary-text">3rd Party Components</span> -->
-    <!-- </div>
-            <div class="h2 mt-16">Google Maps</div>
-        </div>
-
-        <a mat-raised-button class="reference-button mt-16 mt-sm-0"
-           href="https://angular-maps.com"
-           target="_blank">
-            <mat-icon class="mr-8">link</mat-icon>
-            <span>Reference</span>
-        </a>
-    </div> -->
-    <!-- / HEADER -->
-
     <!-- CONTENT -->
     <div class="content p-0">
-        <!-- <p>
-            <code>agm-map</code> is a angular component library for Google Maps.
-        </p>
-
-        <div class="section-title">Sample</div> -->
-        <!-- <p fxLayout="row" fxLayoutAlign="start start"> -->
-
         <agm-map #AgmMap id="AgmMap" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
             [zoomControl]="false" (mapClick)="mapClicked($event)" (mapReady)="onMapReady($event)"
             [fitBounds]="isTrackUnitHistory">
@@ -173,31 +119,25 @@
                             height="40" width="40"></div>
                 </agm-overlay>
             </div>
-
             <div>
                 <agm-marker-cluster [minimumClusterSize]="minClusterSize"
                     imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
-
-                    <agm-marker *ngFor="let m of vehmarkers; let i = index" (markerClick)="clickedMarker(m.id)"
+                    <agm-marker *ngFor="let m of vehmarkers_temp; let i = index" (markerClick)="clickedMarker(m.id)"
                         [latitude]="m.lat" [longitude]="m.lng" [label]="m.label"
                         [markerDraggable]="m.draggable == 'true'" [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
-
                         <agm-info-window>
                             <strong>{{m.label}}</strong>
                         </agm-info-window>
                     </agm-marker>
                 </agm-marker-cluster>
-
                 <agm-polyline *ngFor="let rte of routes" [strokeColor]="'blue'">
                     <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
                     </agm-polyline-point>
                 </agm-polyline>
-
                 <agm-polygon *ngFor='let zone of zones' [fillColor]="'red'" [fillOpacity]="0.01" [strokeColor]="'red'"
                     [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
                 </agm-polygon>
             </div>
-
             <div *ngIf="isTrackUnitHistory">
                 <agm-polyline *ngFor="let rte of trackHistoryPolylines" [strokeColor]="rte.strokeColor">
                     <agm-polyline-point *ngFor="let pnt of rte.historyList" [latitude]="pnt.lat" [longitude]="pnt.lng"
@@ -205,73 +145,32 @@
                     </agm-polyline-point>
                 </agm-polyline>
             </div>
-
-            <!-- <agm-polyline *ngFor="let point of polyline;let i = index;"  [strokeColor]="point.speed < 50 ? '#2196f3': 'red'">
-                <agm-polyline-point [latitude]="point.latitude" [longitude]="point.longitude">
-                </agm-polyline-point>
-                <ng-container *ngIf="polyline[i+1]">
-                  <agm-polyline-point [latitude]="polyline[i+1].latitude" [longitude]="polyline[i+1].longitude">
-                  </agm-polyline-point>
-                </ng-container>
-            </agm-polyline> -->
-
-            <!-- <agm-drawing-manager (polygonComplete)="polygonCreated($event)"
-                [drawingControl]="managerOptions.drawingControl"
-                [drawingControlOptions]="managerOptions.drawingControlOptions"
-                [polygonOptions]='managerOptions.polygonOptions' [drawingMode]='managerOptions.drawingMode'>
-            </agm-drawing-manager> -->
-
-
-
         </agm-map>
-        <!-- </p> -->
-
-        <!-- <div class="section-title">Usage</div>
-        <p class="py-8">
-            <fuse-highlight lang="html">
-                <textarea #source>
-                    <agm-map [latitude]="lat" [longitude]="lng">
-                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-                    </agm-map>
-                </textarea>
-            </fuse-highlight>
-        </p>
-        <div class="section-title">Inputs</div>
-        <p class="py-8">
-            Checkout the component api docs for detail:
-            <a href="https://angular-maps.com/api-docs/agm-core/components/AgmMap.html" target="_blank">AgmMap Api</a>
-        </p>  -->
-
     </div>
-
-    <!-- <fuse-sidebar name="quickPanel" class="quickPanel-sidebar" position="right" [invisibleOverlay]="true"> -->
     <button *ngIf="showFilters" mat-icon-button class="warn mat-elevation-z2 filter-panel-button"
         (click)="toggleSidebarOpen('filterPanel')">
         <mat-icon>layers</mat-icon>
     </button>
-
     <button *ngIf="isClickedEvent" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
         (click)="cleanEventLocation()">
         <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
         <mat-icon class="event_clean">location_off</mat-icon>
-
     </button>
     <button *ngIf="isTrackUnitHistory" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
         (click)="cleanTrackLocation()">
         <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
         <mat-icon class="event_clean">block</mat-icon>
     </button>
-
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
             (eventLocation)="showEventLocation($event)">
         </unitInfo-panel>
     </unitinfo-sidebar>
-
     <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">
-        <filter-panel (filterPanelCloseEmitter)="filterToggleOff($event)"></filter-panel>
+        <filter-panel [unitClist]="unitClist" (unitClistFilterEmitter)="filterUnits($event)" *ngIf="showFilters"
+            (filterPanelCloseEmitter)="filterToggleOff($event)" (unitLocateNowEmitter)="unitLocateNow($event)">
+        </filter-panel>
     </unitinfo-sidebar>
-
     <unitinfo-sidebar name="trackPanel" class="trackPanel-sidebar w-700" position="right">
         <track-panel (centerTrackLocation)="centerTrackLocation($event)" (trackHistory)="showHideTrackPolyline($event)">
         </track-panel>

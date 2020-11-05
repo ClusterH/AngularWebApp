@@ -77,7 +77,7 @@ export class OperatorsComponent implements OnInit {
     ) {
         this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).operators;
-        console.log(this.restrictValue);
+
         this._fuseTranslationLoaderService.loadTranslations(operatorsEnglish, operatorsSpanish, operatorsFrench, operatorsPortuguese);
         this.pageIndex = 0;
         this.pageSize = 25;

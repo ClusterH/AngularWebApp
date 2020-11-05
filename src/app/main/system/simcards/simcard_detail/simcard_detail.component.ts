@@ -54,7 +54,7 @@ export class SimcardDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(simcardsEnglish, simcardsSpanish, simcardsFrench, simcardsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.simcard = data;
         });
         if (isEmpty(this.simcard)) { this.pageType = 'new'; }
@@ -227,7 +227,7 @@ export class SimcardDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.simcardForm.value;
-        console.log(this.simcard_detail, currentState);
+
         if (isEqual(this.simcard_detail, currentState)) {
             this.router.navigate(['system/simcards/simcards']);
         } else {

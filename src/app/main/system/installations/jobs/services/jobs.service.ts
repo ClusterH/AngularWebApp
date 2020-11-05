@@ -129,7 +129,7 @@ export class JobsService {
     }
 
     saveInstallationImages(id: any, images: any): Observable<any> {
-        console.log(id, 'imaages===>>>', images);
+
         let token: string = localStorage.getItem('current_token') || '';
         let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
         let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
@@ -150,7 +150,7 @@ export class JobsService {
     }
 
     deleteInstallationImages(id: any, images: any): Observable<any> {
-        console.log(images);
+
         let token: string = localStorage.getItem('current_token') || '';
         let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
         let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;

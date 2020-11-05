@@ -55,7 +55,7 @@ export class ConnectionDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(connectionsEnglish, connectionsSpanish, connectionsFrench, connectionsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.connection = data;
         });
 
@@ -238,7 +238,7 @@ export class ConnectionDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.connectionForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.connectionForm.value;
-        console.log(this.connection_detail, currentState);
+
         if (isEqual(this.connection_detail, currentState)) {
             this.router.navigate(['system/connections/connections']);
         } else {

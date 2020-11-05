@@ -72,7 +72,7 @@ export class JobDialogComponent implements OnInit {
 
         if (this.flag == 'edit') {
             this.job = _data.serviceDetail;
-            console.log(this.job);
+
 
         } else {
 
@@ -129,7 +129,7 @@ export class JobDialogComponent implements OnInit {
     setValues() {
         let startdate = this.job.startdate ? new Date(`${this.job.startdate}`) : '';
         let created = this.job.startdate ? new Date(`${this.job.created}`) : '';
-        console.log(startdate);
+
 
         this.jobForm.get('customer').setValue(this.job.customername);
         this.jobForm.get('customerphonenumber').setValue(this.job.customerphonenumber);
@@ -151,7 +151,7 @@ export class JobDialogComponent implements OnInit {
     }
 
     getValue() {
-        console.log(this.jobForm.get('startdate').value);
+
         this.serviceDetail.id = this.job.id || '0';
         this.serviceDetail.imei = this.job.imei;
         this.serviceDetail.enddate = this.job.enddate;
@@ -330,14 +330,14 @@ export class JobDialogComponent implements OnInit {
     }
 
     getActivatedTab(event: any) {
-        console.log(event);
+
         this.activatedTabIndex = event;
         if (event == 2 && this._data.flag == 'edit') {
             this.jobsService.Installationimages_TList(this.job.id).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
-                console.log(res);
+
                 if (res.responseCode == 100) {
                     this.installationImageList = res.TrackingXLAPI.DATA;
-                    console.log(this.installationImageList);
+
 
                 }
             });
@@ -345,7 +345,7 @@ export class JobDialogComponent implements OnInit {
     }
 
     fileChangeEvent(fileInput: any) {
-        console.log(fileInput.target.files);
+
         this.imageError = null;
         let saveImageList: any = [];
 
@@ -357,7 +357,7 @@ export class JobDialogComponent implements OnInit {
             const max_width = 25600;
 
             for (let i = 0; i < fileInput.target.files.length; i++) {
-                console.log(fileInput.target.files[i]);
+
                 if (fileInput.target.files[i].size > max_size) {
                     this.imageError =
                         `${fileInput.target.files[i].name}'s Maximum size allowed is ` + max_size / 1000 + 'Mb';
@@ -371,7 +371,7 @@ export class JobDialogComponent implements OnInit {
                 }
                 const reader = new FileReader();
                 reader.onload = (e: any) => {
-                    console.log(e);
+
                     const image = new Image();
                     image.src = e.target.result;
                     image.onload = rs => {
@@ -391,7 +391,7 @@ export class JobDialogComponent implements OnInit {
                             this.installationImageList.push({ id: 0, image: imgBase64Path });
                             saveImageList.push({ id: 0, image: imgBase64Path });
 
-                            console.log('insideFor===>>>', saveImageList);
+
 
                             this.isImageSaved = true;
                             // this.previewImagePath = imgBase64Path;
@@ -403,9 +403,9 @@ export class JobDialogComponent implements OnInit {
 
                 if (i == fileInput.target.files.length - 1) {
                     setTimeout(() => {
-                        console.log(saveImageList);
+
                         this.jobsService.saveInstallationImages(this.job.id, saveImageList).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
-                            console.log(result);
+
                             if ((result.responseCode == 200) || (result.responseCode == 100)) {
                                 alert("Success!");
 
@@ -424,7 +424,7 @@ export class JobDialogComponent implements OnInit {
     }
 
     onDeleteImage(event: any) {
-        console.log(this.imageSelection.selected);
+
         if (this.imageSelection.selected) {
             this.isShowDeleteButton = true;
         } else {
@@ -438,18 +438,18 @@ export class JobDialogComponent implements OnInit {
             alert('Please choose at least one image to delete it');
             return;
         }
-        console.log(selectedImage);
+
         let tempImageList: any = [];
         tempImageList = this.installationImageList.filter(item => selectedImage.includes(item.id));
         tempImageList.forEach(element => {
             delete element['image'];
         });
-        console.log(tempImageList);
+
         this.jobsService.deleteInstallationImages(this.job.id, tempImageList).pipe(takeUntil(this._unsubscribeAll)).subscribe((res => {
-            console.log(res);
+
             let remainImageList = this.installationImageList.filter(item => !selectedImage.includes(item.id));
             this.installationImageList = remainImageList;
-            console.log(this.installationImageList);
+
         }));
 
         // this.installationImageList = tempImageList;
@@ -461,11 +461,11 @@ export class JobDialogComponent implements OnInit {
         if (this.serviceDetail.customername == '') {
             alert('Please enter Service Name')
         } else {
-            console.log(this.serviceDetail);
+
 
             if (this.flagForSaving) {
                 this.jobsService.saveJob(this.serviceDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
-                    console.log(result);
+
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
 
@@ -481,7 +481,7 @@ export class JobDialogComponent implements OnInit {
 
     add() {
         this.getNewvalue();
-        console.log(this.serviceDetail);
+
         if (this.serviceDetail.customername == '') {
             alert('Please enter Service Name')
         } else {

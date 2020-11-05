@@ -71,7 +71,7 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(operatorsEnglish, operatorsSpanish, operatorsFrench, operatorsPortuguese);
 
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.operator = data;
         });
 
@@ -97,7 +97,7 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
         this.dataSourceOperatorType.loadOperatorDetail(0, 10, '', "operatortype_clist");
         if (this.pageType == 'edit') {
             this.operatorDetailService.GetOperatorImage(this.operator.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                console.log(res);
+
                 this.cardImageBase64 = this.transform(res.TrackingXLAPI.DATA[0].filephoto);
                 this.cardImageBase64Temp = this.transform(res.TrackingXLAPI.DATA[0].filephoto);
             });
@@ -326,13 +326,13 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
         if (this.operatorDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            console.log(this.operatorDetail);
+
             this.operatorDetailService.saveOperatorDetail(this.operatorDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        console.log(this.cardImageBase64);
+
                         this.operatorDetailService.saveOperatorImage(this.operatorDetail.id, this.cardImageBase64).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                            console.log(res);
+
                             if ((result.responseCode == 200) || (result.responseCode == 100)) {
                                 alert("Success!");
                                 this.router.navigate(['admin/operators/operators']);
@@ -349,12 +349,12 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
         if (this.operatorDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            console.log(this.operatorDetail);
+
             this.operatorDetailService.saveOperatorDetail(this.operatorDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         this.operatorDetailService.saveOperatorImage(result.TrackingXLAPI.DATA[0].id, this.cardImageBase64).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                            console.log(res);
+
                             if ((result.responseCode == 200) || (result.responseCode == 100)) {
                                 alert("Success!");
                                 this.router.navigate(['admin/operators/operators']);
@@ -370,8 +370,8 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
         this.operatorForm.get('filterstring').setValue(this.filter_string);
         let currentState = this.operatorForm.value;
         currentState.birthdate = this.setDatePicker(new Date(this.operatorForm.get('birthdate').value)) + 'T00:00:00' || '';
-        console.log(this.operator_detail, currentState);
-        console.log(this.cardImageBase64, "temp===>>>", this.cardImageBase64Temp);
+
+
         if (isEqual(this.operator_detail, currentState) && isEqual(this.cardImageBase64, this.cardImageBase64Temp)) {
             this.router.navigate(['admin/operators/operators']);
         } else {

@@ -47,7 +47,7 @@ export class SysCommandDetailComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(syscommandsEnglish, syscommandsSpanish, syscommandsFrench, syscommandsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.syscommand = data;
         });
 
@@ -150,7 +150,7 @@ export class SysCommandDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.syscommandForm.value;
-        console.log(this.syscommand_detail, currentState);
+
         if (isEqual(this.syscommand_detail, currentState)) {
             this.router.navigate(['system/syscommands/syscommands']);
         } else {

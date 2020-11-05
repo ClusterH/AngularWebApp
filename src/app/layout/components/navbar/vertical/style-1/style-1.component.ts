@@ -101,7 +101,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
                 let currentNavItem = res.url.slice(pos + 1);
 
                 if (currentNavItem == 'google' || currentNavItem == 'osm') {
-                    console.log(currentNavItem);
+
                     this.isDisabledMenu = true;
                 } else {
                     this.isDisabledMenu = false;

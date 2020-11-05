@@ -11,35 +11,35 @@
             fusePerfectScrollbar style="width: 100%;">
             <!-- Unit Column -->
             <ng-container matColumnDef="unit">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Unit
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ANAYLYTICS.UNIT' | translate }}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
                     <p class="name text-truncate">{{vehicle.unit}}</p>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="company">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Company
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ANAYLYTICS.COMPANY' | translate }}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
                     <p class="name text-truncate">{{vehicle.company}}</p>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="lastreport">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Last Report
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ANAYLYTICS.LASTREPORT' | translate }}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
                     <p class="name text-truncate">{{vehicle.lastreport}}</p>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="odometer">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Odometer
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ANAYLYTICS.ODOMETER' | translate }}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
                     <p class="name text-truncate">{{vehicle.odometer}}</p>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="ign">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Ignition
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'ANAYLYTICS.IGNITION' | translate }}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
                     <p class="name text-truncate">{{vehicle.ign}}</p>

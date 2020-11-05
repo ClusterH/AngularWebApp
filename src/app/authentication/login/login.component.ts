@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         // if (localStorage.getItem('user_info') && (localStorage.getItem('current_token').length != 0)) {
         if (localStorage.getItem('user_info')) {
-            console.log('constructor====>>>');
+
             this.isHideNaveItem();
             // this.router.navigate(['/admin/vehicles/vehicles']);
         }
@@ -115,9 +115,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.authService.userLogin(this.userEmail, this.userPassword)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
-                console.log("login--->>>", res);
+
                 if (res.responseCode == 100) {
-                    console.log('Login success=>>>>', res);
+
                     localStorage.setItem('user_info', JSON.stringify(res));
 
                     this.isHideNaveItem();
@@ -127,12 +127,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     isHideNaveItem() {
         this.authService.getUserObject().pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
-            console.log('userObject --->>>', res);
+
             if (res.responseCode == 100) {
                 this.isHideNavList = res.TrackingXLAPI.DATA1[0];
-                console.log()
+
                 this.userObjectList = res.TrackingXLAPI.DATA;
-                console.log(this.userObjectList);
+
 
                 localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
                 localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));

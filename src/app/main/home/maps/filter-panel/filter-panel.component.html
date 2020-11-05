@@ -9,202 +9,194 @@
     <mat-accordion>
         <!-- Unit panel -->
         <form [formGroup]="unitForm">
-            <mat-expansion-panel class="unit-panel">
+            <mat-expansion-panel class="unit-panel" (afterExpand)="afterPanelOpened('unitclistArray')"
+                (opened)="isUnitPanel = true" (closed)="isUnitPanel = false">
                 <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
-                    <mat-panel-title>
+                    <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="h3" fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="primary-fg mr-12">directions_car</mat-icon>Unit
                         </div>
+                        <div class="h3" *ngIf="isUnitPanel">
+                            <mat-icon class="primary-fg mr-12" (click)="openFilterPanel();$event.stopPropagation()">
+                                filter_list</mat-icon>
+                        </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="unit-panel-body">
-                    <mat-accordion>
-                        <!-- Product -->
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Product</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
 
-                            <div *ngFor="let data of productData; let i=index" class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id"
-                                        (change)="onCheckboxChangeUnit($event, 'productArray')" />
-                                    {{data.name}}
-                                </label>
-                            </div>
-                        </mat-expansion-panel>
-                        <!-- Ignition -->
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Ignition</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
+                <div class="unit-panel-body" [ngStyle]="{'opacity':isFilterPanel ? '0.1' : '1' }">
+                    <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                        <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
+                            [ngModelOptions]="{standalone: true}">
+                        <mat-icon (click)="clearFilter()">clear</mat-icon>
+                    </div>
+                    <div *ngFor="let data of unitClist | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}"
+                        class="mb-8 item-panel-body">
+                        <label>
+                            <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
+                                (change)="$event ? unitclistSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, data.id, 'unitclistArray')"
+                                [checked]="true" />
+                            <!-- <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_all.png">
+                             -->
+                        </label>
+                        <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_now.png"
+                            (click)="onLocateNow(data);$event.stopPropagation()">
+                        <span>{{data.name}}</span>
+                        <!-- <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/actions_for_unit.png"> -->
+                        <mat-icon (click)="clearFilter()" class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
+                        </mat-icon>
+                    </div>
 
-                            <div *ngFor="let data of ignitionData; let i=index" class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id"
-                                        (change)="onCheckboxChangeUnit($event, 'ignitionArray')" />
-                                    {{data.name}}
-                                </label>
+                    <pagination-template #pclist="paginationApi" id="unitclist" (pageChange)="unitclistpage = $event">
+                        <div class="custom-pagination">
+                            <div class="pagination-previous" [class.disabled]="pclist.isFirstPage()">
+                                <span *ngIf="!pclist.isFirstPage()" (click)="pclist.previous()">
+                                    &#11164; </span>
                             </div>
-                        </mat-expansion-panel>
-                        <!-- GPS -->
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;GPS</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div *ngFor="let data of gpsData; let i=index" class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id"
-                                        (change)="onCheckboxChangeUnit($event, 'gpsArray')" />
-                                    {{data.name}}
-                                </label>
-                            </div>
-                        </mat-expansion-panel>
-                        <!-- Speed -->
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Speed</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div *ngFor="let data of speedData; let i=index" class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id"
-                                        (change)="onCheckboxChangeUnit($event, 'speedArray')" />
-                                    {{data.name}}
-                                </label>
-                            </div>
-                        </mat-expansion-panel>
-                        <!-- Last Report -->
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Last Report</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div *ngFor="let data of lastreportData; let i=index" class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id"
-                                        (change)="onCheckboxChangeUnit($event, 'lastreportArray')" />
-                                    {{data.name}}
-                                </label>
-                            </div>
-                        </mat-expansion-panel>
-                        <!-- Unit Type -->
-                        <mat-expansion-panel (afterExpand)="afterPanelOpened('unittypeArray')">
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Unit Type</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-
-                            <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
-                                <input matInput #filter placeholder="Filter" (keyup)="onKey($event)"
-                                    [(ngModel)]="filter_string" [ngModelOptions]="{standalone: true}">
-                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                            </div>
-                            <div *ngFor="let data of unittypeData | paginate: {id: 'unittype', itemsPerPage: 10, currentPage: unittypepage}"
-                                class="mb-8 item-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
-                                        (change)="$event ? unittypeSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, 'unittypeArray')"
-                                        [checked]="unittypeSelection.isSelected(data.id)" />
-                                    {{data.name}}
-                                </label>
-                            </div>
-
-                            <pagination-template #p="paginationApi" id="unittype" (pageChange)="unittypepage = $event">
-                                <div class="custom-pagination">
-                                    <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-                                        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
-                                            &#11164; </span>
-                                    </div>
-                                    <div class="page-number" *ngFor="let page of p.pages"
-                                        [class.current]="p.getCurrent() === page.value">
-                                        <span (click)="p.setCurrent(page.value)"
-                                            *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
-                                        <div *ngIf="p.getCurrent() === page.value">
-                                            <span>{{ page.label }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="pagination-next" [class.disabled]="p.isLastPage()">
-                                        <span *ngIf="!p.isLastPage()" (click)="p.next()"> &#11166; </span>
-                                    </div>
+                            <div class="page-number" *ngFor="let page of pclist.pages"
+                                [class.current]="pclist.getCurrent() === page.value">
+                                <span (click)="pclist.setCurrent(page.value)"
+                                    *ngIf="pclist.getCurrent() !== page.value">{{ page.label }}</span>
+                                <div *ngIf="pclist.getCurrent() === page.value">
+                                    <span>{{ page.label }}</span>
                                 </div>
-                            </pagination-template>
-                        </mat-expansion-panel>
-                        <!-- UnitClist -->
-                        <mat-expansion-panel (afterExpand)="afterPanelOpened('unitclistArray')">
-                            <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
-                                <mat-panel-title>
-                                    <div class="h4">
-                                        <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Unit</span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
-                                <input matInput #filter placeholder="Filter" (keyup)="onKey($event)"
-                                    [(ngModel)]="filter_string" [ngModelOptions]="{standalone: true}">
-                                <mat-icon (click)="clearFilter()">clear</mat-icon>
                             </div>
-                            <div *ngFor="let data of unitclistData | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}"
-                                class="mb-8 item-panel-body unit-panel-body">
-                                <label>
-                                    <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
-                                        (change)="$event ? unitclistSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, 'unitclistArray')"
-                                        [checked]="unitclistSelection.isSelected(data.id)" />
-                                    <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_all.png">
-                                    <img class="mr-4 unitClist_icon"
-                                        src="assets/icons/map_unitClist/actions_for_unit.png">
-                                    <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_now.png">
-                                    {{data.name}}
-                                </label>
+                            <div class="pagination-next" [class.disabled]="pclist.isLastPage()">
+                                <span *ngIf="!pclist.isLastPage()" (click)="pclist.next()"> &#11166; </span>
                             </div>
-
-                            <pagination-template #pclist="paginationApi" id="unitclist"
-                                (pageChange)="unitclistpage = $event">
-                                <div class="custom-pagination">
-                                    <div class="pagination-previous" [class.disabled]="pclist.isFirstPage()">
-                                        <span *ngIf="!pclist.isFirstPage()" (click)="pclist.previous()">
-                                            &#11164; </span>
-                                    </div>
-                                    <div class="page-number" *ngFor="let page of pclist.pages"
-                                        [class.current]="pclist.getCurrent() === page.value">
-                                        <span (click)="pclist.setCurrent(page.value)"
-                                            *ngIf="pclist.getCurrent() !== page.value">{{ page.label }}</span>
-                                        <div *ngIf="pclist.getCurrent() === page.value">
-                                            <span>{{ page.label }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="pagination-next" [class.disabled]="pclist.isLastPage()">
-                                        <span *ngIf="!pclist.isLastPage()" (click)="pclist.next()"> &#11166; </span>
-                                    </div>
-                                </div>
-                            </pagination-template>
-                        </mat-expansion-panel>
-                    </mat-accordion>
+                        </div>
+                    </pagination-template>
                 </div>
+                <mat-accordion class="filter-option-panel" [ngStyle]="{'display':isFilterPanel ? 'block' : 'none' }">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Product</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div *ngFor="let data of productData; let i=index" class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" [checked]="true"
+                                    (change)="onCheckboxChangeUnit($event, data.id, 'producttypeid')" />
+                                {{data.name}}
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Ignition</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div *ngFor="let data of ignitionData; let i=index" class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" [checked]="true"
+                                    (change)="onCheckboxChangeUnit($event, data.id, 'ignition')" />
+                                {{data.name}}
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;GPS</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div *ngFor="let data of gpsData; let i=index" class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" [checked]="true"
+                                    (change)="onCheckboxChangeUnit($event, data.id, 'ValidGPS')" />
+                                {{data.name}}
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Speed</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div *ngFor="let data of speedData; let i=index" class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" [checked]="true"
+                                    (change)="onCheckboxChangeUnit($event, data.id, 'Speed')" />
+                                {{data.name}}
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Last Report</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div *ngFor="let data of lastreportData; let i=index" class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" [checked]="true"
+                                    (change)="onCheckboxChangeUnit($event, data.id,  'LastReport')" />
+                                {{data.name}}
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (afterExpand)="afterPanelOpened('unittypeArray')">
+                        <mat-expansion-panel-header class="mat-elevation-z4 primary-700 item-panel-header">
+                            <mat-panel-title>
+                                <div class="h4">
+                                    <span class="example-list-section">&#8895;&nbsp;&nbsp;&nbsp;Unit Type</span>
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                            <input matInput #filter placeholder="Filter" (keyup)="onKey($event)"
+                                [(ngModel)]="filter_string" [ngModelOptions]="{standalone: true}">
+                            <mat-icon (click)="clearFilter()">clear</mat-icon>
+                        </div>
+                        <div *ngFor="let data of unittypeData | paginate: {id: 'unittype', itemsPerPage: 10, currentPage: unittypepage}"
+                            class="mb-8 item-panel-body">
+                            <label>
+                                <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
+                                    (change)="$event ? unittypeSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, data.id, 'unittypeid')"
+                                    [checked]="true" />
+                                {{data.name}}
+                            </label>
+                        </div>
+
+                        <pagination-template #p="paginationApi" id="unittype" (pageChange)="unittypepage = $event">
+                            <div class="custom-pagination">
+                                <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+                                    <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
+                                        &#11164; </span>
+                                </div>
+                                <div class="page-number" *ngFor="let page of p.pages"
+                                    [class.current]="p.getCurrent() === page.value">
+                                    <span (click)="p.setCurrent(page.value)"
+                                        *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
+                                    <div *ngIf="p.getCurrent() === page.value">
+                                        <span>{{ page.label }}</span>
+                                    </div>
+                                </div>
+                                <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                                    <span *ngIf="!p.isLastPage()" (click)="p.next()"> &#11166; </span>
+                                </div>
+                            </div>
+                        </pagination-template>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </mat-expansion-panel>
         </form>
 

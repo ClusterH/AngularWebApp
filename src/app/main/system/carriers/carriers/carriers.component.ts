@@ -118,7 +118,7 @@ export class CarriersComponent implements OnInit {
     }
 
     editShowCarrierDetail(carrier: any) {
-        console.log(carrier);
+
         this.router.navigate(['system/carriers/carrier_detail'], { queryParams: carrier });
     }
 

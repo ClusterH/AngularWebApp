@@ -47,7 +47,7 @@ export class MakeDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(makesEnglish, makesSpanish, makesFrench, makesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.make = data;
         });
         if (isEmpty(this.make)) {
@@ -156,7 +156,7 @@ export class MakeDetailComponent implements OnInit {
         this.filter_string = '';
         this.makeForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.makeForm.value;
-        console.log(this.make_detail, currentState);
+
         if (isEqual(this.make_detail, currentState)) {
             this.router.navigate(['admin/makes/makes']);
         } else {

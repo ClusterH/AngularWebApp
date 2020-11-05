@@ -64,7 +64,7 @@ export class UserProfileDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(userprofilesEnglish, userprofilesSpanish, userprofilesFrench, userprofilesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.userprofile = data;
         });
 
@@ -274,7 +274,7 @@ export class UserProfileDetailComponent implements OnInit {
         this.filter_string = '';
         this.userprofileForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.userprofileForm.value;
-        console.log(this.userprofile_detail, currentState);
+
         if (isEqual(this.userprofile_detail, currentState)) {
             this.router.navigate(['system/userprofiles/userprofiles']);
         } else {

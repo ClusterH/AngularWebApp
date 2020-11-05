@@ -1,0 +1,38 @@
+export const locale = {
+    lang: 'en',
+    data: {
+        ANAYLYTICS: {
+            "DASHBOARDS": "Dashboards",
+            "TIME": "Time",
+            "TODAY": "Today",
+            "THISWEEK": "This Week",
+            "THISMONTH": "This Month",
+            "DATERANGE": "Date Range",
+            "GROUP": "Group",
+            "VEHICLE": "Vehicle",
+            "COMPANY": "Company",
+            "VEHICLETYPE": "Vehicle Type",
+            "SERVICEPLAN": "Service Plan",
+            "ADD": "Add",
+            "EDIT": "Edit",
+            "SAVE": "Save",
+            "CANCEL": "Cancel",
+            "NAME": "Name",
+            "DISTANCE": "Distance",
+            "FROM": "From",
+            "TO": "To",
+            "AREYOUSURECANCELEDITION": "Are you sure cancel edition?",
+            "YES": "Yes",
+            "NO": "No",
+            "MPGUNIT": "MPG Unit",
+            "EMAIL": "Email",
+            "USERPROFILE": "User Profile",
+            "TIMEZONE": "TimeZone",
+            "UNIT": "Unit",
+            "LASTREPORT": "Last Report",
+            "ODOMETER": "Odometer",
+            "IGNITION": "Ignition",
+            "IGNITIONON": "Ignition On",
+        }
+    }
+};

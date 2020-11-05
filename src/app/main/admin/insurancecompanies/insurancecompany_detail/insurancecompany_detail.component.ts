@@ -62,7 +62,7 @@ export class InsurancecompanyDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(insurancecompaniesEnglish, insurancecompaniesSpanish, insurancecompaniesFrench, insurancecompaniesPortuguese);
         this.activatedRoute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.insurancecompany = data;
         });
         if (isEmpty(this.insurancecompany)) {

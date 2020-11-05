@@ -54,7 +54,7 @@ export class UnittypeDetailComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(unittypesEnglish, unittypesSpanish, unittypesFrench, unittypesPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.unittype = data;
         });
         if (isEmpty(this.unittype)) {
@@ -223,7 +223,7 @@ export class UnittypeDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.unittypeForm.value;
-        console.log(this.unittype_detail, currentState);
+
         if (isEqual(this.unittype_detail, currentState)) {
             this.router.navigate(['system/unittypes/unittypes']);
         } else {

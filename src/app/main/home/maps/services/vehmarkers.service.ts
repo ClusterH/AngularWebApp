@@ -14,7 +14,7 @@ export class VehMarkersService {
     }
 
     getVehMarkers(): Observable<any> {
-        console.log('getvehiclelocationservice=======>>>');
+
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()

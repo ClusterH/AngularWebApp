@@ -15,7 +15,7 @@ export class UnitInfoSidebarService {
      * @param sidebar
      */
     register(key, sidebar): void {
-        console.log('register sidebar', this._registry, key, sidebar);
+
         // Check if the key already being used
         if (this._registry[key]) {
             console.error(`The sidebar with the key '${key}' already exists. Either unregister it first or use a unique key.`);

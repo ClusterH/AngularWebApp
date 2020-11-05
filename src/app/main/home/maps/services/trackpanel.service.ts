@@ -20,14 +20,14 @@ export class TrackPanelService {
                 .set('pageindex', pageindex.toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method);
-            console.log(this.params);
+
         } else {
             this.params = new HttpParams()
                 .set('pageindex', pageindex.toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', name.toString())
                 .set('method', method);
-            console.log(this.params);
+
         }
 
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {

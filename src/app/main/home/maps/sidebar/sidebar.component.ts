@@ -200,7 +200,7 @@ export class UnitInfoSidebarComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        console.log(this.name);
+
         // Subscribe to config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -229,7 +229,7 @@ export class UnitInfoSidebarComponent implements OnInit, OnDestroy {
      */
     ngOnDestroy(): void {
 
-        console.log('destroy', this.name);
+
         // If the sidebar is folded, unfold it to revert modifications
         if (this.folded) {
             this.unfold();
@@ -646,7 +646,7 @@ export class UnitInfoSidebarComponent implements OnInit, OnDestroy {
      * Fold the sidebar permanently
      */
     fold(): void {
-        console.log(this.folded);
+
         // Only work if the sidebar is not folded
         if (this.folded) {
             return;
@@ -685,7 +685,7 @@ export class UnitInfoSidebarComponent implements OnInit, OnDestroy {
      * Toggle the sidebar fold/unfold permanently
      */
     toggleFold(): void {
-        console.log(this.folded);
+
         if (this.folded) {
             this.unfold();
         }

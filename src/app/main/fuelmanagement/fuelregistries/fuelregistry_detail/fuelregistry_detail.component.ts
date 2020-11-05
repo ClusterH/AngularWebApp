@@ -64,7 +64,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.fuelregistry = data;
         });
 
@@ -157,10 +157,10 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        console.log(item);
+
         let methodString = item;
         this.method_string = item.split('_')[0];
-        console.log(this.method_string);
+
 
         if (this.registrytype == 'vehicle' && this.method_string == 'totank') {
             return;
@@ -168,9 +168,9 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
             return;
         } else {
             let selected_element_id = this.fuelregistryForm.get(`${this.method_string}`).value;
-            console.log("selected_element_id: ", selected_element_id);
+
             let clist = this._fuelregistryDetailService.unit_clist_item[methodString];
-            console.log("clist: ", clist)
+
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
                     this.fuelregistryForm.get('filterstring').setValue(clist[i].name);
@@ -214,7 +214,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     getValues(dateTime: any, mode: string) {
-        console.log(this.fuelregistryForm.get('datentime').value);
+
         this.fuelregistryDetail.tounitid = this.fuelregistryForm.get('tounit').value || '0';
         this.fuelregistryDetail.totankid = this.fuelregistryForm.get('totank').value || '0';
         this.fuelregistryDetail.fromtankid = this.fuelregistryForm.get('fromtank').value || '0';
@@ -231,7 +231,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     dateFormat(date: any) {
-        console.log(date);
+
         let str = '';
         if (date != '') {
             str =
@@ -254,7 +254,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
         } else {
             this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
-                    console.log(result);
+
                     if (result.responseCode == 100) {
                         alert("Success!");
                         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
@@ -273,7 +273,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
         } else {
             this._fuelregistryDetailService.saveFuelregistryDetail(this.fuelregistryDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
-                    console.log(result);
+
                     if (result.responseCode == 100) {
                         alert("Success!");
                         this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
@@ -286,7 +286,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.fuelregistryForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.fuelregistryForm.value;
-        console.log(this.fuelregistry_detail, currentState);
+
         if (isEqual(this.fuelregistry_detail, currentState)) {
             this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);
         } else {
@@ -305,7 +305,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     onChangeRegistryType(event: any) {
-        console.log(event.value);
+
         this.registrytype = event.value;
         if (this.registrytype == 'vehicle') {
             this.fuelregistryForm.controls.tounit.enable();

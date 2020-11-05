@@ -65,7 +65,7 @@ export class PoigroupDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(poigroupsEnglish, poigroupsSpanish, poigroupsFrench, poigroupsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.poigroup = data;
         });
 
@@ -354,7 +354,7 @@ export class PoigroupDetailComponent implements OnInit {
         this.filter_string = '';
         this.poigroupForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.poigroupForm.value;
-        console.log(this.poigroup_Temp, currentState);
+
         if (isEqual(this.poigroup_Temp, currentState)) {
             this.router.navigate(['admin/poi/poigroups/poigroups']);
         } else {

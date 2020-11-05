@@ -47,7 +47,7 @@ export class CommandDetailComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(commandsEnglish, commandsSpanish, commandsFrench, commandsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.command = data;
         });
         if (isEmpty(this.command)) { this.pageType = 'new'; }
@@ -152,7 +152,7 @@ export class CommandDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.commandForm.value;
-        console.log(this.command_detail, currentState);
+
         if (isEqual(this.command_detail, currentState)) {
             this.router.navigate(['system/commands/commands']);
         } else {

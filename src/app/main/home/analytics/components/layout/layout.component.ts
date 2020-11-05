@@ -16,7 +16,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     @Input() isEditClips: any = {};
     @Input() widgets: Array<any> = [];
+    // @Input() selectedOption: any = {};
+
     @Output() editedDashboard = new EventEmitter();
+    @Output() deleteWidgetId = new EventEmitter();
 
     get options(): GridsterConfig {
         return this.layoutService.options;
@@ -58,12 +61,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     @ViewChildren(GridsterComponent) gridster: GridsterComponent;
     itemOptions = {
-        maxWidth: 50,
-        maxHeight: 50
+        maxWidth: 52,
+        maxHeight: 52
     };
     gridsterOptions: IGridsterOptions = {
         // core configuration is default one - for smallest view. It has hidden minWidth: 0.
-        lanes: 50, // amount of lanes (cells) in the grid
+        lanes: 52, // amount of lanes (cells) in the grid
         direction: 'vertical', // floating top - vertical, left - horizontal
         floating: false,
         dragAndDrop: true, // enable/disable drag and drop for all items in grid
@@ -98,22 +101,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
             {
                 breakpoint: 'sm',
                 // minWidth: 480,
-                lanes: 50
+                lanes: 52
             },
             {
                 breakpoint: 'md',
                 minWidth: 768,
-                lanes: 50
+                lanes: 52
             },
             {
                 breakpoint: 'lg',
                 minWidth: 1250,
-                lanes: 50
+                lanes: 52
             },
             {
                 breakpoint: 'xl',
                 minWidth: 1800,
-                lanes: 50
+                lanes: 52
             }
         ]
     };
@@ -138,45 +141,34 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
 
     setWidth(widget: any, size: number, e: MouseEvent, gridster) {
-        console.log(widget, size, e, gridster);
         e.stopPropagation();
         e.preventDefault();
-
         const breakpoint = gridster.options.breakpoint;
         let newWidth = widget[LayoutComponent.W_PROPERTY_MAP[breakpoint] || 'w'] + size;
         if (newWidth < 1) {
             newWidth = 1;
         }
         widget[LayoutComponent.W_PROPERTY_MAP[breakpoint] || 'w'] = newWidth;
-
         gridster.reload();
-
         return false;
     }
 
     setHeight(widget: any, size: number, e: MouseEvent, gridster) {
         e.stopPropagation();
         e.preventDefault();
-
         const breakpoint = gridster.options.breakpoint;
         let newHeight = widget[LayoutComponent.H_PROPERTY_MAP[breakpoint] || 'h'] + size;
         if (newHeight < 1) {
             newHeight = 1;
         }
         widget[LayoutComponent.H_PROPERTY_MAP[breakpoint] || 'h'] = newHeight;
-
         gridster.reload();
-
         return false;
     }
     remove($event, index: number, widget: any) {
         $event.preventDefault();
         this.widgets.splice(index, 1);
-        console.log(widget.id);
-        this.clipSservice.dashboard_clip_delete(widget.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
-        })
-        console.log('widget remove', index);
+        this.deleteWidgetId.emit(widget);
     }
 
     itemChange($event: any, gridster) {

@@ -55,7 +55,7 @@ export class GroupDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(groupsEnglish, groupsSpanish, groupsFrench, groupsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.group = data;
         });
         if (isEmpty(this.group)) {
@@ -133,10 +133,10 @@ export class GroupDetailComponent implements OnInit {
         let clist = this.groupDetailService.unit_clist_item[methodString];
 
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-        console.log(currentOptionID);
+
         this.groupForm.get('filterstring').setValue(clist[currentOptionID].name);
         this.filter_string = clist[currentOptionID].name;
-        console.log(this.filter_string);
+
 
         this.managePageIndex(this.method_string);
         this.loadGroupDetail(this.method_string);
@@ -257,7 +257,7 @@ export class GroupDetailComponent implements OnInit {
         this.filter_string = '';
         this.groupForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.groupForm.value;
-        console.log(this.group_detail, currentState);
+
         if (isEqual(this.group_detail, currentState)) {
             this.router.navigate(['admin/groups/groups']);
         } else {

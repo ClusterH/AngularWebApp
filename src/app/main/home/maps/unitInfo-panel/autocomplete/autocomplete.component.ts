@@ -220,7 +220,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
             this.countDisRequest += 1;
             if (this.countDisRequest == 10) {
                 setTimeout(() => {
-                    console.log('==========>>>Limit')
+
                     directionsService.route({
                         origin,
                         destination,
@@ -228,7 +228,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
                         optimizeWaypoints: true,
                         travelMode: google.maps.TravelMode.DRIVING
                     }, (response, status) => {
-                        console.log(response, status);
+
                         if (status == 'OK') {
                             distance = response.routes[0].legs[0].distance.value;
                             this.countDisRequest = 0;
@@ -246,7 +246,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.DRIVING
                 }, (response, status) => {
-                    console.log(response, status);
+
                     if (status == 'OK') {
                         distance = response.routes[0].legs[0].distance.value;
                         resolve(distance);
@@ -267,14 +267,14 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
 
     getPOIList(pageindex: number, pagesize: number, filter_string: string) {
         this.unitInfoService.getPOIList(this.unit.id, pageindex, pagesize, filter_string).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             this.poiDataList = res.TrackingXLAPI.DATA;
             this.poiDataListPage = 1;
         });
     }
 
     onChange(event: any) {
-        console.log(event);
+
     }
 
     clearAutoComplete() {
@@ -293,7 +293,7 @@ export class AutocompleteDialogComponent implements OnInit, OnDestroy {
     }
 
     // onCheckboxChangeUnit(e, type) {
-    //     console.log(e, type);
+    //
     //     const checkArray: FormArray = this.unitForm.get(type) as FormArray;
     //     if (e.target.checked) {
     //         checkArray.push(new FormControl(e.target.value));

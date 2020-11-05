@@ -76,7 +76,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.user = data;
         });
 
@@ -218,10 +218,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         let selected_element_id = this.userForm.get(`${this.method_string}`).value;
         let clist = this.userDetailService.unit_clist_item[methodString];
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-        console.log(currentOptionID);
+
         this.userForm.get('filterstring').setValue(clist[currentOptionID].name);
         this.filter_string = clist[currentOptionID].name;
-        console.log(this.filter_string);
+
 
         this.managePageIndex(this.method_string);
         this.loadUserDetail(this.method_string);
@@ -349,7 +349,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.userForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.userForm.value;
-        console.log(this.user_detail, currentState);
+
         if (isEqual(this.user_detail, currentState)) {
             this.router.navigate(['admin/users/users']);
         } else {

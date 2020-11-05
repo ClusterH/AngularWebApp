@@ -45,7 +45,7 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
         private unitInfoSideBarService: UnitInfoSidebarService,
         private fb: FormBuilder
     ) {
-        console.log('start track===>');
+
         this._unsubscribeAll = new Subject();
 
     }
@@ -56,7 +56,7 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
             if (res != null) {
                 if (res.id && res != null) {
                     let isDuplicated = this.unitHistoryList.find(list => list.id == res.id);
-                    console.log(isDuplicated);
+
                     if (isDuplicated) {
                         alert('already exist!');
                         return;
@@ -87,7 +87,7 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
 
     //     // this.trackSelection.select(row);
     //     const found = JSON.parse(JSON.stringify(this.trackSelection.selected)).find(el => el === row);
-    //     console.log(found);
+    //
     //     if (found) { return true; }
     //     return false;
     // }
@@ -106,7 +106,7 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
     }
 
     centerMap(track: any, option: string) {
-        console.log(track, option);
+
         this.centerTrackLocation.emit({ track: track, option: option });
     }
 
@@ -118,17 +118,13 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
     }
 
     onShowHideTrack(event: any) {
-        console.log(event.target);
-        console.log(JSON.stringify(event.target.value));
-        console.log(this.trackSelection.selected);
         let selectedTrack = JSON.parse(JSON.stringify(this.trackSelection.selected));
         let tempHistoryList: any = [];
         tempHistoryList = this.unitHistoryList.filter(item => !selectedTrack.includes(item.id));
-
         this.trackHistory.emit({ tracks: tempHistoryList, option: 'showhide' });
     }
 
     colorPicker(event: any) {
-        console.log(event);
+
     }
 }

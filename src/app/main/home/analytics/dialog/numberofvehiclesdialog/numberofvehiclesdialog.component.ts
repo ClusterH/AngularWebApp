@@ -6,10 +6,10 @@ import { VehiclesDataSource } from "app/main/home/analytics/services/numberofveh
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { fuseAnimations } from '@fuse/animations';
-import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
-import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/main/admin/vehicles/i18n/pt';
-import { locale as vehiclesSpanish } from 'app/main/admin/vehicles/i18n/sp';
+import { locale as vehiclesEnglish } from 'app/main/home/analytics/i18n/en';
+import { locale as vehiclesFrench } from 'app/main/home/analytics/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/main/home/analytics/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/main/home/analytics/i18n/sp';
 import { ClipsService } from 'app/main/home/analytics/services/clips.service';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
@@ -52,6 +52,7 @@ export class NumberOfVehiclesDialogComponent implements OnInit, OnDestroy {
         this.flag = flag;
     }
     ngOnInit(): void {
+        console.log(this.flag);
         this.dataSource.loadVehicles(this.pageIndex, this.pageSize, "id", "asc", "clip_numberofvehicles_detail");
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;

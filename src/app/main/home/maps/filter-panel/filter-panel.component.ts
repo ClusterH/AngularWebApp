@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -40,32 +40,39 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     unitclistSelection = new SelectionModel<Element>(true, []);
 
     ignitionData: Array<any> = [
-        { name: 'On', id: 'off' },
-        { name: 'Off', id: 'on' },
+        { name: 'On', id: false },
+        { name: 'Off', id: true },
     ];
 
     gpsData: Array<any> = [
-        { name: 'Valid', id: 'valid' },
-        { name: 'Invalid', id: 'invalid' }
+        { name: 'Valid', id: true },
+        { name: 'Invalid', id: false }
     ];
 
     speedData: Array<any> = [
-        { name: 'Stop', id: 'stop' },
-        { name: 'Move', id: 'move' },
+        { name: 'Stop', id: 0 },
+        { name: 'Move', id: 1 },
     ];
 
     lastreportData: Array<any> = [
-        { name: '30 Minutes', id: '30min' },
-        { name: '1 Hours', id: '1hour' },
-        { name: 'More than 1day', id: '1day' },
+        { name: '30 Minutes', id: 1 },
+        { name: '1 Hours', id: 2 },
+        { name: 'Between 1~24hrs', id: 3 },
+        { name: 'More than 24hrs', id: 4 },
     ];
 
     currentOpenedPanel: string = 'unittypeArray';
     unittypepage: number;
     unitclistpage: number;
     filter_string: string = '';
+    isFilterPanel: boolean = false;
+    isUnitPanel: boolean = false;
+    uncheckedFilterOption: Array<any> = [];
 
+    @Input() unitClist: any;
+    @Output() unitClistFilterEmitter = new EventEmitter<any>();
     @Output() filterPanelCloseEmitter = new EventEmitter<boolean>();
+    @Output() unitLocateNowEmitter = new EventEmitter<boolean>();
 
     private _unsubscribeAll: Subject<any>;
 
@@ -75,13 +82,10 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         private unitInfoSideBarService: UnitInfoSidebarService,
         private fb: FormBuilder
     ) {
-        console.log('start filter===>');
         this._unsubscribeAll = new Subject();
-
-
         this.getFilterPanelClists('producttype_clist');
         this.getFilterPanelClists('unittype_clist');
-        this.getFilterPanelClists('unit_clist');
+        // this.getFilterPanelClists('unit_clist');
 
         // Set the defaults
         this.date = new Date();
@@ -93,12 +97,12 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         };
 
         this.unitForm = this.fb.group({
-            productArray: this.fb.array([]),
-            ignitionArray: this.fb.array([]),
-            gpsArray: this.fb.array([]),
-            speedArray: this.fb.array([]),
-            lastreportArray: this.fb.array([]),
-            unittypeArray: this.fb.array([]),
+            producttypeid: this.fb.array([]),
+            ignition: this.fb.array([]),
+            ValidGPS: this.fb.array([]),
+            Speed: this.fb.array([]),
+            LastReport: this.fb.array([]),
+            unittypeid: this.fb.array([]),
             unitclistArray: this.fb.array([]),
         });
     }
@@ -114,6 +118,14 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
+    isOpenUnitPanel(event: any) {
+        console.log(event);
+    }
+
+    openFilterPanel(): void {
+        this.isFilterPanel = !this.isFilterPanel;
+    }
+
     getFilterPanelClists(method: string): void {
         this.filterPanelService.getFilterPanelClists(1, 10000, this.filter_string, method)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
@@ -126,10 +138,11 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
                             this.unittypeData = res.TrackingXLAPI.DATA;
                             this.unittypepage = 1;
                             break;
-                        case 'unit_clist':
-                            this.unitclistData = res.TrackingXLAPI.DATA;
-                            this.unitclistpage = 1;
-                            break;
+                        // case 'unit_clist':
+                        //     this.unitclistData = res.TrackingXLAPI.DATA;
+                        //     console.log(this.unitclistData);
+                        //     this.unitclistpage = 1;
+                        //     break;
                         default:
                             break;
                     }
@@ -138,13 +151,15 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
 
     afterPanelOpened(event: string) {
-        console.log(event);
         this.currentOpenedPanel = event;
         this.filter_string = '';
         if (this.currentOpenedPanel == 'unittypeArray') {
             this.getFilterPanelClists('unittype_clist');
         } else if (this.currentOpenedPanel == 'unitclistArray') {
-            this.getFilterPanelClists('unit_clist');
+            // this.getFilterPanelClists('unit_clist');
+            this.unitclistData = this.unitClist.map(unit => ({ ...unit }));
+            console.log(this.unitclistData);
+            this.unitclistpage = 1;
         }
     }
 
@@ -156,10 +171,18 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         // this.unitclistpageconfig.currentPage = event;
     }
 
-    onCheckboxChangeUnit(e, type) {
+    onCheckboxChangeUnit(e, id, type) {
+        let currentTime = new Date();
+        console.log(currentTime, new Date().getTime());
+        console.log(new Date('2020-02-24T18:32:48Z'), new Date('2020-11-03T20:30:48' + 'Z').getTime());
+        console.log(e, id, type);
         const checkArray: FormArray = this.unitForm.get(type) as FormArray;
         if (e.target.checked) {
             checkArray.push(new FormControl(e.target.value));
+            if (type == 'unitclistArray') {
+                this.unitclistData.push(this.unitClist.filter(unit => unit.id == id)[0]);
+            }
+            this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type || (filter.type == type && filter.id != id));
         } else {
             let i: number = 0;
             checkArray.controls.forEach((item: FormControl) => {
@@ -169,11 +192,56 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
                 }
                 i++;
             });
+
+            if (type == 'unitclistArray') {
+                this.unitclistData = this.unitclistData.filter(unit => unit.id != id);
+            }
+            this.uncheckedFilterOption.push({ type: type, id: id });
         }
+        // console.log(checkArray);
+        // console.log(this.uncheckedFilterOption);
+        // console.log(this.unitclistData);
+
+        let tempUnitclistData = this.unitclistData.map(unit => ({ ...unit }));
+
+        if (this.uncheckedFilterOption.length > 0) {
+            this.uncheckedFilterOption.forEach((option: any) => {
+                if (option.type == 'Speed') {
+                    if (option.id == 0) {
+                        tempUnitclistData = tempUnitclistData.filter(unit => unit[option.type] != option.id);
+                    } else {
+                        tempUnitclistData = tempUnitclistData.filter(unit => unit[option.type] == 0);
+                    }
+                } else if (option.type == 'LastReport') {
+                    console.log(option);
+                    switch (option.id) {
+                        case 1:
+                            tempUnitclistData = tempUnitclistData.filter(unit => (new Date().getTime() - new Date(unit[option.type] + 'Z').getTime()) / 1000 > 1800);
+                            break;
+                        case 2:
+                            tempUnitclistData = tempUnitclistData.filter(unit => (new Date().getTime() - new Date(unit[option.type] + 'Z').getTime()) / 1000 <= 1800 || (new Date().getTime() - new Date(unit[option.type] + 'Z').getTime()) / 1000 > 3600);
+                            break;
+                        case 3:
+                            tempUnitclistData = tempUnitclistData.filter(unit => (new Date().getTime() - new Date(unit[option.type] + 'Z').getDate()) / 1000 <= 3600 || (new Date().getTime() - new Date(unit[option.type] + 'Z').getDate()) / 1000 > 86400);
+                            break;
+                        case 4:
+                            tempUnitclistData = tempUnitclistData.filter(unit => (new Date().getTime() - new Date(unit[option.type] + 'Z').getDate()) / 1000 <= 86400);
+                            break;
+                    }
+                } else {
+                    tempUnitclistData = tempUnitclistData.filter(unit => unit[option.type] != option.id);
+                }
+            });
+        } else {
+            tempUnitclistData = this.unitclistData;
+        }
+
+        console.log(tempUnitclistData);
+        this.unitClistFilterEmitter.emit(tempUnitclistData);
     }
 
     isCheckedRow(row: any): boolean {
-        if (this.currentOpenedPanel == 'unittypeArray') {
+        if (this.currentOpenedPanel == 'unittypeid') {
             const foundunittype = this.unittypeSelection.selected.find(el => el === row);
             if (foundunittype) { return true; }
             return false;
@@ -184,8 +252,14 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         }
     }
 
+    onLocateNow(unit: any) {
+        console.log(unit);
+        this.unitLocateNowEmitter.emit(unit);
+    }
+
     toggleSidebarOpen(key) {
         this.filterPanelCloseEmitter.emit(false);
+        this.unitClistFilterEmitter.emit(this.unitClist);
         this.unitclistSelection.clear();
         this.unittypeSelection.clear();
         this.unitInfoSideBarService.getSidebar(key).toggleOpen();
@@ -193,7 +267,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
     clearFilter() {
         this.filter_string = '';
-        if (this.currentOpenedPanel == 'unittypeArray') {
+        if (this.currentOpenedPanel == 'unittypeid') {
             this.getFilterPanelClists('unittype_clist');
         } else if (this.currentOpenedPanel == 'unitclistArray') {
             this.getFilterPanelClists('unit_clist');
@@ -203,7 +277,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     onKey(event: any) {
         this.filter_string = event.target.value;
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-            if (this.currentOpenedPanel == 'unittypeArray') {
+            if (this.currentOpenedPanel == 'unittypeid') {
                 this.getFilterPanelClists('unittype_clist');
             } else if (this.currentOpenedPanel == 'unitclistArray') {
                 this.getFilterPanelClists('unit_clist');

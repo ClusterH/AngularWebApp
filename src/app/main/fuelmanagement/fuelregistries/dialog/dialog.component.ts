@@ -48,7 +48,7 @@ export class CourseDialogComponent implements OnDestroy {
             this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        console.log(result);
+
                         this.dialogRef.close(result);
                     }
                 });

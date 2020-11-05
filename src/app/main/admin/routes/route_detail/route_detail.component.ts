@@ -48,7 +48,7 @@ export class RouteDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(routesEnglish, routesSpanish, routesFrench, routesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.route = data;
         });
 
@@ -157,7 +157,7 @@ export class RouteDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.routeForm.value;
-        console.log(this.route_detail, currentState);
+
         if (isEqual(this.route_detail, currentState)) {
             this.router.navigate(['admin/routes/routes']);
         } else {

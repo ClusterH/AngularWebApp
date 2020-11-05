@@ -38,7 +38,7 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(board => {
                 this.board = board;
                 this._scrumboardService.getBoardMembers().then((res: any) => {
-                    console.log(res);
+
                     this.board.members = res.TrackingXLAPI.DATA;
                 });
             });

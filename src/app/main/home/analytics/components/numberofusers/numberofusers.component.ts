@@ -1,19 +1,14 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { NumberOfUsersDialogComponent } from "app/main/home/analytics/dialog/numberofusersdialog/numberofusersdialog.component";
 import { ClipsService } from 'app/main/home/analytics/services/clips.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
-import { CourseDialogComponent } from "app/main/home/analytics/dialog/dialog.component";
 
 @Component({
-    selector: 'app-numberofvehicles',
+    selector: 'app-numberofusers',
     templateUrl: './numberofusers.component.html',
     styleUrls: ['./numberofusers.component.scss'],
     animations: fuseAnimations,
@@ -22,55 +17,53 @@ import { CourseDialogComponent } from "app/main/home/analytics/dialog/dialog.com
 })
 export class NumberOfUsersComponent implements OnInit, OnDestroy {
     selectedTime = 'today';
-    vehcount: number;
-    vehon: number;
+    usercount: number;
+
     clip_detail: any;
-    displayedColumns = ['name', 'distance', 'distanceunits', 'from', 'to'];
-    // dataSource = new MatTableDataSource<PeriodicElement>([]);
     private _unsubscribeAll: Subject<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild('paginator') paginator: MatPaginator;
 
     constructor(private clipsservice: ClipsService, public _matDialog: MatDialog,
     ) {
         this._unsubscribeAll = new Subject();
-        this.clipsservice.clip_mileage('CLip_NumberOfusers').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            if (res.responseCode == 100) {
-                console.log(res);
-                this.vehcount = res.TrackingXLAPI.DATA[0].vehcount;
-                this.vehon = res.TrackingXLAPI.DATA[0].vehon;
-            }
-        });
-        this.clipsservice.clip_mileage('clip_mileage_detail').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            if (res.responseCode == 100) {
-                this.clip_detail = res.TrackingXLAPI.DATA;
-                // this.dataSource = new MatTableDataSource<PeriodicElement>(res.TrackingXLAPI.DATA.slice(0, 10));
-
-                // this.distance = res.TrackingXLAPI.DATA[0].distance;
-                // this.distanceUnit = res.TrackingXLAPI.DATA[0].distanceunits;
-            }
+        this.clipsservice.clip_mileage('clip_numberofusers').then(res => {
+            this.clipsservice.clip_numberofusersChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                if (res.responseCode == 100) {
+                    this.animateValue(0, res.TrackingXLAPI.DATA[0].usercount, 500)
+                    // this.usercount = res.TrackingXLAPI.DATA[0].usercount;
+                }
+            });
         });
     }
 
     ngOnInit() {
-        // setTimeout(() => this.dataSource.paginator = this.paginator);
-        // this.dataSource.sort = this.sort;
+
     }
     ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+    animateValue(start: number, end: number, duration: number) {
+        if (start == end) return;
+        const range = end - start;
+        let current = Math.floor(end / 2);
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let timer = setInterval(() => {
+            current += increment;
+            this.usercount = current;
+            if (current == end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
     showDetail() {
-        console.log('paginatgion');
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
-        dialogConfig.data = { detail: this.clip_detail, flag: 'mileage' };
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+        dialogConfig.data = { detail: this.clip_detail, flag: 'numberofusers' };
+        const dialogRef = this._matDialog.open(NumberOfUsersDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            console.log(result);
+
         });
     }
-
 }

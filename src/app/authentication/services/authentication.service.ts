@@ -45,7 +45,7 @@ export class AuthService {
     }
 
     getUserObject() {
-        console.log('getUserObject--->>>>');
+
 
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));

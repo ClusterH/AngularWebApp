@@ -54,7 +54,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(accountsEnglish, accountsSpanish, accountsFrench, accountsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.account = data;
         });
         if (isEmpty(this.account)) { this.pageType = 'new'; }
@@ -224,7 +224,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
 
     goBackUnit() {
         const currentState = this.accountForm.value;
-        console.log(this.account_detail, currentState);
+
         if (isEqual(this.account_detail, currentState)) {
             this.router.navigate(['system/accounts/accounts']);
         } else {

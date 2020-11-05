@@ -62,7 +62,7 @@ export class DealercompanyDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(dealercompaniesEnglish, dealercompaniesSpanish, dealercompaniesFrench, dealercompaniesPortuguese);
         this.activatedRoute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.dealercompany = data;
         });
         if (isEmpty(this.dealercompany)) {

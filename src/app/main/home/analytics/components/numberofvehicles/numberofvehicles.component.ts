@@ -6,6 +6,11 @@ import { NumberOfVehiclesDialogComponent } from "app/main/home/analytics/dialog/
 import { ClipsService } from 'app/main/home/analytics/services/clips.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { locale as vehiclesEnglish } from 'app/main/home/analytics/i18n/en';
+import { locale as vehiclesFrench } from 'app/main/home/analytics/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/main/home/analytics/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/main/home/analytics/i18n/sp';
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
 @Component({
     selector: 'app-numberofvehicles',
@@ -24,19 +29,26 @@ export class NumberOfVehiclesComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    // @ViewChild(MatSort) sort: MatSort;
-    // @ViewChild('paginator') paginator: MatPaginator;
-
-    constructor(private clipsservice: ClipsService, public _matDialog: MatDialog,
+    constructor(private clipsservice: ClipsService, public _matDialog: MatDialog, private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
-        this.clipsservice.clip_mileage('clip_numberofvehicles').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            if (res.responseCode == 100) {
-                console.log(res);
-                this.vehcount = res.TrackingXLAPI.DATA[0].vehcount;
-                this.vehon = res.TrackingXLAPI.DATA[0].vehon;
-            }
+        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+
+        this.clipsservice.clip_mileage('clip_numberofvehicles').then(res => {
+            this.clipsservice.clip_numberofvehiclesChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                if (res.responseCode == 100) {
+                    this.animateValue(0, res.TrackingXLAPI.DATA[0].vehcount, 500)
+                    // this.vehcount = res.TrackingXLAPI.DATA[0].vehcount;
+                    this.vehon = res.TrackingXLAPI.DATA[0].vehon;
+                }
+            });
         });
+        // this.clipsservice.clip_mileage('clip_numberofvehicles').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+        //     if (res.responseCode == 100) {
+        //         this.vehcount = res.TrackingXLAPI.DATA[0].vehcount;
+        //         this.vehon = res.TrackingXLAPI.DATA[0].vehon;
+        //     }
+        // });
     }
 
     ngOnInit() {
@@ -46,13 +58,28 @@ export class NumberOfVehiclesComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+    animateValue(start: number, end: number, duration: number) {
+        if (start == end) return;
+        const range = end - start;
+        let current = Math.floor(end / 2);
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range));
+        let timer = setInterval(() => {
+            current += increment;
+            this.vehcount = current;
+            if (current == end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
     showDetail() {
+        console.log('showDetail');
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.data = { detail: this.clip_detail, flag: 'numberofvehicles' };
         const dialogRef = this._matDialog.open(NumberOfVehiclesDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            console.log(result);
+
         });
     }
 

@@ -74,7 +74,7 @@ export class UnitInfoService {
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             if (param.historytype == '4') {
-                console.log(param.historytype);
+
                 let params = new HttpParams()
                     .set('unitid', param.unitid.toString())
                     .set('historytype', param.historytype.toString())

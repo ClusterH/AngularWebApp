@@ -48,7 +48,7 @@ export class CourseDialogComponent implements OnDestroy {
             this.command.lastmodifiedbyname = '';
             this.dialogRef.close(this.command);
         } else if (this.flag == "delete") {
-            console.log(this.flag, this.command.id);
+
             this.commandsService.deleteCommand(this.command.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {

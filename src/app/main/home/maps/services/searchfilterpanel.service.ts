@@ -20,7 +20,7 @@ export class FilterPanelService {
                 .set('pageindex', pageindex.toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method);
-            console.log(this.params);
+
         } else {
             this.params = new HttpParams()
                 .set('pageindex', pageindex.toString())

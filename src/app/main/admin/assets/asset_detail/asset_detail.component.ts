@@ -69,7 +69,7 @@ export class AssetDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(assetsEnglish, assetsSpanish, assetsFrench, assetsPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.asset = data;
         });
 
@@ -271,7 +271,7 @@ export class AssetDetailComponent implements OnInit, OnDestroy {
     }
 
     setValues() {
-        console.log('setValue===>>>', this.asset);
+
         this.assetForm.get('name').setValue(this.asset.name);
         this.assetForm.get('company').setValue(Number(this.asset.companyid));
         this.assetForm.get('group').setValue(Number(this.asset.groupid));

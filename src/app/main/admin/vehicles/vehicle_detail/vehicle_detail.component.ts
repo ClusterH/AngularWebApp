@@ -69,7 +69,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.vehicle = data;
         });
 
@@ -236,21 +236,21 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        console.log(this.vehicleDetailService.unit_clist_item);
+
         let methodString = item;
         this.method_string = item.split('_')[0];
         if (this.method_string == 'model' && !this.vehicleModel_flag) {
             alert("Please check first Make is selected!");
         } else {
-            console.log(this.method_string);
+
             let selected_element_id = this.vehicleForm.get(`${this.method_string}`).value;
             let clist = this.vehicleDetailService.unit_clist_item[methodString];
-            console.log(selected_element_id, 'clist===>>>', clist);
+
             let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-            console.log(currentOptionID);
+
             this.vehicleForm.get('filterstring').setValue(clist[currentOptionID].name);
             this.filter_string = clist[currentOptionID].name;
-            console.log(this.filter_string);
+
 
             this.managePageIndex(this.method_string);
             this.loadVehicleDetail(this.method_string);
@@ -273,7 +273,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     setValues() {
-        console.log('setValue===>>>', this.vehicle);
+
         this.vehicleForm.get('name').setValue(this.vehicle.name);
         this.vehicleForm.get('company').setValue(Number(this.vehicle.companyid));
         this.vehicleForm.get('group').setValue(Number(this.vehicle.groupid));
@@ -379,7 +379,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.filter_string = '';
         this.vehicleForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.vehicleForm.value;
-        console.log(this.vehicle_detail, currentState);
+
         if (isEqual(this.vehicle_detail, currentState)) {
             this.router.navigate(['admin/vehicles/vehicles']);
         } else {

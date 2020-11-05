@@ -79,10 +79,10 @@ export class ScrumboardBoardSettingsSidenavComponent implements OnInit, OnDestro
     }
 
     setting_save() {
-        console.log(this.board.settings);
+
         this.scrumboardService.saveBoardSetting(this.board.settings.color, this.board.settings.subscribed, this.board.settings.cardcoverimages)
             .then(res => {
-                console.log(res);
+
             })
     }
 }

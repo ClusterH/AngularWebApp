@@ -82,7 +82,7 @@ export class DevConfigDetailComponent implements OnInit {
         this._fuseTranslationLoaderService.loadTranslations(devconfigsEnglish, devconfigsSpanish, devconfigsFrench, devconfigsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-            console.log(data);
+
             this.devconfig = data;
         });
         this.pageIndex = 0;
@@ -353,7 +353,7 @@ export class DevConfigDetailComponent implements OnInit {
 
     goBackUnit() {
         const currentState = this.devconfigForm.value;
-        console.log(this.devconfig_detail, currentState);
+
         if (isEqual(this.devconfig_detail, currentState)) {
             this.router.navigate(['system/devconfigs/devconfigs']);
         } else {
