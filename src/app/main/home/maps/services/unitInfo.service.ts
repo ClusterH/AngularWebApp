@@ -29,6 +29,30 @@ export class UnitInfoService {
         });
     }
 
+    getPOIInfo(poiid: number): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', poiid.toString())
+            .set('method', 'GetPOIInfo');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    getPOIInfo_v1(poiid: number): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', poiid.toString())
+            .set('method', 'GetPOIInfo_V1');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
     sendShareLocation(unitid: number, validitytime: number, emailaddress: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));

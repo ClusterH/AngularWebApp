@@ -52,7 +52,7 @@ export class NumberOfVehiclesDialogComponent implements OnInit, OnDestroy {
         this.flag = flag;
     }
     ngOnInit(): void {
-        console.log(this.flag);
+
         this.dataSource.loadVehicles(this.pageIndex, this.pageSize, "id", "asc", "clip_numberofvehicles_detail");
         // this.dataSource.paginator = this.paginator;
         // this.dataSource.sort = this.sort;

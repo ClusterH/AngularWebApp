@@ -42,7 +42,7 @@ export class MPGDialogComponent implements OnInit, OnDestroy {
         private dialogRef: MatDialogRef<MPGDialogComponent>,
         @Inject(MAT_DIALOG_DATA) { detail, flag }
     ) {
-        console.log(detail, flag);
+
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.dataSource = new MatTableDataSource<PeriodicElement>(detail);

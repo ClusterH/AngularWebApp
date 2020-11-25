@@ -52,7 +52,7 @@ export class TrackPanelComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.unitInfoService.TrackHistoryList.pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             if (res != null) {
                 if (res.id && res != null) {
                     let isDuplicated = this.unitHistoryList.find(list => list.id == res.id);

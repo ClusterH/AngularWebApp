@@ -1,11 +1,10 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { FilterPanelService } from 'app/main/home/maps/services/searchfilterpanel.service';
+import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
+import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SelectionModel } from '@angular/cdk/collections';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
-import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
-import { FilterPanelService } from 'app/main/home/maps/services/searchfilterpanel.service';
-import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 
 export interface Task {
     name: string;
@@ -17,7 +16,8 @@ export interface Task {
     selector: 'filter-panel',
     templateUrl: './filter-panel.component.html',
     styleUrls: ['./filter-panel.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterPanelComponent implements OnInit, OnDestroy {
     userID: number;
@@ -35,44 +35,52 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
     productData: Array<any> = [];
     unittypeData: Array<any> = [];
+    unittypeData_temp: Array<any> = [];
     unitclistData: Array<any> = [];
-    unittypeSelection = new SelectionModel<Element>(true, []);
-    unitclistSelection = new SelectionModel<Element>(true, []);
-
+    userPOIsData: Array<any> = [];
     ignitionData: Array<any> = [
-        { name: 'On', id: false },
-        { name: 'Off', id: true },
+        { name: 'On', id: false, isSelected: true },
+        { name: 'Off', id: true, isSelected: true },
     ];
 
     gpsData: Array<any> = [
-        { name: 'Valid', id: true },
-        { name: 'Invalid', id: false }
+        { name: 'Valid', id: true, isSelected: true },
+        { name: 'Invalid', id: false, isSelected: true }
     ];
 
     speedData: Array<any> = [
-        { name: 'Stop', id: 0 },
-        { name: 'Move', id: 1 },
+        { name: 'Stop', id: 0, isSelected: true },
+        { name: 'Move', id: 1, isSelected: true },
     ];
 
     lastreportData: Array<any> = [
-        { name: '30 Minutes', id: 1 },
-        { name: '1 Hours', id: 2 },
-        { name: 'Between 1~24hrs', id: 3 },
-        { name: 'More than 24hrs', id: 4 },
+        { name: '30 Minutes', id: 1, isSelected: true },
+        { name: '1 Hours', id: 2, isSelected: true },
+        { name: 'Between 1~24hrs', id: 3, isSelected: true },
+        { name: 'More than 24hrs', id: 4, isSelected: true },
     ];
 
     currentOpenedPanel: string = 'unittypeArray';
     unittypepage: number;
     unitclistpage: number;
+    userpoipage: number;
     filter_string: string = '';
     isFilterPanel: boolean = false;
     isUnitPanel: boolean = false;
     uncheckedFilterOption: Array<any> = [];
+    uncheckedPOIsFilterOption: Array<any> = [];
+    unitClist_temp: any;
+    userPOIs_temp: any;
+    isCheckedAllUnits: boolean = true;
+    isCheckedAllUnitType: boolean = true;
+    isCheckedAllPOIs: boolean = true;
 
     @Input() unitClist: any;
-    @Output() unitClistFilterEmitter = new EventEmitter<any>();
+    @Input() poiClist: any;
+
     @Output() filterPanelCloseEmitter = new EventEmitter<boolean>();
-    @Output() unitLocateNowEmitter = new EventEmitter<boolean>();
+    @Output() unitLocateNowEmitter = new EventEmitter<any>();
+    @Output() filterUnits = new EventEmitter<boolean>();
 
     private _unsubscribeAll: Subject<any>;
 
@@ -85,9 +93,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this.getFilterPanelClists('producttype_clist');
         this.getFilterPanelClists('unittype_clist');
-        // this.getFilterPanelClists('unit_clist');
 
-        // Set the defaults
         this.date = new Date();
         this.settings = {
             notify: true,
@@ -108,18 +114,24 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.unittypeSelection.isSelected = this.isCheckedRow.bind(this);
-        this.unitclistSelection.isSelected = this.isCheckedRow.bind(this);
+        this.unitClist = this.unitClist.map(unit => {
+            unit.isSelected = true;
+            return unit;
+        });
+
+        this.poiClist = this.poiClist.map(poi => {
+            poi.isSelected = true;
+            return poi;
+        });
+
+        this.unitClist_temp = this.unitClist.map(unit => ({ ...unit }));
+        this.userPOIs_temp = this.poiClist.map(poi => ({ ...poi }));
     }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-    }
-
-    isOpenUnitPanel(event: any) {
-        console.log(event);
     }
 
     openFilterPanel(): void {
@@ -133,16 +145,20 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
                     switch (method) {
                         case 'producttype_clist':
                             this.productData = res.TrackingXLAPI.DATA;
+                            this.productData = this.productData.map(item => {
+                                item.isSelected = true;
+                                return item;
+                            });
                             break;
                         case 'unittype_clist':
                             this.unittypeData = res.TrackingXLAPI.DATA;
+                            this.unittypeData = this.unittypeData.map(item => {
+                                item.isSelected = true;
+                                return item;
+                            });
+                            this.unittypeData_temp = this.unittypeData.map(type => ({ ...type }));
                             this.unittypepage = 1;
                             break;
-                        // case 'unit_clist':
-                        //     this.unitclistData = res.TrackingXLAPI.DATA;
-                        //     console.log(this.unitclistData);
-                        //     this.unitclistpage = 1;
-                        //     break;
                         default:
                             break;
                     }
@@ -156,54 +172,126 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         if (this.currentOpenedPanel == 'unittypeArray') {
             this.getFilterPanelClists('unittype_clist');
         } else if (this.currentOpenedPanel == 'unitclistArray') {
-            // this.getFilterPanelClists('unit_clist');
-            this.unitclistData = this.unitClist.map(unit => ({ ...unit }));
-            console.log(this.unitclistData);
+            this.unitclistData = this.unitClist_temp.map(unit => ({ ...unit }));
             this.unitclistpage = 1;
+        } else if (this.currentOpenedPanel == 'userPOIsArray') {
+            this.isFilterPanel = false;
+            this.userPOIsData = this.userPOIs_temp.map(poi => ({ ...poi }));
+            this.userpoipage = 1;
         }
     }
 
-    onUnitTypePageChange(event) {
-        // this.unittypepageconfig.currentPage = event;
-    }
+    checkUncheckAllUnit(isCheckedAll: any, type: string) {
+        if (type == 'unitclistArray') {
+            if (isCheckedAll) {
+                this.unitClist_temp = this.unitClist_temp.map(unit => {
+                    unit.isSelected = true;
+                    return unit;
+                });
+                this.unitclistData = this.unitClist_temp;
+            } else {
+                this.unitClist_temp = this.unitClist_temp.map(unit => {
+                    unit.isSelected = false;
+                    return unit;
+                });
 
-    onUnitClistPageChange(event) {
-        // this.unitclistpageconfig.currentPage = event;
-    }
-
-    onCheckboxChangeUnit(e, id, type) {
-        let currentTime = new Date();
-        console.log(currentTime, new Date().getTime());
-        console.log(new Date('2020-02-24T18:32:48Z'), new Date('2020-11-03T20:30:48' + 'Z').getTime());
-        console.log(e, id, type);
-        const checkArray: FormArray = this.unitForm.get(type) as FormArray;
-        if (e.target.checked) {
-            checkArray.push(new FormControl(e.target.value));
-            if (type == 'unitclistArray') {
-                this.unitclistData.push(this.unitClist.filter(unit => unit.id == id)[0]);
+                this.unitclistData = [];
             }
-            this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type || (filter.type == type && filter.id != id));
-        } else {
-            let i: number = 0;
-            checkArray.controls.forEach((item: FormControl) => {
-                if (item.value == e.target.value) {
-                    checkArray.removeAt(i);
-                    return;
-                }
-                i++;
+            this.filterUnitEmitter();
+
+        } else if (type == 'unittypeid') {
+            if (isCheckedAll) {
+                this.unittypeData_temp = this.unittypeData_temp.map(unit => {
+                    unit.isSelected = true;
+                    return unit;
+                });
+                this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type);
+            } else {
+                this.unittypeData_temp = this.unittypeData_temp.map(unit => {
+                    unit.isSelected = false;
+                    return unit;
+                });
+
+                this.unittypeData_temp.forEach(item => {
+                    this.uncheckedFilterOption.push({ type: type, id: item.id });
+                });
+            }
+            this.filterUnitEmitter();
+
+        } else if (type == 'userPOIsArray') {
+            if (isCheckedAll) {
+                this.userPOIs_temp = this.userPOIs_temp.map(poi => {
+                    poi.isSelected = true;
+                    return poi;
+                });
+                this.userPOIsData = this.userPOIs_temp;
+            } else {
+                this.userPOIs_temp = this.userPOIs_temp.map(poi => {
+                    poi.isSelected = false;
+                    return poi;
+                });
+
+                this.userPOIsData = [];
+            }
+            this.filterPOIsEmitter();
+
+        }
+    }
+
+    isAllSelected(data: any, type: string) {
+        if (type == 'unitclistArray') {
+            this.isCheckedAllUnits = this.unitClist_temp.every(item => {
+                return item.isSelected == true;
             });
-
-            if (type == 'unitclistArray') {
-                this.unitclistData = this.unitclistData.filter(unit => unit.id != id);
-            }
-            this.uncheckedFilterOption.push({ type: type, id: id });
+            this.onCheckboxChangeUnit(data, type);
+        } else if (type == 'unittypeid') {
+            this.isCheckedAllUnitType = this.unittypeData_temp.every(item => {
+                return item.isSelected == true;
+            });
+            this.onCheckboxChangeUnit(data, type);
+        } else if (type == 'userPOIsArray') {
+            this.isCheckedAllPOIs = this.userPOIs_temp.every(item => {
+                return item.isSelected == true;
+            });
+            this.onCheckboxChangePOI(data, type);
         }
-        // console.log(checkArray);
-        // console.log(this.uncheckedFilterOption);
-        // console.log(this.unitclistData);
+    }
 
+    onCheckboxChangeUnit(data: any, type: string) {
+        if (data.isSelected) {
+            if (type == 'unitclistArray') {
+                this.unitclistData.push(this.unitClist_temp.filter(unit => unit.id == data.id)[0]);
+            }
+            this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type || (filter.type == type && filter.id != data.id));
+        } else {
+            if (type == 'unitclistArray') {
+                this.unitclistData = this.unitclistData.filter(unit => unit.id != data.id);
+            }
+            this.uncheckedFilterOption.push({ type: type, id: data.id });
+        }
+
+        this.filterUnitEmitter();
+    }
+
+    onCheckboxChangePOI(data: any, type: string) {
+        if (data.isSelected) {
+            if (type == 'userPOIsArray') {
+                this.userPOIsData.push(this.userPOIs_temp.filter(poi => poi.id == data.id)[0]);
+            }
+            this.uncheckedPOIsFilterOption = this.uncheckedPOIsFilterOption.filter(filter => filter.type != type || (filter.type == type && filter.id != data.id));
+        } else {
+            if (type == 'userPOIsArray') {
+                this.userPOIsData = this.userPOIsData.filter(poi => poi.id != data.id);
+            }
+            this.uncheckedPOIsFilterOption.push({ type: type, id: data.id });
+        }
+
+        this.filterPOIsEmitter();
+    }
+
+    filterUnitEmitter() {
+        this.filterPanelService.loadingsubject.next(false);
         let tempUnitclistData = this.unitclistData.map(unit => ({ ...unit }));
-
         if (this.uncheckedFilterOption.length > 0) {
             this.uncheckedFilterOption.forEach((option: any) => {
                 if (option.type == 'Speed') {
@@ -213,7 +301,6 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
                         tempUnitclistData = tempUnitclistData.filter(unit => unit[option.type] == 0);
                     }
                 } else if (option.type == 'LastReport') {
-                    console.log(option);
                     switch (option.id) {
                         case 1:
                             tempUnitclistData = tempUnitclistData.filter(unit => (new Date().getTime() - new Date(unit[option.type] + 'Z').getTime()) / 1000 > 1800);
@@ -236,54 +323,86 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
             tempUnitclistData = this.unitclistData;
         }
 
-        console.log(tempUnitclistData);
-        this.unitClistFilterEmitter.emit(tempUnitclistData);
+        this.filterPanelService.loadVehMarkers(tempUnitclistData);
+        this.filterUnits.emit(true);
+        setTimeout(() => {
+            this.filterPanelService.loadingsubject.next(true);
+        }, 500);
     }
 
-    isCheckedRow(row: any): boolean {
-        if (this.currentOpenedPanel == 'unittypeid') {
-            const foundunittype = this.unittypeSelection.selected.find(el => el === row);
-            if (foundunittype) { return true; }
-            return false;
-        } else if (this.currentOpenedPanel == 'unitclistArray') {
-            const found = this.unitclistSelection.selected.find(el => el === row);
-            if (found) { return true; }
-            return false;
+    filterPOIsEmitter() {
+        this.filterPanelService.loadingsubject.next(false);
+        let tempUserPOIsData = this.userPOIsData.map(poi => ({ ...poi }));
+        if (this.uncheckedPOIsFilterOption.length > 0) {
+            this.uncheckedPOIsFilterOption.forEach((option: any) => {
+                tempUserPOIsData = tempUserPOIsData.filter(poi => poi[option.type] != option.id);
+            });
+        } else {
+            tempUserPOIsData = this.userPOIsData;
         }
+        console.log(tempUserPOIsData);
+        this.filterPanelService.loadUserPOIs(tempUserPOIsData);
+        this.filterUnits.emit(true);
+        setTimeout(() => {
+            this.filterPanelService.loadingsubject.next(true);
+        }, 500);
     }
 
     onLocateNow(unit: any) {
-        console.log(unit);
-        this.unitLocateNowEmitter.emit(unit);
+        const target = { lat: unit.lat, lng: unit.lng, isSelected: unit.isSelected };
+        this.unitLocateNowEmitter.emit(target);
+    }
+    onLocatePOINow(poi: any) {
+        const target = { lat: poi.latitude, lng: poi.longitude, isSelected: poi.isSelected };
+        this.unitLocateNowEmitter.emit(target);
     }
 
     toggleSidebarOpen(key) {
+        this.filterPanelService.loadingsubject.next(false);
         this.filterPanelCloseEmitter.emit(false);
-        this.unitClistFilterEmitter.emit(this.unitClist);
-        this.unitclistSelection.clear();
-        this.unittypeSelection.clear();
+        this.filterPanelService.loadVehMarkers(this.unitClist);
+        this.filterPanelService.loadUserPOIs(this.poiClist);
         this.unitInfoSideBarService.getSidebar(key).toggleOpen();
+        setTimeout(() => {
+            this.filterPanelService.loadingsubject.next(true);
+        }, 500);
     }
 
     clearFilter() {
         this.filter_string = '';
-        if (this.currentOpenedPanel == 'unittypeid') {
-            this.getFilterPanelClists('unittype_clist');
+        if (this.currentOpenedPanel == 'unittypeArray') {
+            this.unittypeData_temp = this.unittypeData.map(type => ({ ...type }));
+            this.unittypepage = 1;
         } else if (this.currentOpenedPanel == 'unitclistArray') {
-            this.getFilterPanelClists('unit_clist');
+            this.unitClist_temp = this.unitClist.map(unit => ({ ...unit }));
+            this.unitclistpage = 1;
+        } else if (this.currentOpenedPanel == 'userPOIsArray') {
+            this.userPOIs_temp = this.poiClist.map(poi => ({ ...poi }));
+            this.userpoipage = 1;
         }
     }
 
     onKey(event: any) {
-        this.filter_string = event.target.value;
+        this.filter_string = event.target.value.toLowerCase();
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-            if (this.currentOpenedPanel == 'unittypeid') {
-                this.getFilterPanelClists('unittype_clist');
+            if (this.currentOpenedPanel == 'unittypeArray') {
+                this.unittypeData_temp = this.unittypeData.filter(unit => unit.name.toLowerCase().includes(this.filter_string));
+                this.unittypepage = 1;
             } else if (this.currentOpenedPanel == 'unitclistArray') {
-                this.getFilterPanelClists('unit_clist');
+                this.unitClist_temp = this.unitClist.filter(unit => unit.name.toLowerCase().includes(this.filter_string));
+                this.unitclistpage = 1;
+            } else if (this.currentOpenedPanel == 'userPOIsArray') {
+                this.userPOIs_temp = this.poiClist.filter(poi => poi.name.toLowerCase().includes(this.filter_string));
+                this.unittypepage = 1;
             }
-            // this.managePageIndex(this.method_string);
-            // this.loadVehicleDetail(this.method_string);
         }
+    }
+
+    trackFnUnitClist(index, item) {
+        return item ? item.id : null;
+    }
+
+    trackFnUnitType(index, item) {
+        return item ? item.id : null;
     }
 }

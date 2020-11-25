@@ -29,6 +29,7 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
     poi_detail: any;
     public poi: any;
     pageType: string;
+    routerLinkType: string;
 
     poiModel_flag: boolean;
     poiForm: FormGroup;
@@ -62,6 +63,9 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
             this.poi = data;
         });
+        this.activatedroute.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
+            this.routerLinkType = params.get('type');
+        })
 
 
         if (isEmpty(this.poi)) { this.pageType = 'new'; }
@@ -262,7 +266,11 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                 if ((result.responseCode == 200) || (result.responseCode == 100)) {
                     alert("Success!");
-                    this.router.navigate(['admin/poi/pois/pois']);
+                    if (this.routerLinkType == 'origin') {
+                        this.router.navigate(['admin/poi/pois/pois']);
+                    } else if (this.routerLinkType == 'map') {
+                        this.router.navigate(['home/google/saved'], { queryParams: this.poiDetail });
+                    }
                 }
             });
     }
@@ -285,7 +293,11 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
         const currentState = this.poiForm.value;
 
         if (isEqual(this.poi_detail, currentState)) {
-            this.router.navigate(['admin/poi/pois/pois']);
+            if (this.routerLinkType == 'origin') {
+                this.router.navigate(['admin/poi/pois/pois']);
+            } else if (this.routerLinkType == 'map') {
+                this.router.navigate(['home/google/unsaved'], { queryParams: this.poi });
+            }
         } else {
             const dialogConfig = new MatDialogConfig();
             let flag = 'goback';
@@ -295,7 +307,11 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
             const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
                 if (result == 'goback') {
-                    this.router.navigate(['admin/poi/pois/pois']);
+                    if (this.routerLinkType == 'origin') {
+                        this.router.navigate(['admin/poi/pois/pois']);
+                    } else if (this.routerLinkType == 'map') {
+                        this.router.navigate(['home/google/unsaved'], { queryParams: this.poi });
+                    }
                 }
             });
         }

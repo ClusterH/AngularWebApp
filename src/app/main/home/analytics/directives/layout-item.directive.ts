@@ -30,7 +30,7 @@ export class LayoutItemDirective implements OnChanges {
     ) { }
 
     ngOnChanges(): void {
-        // console.log('directiveSelectedOption===>>>', this.selectedOption);
+        //
         const component = components[this.componentRef];
         if (component) {
             const factory = this.resolver.resolveComponentFactory<any>(component);

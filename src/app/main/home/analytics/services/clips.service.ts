@@ -46,7 +46,7 @@ export class ClipsService {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
-                console.log(res);
+
                 switch (method) {
                     case 'clip_RouteCompliance':
                         this.clip_stopcomplianceChanged.next(res);

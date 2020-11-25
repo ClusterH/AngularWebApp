@@ -186,13 +186,11 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
                 return;
             }
 
-
             params.datefrom = this.paramDateFormat(new Date(this.dateStep.get('start').value)) + " " + this.paramTimeFormat(this.dateStep.get('starttime').value);
             params.dateto = this.paramDateFormat(new Date(this.dateStep.get('end').value)) + " " + this.paramTimeFormat(this.dateStep.get('endtime').value);
         }
 
         this.unitInfoService.playbackHistory(params, 'GetTrackIDandName').then(idandname => {
-
             if (idandname.responseCode == 100) {
                 // this.unitInfoService.TrackID = res.TrackingXLAPI.DATA[0].id;
                 // this.unitInfoService.TrackName = res
@@ -200,15 +198,11 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
                     .then(history => {
                         if (history.responseCode == 100) {
                             this.count = this.count + 1;
-
                             let color = this.random_rgba();
-
                             this.unitInfoService.TrackHistoryList.next({
                                 id: idandname.TrackingXLAPI.DATA[0].id,
                                 name: idandname.TrackingXLAPI.DATA[0].name,
                                 strokeColor: color,
-                                // historyList: history.TrackingXLAPI.DATA.slice(20 * this.count, 20 * this.count + 20)
-                                // historyList: history.TrackingXLAPI.DATA.slice(0, 1)
                                 historyList: history.TrackingXLAPI.DATA
                             });
                         } else {
@@ -229,7 +223,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
         }
 
         return this.color[result];
-
     }
 
     paramDateFormat(date: any) {

@@ -1,0 +1,97 @@
+<div id="direction_map" fxLayout="row">
+    <div class="poilist p-12 mat-elevation-z4">
+        <div class="header mb-8 h3" fxLayout="row" fxLayoutAlign="space-between center">
+            <img class="event_marker_img" src="assets/icons/map_unitInfo/directions2.png" height="30" width="30">
+            <!-- <span class="h2">Directions</span> -->
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="autocomplete-address my-8 mb-16" fxLayout="row" fxFlexAlign="center">
+            <div class="h6 w-20 mr-4" fxLayout="column" style="align-items: center;">
+                <span><i class="material-icons dot-origin">radio_button_checked</i></span>
+                <span class="dot-icon">&#9679;</span>
+                <span class="dot-icon">&#9679;</span>
+                <span class="mb-4 dot-icon">&#9679;</span>
+                <span><i class="material-icons dot-destination">place</i></span>
+                <!-- <span>From:</span>
+                <span>To:</span> -->
+            </div>
+            <!-- <img class="change_img w-20 h-20 mx-4" src="assets/icons/map_unitInfo/change.png" height="18" width="18"
+                (click)="onChangeDirection()" /> -->
+            <div class="h3 w-100-p autocomplete-container">
+                <div [ngClass]="[isChange? 'to-destination': 'from-origin']">{{unit.name}}</div>
+
+                <div class="autocomplete-poi-address" [ngClass]="[isChange? 'from-origin': 'to-destination']"
+                    fxLayout="row">
+                    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+                        type="text" class="h4 px-4" #search [(ngModel)]="filter_string">
+                    <mat-icon class="cancel_close_icon" (click)="clearAutoComplete()">clear</mat-icon>
+                </div>
+            </div>
+            <div class="change_direction_icon" (click)="onChangeDirection()"><i class="material-icons"
+                    style="font-size:28px; font-weight: 900; color: rgba(245, 245, 245, 0.7)">swap_vert</i></div>
+        </div>
+        <mat-divider></mat-divider>
+
+
+        <div class="direction-poilist mt-12">
+            <!-- <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
+                    [ngModelOptions]="{standalone: true}">
+                <mat-icon (click)="clearFilter()">clear</mat-icon>
+            </div> -->
+            <div *ngFor="let data of poiDataList | paginate: {id: 'poilist', itemsPerPage: 15, currentPage: poiDataListPage}"
+                class="mb-8 item-panel-body">
+                <label>
+                    <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
+                        (change)="$event ? poiSelection.toggle(data.id) : null;"
+                        [checked]="poiSelection.isSelected(data.id)" [disabled]="isChange && latitude" />
+                    <span>{{data.name}}</span>
+                </label>
+            </div>
+        </div>
+
+        <pagination-template #pclist="paginationApi" id="poilist" (pageChange)="poiDataListPage = $event">
+            <div class="custom-pagination">
+                <div class="pagination-previous" [class.disabled]="pclist.isFirstPage()">
+                    <span *ngIf="!pclist.isFirstPage()" (click)="pclist.previous()">
+                        &#11164; </span>
+                </div>
+                <div class="page-number" *ngFor="let page of pclist.pages"
+                    [class.current]="pclist.getCurrent() === page.value">
+                    <span (click)="pclist.setCurrent(page.value)"
+                        *ngIf="pclist.getCurrent() !== page.value">{{ page.label }}</span>
+                    <div *ngIf="pclist.getCurrent() === page.value">
+                        <span>{{ page.label }}</span>
+                    </div>
+                </div>
+                <div class="pagination-next" [class.disabled]="pclist.isLastPage()">
+                    <span *ngIf="!pclist.isLastPage()" (click)="pclist.next()"> &#11166; </span>
+                </div>
+            </div>
+        </pagination-template>
+
+        <div class=" mt-16 ">
+            <input class="calculate_button" type="button" value="&#10003; Calculate" (click)="getDirection()"
+                style="float: right;">
+        </div>
+    </div>
+
+    <agm-map class="unitMap" #unitMap [latitude]="unit.latitude" [longitude]="unit.longitude" [zoom]="12"
+        [disableDefaultUI]="false" [zoomControl]="false">
+        <agm-overlay *ngIf="!isDirection" [latitude]="unit.latitude" [longitude]="unit.longitude">
+            <div class="unit_marker_div"><img class="event_marker_img"
+                    src="assets/icons/map_unitInfo/residential-places.png" height="30"></div>
+        </agm-overlay>
+        <div *ngIf="isDirection">
+            <!-- <agm-direction *ngFor="let direction of dir" [origin]="direction.origin"
+                [destination]="direction.destination" [markerOptions]="direction.markerOptions"
+                [renderOptions]="direction.renderOptions", [waypoints]="direction.waypoints">
+            </agm-direction> -->
+            <agm-direction [origin]="origin" [destination]="destination" [markerOptions]="markerOptions"
+                [renderOptions]="renderOptions" [waypoints]="waypoints">
+            </agm-direction>
+        </div>
+
+    </agm-map>
+</div>

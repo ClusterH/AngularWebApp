@@ -21,6 +21,7 @@ import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.servic
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { UnitInfoSidebarModule } from 'app/main/home/maps/sidebar/sidebar.module';
 import { UnitInfoPanelModule } from 'app/main/home/maps/unitInfo-panel/unitInfo-panel.module';
+import { POIInfoPanelModule } from 'app/main/home/maps/poiInfo-panel/poiInfo-panel.module';
 import { FilterPanelModule } from 'app/main/home/maps/filter-panel/filter-panel.module';
 import { TrackPanelModule } from 'app/main/home/maps/track-panel/track-panel.module';
 import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
@@ -56,6 +57,7 @@ const routes = [
         FuseHighlightModule,
         FuseShortcutsModule,
         UnitInfoPanelModule,
+        POIInfoPanelModule,
         FilterPanelModule,
         TrackPanelModule,
         HttpClientModule,

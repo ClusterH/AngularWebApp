@@ -109,9 +109,15 @@
     </mat-toolbar>
     <!-- CONTENT -->
     <div class="content p-0">
-        <agm-map #AgmMap id="AgmMap" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
-            [zoomControl]="false" (mapClick)="mapClicked($event)" (mapReady)="onMapReady($event)"
-            [fitBounds]="isTrackUnitHistory">
+        <div class="spinner_overlay" *ngIf="!(filterPanelService.loading$ | async)">
+            <div class="spinner_container">
+                <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                </mat-spinner>
+            </div>
+        </div>
+        <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+            [zoomControl]="false" (mapReady)="onMapReady($event)" [fitBounds]="isTrackUnitHistory"
+            [fullscreenControl]='true' [mapTypeControl]='true'>
             <div *ngIf="isClickedEvent">
                 <agm-overlay *ngFor="let event of eventLocation" [latitude]="event.latitude"
                     [longitude]="event.longitude">
@@ -119,17 +125,30 @@
                             height="40" width="40"></div>
                 </agm-overlay>
             </div>
-            <div>
-                <agm-marker-cluster [minimumClusterSize]="minClusterSize"
+            <div *ngIf="(filterPanelService.loading$ | async)">
+                <agm-marker-cluster *ngIf="filterPanelService.vehmarkers_temp$ | async"
+                    [minimumClusterSize]="minClusterSize"
                     imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
-                    <agm-marker *ngFor="let m of vehmarkers_temp; let i = index" (markerClick)="clickedMarker(m.id)"
-                        [latitude]="m.lat" [longitude]="m.lng" [label]="m.label"
-                        [markerDraggable]="m.draggable == 'true'" [visible]="true" (dragEnd)="markerDragEnd(m, $event)">
-                        <agm-info-window>
-                            <strong>{{m.label}}</strong>
-                        </agm-info-window>
+                    <agm-marker
+                        *ngFor="let m of filterPanelService.vehmarkers_temp$ | async; trackBy: trackedMarker; let i = index"
+                        (markerClick)="clickedMarker(m.id, 'unitInfoPanel')" [latitude]="m.lat" [longitude]="m.lng"
+                        [markerDraggable]="m.draggable == 'true'" [visible]="true" [iconUrl]="unit_icon"
+                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold'}">
                     </agm-marker>
                 </agm-marker-cluster>
+
+                <agm-marker-cluster *ngIf="filterPanelService.userPOI_temp$ | async"
+                    [minimumClusterSize]="minClusterSize"
+                    imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+                    <agm-marker
+                        *ngFor="let m of filterPanelService.userPOI_temp$ | async; trackBy: trackedMarker; let i = index"
+                        (markerClick)="clickedMarker(m.id, 'poiInfoPanel')" [latitude]="m.latitude"
+                        [longitude]="m.longitude"
+                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold'}"
+                        [markerDraggable]="m.draggable == 'true'" [visible]="true" [iconUrl]="poi_icon">
+                    </agm-marker>
+                </agm-marker-cluster>
+
                 <agm-polyline *ngFor="let rte of routes" [strokeColor]="'blue'">
                     <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
                     </agm-polyline-point>
@@ -138,6 +157,7 @@
                     [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
                 </agm-polygon>
             </div>
+
             <div *ngIf="isTrackUnitHistory">
                 <agm-polyline *ngFor="let rte of trackHistoryPolylines" [strokeColor]="rte.strokeColor">
                     <agm-polyline-point *ngFor="let pnt of rte.historyList" [latitude]="pnt.lat" [longitude]="pnt.lng"
@@ -147,6 +167,7 @@
             </div>
         </agm-map>
     </div>
+
     <button *ngIf="showFilters" mat-icon-button class="warn mat-elevation-z2 filter-panel-button"
         (click)="toggleSidebarOpen('filterPanel')">
         <mat-icon>layers</mat-icon>
@@ -156,19 +177,24 @@
         <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
         <mat-icon class="event_clean">location_off</mat-icon>
     </button>
-    <button *ngIf="isTrackUnitHistory" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
+    <!-- <button *ngIf="isTrackUnitHistory" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
         (click)="cleanTrackLocation()">
-        <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
         <mat-icon class="event_clean">block</mat-icon>
-    </button>
+    </button> -->
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
             (eventLocation)="showEventLocation($event)">
         </unitInfo-panel>
     </unitinfo-sidebar>
+    <unitinfo-sidebar name="poiInfoPanel" class="unitInfoPanel-sidebar" position="right">
+        <poiInfo-panel [currentPOI]="currentPOI" [currentPOIEvents]="currentEvents"
+            (eventLocation)="showEventLocation($event)">
+        </poiInfo-panel>
+    </unitinfo-sidebar>
     <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">
-        <filter-panel [unitClist]="unitClist" (unitClistFilterEmitter)="filterUnits($event)" *ngIf="showFilters"
-            (filterPanelCloseEmitter)="filterToggleOff($event)" (unitLocateNowEmitter)="unitLocateNow($event)">
+        <filter-panel [unitClist]="unitClist" [poiClist]="poiClist" *ngIf="showFilters"
+            (filterPanelCloseEmitter)="filterToggleOff($event)" (unitLocateNowEmitter)="unitLocateNow($event)"
+            (filterUnits)="filterUnits($event)">
         </filter-panel>
     </unitinfo-sidebar>
     <unitinfo-sidebar name="trackPanel" class="trackPanel-sidebar w-700" position="right">

@@ -14,7 +14,7 @@ import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
     { path: 'pois', component: PoisComponent },
-    { path: 'poi_detail', component: PoiDetailComponent },
+    { path: 'poi_detail/:type', component: PoiDetailComponent },
 ];
 
 @NgModule({

@@ -73,7 +73,7 @@ export class NumberOfVehiclesComponent implements OnInit, OnDestroy {
         }, stepTime);
     }
     showDetail() {
-        console.log('showDetail');
+
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = false;
         dialogConfig.data = { detail: this.clip_detail, flag: 'numberofvehicles' };

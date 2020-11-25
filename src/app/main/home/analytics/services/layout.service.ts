@@ -51,9 +51,9 @@ export class LayoutService {
 
     dropItem(dragId: string): void {
         this.dragId = dragId;
-        console.log(this.dragId, this.dropId);
+
         const { components } = this;
-        console.log(components);
+
         const comp: IComponent = components.find(c => c.id === this.dropId);
         const updateIdx: number = comp ? components.indexOf(comp) : components.length;
         // const updateIdx: any = this.dropId;

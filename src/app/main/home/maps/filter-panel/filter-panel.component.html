@@ -29,20 +29,28 @@
                             [ngModelOptions]="{standalone: true}">
                         <mat-icon (click)="clearFilter()">clear</mat-icon>
                     </div>
-                    <div *ngFor="let data of unitClist | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}"
+                    <div class="check-uncheckAll">
+                        <label>
+                            <input type="checkbox" value="h1" [(ngModel)]="isCheckedAllUnits"
+                                [ngModelOptions]="{standalone: true}"
+                                (change)="checkUncheckAllUnit(isCheckedAllUnits, 'unitclistArray')" />
+                            <span class="ml-24">Name</span>
+                        </label>
+                    </div>
+                    <div *ngFor="let data of unitClist_temp | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}; trackBy: trackFnUnitClist"
                         class="mb-8 item-panel-body">
                         <label>
-                            <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
-                                (change)="$event ? unitclistSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, data.id, 'unitclistArray')"
-                                [checked]="true" />
-                            <!-- <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_all.png">
-                             -->
+                            <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                (click)="$event.stopPropagation()" [ngModelOptions]="{standalone: true}"
+                                (change)="isAllSelected(data, 'unitclistArray')" />
                         </label>
-                        <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/locate_now.png"
-                            (click)="onLocateNow(data);$event.stopPropagation()">
-                        <span>{{data.name}}</span>
-                        <!-- <img class="mr-4 unitClist_icon" src="assets/icons/map_unitClist/actions_for_unit.png"> -->
-                        <mat-icon (click)="clearFilter()" class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
+                        <div class="mr-4 unitClist_icon" [class.disabled]="!data.isSelected">
+                            <img src="assets/icons/map_unitClist/locate_now.png"
+                                (click)="onLocateNow(data);$event.stopPropagation()">
+                        </div>
+
+                        <span class="mr-12">{{data.name}}</span>
+                        <mat-icon class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
                         </mat-icon>
                     </div>
 
@@ -78,8 +86,9 @@
 
                         <div *ngFor="let data of productData; let i=index" class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" [checked]="true"
-                                    (change)="onCheckboxChangeUnit($event, data.id, 'producttypeid')" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="onCheckboxChangeUnit(data, 'producttypeid')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -95,8 +104,9 @@
 
                         <div *ngFor="let data of ignitionData; let i=index" class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" [checked]="true"
-                                    (change)="onCheckboxChangeUnit($event, data.id, 'ignition')" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="onCheckboxChangeUnit(data, 'ignition')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -112,8 +122,9 @@
 
                         <div *ngFor="let data of gpsData; let i=index" class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" [checked]="true"
-                                    (change)="onCheckboxChangeUnit($event, data.id, 'ValidGPS')" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="onCheckboxChangeUnit(data, 'ValidGPS')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -129,8 +140,9 @@
 
                         <div *ngFor="let data of speedData; let i=index" class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" [checked]="true"
-                                    (change)="onCheckboxChangeUnit($event, data.id, 'Speed')" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="onCheckboxChangeUnit(data, 'Speed')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -146,8 +158,9 @@
 
                         <div *ngFor="let data of lastreportData; let i=index" class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" [checked]="true"
-                                    (change)="onCheckboxChangeUnit($event, data.id,  'LastReport')" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="onCheckboxChangeUnit(data, 'LastReport')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -166,12 +179,20 @@
                                 [(ngModel)]="filter_string" [ngModelOptions]="{standalone: true}">
                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                         </div>
-                        <div *ngFor="let data of unittypeData | paginate: {id: 'unittype', itemsPerPage: 10, currentPage: unittypepage}"
+                        <div class="check-uncheckAll">
+                            <label>
+                                <input type="checkbox" value="h1" [(ngModel)]="isCheckedAllUnitType"
+                                    [ngModelOptions]="{standalone: true}"
+                                    (change)="checkUncheckAllUnit(isCheckedAllUnitType, 'unittypeid')" />
+                                <span class="ml-16">Type</span>
+                            </label>
+                        </div>
+                        <div *ngFor="let data of unittypeData_temp | paginate: {id: 'unittype', itemsPerPage: 10, currentPage: unittypepage}; trackBy: trackFnUnitType"
                             class="mb-8 item-panel-body">
                             <label>
-                                <input type="checkbox" [value]="data.id" (click)="$event.stopPropagation()"
-                                    (change)="$event ? unittypeSelection.toggle(data.id) : null; onCheckboxChangeUnit($event, data.id, 'unittypeid')"
-                                    [checked]="true" />
+                                <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                    (click)="$event.stopPropagation()" [ngModelOptions]="{standalone: true}"
+                                    (change)="isAllSelected(data, 'unittypeid')" />
                                 {{data.name}}
                             </label>
                         </div>
@@ -198,40 +219,91 @@
                     </mat-expansion-panel>
                 </mat-accordion>
             </mat-expansion-panel>
+
+            <!-- POIs panel -->
+            <mat-expansion-panel class="unit-panel" (afterExpand)="afterPanelOpened('userPOIsArray')">
+                <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                    <mat-panel-title>
+                        <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="primary-fg mr-12">place</mat-icon>POIs
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div class="unit-panel-body" [ngStyle]="{'opacity':isFilterPanel ? '0.1' : '1' }">
+                    <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                        <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
+                            [ngModelOptions]="{standalone: true}">
+                        <mat-icon (click)="clearFilter()">clear</mat-icon>
+                    </div>
+                    <div class="check-uncheckAll">
+                        <label>
+                            <input type="checkbox" value="h1" [(ngModel)]="isCheckedAllPOIs"
+                                [ngModelOptions]="{standalone: true}"
+                                (change)="checkUncheckAllUnit(isCheckedAllPOIs, 'userPOIsArray')" />
+                            <span class="ml-24">Name</span>
+                        </label>
+                    </div>
+                    <div *ngFor="let data of userPOIs_temp | paginate: {id: 'userpoi', itemsPerPage: 10, currentPage: userpoipage}; trackBy: trackFnUnitClist"
+                        class="mb-8 item-panel-body">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
+                                (click)="$event.stopPropagation()" [ngModelOptions]="{standalone: true}"
+                                (change)="isAllSelected(data, 'userPOIsArray')" />
+                        </label>
+                        <div class="mr-4 unitClist_icon" [class.disabled]="!data.isSelected">
+                            <img src="assets/icons/map_unitClist/locate_now.png"
+                                (click)="onLocatePOINow(data);$event.stopPropagation()">
+                        </div>
+                        <span class="mr-12">{{data.name}}</span>
+                        <mat-icon class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
+                        </mat-icon>
+                    </div>
+
+                    <pagination-template #pagePOI="paginationApi" id="userpoi" (pageChange)="userpoipage = $event">
+                        <div class="custom-pagination">
+                            <div class="pagination-previous" [class.disabled]="pagePOI.isFirstPage()">
+                                <span *ngIf="!pagePOI.isFirstPage()" (click)="pagePOI.previous()">
+                                    &#11164; </span>
+                            </div>
+                            <div class="page-number" *ngFor="let page of pagePOI.pages"
+                                [class.current]="pagePOI.getCurrent() === page.value">
+                                <span (click)="pagePOI.setCurrent(page.value)"
+                                    *ngIf="pagePOI.getCurrent() !== page.value">{{ page.label }}</span>
+                                <div *ngIf="pagePOI.getCurrent() === page.value">
+                                    <span>{{ page.label }}</span>
+                                </div>
+                            </div>
+                            <div class="pagination-next" [class.disabled]="pagePOI.isLastPage()">
+                                <span *ngIf="!pagePOI.isLastPage()" (click)="pagePOI.next()"> &#11166; </span>
+                            </div>
+                        </div>
+                    </pagination-template>
+                </div>
+            </mat-expansion-panel>
+
+            <!-- Zones Panel -->
+            <mat-expansion-panel class="unit-panel" (afterExpand)="afterPanelOpened('zonesArray')">
+                <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                    <mat-panel-title>
+                        <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="primary-fg mr-12">center_focus_strong</mat-icon>Zones
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            <!-- Routes panel -->
+            <mat-expansion-panel class="unit-panel" (afterExpand)="afterPanelOpened('routesArray')">
+                <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                    <mat-panel-title>
+                        <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="primary-fg mr-12">gesture</mat-icon>Routes
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
         </form>
-
-        <!-- POIs panel -->
-        <mat-expansion-panel>
-            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
-                <mat-panel-title>
-                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon class="primary-fg mr-12">place</mat-icon>POIs
-                    </div>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-        </mat-expansion-panel>
-
-        <!-- Zones Panel -->
-        <mat-expansion-panel>
-            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
-                <mat-panel-title>
-                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon class="primary-fg mr-12">center_focus_strong</mat-icon>Zones
-                    </div>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-        </mat-expansion-panel>
-
-        <!-- Routes panel -->
-        <mat-expansion-panel>
-            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
-                <mat-panel-title>
-                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon class="primary-fg mr-12">gesture</mat-icon>Routes
-                    </div>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-        </mat-expansion-panel>
     </mat-accordion>
 
 

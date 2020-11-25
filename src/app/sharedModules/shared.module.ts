@@ -27,6 +27,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseMaterialColorPickerModule } from '@fuse/components';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
@@ -73,6 +74,7 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
+        FontAwesomeModule,
         UiSwitchModule,
         NgxMatSelectSearchModule,
         QuicklinkModule,

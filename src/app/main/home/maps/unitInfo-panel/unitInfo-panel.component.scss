@@ -185,10 +185,25 @@
                 }
             }
 
-            .daterange-next-button {
+            .daterange-close-button {
                 position: absolute;
                 bottom: 16px;
                 right: 16px;
+                .next-button {
+                    border: none;
+                    background-color: transparent;
+                    cursor: pointer;
+                    border-bottom: solid 1px whitesmoke !important;
+                    color: whitesmoke;
+                }
+                .next-button:hover {
+                    transform: skewX(-10deg);
+                }
+            }
+            .daterange-next-button {
+                position: absolute;
+                bottom: 16px;
+                right: 83px;
                 .next-button {
                     border: none;
                     background-color: transparent;

@@ -1,0 +1,231 @@
+<div id="routecenter" class="page-layout carded fullwidth inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="center_table center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'ROUTECENTER.ROUTECENTER' | translate }}
+                </span>
+            </div>
+        </div>
+        <div class="spinner_overlay" *ngIf="!(routecenterService.loading$ | async)">
+            <div class="spinner_container">
+                <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                </mat-spinner>
+            </div>
+        </div>
+        <div *ngIf="(routecenterService.loading$ | async)" class="content-card"
+            [ngStyle]="{'width': 100 - resizedWidthPercent + '%', 'overflow': 'auto' }">
+            <p-table #dt [value]="dataSource" [(selection)]="selectedRouteCenter" dataKey="id"
+                styleClass="p-datatable-routecenter" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+                [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+                [globalFilterFields]="['unit', 'driver', 'route']" [autoLayout]="true" [responsive]="false"
+                [resizableColumns]="false" [totalRecords]="totalRecords" paginatorPosition="top">
+                <ng-template pTemplate="caption">
+                    <div class="table-header">
+                        <p-calendar (onSelect)="onDateSelect($event)"
+                            (onClearClick)="dt.filter('', 'start', 'contains')" [showButtonBar]="true"
+                            styleClass="p-date-filter" placeholder="Date" [readonlyInput]="true" dateFormat="yy-mm-dd">
+                        </p-calendar>
+                        <div class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText class="filter_input" type="text"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th>
+                            <p-tableHeaderCheckbox (click)="isCheckRoute()"></p-tableHeaderCheckbox>
+                        </th>
+                        <th>{{ 'ROUTECENTER.UNIT' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.DRIVER' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.ROUTE' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.START' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.FROMTO' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.PROGRESS' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.DELAY' | translate }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-routes let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <button type="button" pButton pRipple [pRowToggler]="routes"
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td>
+                            <p-tableCheckbox [value]="routes" (click)="isCheckRoute()">
+                            </p-tableCheckbox>
+                        </td>
+                        <td *ngFor="let col of displayedColumns">
+                            {{routes[col]}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-route>
+                    <tr>
+                        <td colspan="10">
+                            <div class="p-p-3">
+                                <p-table [value]="route.stops" dataKey="id" [autoLayout]="true"
+                                    [showCurrentPageReport]="true" styleClass="p-datatable-detail"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+                                    <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 4rem"></th>
+                        <th>{{ 'ROUTECENTER.STOPCLIENT' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.TIME' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.ARRIVED' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.ETA' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.LEAVE' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.DURATION' | translate }}</th>
+                        <th>{{ 'ROUTECENTER.DELAY' | translate }}</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-detail>
+                    <tr>
+                        <td style="width: 4rem"><img src="assets/icons/map_unitClist/locate_now.png"
+                                (click)="centerMapToStop(detail);$event.stopPropagation()"></td>
+                        <td *ngFor="let col of displayedColumnsDetail">{{detail[col]}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">{{ 'ROUTECENTER.NODETAIL' | translate }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        </td>
+        </tr>
+        </ng-template>
+        </p-table>
+    </div>
+
+    <div class="map-content" [ngStyle]="{'width': resizedWidthPercent + '%', 'overflow': 'auto' }">
+        <agm-map class="routeMap" #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+            [zoomControl]="false" (mapReady)="onMapReady($event)" [fitBounds]="isRoute">
+            <ng-container *ngIf="isRoute">
+                <agm-polyline *ngFor="let rte of selectedRouteCenter; let i=index" [strokeColor]="rte.strokeColor">
+                    <agm-marker #startmarker [latitude]="rte.stop_start[0].latitude"
+                        [longitude]="rte.stop_start[0].longitude" [visible]="true"
+                        [style.color]="dynamicColor(rte.strokeColor)"
+                        [iconUrl]="rte.stop_start[0].arrived? unit_icon_start_green : unit_icon_start_red">
+                        <agm-info-window #startInfoWindow>
+                            <table class="route_infowindow">
+                                <tr>
+                                    <td class="label">Vehicle</td>
+                                    <td class="value">{{rte.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Driver</td>
+                                    <td class="value">{{rte.driver}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">SchedTime</td>
+                                    <td class="value">{{rte.stop_start[0].time}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Arrived</td>
+                                    <td class="value">{{rte.stop_start[0].arrived}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Duration</td>
+                                    <td class="value">{{rte.stop_start[0].duration}}</td>
+                                </tr>
+                            </table>
+                        </agm-info-window>
+                    </agm-marker>
+                    <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy" [latitude]="m.latitude"
+                        [longitude]="m.longitude" [visible]="true"
+                        [iconUrl]="m.arrived? unit_icon_arrived : unit_icon_unarrived">
+                        <agm-info-window>
+                            <table class="route_infowindow">
+                                <tr>
+                                    <td class="label">Vehicle</td>
+                                    <td class="value">{{rte.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Driver</td>
+                                    <td class="value">{{rte.driver}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">SchedTime</td>
+                                    <td class="value">{{m.time}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Arrived</td>
+                                    <td class="value">{{m.arrived}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Duration</td>
+                                    <td class="value">{{m.duration}}</td>
+                                </tr>
+                            </table>
+                        </agm-info-window>
+                    </agm-marker>
+                    <agm-marker #endmarker [latitude]="rte.stop_end[0].latitude" [longitude]="rte.stop_end[0].longitude"
+                        [visible]="true" [iconUrl]="rte.stop_end[0].arrived? unit_icon_end_green : unit_icon_end_red">
+                        <agm-info-window>
+                            <table class="route_infowindow">
+                                <tr>
+                                    <td class="label">Vehicle</td>
+                                    <td class="value">{{rte.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Driver</td>
+                                    <td class="value">{{rte.driver}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">SchedTime</td>
+                                    <td class="value">{{rte.stop_end[0].time}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Arrived</td>
+                                    <td class="value">{{rte.stop_end[0].arrived}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Duration</td>
+                                    <td class="value">{{rte.stop_end[0].duration}}</td>
+                                </tr>
+                            </table>
+                        </agm-info-window>
+                    </agm-marker>
+                    <agm-polyline-point *ngFor="let pnt of rte.stops" [latitude]="pnt.latitude"
+                        [longitude]="pnt.longitude" [agmFitBounds]="isRoute">
+                    </agm-polyline-point>
+                </agm-polyline>
+            </ng-container>
+        </agm-map>
+        <div class="option-content px-24 py-8 primary-50" fxFlex="1 1 auto" fxLayout="row"
+            fxLayoutAlign="center center">
+            <div class="p-field-checkbox mx-12">
+                <p-checkbox [(ngModel)]="isVehicleTrack" binary="true" inputId="vt"></p-checkbox>
+                <label for="binary" class="ml-8">Vehicle Track</label>
+            </div>
+            <div class="checkbox-img w-24 ml-8">
+                <img src="assets/icons/googlemap/unauthorize.png">
+            </div>
+            <div class="p-field-checkbox mx-12">
+                <p-checkbox [(ngModel)]="isUnAuthorized" binary="true" inputId="ua"></p-checkbox>
+                <label for="binary" class="ml-8">UnAuthorized</label>
+            </div>
+            <div class="checkbox-img w-24 ml-8">
+                <img src="assets/icons/googlemap/offroute.png">
+            </div>
+            <div class="p-field-checkbox mx-12">
+                <p-checkbox [(ngModel)]="isOffRoute" binary="true" inputId="or"></p-checkbox>
+                <label for="binary" class="ml-8">Off Route</label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ 'ROUTECENTER.SERVICEATTENTION' | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="attendForm">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>{{ 'ROUTECENTER.ACTION' | translate }}</mat-label>
+                    <mat-icon matSuffix class="secondary-text">call_to_action</mat-icon>
+                    <mat-select class="ev_zone_select" [(value)]="action">
+                        <mat-option class="ev_zone_option" value="1">{{ 'ROUTECENTER.DELAY' | translate }}</mat-option>
+                        <mat-option class="ev_zone_option" value="2">{{ 'ROUTECENTER.REGISTER' | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>{{ 'ROUTECENTER.COST' | translate }}</mat-label>
+                    <mat-icon matSuffix class="secondary-text">attach_money</mat-icon>
+                    <input name="cost" formControlName="cost" matInput>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>{{ 'ROUTECENTER.DATE' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="performDatePicker" name="performdate"
+                        formControlName="performdate">
+                    <mat-datepicker-toggle matSuffix [for]="performDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #performDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>{{ 'ROUTECENTER.HOUR' | translate }}</mat-label>
+                    <!-- <mat-icon matSuffix class="secondary-text">access_time</mat-icon> -->
+                    <input name="hour" formControlName="hour" type="time" matInput>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button class="mr-8" (click)="matDialogRef.close()" aria-label="Close" matTooltip="Close">
+            {{ 'ROUTECENTER.CLOSE' | translate }}
+        </button>
+        <button mat-button class="save-button accent" (click)="save()" [disabled]="attendForm.invalid"
+            aria-label="SAVE">
+            {{ 'ROUTECENTER.SAVE' | translate }}
+        </button>
+    </div>
+</div>

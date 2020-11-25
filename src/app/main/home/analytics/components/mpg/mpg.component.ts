@@ -29,7 +29,7 @@ export class MpgComponent implements OnInit, OnDestroy {
         this.clipsservice.clip_mileage('clip_mpg').then(res => {
             this.clipsservice.clip_mpgChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                 if (res.responseCode == 100) {
-                    console.log('mpgComponent===>>>', res);
+
                     this.animateValue(0, res.TrackingXLAPI.DATA[0].mpg, 500)
                     // this.mpg = res.TrackingXLAPI.DATA[0].mpg;
                     this.mpgUnits = res.TrackingXLAPI.DATA[0].mpgunits;
@@ -38,7 +38,7 @@ export class MpgComponent implements OnInit, OnDestroy {
             this.clipsservice.clip_mileageDetail('clip_mpg_detail').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                 if (res.responseCode == 100) {
                     this.mpg_detail = res.TrackingXLAPI.DATA;
-                    console.log(res);
+
                 }
             });
         });

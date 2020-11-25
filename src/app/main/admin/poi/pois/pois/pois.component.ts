@@ -132,7 +132,7 @@ export class PoisComponent implements OnInit, OnDestroy {
     }
 
     editShowPoiDetail(poi: any) {
-        this.router.navigate(['admin/poi/pois/poi_detail'], { queryParams: poi });
+        this.router.navigate(['admin/poi/pois/poi_detail/origin'], { queryParams: poi });
     }
 
     deletePoi(poi): void {

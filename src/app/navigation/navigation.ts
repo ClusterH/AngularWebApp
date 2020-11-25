@@ -20,7 +20,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Google',
                 translate: 'NAV.GOOGLE',
                 type: 'item',
-                url: '/home/google'
+                url: '/home/google/:type'
             },
             {
                 id: 'osm',
@@ -341,7 +341,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Route Center',
                 translate: 'NAV.ROUTECENTER',
                 type: 'item',
-                url: 'pages/logistics/route_center'
+                url: '/logistic/routecenter/routecenter'
             },
             {
                 id: 'monitoring',

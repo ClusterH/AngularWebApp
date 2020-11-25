@@ -318,9 +318,14 @@
                 </form>
 
             </div>
-
-            <div class="daterange-next-button" fxLayout="row" fxLayoutAlign="end center">
-                <button class="next-button" type="button" (click)="playbackHistory()"> &#10003; Next </button>
+            <div fxLayout="row" fxLayoutAlign="end center">
+                <div class="daterange-next-button">
+                    <button class="next-button" type="button" (click)="playbackHistory()"> &#10003; Next </button>
+                </div>
+                <div class="daterange-close-button">
+                    <button class="next-button" type="button" (click)="goOptionPanel('mainpanel')"> &#10007; Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>

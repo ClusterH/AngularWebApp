@@ -138,7 +138,7 @@ export class OpenStreetMapComponent implements OnInit, OnDestroy {
 
         this.intializeMapOptions();
 
-        this._adminVehMarkersService.getVehMarkers().subscribe(
+        this._adminVehMarkersService.getVehMarkers('GetVehicleLocations').subscribe(
             (data) => {
                 this.vehmarkers = data.TrackingXLAPI.DATA;
                 this.getMarkerCluster(this.vehmarkers);

@@ -1,5 +1,7 @@
-import { MouseEvent, MapsAPILoader, GoogleMapsAPIWrapper, AgmMap, AgmFitBounds, LatLngBounds, LatLngBoundsLiteral, FitBoundsAccessor } from '@agm/core';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AgmMap, AgmMarker, LatLngBounds, MapsAPILoader, MouseEvent } from '@agm/core';
+import { Component, OnDestroy, OnInit, ViewChild, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -11,10 +13,11 @@ import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { AuthService } from 'app/authentication/services/authentication.service';
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
-import { VehMarkersDataSource } from "app/main/home/maps/services/vehmarkers.datasource";
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
+import { FilterPanelService } from 'app/main/home/maps/services/searchfilterpanel.service';
+
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
 import { forkJoin, Subject } from 'rxjs';
@@ -25,7 +28,8 @@ declare const google: any;
 @Component({
     selector: 'docs-components-third-party-google-maps',
     templateUrl: './google-maps.component.html',
-    styleUrls: ['./google-maps.component.scss']
+    styleUrls: ['./google-maps.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDestroy {
     selectedLanguage: any;
@@ -40,14 +44,18 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     currentUnit: any;
     currentOperator: any;
     currentEvents: any;
-
+    currentPOI: any;
+    currentPOIEvents: any;
     lat: number;
     lng: number;
-    dataSource: VehMarkersDataSource;
     vehmarkers: any = [];
     vehmarkers_temp: any = [];
+    userPOIs: any = [];
+    userPOIs_temp: any = [];
     unitClist: any = [];
+    poiClist: any = [];
     tmpVehmarkers: marker[];
+    tmpPOIs: marker[];
     zones: marker[];
     routes: marker[];
     tmpZones: marker[];
@@ -69,21 +77,35 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     selectedCountry: string;
     user: any;
     map: any;
+    routerLinkType: string = '';
+
+    unit_icon = {
+        url: 'assets/icons/googlemap/unit-marker.png',
+        scaledSize: { width: 33, height: 44 },
+        labelOrigin: { x: 15, y: 50 }
+    }
+    poi_icon = {
+        url: 'assets/icons/googlemap/employment.png',
+        scaledSize: { width: 33, height: 44 },
+        labelOrigin: { x: 15, y: 50 }
+    }
 
     @ViewChild('AgmMap') agmMap: AgmMap;
 
     constructor(
-        private _adminVehMarkersService: VehMarkersService
-        , private _adminZonesService: ZonesService
-        , private _adminRoutesService: RoutesService,
-        private unitInfoService: UnitInfoService
-        , private _fuseConfigService: FuseConfigService,
-        private _fuseSidebarService: FuseSidebarService
-        , private _unitInfoSidebarService: UnitInfoSidebarService
-        , private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+        private _adminVehMarkersService: VehMarkersService,
+        private _adminZonesService: ZonesService,
+        private _adminRoutesService: RoutesService,
+        private unitInfoService: UnitInfoService,
+        private _fuseConfigService: FuseConfigService,
+        private _fuseSidebarService: FuseSidebarService,
+        private _unitInfoSidebarService: UnitInfoSidebarService,
+        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _translateService: TranslateService,
         private _authService: AuthService,
-        private mapsAPILoader: MapsAPILoader,
+        public filterPanelService: FilterPanelService,
+        private router: Router,
+        private activatedroute: ActivatedRoute
     ) {
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this._unsubscribeAll = new Subject();
@@ -115,23 +137,43 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this.tmpZones = [];
         this.tmpRoutes = [];
 
-        forkJoin(
-            this._adminVehMarkersService.getVehMarkers(),
-            this._adminZonesService.getZones(),
-            this._adminRoutesService.getRoutes(),
-        ).pipe(takeUntil(this._unsubscribeAll)).subscribe(([marker, zone, route]) => {
-            // this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
+        const vehmarks = this._adminVehMarkersService.getVehMarkers('GetVehicleLocations');
+        const userpois = this._adminVehMarkersService.getVehMarkers('GetUserPOIs');
+        const zone = this._adminZonesService.getZones();
+        const route = this._adminRoutesService.getRoutes();
+
+        forkJoin([vehmarks, userpois, zone, route]).pipe(takeUntil(this._unsubscribeAll)).subscribe(([marker, poi, zone, route]) => {
             this.vehmarkers = marker.TrackingXLAPI.DATA;
+            this.userPOIs = poi.TrackingXLAPI.DATA;
             this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
             this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
-            console.log(this.vehmarkers);
-            this.vehmarkers_temp = this.vehmarkers.map(unit => ({ ...unit }));
+            this.filterPanelService.loadVehMarkers(this.vehmarkers);
+            this.filterPanelService.loadUserPOIs(this.userPOIs);
+            setTimeout(() => {
+                this.filterPanelService.loadingsubject.next(true);
+            }, 500);
             this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
+            this.poiClist = this.userPOIs.map(poi => ({ ...poi }));
+        });
+
+        this.activatedroute.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
+            this.routerLinkType = params.get('type');
+            if (this.routerLinkType != ':type') {
+                this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
+                    console.log(this.routerLinkType, data);
+                    this.currentPOI = data;
+                });
+            }
         });
     }
 
     ngOnInit() {
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
+        if (this.routerLinkType != ':type') {
+            setTimeout(() => {
+                this.clickedMarker(this.currentPOI.id, 'poiInfoPanel');
+            }, 500);
+        }
     }
 
     ngAfterViewInit() {
@@ -153,19 +195,11 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     onMapReady(map: any) {
-
         this.map = map;
     }
 
-    async loadMapData() {
-        let marker = await this._adminVehMarkersService.getVehMarkers().pipe(takeUntil(this._unsubscribeAll)).toPromise();
-        this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
-
-        let zone = await this._adminZonesService.getZones().pipe(takeUntil(this._unsubscribeAll)).toPromise()
-        this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
-
-        let route = await this._adminRoutesService.getRoutes().pipe(takeUntil(this._unsubscribeAll)).toPromise()
-        this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
+    trackedMarker(index: number, item: any): number {
+        return item ? item.id : undefined;
     }
 
     toggleSidebarOpen(key, id?): void {
@@ -175,8 +209,16 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this.currentUnit = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).unit;
                     this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
+                    this._unitInfoSidebarService.getSidebar(key).toggleOpen();
                 });
-            this._unitInfoSidebarService.getSidebar(key).toggleOpen();
+        } else if (key == 'poiInfoPanel') {
+            this.unitInfoService.getPOIInfo_v1(id)
+                .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+                    this.currentPOI = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).poi;
+                    this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
+                    this._unitInfoSidebarService.getSidebar(key).toggleOpen();
+                });
+
         } else if (key == 'filterPanel') {
             if (this.showFilters) {
                 this._unitInfoSidebarService.getSidebar(key).toggleOpen();
@@ -193,32 +235,40 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
 
-    clickedMarker(id: any) {
-        this.toggleSidebarOpen('unitInfoPanel', id);
-    }
-
-    mapClicked($event: MouseEvent) {
-
-    }
-
-    markerDragEnd(m: marker, $event: MouseEvent) {
-
+    clickedMarker(id: any, type: string) {
+        this.toggleSidebarOpen(type, id);
     }
 
     onShowValChange(value) {
         if (value == "showVehicles") {
+            this.filterPanelService.loadingsubject.next(false);
             this.showVehicles = !this.showVehicles;
-
             if (this.showVehicles) {
-                this.vehmarkers = Object.assign([], this.tmpVehmarkers);
-                //this.tmpVehmarkers.forEach(val => this.vehmarkers.push(Object.assign({}, val)));
-                this.tmpVehmarkers.length = 0;
+                this.filterPanelService.loadVehMarkers(this.tmpVehmarkers);
+                this.tmpVehmarkers = [];
             }
             else {
-                this.tmpVehmarkers = Object.assign([], this.vehmarkers);
-                //this.vehmarkers.forEach(val => this.tmpVehmarkers.push(Object.assign({}, val)));
-                this.vehmarkers.length = 0;
+                this.tmpVehmarkers = Object.assign([], this.filterPanelService.vehmarkerSubject.value);
+                this.filterPanelService.loadVehMarkers([]);
             }
+            setTimeout(() => {
+                this.filterPanelService.loadingsubject.next(true);
+            }, 500);
+        }
+        else if (value == "showPOIs") {
+            this.filterPanelService.loadingsubject.next(false);
+            this.showPOIs = !this.showPOIs;
+            if (this.showPOIs) {
+                this.filterPanelService.loadUserPOIs(this.tmpPOIs);
+                this.tmpPOIs = [];
+            }
+            else {
+                this.tmpPOIs = Object.assign([], this.filterPanelService.userPOISubject.value);
+                this.filterPanelService.loadUserPOIs([]);
+            }
+            setTimeout(() => {
+                this.filterPanelService.loadingsubject.next(true);
+            }, 500);
         }
         else if (value == "showZones") {
             this.showZones = !this.showZones;
@@ -252,13 +302,20 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     filterToggleOff(event) {
         this.showFilters = false;
+        if (!this.showVehicles) {
+            this.tmpVehmarkers = Object.assign([], this.filterPanelService.vehmarkerSubject.value);
+            this.filterPanelService.loadVehMarkers([]);
+        }
+        if (!this.showPOIs) {
+            this.tmpPOIs = Object.assign([], this.filterPanelService.userPOISubject.value);
+            this.filterPanelService.loadUserPOIs([]);
+        }
         this.lat = 25.7959;
         this.lng = -80.2871;
         this.zoom = 12;
     }
-    filterUnits(event: any) {
-        console.log(event);
-        this.vehmarkers_temp = event;
+
+    filterUnits(event: boolean) {
         this.lat = 25.7959;
         this.lng = -80.2871;
         this.zoom = 12;
@@ -266,9 +323,13 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     unitLocateNow(event: any) {
         console.log(event);
-        this.lat = event.lat;
-        this.lng = event.lng;
-        this.zoom = 16;
+        if (event.isSelected) {
+            this.zoom = 16;
+        } else {
+            this.zoom = 12;
+        }
+        this.lat = event.lat + (0.0000000000100 * Math.random());
+        this.lng = event.lng + (0.0000000000100 * Math.random());
     }
 
     unitInfoToggleOff(event) {
@@ -279,6 +340,16 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         for (var i = 0; i < this.vehmarkers.length; i++) {
             this.vehmarkers[i].visible = value;
         }
+    }
+
+    showInfoUnit(infoWindow: any, gm: any) {
+        console.log(gm);
+        if (gm.lastOpen != null) {
+            gm.lastOpen.close();
+        }
+
+        gm.lastOpen = infoWindow;
+        infoWindow.open();
     }
 
     options: any = {

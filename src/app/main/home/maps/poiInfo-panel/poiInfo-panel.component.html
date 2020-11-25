@@ -1,0 +1,261 @@
+<div fxLayout="column" fxFlex fusePerfectScrollbar class="unitInfo-panel">
+    <div class="unitInfo-panel-header mat-elevation-z12 primary py-16 px-8 mb-8" fxLayout="row"
+        fxLayoutAlign="space-between center">
+        <div class="panel-title h3 ml-8">
+            <span *ngIf="!currentPOI">POI Info</span>
+            <span *ngIf="currentPOI" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="mr-16">directions_car</mat-icon>{{currentPOI.name}}
+            </span>
+        </div>
+    </div>
+
+    <mat-accordion *ngIf="currentPOI && currentChannel == 'mainpanel'">
+        <!-- POI panel -->
+        <mat-expansion-panel class="poi-panel" [expanded]="true">
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title class="w-100-p h-24" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Point Of Interest
+                    </div>
+                    <div><img class="header-icons w-20 h-20" src="assets/icons/map_unitInfo/direction-circle.png"
+                            (click)="showPositionDialog('direction'); $event.stopPropagation()" /></div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="poi-panel-body">
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Name : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentPOI.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Company : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentPOI.company}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Group : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentPOI.group}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Latitude : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentPOI.latitude}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40" fxLayoutAlign="start center">Longitude : </div>
+                    <div fxFlex="60" fxLayoutAlign="start center">{{currentPOI.longitude}}</div>
+                </div>
+                <div class="poi-edit" fxLayout="row" fxLayoutAlign="end center">
+                    <button class="detail-edit" type="button" (click)="editPOI()"> Edit &#9998;</button>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <!-- Driver panel -->
+        <!-- <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Driver
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="unit-panel-body">
+                <div class="unit-driver-photo w-100-p mat-elevation-z8 mb-12">
+                    <img src="assets/images/avatars/download.jpg">
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Name : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.name}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">PhoneNumber : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.phonenumber}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Email : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.email}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Hire Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.hiredate}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">License<br>Exp Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.licenseexpirationdate}}</div>
+                </div>
+                <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45" fxLayoutAlign="start center">Physical Test<br>Exp Date : </div>
+                    <div fxFlex="55" fxLayoutAlign="start center">{{currentOperator.physicaltestexpirydate}}</div>
+                </div>
+            </div>
+        </mat-expansion-panel> -->
+        <!-- Events Panel -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="space-between center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Events
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="unit-panel-body">
+                <div class="unit-event-header mb-12" (click)="showEventLocation(currentPOIEvents, 'all')">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8">
+                        <div class="h3">Name</div>
+                        <div class="h3">Latitude</div>
+                    </div>
+                    <mat-divider class="m-8 mx-24 primary-400-bg"></mat-divider>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8 mb-8">
+                        <div class="h3">StartDate</div>
+                        <div class="h3">Longitude</div>
+                    </div>
+                </div>
+                <div class="unit-info-listItem unit-info-event" *ngFor="let event of currentPOIEvents"
+                    (click)="showEventLocation(event, 'every')">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8">
+                        <div class="h5">{{event.name}}</div>
+                        <div class="h5">{{event.latitude}}</div>
+                    </div>
+                    <mat-divider class="m-8 mx-24 primary-400-bg"></mat-divider>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="mx-8 mb-8">
+                        <div class="h5">{{event.startdate}}</div>
+                        <div class="h5">{{event.longitude}}</div>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <!-- Sensors panel -->
+        <!-- <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Sensors
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel> -->
+        <!-- Passengers panel -->
+        <!-- <mat-expansion-panel>
+            <mat-expansion-panel-header class="mat-elevation-z8 mb-4 primary-50-bg">
+                <mat-panel-title>
+                    <div class="h3" fxLayout="row" fxLayoutAlign="start center">
+                        &#8895;&nbsp;&nbsp;&nbsp;Passengers
+                    </div>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel> -->
+    </mat-accordion>
+
+    <!-- <div *ngIf="currentChannel == 'sharelocation'" class="option-channel share-location-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div class="h3">Share Location</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body">
+            <div class="sendlinkemail  w-100-p">
+                <label for="sendlinkemail">Send Link to Email:</label>
+                <input type="email" pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                    class="email-address pt-4 px-0" [(ngModel)]="linkedEmail" required>
+            </div>
+
+            <div class="expirationtime w-100-p">
+                <label for="expirationtime">Link expiration time:</label>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <input type="number" [(ngModel)]="expireTime" class="expiration-time pt-4 px-0 mr-8" required
+                        fxFlex="64">
+                    <select fxFlex="36" [(ngModel)]="expireTimeUnit" class="expiration-time-unit py-4">
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                        <option value="second">Second</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="current_unit_link mb-24" fxLayout="row" fxLayoutAlign="start center"
+                (click)="showPositionDialog('sharelocation')">
+                <mat-icon class="h3 mr-8 unit-share-link">insert_link
+                </mat-icon>
+                <a class="h3">Open a follow up window</a>
+            </div>
+            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
+                <button class="send-button " type="button" (click)="sendLinkEmail()"> &#10003; Send </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="currentChannel == 'playbackhistory'" class="option-channel playback-history-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div id="testtttt" class="h3">PlayBack</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body h-260">
+            <select [(ngModel)]="playbackDateRange" (ngModelChange)="onChangePlaybackDateOption($event)"
+                class="playback-time-option w-100-p py-4">
+                <option value="0">Today</option>
+                <option value="1">Yesterday</option>
+                <option value="2">This Week</option>
+                <option value="3">Last Week</option>
+                <option value="4">Date Range</option>
+            </select>
+
+            <div *ngIf="playbackDateRange == '4'" class="date-range-option">
+                <form fxLayout="column" [formGroup]="dateStep">
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="pr-4" fxFlex="55">
+                            <mat-label>From Date</mat-label>
+                            <input matInput [matDatepicker]="startDatePicker" name="start" formControlName="start">
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-errors-spacer" fxFlex="45">
+                            <mat-label>Start time</mat-label>
+                            <input matInput class="date-range-time" type="time" value="starttime"
+                                formControlName="starttime">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row">
+                        <mat-form-field appearance="outline" class="pr-4" fxFlex="55">
+                            <mat-label>End Date</mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" name="end" formControlName="end">
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-errors-spacer" fxFlex="45">
+                            <mat-label>End time</mat-label>
+                            <input matInput class="date-range-time" type="time" value="endtime"
+                                formControlName="endtime">
+                        </mat-form-field>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="daterange-next-button" fxLayout="row" fxLayoutAlign="end center">
+                <button class="next-button" type="button" (click)="playbackHistory()"> &#10003; Next </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="currentChannel == 'locatenow'" class="option-channel share-location-panel">
+        <div class="option-panel-header mat-elevation-z8 mb-4 primary-50-bg h3" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div class="h3">Locate Now</div>
+            <div>
+                <mat-icon (click)="goOptionPanel('mainpanel')">close</mat-icon>
+            </div>
+        </div>
+        <div class="option-panel-body">
+            <div class="send-cancel-button" fxLayout="row" fxLayoutAlign="end center">
+                <button type="button" (click)="sendLocateRequest()" class="ml-12"> Send </button>
+            </div>
+        </div>
+    </div> -->
+</div>

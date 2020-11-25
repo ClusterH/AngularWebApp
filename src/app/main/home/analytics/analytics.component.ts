@@ -78,18 +78,18 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
             if (res.responseCode == 100) {
                 res.TrackingXLAPI.DATA.sort((a, b) => this.sortByDistance(a.id, b.id));
                 this.dashboard_Clist = res.TrackingXLAPI.DATA;
-                console.log('dashboard_Clist===>>>', this.dashboard_Clist);
+
                 this.temp_dashboard_Clist = this.dashboard_Clist.map(dashboard => ({ ...dashboard }));
                 this._analyticsDashboardService.dashboardClist(0, 10, '', 'dashboardclips_Clist').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                     this.dashboardclips_Clist = res.TrackingXLAPI.DATA;
-                    console.log('dashboardclips_Clist===>>>', this.dashboardclips_Clist);
+
 
                     this.dashboardclips_Clist.sort((a, b) => this.sortByDistance(a.id, b.id));
                     this._analyticsDashboardService.getDashboardClips().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                         if (res.responseCode == 100) {
                             res.TrackingXLAPI.DATA.sort((a, b) => this.sortByDistance(a.id, b.id));
                             this.widgets = res.TrackingXLAPI.DATA;
-                            console.log('widgets===>>>', this.widgets);
+
                             this.temp_widgets = this.widgets.map(widget => ({ ...widget }));
 
                             this.loadingSubject.next(true);
@@ -110,13 +110,13 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
 
     onChangeToggle(event: any) {
         if (this.isEditClips) return;
-        console.log('toggleEvent===>>>', event);
+
         // this.isToggled = !isEmpty(event.value);
         // if (this.isToggled) {
         this.selectedOption = { 'timeselection': this.selectedTime, 'groupselection': this.selectedGroup };
         this.clipSservice.selectedOption.next(this.selectedOption);
         this.currentTab_widgets.forEach(item => {
-            console.log(item);
+
             switch (item.clip) {
                 case 'StopCompliance':
                     this.clipSservice.clip_mileage('clip_RouteCompliance');
@@ -142,11 +142,11 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
     }
 
     tabChanged(event?: any): void {
-        console.log('entirewidget===>>>', this.widgets);
+
         this.currentTab_widgets = [];
         if (!isEmpty(this.widgets)) {
             this.currentTab_widgets = this.widgets.filter(widget => widget.dashboardid === this.dashboard_Clist[this.activatedTabIndex].id);
-            console.log('currentTabwidget===>>>', this.currentTab_widgets);
+
             this.addExistWidget(this.currentTab_widgets);
         }
     }
@@ -213,7 +213,7 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
             // this.layoutComponent.widgets = [];
             // this.currentTab_widgets = this.widgets.filter(widget => widget.dashboardid == this.activatedTabIndex + 1);
             for (let widget of widgets) {
-                // console.log(widget);
+                //
                 this.layoutComponent.widgets.push(widget);
                 this.layoutService.setDropId(widget.id);
                 this.layoutService.dropItem(widget.clip);
@@ -221,9 +221,9 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         }
     }
     deleteWidget(event: any) {
-        console.log(event);
+
         this.clipSservice.dashboard_clip_delete(event.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             if (res.responseCode == 100 || res.responseCode == 200) {
                 this.widgets = this.widgets.filter(item => item.id != event.id);
             }
@@ -247,7 +247,7 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         this._analyticsDashboardService.dashboardSave(current_Dashboard).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
             if (res.responseCode == 100) {
                 this.currentTab_widgets.forEach((item: any) => {
-                    console.log(item);
+
                     // delete item.id;
                     item.dashboardid = res.TrackingXLAPI.DATA[0].id;
                 });

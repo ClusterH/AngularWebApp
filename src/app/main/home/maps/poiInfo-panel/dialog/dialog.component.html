@@ -1,0 +1,44 @@
+<div id="dialog_map">
+    <div *ngIf="flag != 'direction'" class="header p-12 mat-elevation-z4" fxLayout="row"
+        fxLayoutAlign="space-between center">
+        <div class="h3">{{unit.name}}</div>
+        <div>
+            <mat-icon (click)="close()">close</mat-icon>
+        </div>
+    </div>
+    <agm-map *ngIf="flag == 'sharelocation'" class="unitMap" #unitMap [latitude]="unit.latitude"
+        [longitude]="unit.longitude" [zoom]="14" [disableDefaultUI]="false" [zoomControl]="false">
+        <!-- <agm-marker [latitude]="unit.latitude" [longitude]="unit.longitude"></agm-marker> -->
+        <agm-overlay [latitude]="unit.latitude" [longitude]="unit.longitude">
+            <div class="unit_marker_div"><img class="event_marker_img" src="assets/images/unit_dialog2.png" height="80"
+                    width="80"></div>
+        </agm-overlay>
+    </agm-map>
+
+    <div *ngIf="flag == 'streetview'" id="streetview-container">
+        <div id="streetview-map" #streetviewMap></div>
+        <div id="streetview-pano" #streetviewPano></div>
+    </div>
+
+    <div *ngIf="flag == 'direction'">
+        <div class="h3  w-100-p autocomplete_search  mat-elevation-z4" fxLayout="row"
+            fxLayoutAlign="space-between center">
+            <div fxFlex='85'>
+                <div class="h3">{{unit.name}}</div>
+                <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off"
+                    type="text" class="autocomplete-poi-address" #search>
+            </div>
+            <div fxFlex="10">
+                <mat-icon (click)="close()">close</mat-icon>
+            </div>
+        </div>
+        <agm-map class="unitMap" #unitMap [latitude]="unit.latitude" [longitude]="unit.longitude" [zoom]="14"
+            [disableDefaultUI]="false" [zoomControl]="false">
+            <agm-overlay [latitude]="unit.latitude" [longitude]="unit.longitude">
+                <div class="unit_marker_div"><img class="event_marker_img" src="assets/images/unit_dialog2.png"
+                        height="80" width="80"></div>
+            </agm-overlay>
+        </agm-map>
+    </div>
+
+</div>

@@ -68,7 +68,7 @@ $typography: mat-typography-config(
     $body-2: mat-typography-level(14px, 24px, 600),
     $button: mat-typography-level(14px, 14px, 600),
     $input: mat-typography-level(16px, 1.125, 400)
-        // line-height must be unitless !!!,,,,,,,,,,,,,
+        // line-height must be unitless !!!,,,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -167,6 +167,7 @@ $typography: mat-typography-config(
 @import "src/app/main/logistic/maintenance/maintservices/maintservices/maintservices.theme";
 @import "src/app/main/logistic/jobmanagement/scrumboard/scrumboard.theme";
 @import "src/app/main/logistic/jobmanagement/todo/todo.theme";
+@import "src/app/main/logistic/routecenter/routecenter/routecenter.theme";
 
 //Fuel Management
 @import "src/app/main/fuelmanagement/tanks/tanks/tanks.theme";
@@ -264,6 +265,7 @@ $typography: mat-typography-config(
     @include logistic-event-theme($theme);
     @include logistic-serviceitems-theme($theme);
     @include logistic-maintservices-theme($theme);
+    @include logistic-routecenter-theme($theme);
     @include scrumboard-theme($theme);
     @include todo-theme($theme);
 

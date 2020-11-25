@@ -34,6 +34,9 @@
                             "src/web.config"
                         ],
                         "styles": [
+                            "node_modules/primeng/resources/themes/saga-blue/theme.css",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "node_modules/primeicons/primeicons.css",
                             "node_modules/leaflet/dist/leaflet.css",
                             "src/styles.scss",
                             "node_modules/ngx-ui-switch/ui-switch.component.css",
