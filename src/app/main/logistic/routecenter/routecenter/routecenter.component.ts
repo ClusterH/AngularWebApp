@@ -11,10 +11,12 @@ import { locale as routecenterFrench } from 'app/main/logistic/routecenter/i18n/
 import { locale as routecenterPortuguese } from 'app/main/logistic/routecenter/i18n/pt';
 import { locale as routecenterSpanish } from 'app/main/logistic/routecenter/i18n/sp';
 import { RouteCenterService } from 'app/main/logistic/routecenter/services/routecenter.service';
+import { faMapPin, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+
 import { isEmpty } from 'lodash';
 import { PrimeNGConfig } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 declare const google: any;
@@ -34,7 +36,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     totalRecords: number;
     loading: boolean = false;
     dataSourceDetail = [];
-
+    defaultDate: Date;
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
@@ -73,6 +75,14 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
         scaledSize: { width: 10, height: 10 },
     }
 
+    unit_icon_unauth = {
+        url: 'assets/icons/googlemap/green-marker.png',
+        scaledSize: { width: 100, height: 100 },
+    }
+
+    faMapPin = faMapPin;
+    faThumbtack = faThumbtack;
+
     color: any = {
         blue: "#0000ff",
         red: "#ff0000",
@@ -96,6 +106,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     isVehicleTrack: boolean = false;
     isUnAuthorized: boolean = false;
     isOffRoute: boolean = false;
+    unPlannedStopsList: Array<any> = [];
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -128,14 +139,41 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
 
         this.lat = 25.7959;
         this.lng = -80.2871;
+    }
 
+    ngOnInit(): void {
+        this.defaultDate = new Date('2020-11-18');
+
+        this.getRoute();
+    }
+
+    ngAfterViewInit() {
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    getRoute(date?: string) {
         this.routecenterService.loadingsubject.next(false);
         this.routecenterService.getRouteCenter(1, 10, 'id', 'asc', '', '', 'GetCurrentRuns').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
             this.dataSource = JSON.parse(res.TrackingXLAPI.DATA[0].routes);
-            this.dataSource = this.dataSource.map((item, index) => {
-                item.colorIndex = index;
-                return item;
+            this.dataSource = this.dataSource.map((route, index) => {
+                route.colorIndex = index;
+                route.stop_start = route.stops.slice(0, 1);
+                route.stop_end = route.stops.slice(-1);
+                route.stop_routes = route.stops.slice(1, -1);
+
+                const color_key = Object.keys(this.color)[route.colorIndex];
+                route.strokeColor = this.color[color_key];
+
+                this.getUnPlannedStops(route.id, route.strokeColor, this.formatDate(this.defaultDate)).then(res => {
+                    route.unPlannedStops = res;
+                });
+                return route;
             });
+
             console.log(this.dataSource);
             if (this.dataSource) {
                 this.totalRecords = this.dataSource.length;
@@ -147,44 +185,31 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit(): void {
+    getUnPlannedStops(unitid: number, color: string, date?: string): Promise<any> {
+        console.log(color);
+        return new Promise((resolve) => {
+            const vehTrack = this.routecenterService.getUnPlannedStops(unitid, date, 'GetUnitHistory');
+            const unAuth = this.routecenterService.getUnPlannedStops(unitid, date, 'GetUnauthorizedStops');
+            const offRoute = this.routecenterService.getUnPlannedStops(unitid, date, 'GetOffRouteStops');
 
-    }
+            forkJoin([vehTrack, unAuth, offRoute]).pipe(takeUntil(this._unsubscribeAll)).subscribe(([vehTrack, unAuth, offRoute]) => {
+                const unPlannedStops = {
+                    vehTrack: (vehTrack.responseCode == 100) ? vehTrack.TrackingXLAPI.DATA : [],
+                    unAuth: (unAuth.responseCode == 100) ? unAuth.TrackingXLAPI.DATA : [],
+                    offRoute: (offRoute.responseCode == 100) ? offRoute.TrackingXLAPI.DATA : []
+                }
 
-    ngAfterViewInit() {
-    }
-
-    ngOnDestroy(): void {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
-    onMapReady(map: any) {
-        this.map = map;
-    }
-    onDateSelect(value) {
-        console.log(value, this.formatDate(value))
-        this.table.filter(this.formatDate(value), 'start', 'contains')
-    }
-
-    formatDate(date) {
-        // let month = date.getMonth() + 1;
-        // let day = date.getDate();
-
-        // if (month < 10) {
-        //     month = '0' + month;
-        // }
-
-        // if (day > 10) {
-        //     day = '0' + day;
-        // }
-
-        return date.toString().slice(4, 15);
+                resolve(unPlannedStops);
+            });
+        });
     }
 
     isCheckRoute() {
         if (isEmpty(this.selectedRouteCenter)) {
             this.isRoute = false;
+            this.isOffRoute = false;
+            this.isVehicleTrack = false;
+            this.isUnAuthorized = false;
 
             this.lat = 25.7959;
             this.lng = -80.2871;
@@ -195,22 +220,24 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
             return;
         } else {
             this.isRoute = true;
-            this.selectedRouteCenter = this.selectedRouteCenter.map(route => {
-                if (route.strokeColor) {
-                    return route;
-                };
-
-                route.stop_start = route.stops.slice(0, 1);
-                route.stop_end = route.stops.slice(-1);
-                route.stop_routes = route.stops.slice(1, -1);
-
-                const color_key = Object.keys(this.color)[route.colorIndex];
-                route.strokeColor = this.color[color_key];
-
-                return route;
-            });
         }
     }
+
+
+    onMapReady(map: any) {
+        this.map = map;
+    }
+
+    onDateSelect(value) {
+        console.log(value, this.formatDate(value));
+        this.isRoute = false;
+        this.getRoute();
+    }
+
+    formatDate(date) {
+        return date.toString().slice(4, 15);
+    }
+
 
     random_rgba() {
         let result;
@@ -224,6 +251,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     dynamicColor(color: string) {
         return color;
     }
+
     centerMapToStop(e) {
         this.lat = e.latitude + (0.0000000000100 * Math.random());
         this.lng = e.longitude + (0.0000000000100 * Math.random());

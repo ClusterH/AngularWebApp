@@ -85,17 +85,13 @@ logistic-routecenter {
                     color: rgba(0, 0, 0, 1);
                 }
             }
+            fa-icon:hover {
+                cursor: pointer;
+            }
         }
         .option-content {
-            // background-color: ;
             border-top: 2px solid #fff;
         }
-        // .drag_indicator {
-        //     position: absolute;
-        //     top: calc((100% - 80px) / 2);
-        //     left: 0px;
-        //     cursor: col-resize;
-        // }
     }
     .content-card {
         position: relative;

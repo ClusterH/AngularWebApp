@@ -45,20 +45,30 @@ export class RouteCenterService {
                 params: params
             });
         }
-
-
     }
 
-    deletePending(id: number): Observable<any> {
+    getUnPlannedStops(unitid: number, date_time: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
-            .set('id', id.toString())
-            .set('method', "pending_delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-            headers: headers,
-            params: params
-        });
+        if (method == 'GetUnitHistory') {
+            let params = new HttpParams()
+                .set('unitid', unitid.toString())
+                .set('historytype', '3')
+                .set('method', method);
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
+                params: params
+            });
+        } else {
+            let params = new HttpParams()
+                .set('unitid', unitid.toString())
+                .set('date_time', date_time.toString())
+                .set('method', method);
+            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
+                params: params
+            });
+        }
     }
 
     getDashboard(): Observable<any> {

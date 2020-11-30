@@ -56,8 +56,8 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(dashboardsEnglish, dashboardsSpanish, dashboardsFrench, dashboardsPortuguese);
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
             this.dashboard = data;
+            console.log(this.dashboard);
         });
 
         if (isEmpty(this.dashboard)) {
@@ -65,24 +65,24 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
             this.dashboardObject_flag = false;
             this.pageType = 'new';
         } else {
-            if (this.dashboard.typeid != 0) {
-                this.dashboardDetailService.current_typeID = this.dashboard.typeid;
-                this.dashboardObject_flag = true;
-            } else {
-                this.dashboardDetailService.current_typeID = 0;
-            }
+            // if (this.dashboard.typeid != 0) {
+            //     this.dashboardDetailService.current_typeID = this.dashboard.typeid;
+            //     this.dashboardObject_flag = true;
+            // } else {
+            //     this.dashboardDetailService.current_typeID = 0;
+            // }
             this.pageType = 'edit';
         }
         this.filter_string = '';
     }
 
     ngOnInit(): void {
-        this.dataSourcePrivType = new DashboardDetailDataSource(this.dashboardDetailService);
-        this.dataSourcePrivObject = new DashboardDetailDataSource(this.dashboardDetailService);
-        this.dataSourcePrivType.loadDashboardDetail(0, 5, this.dashboard.type, "privtype_clist");
-        if (this.dashboardObject_flag) {
-            this.dataSourcePrivObject.loadDashboardDetail(0, 5, this.dashboard.object, "privobject_clist");
-        }
+        // this.dataSourcePrivType = new DashboardDetailDataSource(this.dashboardDetailService);
+        // this.dataSourcePrivObject = new DashboardDetailDataSource(this.dashboardDetailService);
+        // this.dataSourcePrivType.loadDashboardDetail(0, 5, this.dashboard.type, "privtype_clist");
+        // if (this.dashboardObject_flag) {
+        //     this.dataSourcePrivObject.loadDashboardDetail(0, 5, this.dashboard.object, "privobject_clist");
+        // }
 
         this.dashboardForm = this._formBuilder.group({
             name: [null, Validators.required],
@@ -101,13 +101,13 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        merge(this.paginatorPrivType.page)
-            .pipe(tap(() => { this.loadDashboardDetail("privtype") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
+        // merge(this.paginatorPrivType.page)
+        //     .pipe(tap(() => { this.loadDashboardDetail("privtype") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
 
-        if (this.dashboardObject_flag) {
-            merge(this.paginatorPrivObject.page)
-                .pipe(tap(() => { this.loadDashboardDetail('privobject') }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
-        }
+        // if (this.dashboardObject_flag) {
+        //     merge(this.paginatorPrivObject.page)
+        //         .pipe(tap(() => { this.loadDashboardDetail('privobject') }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
+        // }
     }
 
     ngOnDestroy(): void {

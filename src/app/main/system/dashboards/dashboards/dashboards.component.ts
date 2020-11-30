@@ -119,6 +119,7 @@ export class DashboardsComponent implements OnInit, OnDestroy {
     }
 
     editShowDashboardDetail(dashboard: any) {
+        console.log(dashboard);
         this.router.navigate(['system/dashboards/dashboard_detail'], { queryParams: dashboard });
     }
 
