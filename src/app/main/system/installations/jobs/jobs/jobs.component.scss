@@ -171,9 +171,15 @@ system-jobs {
         color: red;
         margin-right: 3px;
     }
-    .copy_icon {
+    .board_icon {
         color: rgb(47, 170, 241);
     }
+    .account_icon {
+        color: rgb(66, 47, 241);
+    }
+    // .copy_icon {
+    //     color: rgb(47, 170, 241);
+    // }
     .search_btn {
         border-radius: 28px !important;
         line-height: normal !important;
@@ -256,5 +262,55 @@ system-jobs {
         top: 0;
         left: 0;
         position: fixed;
+    }
+
+    #boards {
+        width: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        background-color: #f5f5f5;
+
+        .header {
+            h1 {
+                font-size: 40px;
+                font-weight: 300;
+            }
+        }
+
+        .board-list {
+            padding: 32px 0;
+            max-height: none !important;
+
+            .board-list-item {
+                min-width: 210px;
+                min-height: 210px;
+                width: 210px;
+                height: 210px;
+                padding: 24px 0;
+                margin: 16px;
+                border-radius: 8px;
+                background: #262a34eb;
+                transition: box-shadow 150ms ease-in;
+                color: #f5f5f5;
+                cursor: pointer;
+
+                &:hover:not(.add-new-board) {
+                    @include mat-elevation(8);
+                }
+
+                .board-name {
+                    padding: 16px 32px 0 32px;
+                    font-weight: 300;
+                    font-size: 16px;
+                    text-align: center;
+                }
+
+                &.add-new-board {
+                    background: #262a34eb;
+                    color: #f5f5f5;
+                    border: 2px dashed rgba(255, 255, 255, 0.37);
+                }
+            }
+        }
     }
 }

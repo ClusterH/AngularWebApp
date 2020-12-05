@@ -62,9 +62,6 @@ export class ScrumboardService implements Resolve<any>
      */
     getBoards(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let conncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.conncode;
-            let userid = 345;
-            // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
@@ -438,7 +435,6 @@ export class ScrumboardService implements Resolve<any>
     saveBoardLabel(label, boardId): Promise<any> {
         return new Promise((resolve, reject) => {
             if (label.id == '') {
-
                 label.id = '0';
             }
 

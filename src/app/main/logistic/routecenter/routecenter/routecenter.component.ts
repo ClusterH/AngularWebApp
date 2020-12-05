@@ -11,7 +11,7 @@ import { locale as routecenterFrench } from 'app/main/logistic/routecenter/i18n/
 import { locale as routecenterPortuguese } from 'app/main/logistic/routecenter/i18n/pt';
 import { locale as routecenterSpanish } from 'app/main/logistic/routecenter/i18n/sp';
 import { RouteCenterService } from 'app/main/logistic/routecenter/services/routecenter.service';
-import { faMapPin, faThumbtack } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faThumbtack, faMapPin, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { isEmpty } from 'lodash';
 import { PrimeNGConfig } from 'primeng/api';
@@ -80,8 +80,10 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
         scaledSize: { width: 100, height: 100 },
     }
 
-    faMapPin = faMapPin;
+    faBan = faBan;
     faThumbtack = faThumbtack;
+    faMapPin = faMapPin;
+    faStopCircle = faStopCircle;
 
     color: any = {
         blue: "#0000ff",

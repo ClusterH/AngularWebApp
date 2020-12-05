@@ -15,6 +15,14 @@
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     {{ 'JOB.JOBS' | translate }}
                 </span>
+                <mat-icon class="logo-icon s-32 mx-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    (click)="isListView = true">
+                    list_alt
+                </mat-icon>
+                <mat-icon class="logo-icon s-32" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    (click)="isListView = false">
+                    apps
+                </mat-icon>
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
@@ -57,7 +65,8 @@
         </div>
         <!-- / HEADER -->
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;">
+        <div class="content-card" style="width: 100%; overflow: auto;"
+            [ngStyle]="{'display': isListView? 'block': 'none'}">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
                     <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
@@ -79,7 +88,25 @@
                         </button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteJob(job)">delete
                         </mat-icon>
-                        <!-- <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateJob(job)">file_copy</mat-icon> -->
+                        <mat-icon class="active-icon s-16 board_icon" (click)="deleteJob(job)">apps
+                        </mat-icon>
+                        <div class="members" fxFlex="0 1 auto">
+                            <button mat-icon-button class="" [matMenuTriggerFor]="membersMenu">
+                                <mat-icon class="s-16 account_icon">account_circle</mat-icon>
+                            </button>
+                            <mat-menu #membersMenu="matMenu" [overlapTrigger]="false">
+                                <div fxFlex fxLayout="column" class="scrumboard-members-menu"
+                                    (click)="$event.stopPropagation()">
+
+                                    <mat-selection-list (selectionChange)="handleSelection($event, job)">
+                                        <mat-list-option *ngFor="let installer of installers" [value]="installer.id"
+                                            [selected]="job.installerid == installer.id">
+                                            {{installer.name}}
+                                        </mat-list-option>
+                                    </mat-selection-list>
+                                </div>
+                            </mat-menu>
+                        </div>
                     </mat-cell>
                 </ng-container>
 
@@ -170,7 +197,7 @@
                 </mat-row>
             </mat-table>
         </div>
-        <div>
+        <div [ngStyle]="{'display': isListView? 'block': 'none'}">
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
@@ -187,6 +214,33 @@
             </mat-paginator>
         </div>
         <!-- / CONTENT CARD -->
+        <!-- BOARDS -->
+        <div id="boards" class="" fxLayout="column" fxLayoutAlign="start center" fxFlex fusePerfectScrollbar
+            [ngStyle]="{'display': isListView? 'none': 'block'}">
+            <div class="header pt-32" fxLayout="row" fxLayoutAlign="center center" fxFlex="0 0 auto"
+                [@animate]="{value:'*',params:{delay:'100ms'}}">
+                <h1>Installations</h1>
+            </div>
+            <!-- BOARD LIST -->
+            <div class="board-list" fxFlex="0 0 auto" fxLayout="row wrap" fxLayoutAlign="center center"
+                [@animateStagger]="{value:'50'}">
+                <!-- BOARD -->
+                <div class="board-list-item" *ngFor="let employee of installersBoard" fxLayout="column"
+                    fxLayoutAlign="center center" [@animate]="{value:'*',params:{y:'100%'}}">
+                    <mat-icon class="s-56">assessment</mat-icon>
+                    <div class="board-name">{{employee.name}}</div>
+                </div>
+                <!-- / BOARD -->
+                <!-- NEW BOARD BUTTON -->
+                <div class="board-list-item add-new-board" fxLayout="column" fxLayoutAlign="center center"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    <mat-icon class="s-56">add_circle</mat-icon>
+                    <div class="board-name">{{ 'BOARD.ADDNEWBOARD' | translate }}</div>
+                </div>
+                <!-- / NEW BOARD BUTTON -->
+            </div>
+            <!-- / BOARD LIST -->
+        </div><!-- / BOARDS -->
     </div>
     <!-- / CENTER -->
 </div>

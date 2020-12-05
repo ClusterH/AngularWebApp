@@ -1,0 +1,80 @@
+.installation-labels-menu {
+    .mat-menu-content {
+        padding-bottom: 0;
+
+        // min-width: 240px !important;
+        // width: fit-content !important;
+        // max-width: unset;
+
+        .mat-checkbox-layout,
+        .mat-checkbox-label {
+            display: flex;
+            flex: 1;
+        }
+
+        .mat-checkbox-layout {
+            white-space: normal !important;
+        }
+
+        .views {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            width: 280px;
+            min-width: 280px;
+            max-width: unset;
+            min-height: 240px;
+
+            .view {
+                position: absolute;
+                width: 280px;
+                height: 100%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                top: 0;
+
+                > .header {
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                    padding: 4px 8px 8px 16px;
+                    margin-bottom: 8px;
+                }
+
+                .label {
+                    margin: 0 8px 8px 16px;
+
+                    .label-color {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 100%;
+                        margin-right: 12px;
+                    }
+                }
+
+                &.edit,
+                &.add {
+                    > .header {
+                        padding: 0 8px 8px 0;
+                    }
+
+                    form {
+                        padding: 0 16px 8px 16px;
+
+                        .mat-form-field-infix {
+                            width: auto !important;
+                        }
+                    }
+
+                    .content {
+                        padding: 8px 16px 8px 16px;
+
+                        .mat-form-field-infix {
+                            width: auto !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

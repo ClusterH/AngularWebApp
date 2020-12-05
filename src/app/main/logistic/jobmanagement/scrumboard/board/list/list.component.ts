@@ -153,7 +153,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
     // }
 
     onDropCard(ev, list): void {
-
         this.destinationListId = list.id;
         this._scrumboardService.draggedCardId
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(cardId => {
@@ -164,7 +163,6 @@ export class ScrumboardBoardListComponent implements OnInit, OnDestroy {
     }
 
     onDragCard(ev, cardid, listid): void {
-
         this._scrumboardService.draggedCardId.next(cardid);
     }
 }

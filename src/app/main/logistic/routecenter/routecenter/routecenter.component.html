@@ -234,7 +234,7 @@
                             [latitude]="unauthmarker.latitude" [longitude]="unauthmarker.longitude"
                             [agmFitBounds]="isUnAuthorized" [visible]='false'>
                             <agm-overlay [latitude]="unauthmarker.latitude" [longitude]="unauthmarker.longitude">
-                                <fa-icon [icon]="faMapPin" [ngStyle]="{'color': rte.strokeColor }"></fa-icon>
+                                <fa-icon [icon]="faBan" [ngStyle]="{'color': rte.strokeColor }"></fa-icon>
                                 <agm-info-window>
                                     <table class="route_infowindow">
                                         <tr>
@@ -262,7 +262,7 @@
                         <agm-marker *ngFor="let offroute of rte.unPlannedStops.offRoute" [latitude]="offroute.latitude"
                             [longitude]="offroute.longitude" [agmFitBounds]="isOffRoute" [visible]='false'>
                             <agm-overlay [latitude]="offroute.latitude" [longitude]="offroute.longitude">
-                                <fa-icon [icon]="faThumbtack" [ngStyle]="{'color': rte.strokeColor }"></fa-icon>
+                                <fa-icon [icon]="faStopCircle" [ngStyle]="{'color': rte.strokeColor }"></fa-icon>
                                 <agm-info-window>
                                     <table class="route_infowindow">
                                         <tr>
@@ -291,32 +291,6 @@
                         [longitude]="pnt.longitude">
                     </agm-polyline-point>
                 </agm-polyline>
-                <!-- <agm-polyline *ngFor="let unPlanned of unPlannedStopsList">
-                    <ng-container *ngIf="isVehicleTrack">
-                        <agm-marker *ngFor="let vehmarker of unPlanned.vehTrack" [latitude]="vehmarker.latitude"
-                            [longitude]="vehmarker.longitude" [agmFitBounds]="isVehicleTrack" [visible]='false'>
-                            <agm-overlay [latitude]="vehmarker.latitude" [longitude]="vehmarker.longitude">
-                                <fa-icon [icon]="faMapPin" [ngStyle]="{'color': unPlanned.strokeColor }"></fa-icon>
-                            </agm-overlay>
-                        </agm-marker>
-                    </ng-container>
-                    <ng-container *ngIf="isUnAuthorized">
-                        <agm-marker *ngFor="let unauthmarker of unPlanned.unAuth" [latitude]="unauthmarker.latitude"
-                            [longitude]="unauthmarker.longitude" [agmFitBounds]="isUnAuthorized" [visible]='false'>
-                            <agm-overlay [latitude]="unauthmarker.latitude" [longitude]="unauthmarker.longitude">
-                                <fa-icon [icon]="faMapPin" [ngStyle]="{'color': unPlanned.strokeColor }"></fa-icon>
-                            </agm-overlay>
-                        </agm-marker>
-                    </ng-container>
-                    <ng-container *ngIf="isOffRoute">
-                        <agm-marker *ngFor="let offroute of unPlanned.offRoute" [latitude]="offroute.latitude"
-                            [longitude]="offroute.longitude" [agmFitBounds]="isOffRoute" [visible]='false'>
-                            <agm-overlay [latitude]="offroute.latitude" [longitude]="offroute.longitude">
-                                <fa-icon [icon]="faThumbtack" [ngStyle]="{'color': unPlanned.strokeColor }"></fa-icon>
-                            </agm-overlay>
-                        </agm-marker>
-                    </ng-container>
-                </agm-polyline> -->
             </ng-container>
         </agm-map>
         <div class="option-content px-24 py-8 primary-50" fxFlex="1 1 auto" fxLayout="row"
@@ -327,7 +301,7 @@
                 <label for="binary" class="ml-8">Vehicle Track</label>
             </div>
             <div class="checkbox-img w-24 ml-8">
-                <img src="assets/icons/googlemap/unauthorize.png">
+                <fa-icon [icon]="faBan" [ngStyle]="{'color': 'red' }"></fa-icon>
             </div>
             <div class="p-field-checkbox mx-12">
                 <p-checkbox [(ngModel)]="isUnAuthorized" binary="true" inputId="ua">
@@ -335,7 +309,7 @@
                 <label for="binary" class="ml-8">UnAuthorized</label>
             </div>
             <div class="checkbox-img w-24 ml-8">
-                <img src="assets/icons/googlemap/offroute.png">
+                <fa-icon [icon]="faStopCircle" [ngStyle]="{'color': 'red' }"></fa-icon>
             </div>
             <div class="p-field-checkbox mx-12">
                 <p-checkbox [(ngModel)]="isOffRoute" binary="true" inputId="or">

@@ -11,9 +11,9 @@ import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/op
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
+import { FuseUtils } from '@fuse/utils';
 
-import { JobsService } from 'app/main/system/installations/jobs/services/jobs.service';
-import { JobsDataSource } from "app/main/system/installations/jobs/services/jobs.datasource";
+import { JobsService, JobsDataSource, InstallationService } from '../services'
 
 import { JobDialogComponent } from "../dialog/dialog.component";
 import { DeleteDialogComponent } from "../deletedialog/deletedialog.component";
@@ -23,6 +23,7 @@ import { locale as jobsSpanish } from 'app/main/system/installations/jobs/i18n/s
 import { locale as jobsFrench } from 'app/main/system/installations/jobs/i18n/fr';
 import { locale as jobsPortuguese } from 'app/main/system/installations/jobs/i18n/pt';
 import { Route } from '@angular/compiler/src/core';
+import { Board } from '../model/board.model';
 
 @Component({
     selector: 'system-jobs',
@@ -36,7 +37,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 
     @Output()
     pageJob: PageEvent;
-
+    isListView: boolean = true;
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
@@ -61,6 +62,23 @@ export class JobsComponent implements OnInit, OnDestroy {
         'createdby',
     ];
 
+    employees = [
+        { name: "employee1" },
+        { name: "employee2" },
+        { name: "employee3" },
+        { name: "employee4" },
+        { name: "employee5" },
+        { name: "employee6" },
+        { name: "employee7" },
+        { name: "employee8" },
+        { name: "employee9" },
+    ]
+
+    installers = [];
+    installersBoard: any;
+
+    toggleInArray = FuseUtils.toggleInArray;
+
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     private _unsubscribeAll: Subject<any>;
@@ -74,6 +92,7 @@ export class JobsComponent implements OnInit, OnDestroy {
 
     constructor(
         private _adminJobsService: JobsService,
+        private boardService: InstallationService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -110,6 +129,16 @@ export class JobsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.dataSource = new JobsDataSource(this._adminJobsService);
         this.dataSource.loadJobs(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "installation_TList");
+        this._adminJobsService.getDetailClist(0, 10000, '', 'installer_clist').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            console.log(res);
+            this.installers = res.TrackingXLAPI.DATA;
+        });
+
+        this.boardService.onBoardsChanged
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(boards => { this.installersBoard = boards; });
+        // this._adminJobsService.getBoards().then(res => {
+        //     this.installersBoard = res;
+        // })
     }
 
     ngOnDestroy(): void {
@@ -182,26 +211,48 @@ export class JobsComponent implements OnInit, OnDestroy {
         });
     }
 
-    // duplicateJob(job): void
-    // {
-    //     const dialogConfig = new MatDialogConfig();
-    //     this.flag = 'duplicate';
+    handleSelection(event, job) {
+        if (event.option.selected) {
+            event.source.deselectAll();
+            event.option._setSelected(true);
 
-    //     dialogConfig.disableClose = true;
+            this._adminJobsService.assignInstallerToJob(job.id, event.option.value).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                console.log(res);
+                if (res.TrackingXLAPI.DATA[0].cnt == 1) {
+                    const changedJobIndex = this._adminJobsService.jobList.findIndex((changedJob: any) => changedJob.id == job.id);
+                    const assignedInstallerInx = this.installers.findIndex(installer => installer.id == event.option.value);
+                    if (changedJobIndex > -1 && assignedInstallerInx > -1) {
+                        this._adminJobsService.jobList[changedJobIndex].installer = this.installers[assignedInstallerInx].name;
+                        this._adminJobsService.jobList[changedJobIndex].installerid = this.installers[assignedInstallerInx].id;
+                        this.dataSource.jobsSubject.next(this._adminJobsService.jobList);
+                        this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                    }
+                }
+            });
+        } else {
+            this._adminJobsService.assignInstallerToJob(job.id, 0).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                if (res.TrackingXLAPI.DATA[0].cnt == 1) {
+                    const changedJobIndex = this._adminJobsService.jobList.findIndex((changedJob: any) => changedJob.id == job.id);
+                    const assignedInstallerInx = this.installers.findIndex(installer => installer.id == job.installerid);
+                    if (changedJobIndex > -1 && assignedInstallerInx > -1) {
+                        this._adminJobsService.jobList[changedJobIndex].installer = '';
+                        this._adminJobsService.jobList[changedJobIndex].installerid = 0;
+                        this.dataSource.jobsSubject.next(this._adminJobsService.jobList);
+                        this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                    }
+                }
+            });
+        }
+    }
 
-    //     dialogConfig.data = {
-    //         job, flag: this.flag
-    //     };
+    newBoard(): void {
+        const newBoard = new Board({});
+        this.boardService.createNewBoard(newBoard).then(() => {
+            this.router.navigate(['system/jobs/jobs' + this.boardService.newBoardID + '/' + 'untitled-board']);
+        });
+    }
 
-    //     const dialogRef = this._matDialog.open(JobDialogComponent, dialogConfig);
-
-    //     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-    //         if ( result )
-    //         {
-    //
-    //         } else {
-    //
-    //         }
-    //     });
-    // }
+    currentBoard(board) {
+        this.router.navigate(['system/jobs/jobs' + board.id + '/' + board.uri])
+    }
 }

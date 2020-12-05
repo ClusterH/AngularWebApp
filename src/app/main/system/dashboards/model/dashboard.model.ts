@@ -1,13 +1,9 @@
 export interface DashboardDetail {
     id?: number;
     name?: string;
-    typeid?: number;
-    objectid?: number
+    createdbyname?: string;
+    userid?: number;
     isactive?: boolean;
-    created?: Date;
-    createdby?: number;
-    deletedwhen?: Date;
-    deletedby?: number;
-    lastmodifieddate?: Date;
-    lastmodifiedby?: number;
+    timeselection?: boolean;
+    groupselection?: boolean;
 }

@@ -39,22 +39,11 @@ export class CourseDialogComponent implements OnDestroy {
     }
 
     save() {
-        if (this.flag == "duplicate") {
-            this.dashboard.id = 0;
-            this.dashboard.name = '';
-            this.dashboard.phonenumber = '';
-            this.dashboard.created = '';
-            this.dashboard.createdbyname = '';
-            this.dashboard.deletedwhen = '';
-            this.dashboard.deletedbyname = '';
-            this.dashboard.lastmodifieddate = '';
-            this.dashboard.lastmodifiedbyname = '';
-            this.dialogRef.close(this.dashboard);
-        } else if (this.flag == "delete") {
+        if (this.flag == "delete") {
             this.dashboardsService.deleteDashboard(this.dashboard.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        this.dialogRef.close();
+                        this.dialogRef.close(result);
                     }
                 });
         }

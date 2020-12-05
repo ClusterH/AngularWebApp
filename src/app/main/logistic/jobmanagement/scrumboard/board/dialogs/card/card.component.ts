@@ -55,6 +55,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
+        console.log(this._data);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -69,21 +70,26 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
+                console.log(board);
 
                 this.card = this.board.cards[0].find((_card) => {
 
-                    return this._data.cardId === _card.id;
+                    return this._data.cardId == _card.id;
                 });
 
                 // this.dateConvert(this.card.due);
+                console.log(this.card);
 
                 this.list = this.board.lists.find((_list) => {
-                    return this._data.listId === _list.id;
+                    return this._data.listId == _list.id;
                 });
+
+                console.log(this.list);
+
+
 
                 this._scrumboardService.getBoardMembers()
                     .then((res: any) => {
-
                         this.board.members = res.TrackingXLAPI.DATA;
 
                     });
@@ -204,8 +210,6 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
     }
 
     saveCheckStatus(item, checklistid): void {
-
-
         let checkItem = {
             id: item.id,
             name: item.name,
@@ -417,8 +421,6 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
     }
 
     onMemberCheckStatus(member) {
-
-
         if (this.card.idmembers.indexOf(member.id) == -1) {
             this._scrumboardService.deleteCardUser(member.id, this.card.id)
                 .then(res => {

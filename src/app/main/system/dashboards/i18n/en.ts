@@ -12,14 +12,9 @@ export const locale = {
 
             "NAME": "Name",
             "USER": "User",
-            "OBJECT": "Object",
-            "ISACTIVE": "IsActive",
-            "CREATED": "Created",
-            "CREATEDBYNAME": "CreatedByName",
-            "DELETEDWHEN": "DeletedWhen",
-            "DELETEDBYNAME": "DeletedByName",
-            "LASTMODIFIEDDATE": "LastModifiedDate",
-            "LASTMODIFIEDBYNAME": "LastModifiedByName",
+            "TIMESELECTION": "Time Selection",
+            "GROUPSELECTION": "Group Selection",
+            "CREATED": "Created By",
 
             "GENERAL": "General",
             "AUDIT": "Audit",

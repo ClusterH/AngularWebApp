@@ -39,12 +39,6 @@
                 </div>
             </div>
             <!-- / SEARCH -->
-            <!-- ADD BUTTON -->
-            <button mat-fab [routerLink]="'/system/dashboards/dashboard_detail'" class="accent  mt-24 mt-md-0"
-                [disabled]="restrictValue != 3" (click)="addNewDashboard()">
-                <mat-icon>add</mat-icon>
-            </button>
-            <!-- / ADD BUTTON -->
         </div>
         <!-- / HEADER -->
         <!-- CONTENT CARD -->
@@ -68,8 +62,6 @@
                                 [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
                         </button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDashboard(dashboard)">delete
-                        </mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateDashboard(dashboard)">file_copy
                         </mat-icon>
                     </mat-cell>
                 </ng-container>

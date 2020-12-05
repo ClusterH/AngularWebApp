@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class JobsService {
     jobs: any[];
     public unit_clist_item: any = {};
     public jobList: any = [];
+    boards: any[];
+    onBoardsChanged: BehaviorSubject<any>;
+
 
     /**
      * Constructor
      *
      * @param {HttpClient} _httpClient
      */
-    constructor(private _httpClient: HttpClient) { }
+    constructor(private _httpClient: HttpClient) {
+        this.onBoardsChanged = new BehaviorSubject([]);
+    }
 
     getJobs(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         let headers = new HttpHeaders();
@@ -166,6 +172,41 @@ export class JobsService {
         }
         return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
             headers: headers,
+        });
+    }
+
+    assignInstallerToJob(installationid, installerid): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('installationid', installationid.toString())
+            .set('installerid', installerid.toString())
+            .set('method', "AssignInstallerToJob");
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    getBoards(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let headers = new HttpHeaders();
+            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+            let params = new HttpParams()
+                .set('method', "GetInstallationBoards");
+            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                headers: headers,
+                params: params
+            })
+                .subscribe((response: any) => {
+                    if (response.responseCode == 100) {
+                        this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
+                        console.log(this.boards);
+
+                        this.onBoardsChanged.next(this.boards);
+                        resolve(this.boards);
+                    }
+                }, reject);
         });
     }
 }

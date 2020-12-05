@@ -22,7 +22,6 @@ import { locale as installersEnglish } from 'app/main/system/installations/insta
 import { locale as installersSpanish } from 'app/main/system/installations/installers/i18n/sp';
 import { locale as installersFrench } from 'app/main/system/installations/installers/i18n/fr';
 import { locale as installersPortuguese } from 'app/main/system/installations/installers/i18n/pt';
-import { Route } from '@angular/compiler/src/core';
 
 @Component({
     selector: 'system-installers',
