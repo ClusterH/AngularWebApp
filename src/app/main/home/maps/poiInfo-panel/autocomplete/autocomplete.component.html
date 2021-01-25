@@ -35,11 +35,6 @@
 
 
         <div class="direction-poilist mt-12">
-            <!-- <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
-                <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
-                    [ngModelOptions]="{standalone: true}">
-                <mat-icon (click)="clearFilter()">clear</mat-icon>
-            </div> -->
             <div *ngFor="let data of poiDataList | paginate: {id: 'poilist', itemsPerPage: 15, currentPage: poiDataListPage}"
                 class="mb-8 item-panel-body">
                 <label>
@@ -59,8 +54,8 @@
                 </div>
                 <div class="page-number" *ngFor="let page of pclist.pages"
                     [class.current]="pclist.getCurrent() === page.value">
-                    <span (click)="pclist.setCurrent(page.value)"
-                        *ngIf="pclist.getCurrent() !== page.value">{{ page.label }}</span>
+                    <span (click)="pclist.setCurrent(page.value)" *ngIf="pclist.getCurrent() !== page.value">{{
+                        page.label }}</span>
                     <div *ngIf="pclist.getCurrent() === page.value">
                         <span>{{ page.label }}</span>
                     </div>

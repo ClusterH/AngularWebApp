@@ -1,23 +1,16 @@
 <div id="register" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
-
     <div id="register-intro" fxFlex fxHide fxShow.gt-xs>
-
         <div class="logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
             <img src="assets/images/logos/fuse.svg">
         </div>
-
         <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
             {{'AUTHENTICATION.WELCOME' | translate}}
         </div>
-
         <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
             {{'AUTHENTICATION.DETAIL' | translate}}
         </div>
-
     </div>
-
     <div id="register-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
-
         <div class="select_language mt-20 ml-20"
             style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
             <mat-icon color="accent">language</mat-icon>
@@ -28,38 +21,22 @@
                     <span class="iso text-uppercase">{{selectedLanguage.id}}</span>
                 </div>
             </button>
-
             <mat-menu #languageMenu="matMenu" [overlapTrigger]="false">
-
                 <button mat-menu-item *ngFor="let lang of languages" (click)="setLanguage(lang)">
                     <span fxLayout="row" fxLayoutAlign="start center">
                         <img class="flag mr-16" [src]="'assets/icons/flags/'+lang.flag+'.png'">
                         <span class="iso">{{lang.title}}</span>
                     </span>
                 </button>
-
             </mat-menu>
         </div>
-
         <div id="register-form">
 
             <div class="logo" fxHide.gt-xs>
                 <img src="assets/images/logos/fuse.svg">
             </div>
-
             <div class="title">{{'AUTHENTICATION.CREATEACCOUNT' | translate}}</div>
-
             <form name="registerForm" [formGroup]="registerForm" novalidate>
-
-                <!-- <mat-form-field appearance="outline">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
-                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                    <mat-error>
-                        Name is required
-                    </mat-error>
-                </mat-form-field> -->
-
                 <mat-form-field appearance="outline">
                     <mat-label>{{'AUTHENTICATION.EMAIL' | translate}}</mat-label>
                     <input matInput formControlName="email">
@@ -71,7 +48,6 @@
                         {{'AUTHENTICATION.EMAILVALIDATETEXT' | translate}}
                     </mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline">
                     <mat-label>{{'AUTHENTICATION.PASSWORD' | translate}}</mat-label>
                     <input matInput type="password" formControlName="password">
@@ -80,7 +56,6 @@
                         {{'AUTHENTICATION.PASSWORDVALIDATE' | translate}}
                     </mat-error>
                 </mat-form-field>
-
                 <mat-form-field appearance="outline">
                     <mat-label>{{'AUTHENTICATION.PASSWORDCONFIRM' | translate}}</mat-label>
                     <input matInput type="password" formControlName="passwordConfirm">
@@ -93,14 +68,11 @@
                         {{'AUTHENTICATION.PASSWORDMATCH' | translate}}
                     </mat-error>
                 </mat-form-field>
-
                 <button mat-raised-button color="accent" class="submit-button" aria-label="CREATE AN ACCOUNT"
                     [disabled]="registerForm.invalid" [routerLink]="'/login'">
                     {{'AUTHENTICATION.CREATEACCOUNT' | translate}}
                 </button>
-
             </form>
-
             <div class="register" fxLayout="column" fxLayoutAlign="center center">
                 <span class="text">{{'AUTHENTICATION.ALREADYHAVEACCOUNTTEXT' | translate}}</span>
                 <a class="link" [routerLink]="'/login'">{{'AUTHENTICATION.LOGINTEXT' | translate}}</a>

@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseModule } from '@fuse/fuse.module';
 import { GridsterModule } from 'angular2gridster';
 import { NgxPaginationModule } from 'ngx-pagination';
+// import { AngularSplitModule } from 'angular-split';
 import { TranslateModule } from '@ngx-translate/core';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { fuseConfig } from 'app/fuse-config';
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
         QuicklinkModule,
         RouterModule.forRoot(appRoutes, { preloadingStrategy: QuicklinkStrategy }),
         TranslateModule.forRoot(),
+        // AngularSplitModule.forRoot(),
         NgxPaginationModule,
         FuseModule.forRoot(fuseConfig),
         GridsterModule,

@@ -25,6 +25,7 @@ export class UsersDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
+
                 this._adminUsersService.userList = result.TrackingXLAPI.DATA;
                 this.usersSubject.next(result.TrackingXLAPI.DATA);
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;

@@ -3,13 +3,13 @@ export const locale = {
     data: {
         USERS: {
             "USERS": "Utilisateurs",
-            "SEARCHFORUSER": "Rechercher un utilisateur",
-            "NEWUSER": "Nouvel utilisateur",
-            "USERDETAIL": "Détails de l'utilisateur",
+            "SEARCHFORUSER": "Rechercher un utilisateur",
+            "NEWUSER": "Nouvel utilisateur",
+            "USERDETAIL": "Détails de l'utilisateur",
             "SELECTFIELD": "Sélectionner un champ",
             "SAVE": "SALVAR",
             "ADD": "ADICIONAR",
-            
+
             "NAME": "nom",
             "EMAIL": "Email",
             "PASSWORD": "Mot de passe",
@@ -30,11 +30,12 @@ export const locale = {
             "LASTMODIFIEDDATE": "LastModifiedDate",
             "LASTMODIFIEDBYNAME": "LastModifiedByName",
             "LANGUAGE": "Langue",
+            "STARTPAGE": "Page de démarrage",
             "UNIT": "Unit",
 
-            "GENERAL": "General",
-            "AUDIT": "Audit",
-           
+            "GENERAL": "General",
+            "AUDIT": "Audit",
+
             "DUPLICATE_CONFIRM_MESSAGE": "Voulez-vous dupliquer?",
             "DELETE_CONFIRM_MESSAGE": "Voulez-vous vraiment supprimer?",
             "GOBACK_CONFIRM_MESSAGE": "Voulez-vous vraiment annuler les modifications?",

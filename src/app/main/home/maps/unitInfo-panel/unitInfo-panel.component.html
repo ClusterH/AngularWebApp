@@ -35,7 +35,7 @@
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="unit-panel-body">
+            <div class="unit-panel-body" *ngIf="currentUnit !== {} && currentUnit !== undefined">
                 <div class="unit-info-listItem" fxLayout="row" fxLayoutAlign="start center">
                     <div fxFlex="40" fxLayoutAlign="start center">Name : </div>
                     <div fxFlex="60" fxLayoutAlign="start center">{{currentUnit.name}}</div>
@@ -132,7 +132,7 @@
                     </div>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="unit-panel-body">
+            <div class="unit-panel-body" *ngIf="currentOperator !== {} && currentOperator !== undefined">
                 <div class="unit-driver-photo w-100-p mat-elevation-z8 mb-12">
                     <img src="assets/images/avatars/download.jpg">
                 </div>

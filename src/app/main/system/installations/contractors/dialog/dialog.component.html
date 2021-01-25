@@ -1,8 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span *ngIf="flag == 'new'"
-                class="title dialog-title">{{ 'CONTRACTOR.CONTRACTORCREATE' | translate }}</span>
+            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'CONTRACTOR.NEWCONTRACTOR' | translate }}</span>
             <span *ngIf="flag == 'edit'"
                 class="title dialog-title">{{ 'CONTRACTOR.CONTRACTORDETAIL' | translate }}</span>
             <button mat-icon-button (click)="close()" aria-label="Close dialog">

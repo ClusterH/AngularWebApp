@@ -1,0 +1,66 @@
+<div id="routeplanning-joblist" *ngIf="(routePlanningJobService.loading$ | async)" style="height: calc(100vh - 234px);">
+    <p-table #dt [value]="dataSource$ | async" [(selection)]="selectedJobList" dataKey="id"
+        styleClass="p-datatable-routeplanning" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['stopname']" [autoLayout]="true" [responsive]="true" [resizableColumns]="false"
+        [totalRecords]="totalRecords" paginatorPosition="top" [scrollable]="true" scrollHeight="flex">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 7.6rem"></th>
+                <th style="width: 4rem">
+                    <!-- <p-tableHeaderCheckbox (click)="isCheckRoute()"></p-tableHeaderCheckbox> -->
+                </th>
+                <th>{{ 'ROUTEPLANNING.STOPNAME' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.SCHEDTIME' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.POI' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.JOBSTATUS' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.EARLYTOLERANCEMIN' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.LATETOLERANCEMIN' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.PLANNINGUSER' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-jobs>
+            <tr>
+                <td style="width: 7.6rem">
+                    <mat-icon class="active-icon s-16 edit_icon" (click)="editJob(jobs)">edit
+                    </mat-icon>
+                    <mat-icon class="active-icon s-16 delete_icon" (click)="deleteJob(jobs)">delete
+                    </mat-icon>
+                    <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateJob(jobs)">file_copy
+                    </mat-icon>
+                </td>
+                <td style="width: 4rem">
+                    <fa-icon *ngIf="jobs.include" [icon]="faIncludedIcon"
+                        [ngStyle]="{'color': 'red', 'font-size': 'large' }"
+                        (click)="$event.stopPropagation(); setJobInclude(jobs)"></fa-icon>
+                    <fa-icon *ngIf="!jobs.include" [icon]="faExcludedIcon"
+                        [ngStyle]="{'color': 'green',  'font-size': 'large' }"
+                        (click)="$event.stopPropagation(); setJobInclude(jobs)"></fa-icon>
+                </td>
+                <td *ngFor="let col of displayedColumns">
+                    {{jobs[col]}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr fxLayout="row" fxLayoutAlign="center">
+                <td class="w-100-p" fxLayout="row" fxLayoutAlign="center" style="font-size: larger;">{{
+                    'ROUTEPLANNING.NODETAIL' | translate }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div class="table-header">
+        <div class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText class="filter_input" type="text"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+        </div>
+    </div>
+</div>
+<div class="spinner_overlay" *ngIf="!(routePlanningJobService.loading$ | async)">
+    <div class="spinner_container">
+        <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+        </mat-spinner>
+    </div>
+</div>

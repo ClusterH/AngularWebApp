@@ -11,7 +11,7 @@ export const locale = {
             "ADD": "ADD",
 
             "NAME": "Name",
-            "EMAIL": "Email",               
+            "EMAIL": "Email",
             "PASSWORD": "Password",
             "USERPROFILE": "User Profile",
             "TIMEZONE": "TimeZone",
@@ -30,6 +30,7 @@ export const locale = {
             "LASTMODIFIEDDATE": "LastModifiedDate",
             "LASTMODIFIEDBYNAME": "LastModifiedByName",
             "LANGUAGE": "Language",
+            "STARTPAGE": "Start Page",
             "UNIT": "Units",
 
             "GENERAL": "General",

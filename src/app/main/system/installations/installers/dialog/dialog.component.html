@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'INSTALLER.INSTALLERCREATE' | translate }}</span>
+            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'INSTALLER.NEWINSTALLER' | translate }}</span>
             <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'INSTALLER.INSTALLERDETAIL' | translate }}</span>
             <button mat-icon-button (click)="close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
@@ -98,21 +98,16 @@
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
-
         <button mat-button class="mr-8" (click)="close()" aria-label="Close" matTooltip="Close">
             {{ 'INSTALLER.CLOSE' | translate }}
         </button>
-
         <button *ngIf="flag=='edit'" mat-button class="save-button accent" (click)="save()"
             [disabled]="installerForm.invalid" aria-label="SAVE">
             {{ 'INSTALLER.SAVE' | translate }}
         </button>
-
         <button *ngIf="flag=='new'" mat-button class="save-button accent" (click)="add()"
             [disabled]="installerForm.invalid" aria-label="ADD">
             {{ 'INSTALLER.ADD' | translate }}
         </button>
-
     </div>
-
 </div>

@@ -13,12 +13,12 @@ import { locale as reportEnglish } from 'app/main/report/reportcomponent/i18n/en
 import { locale as reportFrench } from 'app/main/report/reportcomponent/i18n/fr';
 import { locale as reportPortuguese } from 'app/main/report/reportcomponent/i18n/pt';
 import { locale as reportSpanish } from 'app/main/report/reportcomponent/i18n/sp';
-import { ReportDataSource } from "app/main/report/reportcomponent/services/report.datasource";
-import { ReportService } from 'app/main/report/reportcomponent/services/report.service';
-import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
+import { ReportResultService, ReportService, ReportDataSource, PDFService, ExcelService } from './services';
+
 import { BehaviorSubject, merge, Observable, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
 import { ReportDetail } from './model/report.model';
+declare let pdfMake: any;
 
 @Component({
     selector: 'report-reportcomponent',
@@ -93,6 +93,8 @@ export class ReportComponent implements OnInit, OnDestroy {
     isWholeCompany: boolean = false;
     isWholeGroup: boolean = false;
     editable: boolean = true;
+    displayedColumns: Array<any> = [];
+    reportResult: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     @ViewChild(MatPaginator, { static: true }) paginatorReport: MatPaginator;
@@ -110,6 +112,8 @@ export class ReportComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private _formBuilder: FormBuilder,
         private router: Router,
+        private excelService: ExcelService,
+        private pdfService: PDFService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
@@ -550,14 +554,78 @@ export class ReportComponent implements OnInit, OnDestroy {
         this.entered_report_param.maxtime = this.timeStep.get('maxtime').value ? Number(this.timeStep.get('maxtime').value.split(':')[0]) * 60 + Number(this.timeStep.get('maxtime').value.split(':')[1]) : null;
         this.entered_report_param.mintime = this.timeStep.get('mintime').value ? Number(this.timeStep.get('mintime').value.split(':')[0]) * 60 + Number(this.timeStep.get('mintime').value.split(':')[1]) : null;
 
+        if (!this.outputStep.get('screen').value) {
+            alert('Please select one output method');
+            return;
+        }
+        this.entered_report_param.selectedscreen = this.outputStep.get('screen').value;
+
+
         for (let param in this.entered_report_param) {
             if (this.entered_report_param[param] === null) {
                 delete this.entered_report_param[param];
             }
         }
-
         localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));
-        this.router.navigate(['report/reportresult']);
+
+        this.reportResultService.loadReportResult(0, 10000).pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+
+
+            if (result.responseCode == 100) {
+                this.reportResult = result.TrackingXLAPI.DATA;
+                this.displayedColumns = [];
+                for (let column in result.TrackingXLAPI.DATA[0]) {
+                    if (column != 'id' && column != 'company' && column != 'group') {
+                        this.displayedColumns.push(column);
+                    }
+                }
+                const totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                localStorage.setItem('total_length', totalLength.toString());
+            } else if ((result.responseCode == 200)) {
+                const totalLength = 0;
+            }
+
+            if (this.entered_report_param.selectedscreen == 'excel') {
+                this.exportAsExcel(this.docFormat());
+            } else if (this.entered_report_param.selectedscreen == 'pdf') {
+                this.exportAsPDF(this.docFormat());
+            } else if (this.entered_report_param.selectedscreen == 'screen') {
+                this.router.navigate(['report/reportresult']);
+            }
+        })
+    }
+
+    exportAsExcel(table) {
+        this.excelService.generateExcel(table);
+    }
+
+    exportAsPDF(table) {
+        const documentDefinition = this.pdfService.getDocumentDefinition(table);
+        pdfMake.createPdf(documentDefinition).download();
+
+    }
+
+    docFormat() {
+
+        let data = [];
+        let headers = [];
+        this.reportResult.forEach(item => {
+            let row = [];
+            this.displayedColumns.map(header => {
+                if (header !== 'companyid' && header !== 'groupid' && header !== 'unitid') {
+                    row.push(item[header]);
+                }
+            })
+            data.push(row);
+        })
+
+        this.displayedColumns.map(header => {
+            if (header !== 'companyid' && header !== 'groupid' && header !== 'unitid') {
+                headers.push(header);
+            }
+        })
+
+        return { data: data, headers: headers };
     }
 
     connect(collectionViewer: CollectionViewer): Observable<any[]> {

@@ -20,7 +20,6 @@ export class ContractorsService {
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
             let params = new HttpParams()
-
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -32,7 +31,6 @@ export class ContractorsService {
             });
         } else {
             let params = new HttpParams()
-
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())

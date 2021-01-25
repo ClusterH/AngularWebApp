@@ -84,7 +84,8 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <div *ngFor="let data of productData; let i=index" class="mb-8 item-panel-body">
+                        <div *ngFor="let data of productData; trackBy: trackByFn; let i=index"
+                            class="mb-8 item-panel-body">
                             <label>
                                 <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
                                     [ngModelOptions]="{standalone: true}"
@@ -102,7 +103,8 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <div *ngFor="let data of ignitionData; let i=index" class="mb-8 item-panel-body">
+                        <div *ngFor="let data of ignitionData;  trackBy: trackByFn; let i=index"
+                            class="mb-8 item-panel-body">
                             <label>
                                 <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
                                     [ngModelOptions]="{standalone: true}"
@@ -120,7 +122,8 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <div *ngFor="let data of gpsData; let i=index" class="mb-8 item-panel-body">
+                        <div *ngFor="let data of gpsData;  trackBy: trackByFn; let i=index"
+                            class="mb-8 item-panel-body">
                             <label>
                                 <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
                                     [ngModelOptions]="{standalone: true}"
@@ -205,8 +208,8 @@
                                 </div>
                                 <div class="page-number" *ngFor="let page of p.pages"
                                     [class.current]="p.getCurrent() === page.value">
-                                    <span (click)="p.setCurrent(page.value)"
-                                        *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
+                                    <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{
+                                        page.label }}</span>
                                     <div *ngIf="p.getCurrent() === page.value">
                                         <span>{{ page.label }}</span>
                                     </div>

@@ -64,7 +64,6 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
             this.fuelregistry = data;
         });
 

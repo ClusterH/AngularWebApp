@@ -88,7 +88,7 @@
                         </button>
                         <mat-icon class="active-icon s-16 delete_icon" (click)="deleteJob(job)">delete
                         </mat-icon>
-                        <mat-icon class="active-icon s-16 board_icon" (click)="deleteJob(job)">apps
+                        <mat-icon class="active-icon s-16 board_icon" (click)="currentBoard(job, 'list')">apps
                         </mat-icon>
                         <div class="members" fxFlex="0 1 auto">
                             <button mat-icon-button class="" [matMenuTriggerFor]="membersMenu">
@@ -225,19 +225,13 @@
             <div class="board-list" fxFlex="0 0 auto" fxLayout="row wrap" fxLayoutAlign="center center"
                 [@animateStagger]="{value:'50'}">
                 <!-- BOARD -->
-                <div class="board-list-item" *ngFor="let employee of installersBoard" fxLayout="column"
-                    fxLayoutAlign="center center" [@animate]="{value:'*',params:{y:'100%'}}">
+                <div class="board-list-item" *ngFor="let employee of installersBoard"
+                    (click)="currentBoard(employee, 'board')" fxLayout="column" fxLayoutAlign="center center"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
                     <mat-icon class="s-56">assessment</mat-icon>
                     <div class="board-name">{{employee.name}}</div>
                 </div>
                 <!-- / BOARD -->
-                <!-- NEW BOARD BUTTON -->
-                <div class="board-list-item add-new-board" fxLayout="column" fxLayoutAlign="center center"
-                    [@animate]="{value:'*',params:{y:'100%'}}">
-                    <mat-icon class="s-56">add_circle</mat-icon>
-                    <div class="board-name">{{ 'BOARD.ADDNEWBOARD' | translate }}</div>
-                </div>
-                <!-- / NEW BOARD BUTTON -->
             </div>
             <!-- / BOARD LIST -->
         </div><!-- / BOARDS -->

@@ -62,7 +62,7 @@ export const locale = {
             "BACKGROUNDCOLOR": "Background Color",
             "REMOVELIST": "Remove List",
             "ADDALIST": "Add a List",
-            "ADDACARD": "Add a Card",
+            "ADDACARD": "Add a Job",
             "ADD": "Add",
             "REMOVEDUEDATE": "Remove Due Date",
             "CHECKLISTTITLE": "CheckList Title",

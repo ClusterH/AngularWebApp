@@ -23,6 +23,7 @@ export interface JobDetail {
     deletedwhen?: string;
     latitude?: string;
     longitude?: string;
+    statusid?: string;
     status?: string;
     installationjobtypeid?: string;
     installationjobtype?: string;

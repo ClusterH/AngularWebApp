@@ -21,6 +21,7 @@ import { locale as reportSpanish } from 'app/main/system/installations/jobs/i18n
 })
 export class InstallationBoardComponent implements OnInit, OnDestroy {
     board: any;
+    isListView: boolean = true;
     private _unsubscribeAll: Subject<any>;
 
     constructor(
@@ -31,6 +32,13 @@ export class InstallationBoardComponent implements OnInit, OnDestroy {
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
+        this._activatedRoute.queryParams.subscribe(params => {
+            if (params.from == "list") {
+                this.isListView = true;
+            } else if (params.from == 'board') {
+                this.isListView = false;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -55,16 +63,6 @@ export class InstallationBoardComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On list add
-     *
-     * @param newListName
-     */
-    onListAdd(newListName): void {
-        if (newListName === '') { return; }
-        this._installationService.addList(new List({ name: newListName }), this.board.id);
-    }
 
     /**
      * On board name changed

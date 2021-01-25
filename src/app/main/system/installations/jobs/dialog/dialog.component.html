@@ -31,11 +31,6 @@
                             <mat-label>{{ 'JOB.VIN' | translate }}</mat-label>
                             <input matInput placeholder="VIN" name="vin" formControlName="vin" required>
                         </mat-form-field>
-                        <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                            <mat-label>{{ 'JOB.STARTDATE' | translate }}</mat-label>
-                            <input matInput type placeholder="StartDate" name="startdate" formControlName="startdate"
-                                required>
-                        </mat-form-field> -->
                         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                             <mat-label>{{ 'JOB.STARTDATE' | translate }}</mat-label>
                             <input matInput placeholder="Start Date" name="startdate" formControlName="startdate"
@@ -48,11 +43,39 @@
                         </mat-form-field>
                         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                             <mat-label>{{ 'JOB.ADDRESS' | translate }}</mat-label>
-                            <input matInput placeholder="Address" name="address" formControlName="address" required>
+                            <input matInput placeholder="Address" name="address" formControlName="address"
+                                autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="h4 px-4"
+                                #search required>
                         </mat-form-field>
-                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-form-field appearance="outline" floatLabel="always" class="select_list">
                             <mat-label>{{ 'JOB.STATUS' | translate }}</mat-label>
-                            <input matInput placeholder="Status" name="status" formControlName="status" required>
+                            <mat-select (click)="showCompanyList('installationStatus_clist')"
+                                formControlName="installationStatus">
+                                <div class="filter_carrier_input">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                        (keyup)="onKey($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+                                <div style="width: 100%; overflow: auto;">
+                                    <mat-table [dataSource]="dataSourceInstallationStatus"
+                                        class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <ng-container matColumnDef="name">
+                                            <td mat-cell *matCellDef="let installationStatus;" style="border: 0px;">
+                                                <mat-option [value]="installationStatus.id">{{installationStatus.name}}
+                                                </mat-option>
+                                            </td>
+                                        </ng-container>
+                                        <tr class="installationStatus_list" style="height: 15px;" mat-row
+                                            *matRowDef="let row; columns: displayedColumns;">
+                                        </tr>
+                                    </mat-table>
+                                </div>
+                                <mat-paginator style=" height: 40px;" #paginatorInstallationStatus
+                                    class="table_paginator_detail" [length]="dataSourceInstallationStatus.totalLength"
+                                    [pageSize]="10" [hidePageSize]="true" showFirstLastButtons
+                                    (click)="installationStatusPagenation(paginatorInstallationStatus)" sticky="true">
+                                </mat-paginator>
+                            </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                             <mat-label>{{ 'JOB.NOTES' | translate }}</mat-label>

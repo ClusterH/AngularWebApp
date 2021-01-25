@@ -1,0 +1,93 @@
+@import "src/@fuse/scss/fuse";
+
+.job-dialog {
+    @include media-breakpoint("xs") {
+        width: 100%;
+    }
+
+    @include media-breakpoint("gt-xs") {
+        width: 600px;
+    }
+    .mat-dialog-container {
+        padding: 0;
+
+        .mat-toolbar {
+            flex: 1 0 auto;
+            min-height: initial;
+        }
+
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+
+    .dialog-content-wrapper {
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .mat-datepicker-toggle-default-icon {
+        margin-left: 16px !important;
+    }
+
+    .profile_image {
+        position: relative;
+        .delete-checkbox {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+    }
+
+    .add-button-div {
+        height: auto;
+        width: 100%;
+        min-height: 36px;
+    }
+
+    .add-button-div .add-button-btn {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        cursor: pointer;
+    }
+
+    .fileInputProfileWrap {
+        width: 100%;
+        height: auto;
+    }
+
+    .fileInputProfile {
+        position: absolute;
+        height: 36px;
+        width: 75px;
+
+        z-index: 1;
+        opacity: 0;
+    }
+    .fileInputProfile[disabled] + .add-button-div {
+        pointer-events: none;
+        cursor: not-allowed !important;
+    }
+}
+
+.filter_carrier_input {
+    border: 1px solid #b3b1b1 !important;
+    border-radius: 5px !important;
+    margin: 20px !important;
+    width: 90% !important;
+    height: 40px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+body.theme-default
+    .mat-select-panel
+    .mat-option.mat-selected:not(.mat-option-multiple) {
+    background: white !important;
+}

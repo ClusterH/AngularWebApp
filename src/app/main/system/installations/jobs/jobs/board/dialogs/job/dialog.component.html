@@ -1,0 +1,259 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span *ngIf="flag == 'new'" class="title dialog-title">{{ 'JOB.NEWJOB' | translate }}</span>
+            <span *ngIf="flag == 'edit'" class="title dialog-title">{{ 'JOB.JOBDETAIL' | translate }}</span>
+            <button mat-icon-button (click)="close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="px-24 py-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="jobForm">
+            <mat-tab-group (selectedIndexChange)="getActivatedTab($event)">
+                <mat-tab label="{{ 'JOB.CUSTOMERINFO' | translate }}">
+                    <div fxLayout="column" class="mt-12">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.CUSTOMER' | translate }}</mat-label>
+                            <input matInput placeholder="Customer" name="customer" formControlName="customer" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.CUSTOMERPHONENUMBER' | translate }}</mat-label>
+                            <input matInput placeholder="Customer PhoneNumber" name="customerphonenumber"
+                                formControlName="customerphonenumber" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.PLATE' | translate }}</mat-label>
+                            <input matInput placeholder="Plate" name="plate" formControlName="plate" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.VIN' | translate }}</mat-label>
+                            <input matInput placeholder="VIN" name="vin" formControlName="vin" required>
+                        </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.STARTDATE' | translate }}</mat-label>
+                            <input matInput type placeholder="StartDate" name="startdate" formControlName="startdate"
+                                required>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.STARTDATE' | translate }}</mat-label>
+                            <input matInput placeholder="Start Date" name="startdate" formControlName="startdate"
+                                type="datetime-local" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.DURATION' | translate }}</mat-label>
+                            <input matInput type="number" min="0" placeholder="Duration" name="duration"
+                                formControlName="duration" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.ADDRESS' | translate }}</mat-label>
+                            <input matInput placeholder="Address" name="address" formControlName="address" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.STATUS' | translate }}</mat-label>
+                            <input matInput placeholder="Status" name="status" formControlName="status" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.NOTES' | translate }}</mat-label>
+                            <input matInput placeholder="Notes" name="notes" formControlName="notes" required>
+                        </mat-form-field>
+                    </div>
+                </mat-tab>
+                <mat-tab label="{{ 'JOB.LOCATION' | translate }}">
+                    <div fxLayout="column" class="mt-12">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.DESCRIPTION' | translate }}</mat-label>
+                            <input matInput placeholder="Description" name="description" formControlName="description"
+                                required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                            <mat-label>{{ 'JOB.DEVICETYPE' | translate }}</mat-label>
+                            <mat-select (click)="showCompanyList('devicetype_clist')" formControlName="devicetype">
+                                <div class="filter_carrier_input">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                        (keyup)="onKey($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <div style="width: 100%; overflow: auto;">
+                                    <mat-table [dataSource]="dataSourceDeviceType"
+                                        class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <ng-container matColumnDef="name">
+                                            <td mat-cell *matCellDef="let devicetype;" style="border: 0px;">
+                                                <mat-option [value]="devicetype.id">{{devicetype.name}}</mat-option>
+                                            </td>
+                                        </ng-container>
+                                        <tr class="devicetype_list" style="height: 15px;" mat-row
+                                            *matRowDef="let row; columns: displayedColumns;">
+                                        </tr>
+                                    </mat-table>
+                                </div>
+                                <mat-paginator style=" height: 40px;" #paginatorDeviceType
+                                    class="table_paginator_detail" [length]="dataSourceDeviceType.totalLength"
+                                    [pageSize]="10" [hidePageSize]="true" showFirstLastButtons
+                                    (click)="devicetypePagenation(paginatorDeviceType)" sticky="true">
+                                </mat-paginator>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                            <mat-label>{{ 'JOB.JOBTYPE' | translate }}</mat-label>
+                            <mat-select (click)="showCompanyList('installationjobtype_clist')"
+                                formControlName="installationjobtype">
+                                <div class="filter_carrier_input">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                        (keyup)="onKey($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <div style="width: 100%; overflow: auto;">
+                                    <mat-table [dataSource]="dataSourceJobType"
+                                        class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <ng-container matColumnDef="name">
+                                            <td mat-cell *matCellDef="let jobtype;" style="border: 0px;">
+                                                <mat-option [value]="jobtype.id">{{jobtype.name}}</mat-option>
+                                            </td>
+                                        </ng-container>
+                                        <tr class="devicetype_list" style="height: 15px;" mat-row
+                                            *matRowDef="let row; columns: displayedColumns;">
+                                        </tr>
+                                    </mat-table>
+                                </div>
+                                <mat-paginator style=" height: 40px;" #paginatorJobType class="table_paginator_detail"
+                                    [length]="dataSourceJobType.totalLength" [pageSize]="10" [hidePageSize]="true"
+                                    showFirstLastButtons (click)="jobtypePagenation(paginatorJobType)" sticky="true">
+                                </mat-paginator>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                            <mat-label>{{ 'JOB.INSTALLCONTRACTOR' | translate }}</mat-label>
+                            <mat-select (click)="showCompanyList('installcontractor_clist')"
+                                formControlName="installcontractor">
+                                <div class="filter_carrier_input">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                        (keyup)="onKey($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <div style="width: 100%; overflow: auto;">
+                                    <mat-table [dataSource]="dataSourceInstallContractor"
+                                        class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <ng-container matColumnDef="name">
+                                            <td mat-cell *matCellDef="let installcontractor;" style="border: 0px;">
+                                                <mat-option [value]="installcontractor.id">{{installcontractor.name}}
+                                                </mat-option>
+                                            </td>
+                                        </ng-container>
+                                        <tr class="installcontractor_list" style="height: 15px;" mat-row
+                                            *matRowDef="let row; columns: displayedColumns;">
+                                        </tr>
+                                    </mat-table>
+                                </div>
+                                <mat-paginator style=" height: 40px;" #paginatorInstallContractor
+                                    class="table_paginator_detail" [length]="dataSourceInstallContractor.totalLength"
+                                    [pageSize]="10" [hidePageSize]="true" showFirstLastButtons
+                                    (click)="installcontractorPagenation(paginatorInstallContractor)" sticky="true">
+                                </mat-paginator>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.INSTALLER' | translate }}</mat-label>
+                            <input matInput name="status" formControlName="installer" required>
+                        </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                            <mat-label>{{ 'JOB.INSTALLER' | translate }}</mat-label>
+                            <mat-select (click)="showCompanyList('installer_clist')" formControlName="installer">
+                                <div class="filter_carrier_input">
+                                    <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                        (keyup)="onKey($event)">
+                                    <mat-icon (click)="clearFilter()">clear</mat-icon>
+                                </div>
+
+                                <div style="width: 100%; overflow: auto;">
+                                    <mat-table [dataSource]="dataSourceInstaller"
+                                        class="vehicles-table font-size-10 mat-elevation-z8">
+                                        <ng-container matColumnDef="name">
+                                            <td mat-cell *matCellDef="let installer;" style="border: 0px;">
+                                                <mat-option [value]="installer.id">{{installer.name}}</mat-option>
+                                            </td>
+                                        </ng-container>
+                                        <tr class="installer_list" style="height: 15px;" mat-row
+                                            *matRowDef="let row; columns: displayedColumns;">
+                                        </tr>
+                                    </mat-table>
+                                </div>
+                                <mat-paginator style=" height: 40px;" #paginatorInstaller class="table_paginator_detail"
+                                    [length]="dataSourceInstaller.totalLength" [pageSize]="10" [hidePageSize]="true"
+                                    showFirstLastButtons (click)="installerPagenation(paginatorInstaller)"
+                                    sticky="true">
+                                </mat-paginator>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.CREATED' | translate }}</mat-label>
+                            <input matInput placeholder="Created" name="created" formControlName="created" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{ 'JOB.CREATEDBY' | translate }}</mat-label>
+                            <input matInput placeholder="Createdby" name="createdby" formControlName="createdby"
+                                required>
+                        </mat-form-field>
+                    </div>
+                </mat-tab>
+                <mat-tab label="{{ 'JOB.IMAGES' | translate }}">
+                    <div fxLayout="column" class="mt-12">
+                        <div class="tab-content image-tab p-24 pt-0" fusePerfectScrollbar>
+                            <div fxLayout="row wrap" fxLayoutAlign="start start">
+                                <div *ngIf="installationImageList.length > 0" fxLayout="row wrap"
+                                    fxLayoutAlign="start start" class="w-100-p">
+                                    <div *ngFor="let image of installationImageList">
+                                        <div class="profile_image mx-20"
+                                            style="width: 128px; height: 128px; margin-bottom: 12px;">
+                                            <input type="checkbox" class="delete-checkbox w-16 h-16" [value]="image.id"
+                                                (click)="$event.stopPropagation()"
+                                                (change)="$event ? imageSelection.toggle(image.id) : null; onDeleteImage($event)" />
+                                            <img [src]="image.image" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <div *ngIf="activatedTabIndex == 2" class="profile_image mr-12" style="width: 75px; height: 36px;">
+            {{imageError}}
+            <div class="custom-file fileInputProfileWrap">
+                <input type="file" multiple (change)="fileChangeEvent($event)" class="fileInputProfile">
+                <div class="add-button-div">
+                    <button mat-button class="mr-8 accent add-button-btn" aria-label="Add">
+                        {{ 'JOB.ADD' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button *ngIf="activatedTabIndex == 2" mat-button class="save-button accent" (click)="deleteImage()"
+            aria-label="DELETE">
+            {{ 'JOB.DELETE' | translate }}
+        </button>
+        <button mat-button class="mr-8" (click)="close()" aria-label="Close" matTooltip="Close">
+            {{ 'JOB.CLOSE' | translate }}
+        </button>
+        <button *ngIf="flag=='edit'" mat-button class="save-button accent" (click)="save()" [disabled]="jobForm.invalid"
+            aria-label="SAVE">
+            {{ 'JOB.SAVE' | translate }}
+        </button>
+
+        <button *ngIf="flag=='new'" mat-button class="save-button accent" (click)="add()" [disabled]="jobForm.invalid"
+            aria-label="ADD">
+            {{ 'JOB.ADD' | translate }}
+        </button>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" *ngIf="activatedTabIndex == 2">
+
+    </div>
+</div>

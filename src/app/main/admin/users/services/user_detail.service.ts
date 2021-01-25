@@ -64,6 +64,17 @@ export class UserDetailService {
         }
     }
 
+    getSystemPageClist(): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('method', 'SystemPage_CList');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
     saveUserDetail(userDetail: any = {}): Observable<any> {
         const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
@@ -88,6 +99,7 @@ export class UserDetailService {
             .set('lastmodifieddate', userDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', userDetail.lastmodifiedby.toString())
             .set('languageid', userDetail.languageid.toString())
+            .set('startpageid', userDetail.startpageid.toString())
             .set('method', 'user_save');
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

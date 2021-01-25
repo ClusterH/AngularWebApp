@@ -11,6 +11,8 @@ const routes = [
     { path: 'todo', loadChildren: () => import('./jobmanagement/todo/todo.module').then(m => m.TodoModule) },
     { path: 'scrumboard', loadChildren: () => import('./jobmanagement/scrumboard/scrumboard.module').then(m => m.ScrumboardModule) },
     { path: 'routecenter', loadChildren: () => import('./routecenter/routecenter.module').then(m => m.RouteCenterModule) },
+    { path: 'routeplanning', loadChildren: () => import('./routeplanning/routeplanning.module').then(m => m.RoutePlanningModule) },
+    { path: 'monitor', loadChildren: () => import('./monitor/monitor.module').then(m => m.MonitorModule) },
 ];
 
 @NgModule({

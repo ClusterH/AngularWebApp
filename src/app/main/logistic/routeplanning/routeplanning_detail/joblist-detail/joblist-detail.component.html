@@ -1,0 +1,128 @@
+<div id="routeplanning_job_detail" class="page-layout carded fullwidth inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16">
+                    <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        JOB Detail
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        {{ 'ROUTEPLANNING.NEWJOB' | translate }}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{ 'ROUTEPLANNING.JOBDETAIL' | translate }}</span>
+                    </div>
+                </div>
+            </div>
+            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='new'" (click)="saveJob()">
+                <span>{{ 'ROUTEPLANNING.ADD' | translate }}</span>
+            </button>
+            <button mat-raised-button class="save-vehicle-button" *ngIf="pageType ==='edit'" (click)="saveJob()">
+                <span>{{ 'ROUTEPLANNING.SAVE' | translate }}</span>
+            </button>
+        </div>
+        <div class="content-card">
+            <div class="content">
+                <form [formGroup]="jobForm" class="vehicle w-100-p" fxLayout="column" fxFlex>
+                    <mat-tab-group>
+                        <mat-tab label="{{ 'ROUTEPLANNING.GENERAL' | translate }}">
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'ROUTEPLANNING.STOPNAME' | translate }}</mat-label>
+                                        <input matInput name="stopname" formControlName="stopname" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date"
+                                            formControlName="schedtime">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <ngx-mat-datetime-picker #picker1></ngx-mat-datetime-picker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="select-address-type mb-12" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="p-field-radiobutton ml-12">
+                                        <p-radioButton name="address" value="Google Address" [(ngModel)]="addressType"
+                                            [ngModelOptions]="{standalone: true}" inputId="type_google">
+                                        </p-radioButton>
+                                        <label for="type_google" class="ml-4">Address</label>
+                                    </div>
+                                    <div class="p-field-radiobutton ml-12">
+                                        <p-radioButton name="address" value="POI Address" [(ngModel)]="addressType"
+                                            [ngModelOptions]="{standalone: true}" inputId="type_poi">
+                                        </p-radioButton>
+                                        <label for="type_poi" class="ml-4">POI</label>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always"
+                                        [ngStyle]="{'display': addressType == 'Google Address'? 'block': 'none'}"
+                                        fxFlex="48">
+                                        <mat-label>Address</mat-label>
+                                        <input matInput formControlName="google_autocomplete" type="text"
+                                            style="text-align: start; font-size: larger;" #search autocorrect="off"
+                                            autocapitalize="off" spellcheck="off">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always"
+                                        [ngStyle]="{'display': addressType == 'POI Address'? 'block': 'none'}"
+                                        fxFlex="48">
+                                        <mat-label>POI</mat-label>
+                                        <input matInput formControlName="poi" type="text"
+                                            style="text-align: start; font-size: larger;" [matAutocomplete]="auto"
+                                            (keyup)="searchFromPOIList($event)">
+                                    </mat-form-field>
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let user of userPOIs$ | async" [value]="user.name"
+                                            (onSelectionChange)="selectionChange($event)">
+                                            {{user.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <div fxLayout="row" fxFlex="48" fxLayoutAlign="space-between">
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'ROUTEPLANNING.LATITUDE' | translate }}</mat-label>
+                                            <input matInput placeholder="Latitude" name="latitude"
+                                                formControlName="latitude">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                            <mat-label>{{ 'ROUTEPLANNING.LONGITUDE' | translate }}</mat-label>
+                                            <input matInput placeholder="Longitude" name="longitude"
+                                                formControlName="longitude">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="32">
+                                        <mat-label>{{ 'ROUTEPLANNING.POINTRADIO' | translate }}</mat-label>
+                                        <input matInput type="number" min="0" name="pointradio"
+                                            formControlName="pointradio" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="32">
+                                        <mat-label>{{ 'ROUTEPLANNING.EARLYTOLERANCEMIN' | translate }}</mat-label>
+                                        <input matInput type="number" min="0" name="earlytolerancemin"
+                                            formControlName="earlytolerancemin" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="32">
+                                        <mat-label>{{ 'ROUTEPLANNING.LATETOLERANCEMIN' | translate }}</mat-label>
+                                        <input matInput type="number" min="0" name="latetolerancemin"
+                                            formControlName="latetolerancemin" required>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                                        <mat-label>{{ 'ROUTEPLANNING.DESCRIPTION' | translate }}</mat-label>
+                                        <input matInput name="description" formControlName="description" required>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

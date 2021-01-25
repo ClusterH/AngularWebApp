@@ -3,7 +3,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
-import { InstallationCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/card/card.component';
+// import { InstallationCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/card/card.component';
+import { JobCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/job/dialog.component';
 import { Card } from 'app/main/system/installations/jobs/model/card.model';
 import { InstallationService } from '../../../services'
 import { Subject } from 'rxjs';
@@ -72,24 +73,15 @@ export class InstallationBoardListComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * On list name changed
-     *
-     * @param newListName
-     */
-    onListNameChanged(newListName): void {
-        this.list.name = newListName;
-        this._installationService.updateList(this.list, this.board.id);
-    }
-
-    /**
      * On card added
      *
      * @param newCardName
      */
-    onCardAdd(newCardName): void {
-        if (newCardName === '') { return; }
+    onCardAdd(newCard): void {
+        if (newCard === '') { return; }
         let due = this.dateFormat(new Date());
-        this._installationService.addCard(this.board.id, this.list.id, new Card({ name: newCardName, due: due }));
+
+        this._installationService.addCard(this.board.id, this.list.id, new Card(newCard));
         setTimeout(() => {
             this.listScroll.scrollToBottom(0, 400);
         });
@@ -109,36 +101,26 @@ export class InstallationBoardListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Remove list
-     *
-     * @param listId
-     */
-    removeList(listId): void {
-        this.confirmDialogRef = this._matDialog.open(FuseConfirmDialogComponent, {
-            disableClose: false
-        });
-        this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete the list and it\'s all cards?';
-        this.confirmDialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result) {
-                this._installationService.removeList(listId);
-            }
-        });
-    }
-
-    /**
      * Open card dialog
      *
      * @param cardId
      */
     openCardDialog(cardId): void {
-        this.dialogRef = this._matDialog.open(InstallationCardDialogComponent, {
-            panelClass: 'installation-card-dialog',
-            data: {
-                cardId: cardId,
-                listId: this.list.id
+        this._installationService.getInstallationDetail(cardId).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode == 100) {
+                this.dialogRef = this._matDialog.open(JobCardDialogComponent, {
+                    panelClass: 'job-dialog',
+                    disableClose: true,
+                    data: {
+                        cardId: cardId,
+                        installerName: { name: this.board.name, id: this.board.id },
+                        serviceDetail: res.TrackingXLAPI.DATA[0],
+                        flag: 'edit'
+                    }
+                });
+                this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(response => { });
             }
-        });
-        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(response => { });
+        })
     }
 
     /**

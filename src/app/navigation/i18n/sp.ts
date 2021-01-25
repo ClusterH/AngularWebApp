@@ -46,6 +46,7 @@ export const locale = {
             "SERVICE": "Servicios",
             "HISTORY": "Historia",
             "ROUTECENTER": "Centro de ruta",
+            "ROUTEPLANNING": "Planificación de ruta",
             "MONITORING": "Monitoreo",
             "JOBMANAGEMENT": "Gestión de trabajos",
             "BOARD": "Junta",

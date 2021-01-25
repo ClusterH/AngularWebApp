@@ -1,16 +1,13 @@
 <div id="dashboard-analytics" class="page-layout carded fullwidth tabbed">
-    <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
-    <!-- / TOP BACKGROUND -->
-    <!-- CENTER -->
     <div class="center">
-        <!-- CONTENT HEADER -->
         <div class="header accent p-24">
             <div class="title-clips h-52" fxLayout="row" fxLayoutAlign="start center">
                 <div class="h1" fxFlex="30">{{ 'ANAYLYTICS.DASHBOARDS' | translate }}</div>
                 <div class="clip-list" *ngIf="isEditClips">
-                    <div *ngFor="let clip of dashboardclips_Clist" class="draggable" draggable="true"
-                        (dragend)="addNewWidget(clip)" (click)="addNewWidget(clip)" [matTooltip]="clip.name">
+                    <div *ngFor="let clip of dashboardclips_Clist; trackBy: trackByFn" class="draggable"
+                        draggable="true" (dragend)="addNewWidget(clip)" (click)="addNewWidget(clip)"
+                        [matTooltip]="clip.name">
                         <img [src]="clip_img_url + clip.name + '.png'"
                             class="w-40 mat-elevation-z8 chart-icon line-chart">
                     </div>
@@ -20,7 +17,6 @@
                 <div class="filter-option" fxLayout="row" fxFlex="85">
                     <div class="time-filter-option" fxLayout="row" fxFlex="50">
                         <form class="time-filter-form" fxLayout="row" fxLayoutAlign="start center">
-                            <!-- FILTER ITEM -->
                             <mat-label style="min-width: max-content;">{{ 'ANAYLYTICS.TIME' | translate }}:&nbsp;&nbsp;
                             </mat-label>
                             <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 140px;">
@@ -50,7 +46,6 @@
                     </div>
                     <div class="group-filter-option" fxLayout="row" fxFlex="50">
                         <form class="group-filter-form" fxLayout="row" fxLayoutAlign="start center">
-                            <!-- FILTER ITEM -->
                             <mat-label style="min-width: max-content;">{{ 'ANAYLYTICS.GROUP' | translate }}:</mat-label>
                             <mat-form-field class="ml-20 mr-20 filter_select" style="min-width: 140px;">
                                 <mat-select [(value)]="selectedGroup" (selectionChange)="onChangeToggle($event)">
@@ -67,12 +62,6 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="isSelection-toggle" *ngIf="!isEditClips">
-                    <mat-slide-toggle class="tp-margin primary-fg mr-12" [checked]="isToggled"
-                        (change)="onChangeToggle($event)">
-
-                    </mat-slide-toggle>
-                </div> -->
                 <div class="add-edit-button" *ngIf="!isEditClips" fxFlex="15">
                     <button mat-raised-button class="add-new-widget mr-4" (click)="addDashboard()">
                         <span>&nbsp;&nbsp;{{ 'ANAYLYTICS.ADD' | translate }}&nbsp;&nbsp;</span>
@@ -91,15 +80,12 @@
                 </div>
             </div>
         </div>
-        <!-- / CONTENT HEADER -->
-        <!-- CONTENT CARD -->
         <div class="content-card">
-            <!-- CONTENT -->
             <div class="content">
                 <mat-tab-group #tabs *ngIf="loading$ | async" (selectedTabChange)="tabChanged($event)"
                     [(selectedIndex)]="activatedTabIndex">
-                    <mat-tab *ngFor="let dashboard of dashboard_Clist; let i = index" [label]="dashboard.name"
-                        [disabled]="isEditClips">
+                    <mat-tab *ngFor="let dashboard of dashboard_Clist; trackBy: trackByFn; let i = index"
+                        [label]="dashboard.name" [disabled]="isEditClips">
                         <ng-template mat-tab-label>
                             <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDashboard(dashboard)"
                                 [ngStyle]="{'display':(!isEditClips || !(activatedTabIndex == i))? 'none': 'block' }">
@@ -116,9 +102,6 @@
                     </mat-tab>
                 </mat-tab-group>
             </div>
-            <!-- / CONTENT -->
         </div>
-        <!-- / CONTENT CARD -->
     </div>
-    <!-- / CENTER -->
 </div>

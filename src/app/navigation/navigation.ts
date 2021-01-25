@@ -20,7 +20,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Google',
                 translate: 'NAV.GOOGLE',
                 type: 'item',
-                url: '/home/google/:type'
+                url: '/home/google/main'
             },
             {
                 id: 'osm',
@@ -344,11 +344,18 @@ export const navigation: FuseNavigation[] = [
                 url: '/logistic/routecenter/routecenter'
             },
             {
-                id: 'monitoring',
-                title: 'Monitoring',
+                id: 'route_planning',
+                title: 'Route Planning',
+                translate: 'NAV.ROUTEPLANNING',
+                type: 'item',
+                url: '/logistic/routeplanning/routeplanning'
+            },
+            {
+                id: 'monitor',
+                title: 'Monitor',
                 translate: 'NAV.MONITORING',
                 type: 'item',
-                url: 'pages/logistics/monitoring'
+                url: '/logistic/monitor/monitor'
             },
             {
                 id: 'job_management',
@@ -387,7 +394,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'Tanks',
                 translate: 'NAV.TANKS',
                 type: 'item',
-                url: 'fuelmanagement/tanks/tanks'
+                url: '/fuelmanagement/tanks/tanks'
             },
             {
                 id: 'fuel_registry',

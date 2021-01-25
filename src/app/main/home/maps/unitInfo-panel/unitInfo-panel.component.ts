@@ -1,19 +1,15 @@
-import { Component, ViewEncapsulation, OnDestroy, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-// import { SelectionModel } from '@angular/cdk/collections';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
-import { UnitLinkDialogComponent } from 'app/main/home/maps/unitInfo-panel/dialog/dialog.component';
 import { AutocompleteDialogComponent } from 'app/main/home/maps/unitInfo-panel/autocomplete/autocomplete.component';
+import { UnitLinkDialogComponent } from 'app/main/home/maps/unitInfo-panel/dialog/dialog.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { any } from '@amcharts/amcharts4/.internal/core/utils/Array';
 declare let google: any;
 import PlaceResult = google.maps.places.PlaceResult;
-import { identifierName } from '@angular/compiler';
-import { random } from 'lodash';
 
 export interface Task {
     name: string;
@@ -27,15 +23,15 @@ export interface Task {
     encapsulation: ViewEncapsulation.None
 })
 export class UnitInfoPanelComponent implements OnInit, OnDestroy {
-    currentChannel: string = 'mainpanel';
+    currentChannel = 'mainpanel';
     linkedEmail: any;
     expireTime: number;
-    expireTimeUnit: string = 'minutes';
-    playbackDateRange: string = '0';
+    expireTimeUnit = 'minutes';
+    playbackDateRange = '0';
     dateStep: FormGroup;
 
-    count: number = 0;
-    color: any = {
+    count = 0;
+    color = {
         blue: "#0000ff",
         darkblue: "#00008b",
         darkcyan: "#008b8b",
@@ -52,10 +48,9 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
         yellow: "#ffff00"
     }
 
-    @Input() currentUnit: any;
+    @Input() currentUnit: any = null;
     @Input() currentOperator: any;
-
-    @Input() currentEvents: any;
+    @Input() currentEvents: any = null;
 
     @Output() eventLocation = new EventEmitter();
     @Output() trackHistory = new EventEmitter();
@@ -69,7 +64,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
     ) {
         this._unsubscribeAll = new Subject();
-
         this.count = 0;
     }
 
@@ -85,7 +79,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     ngAfterViewInit() { }
 
     ngOnChanges() {
-
         this.goOptionPanel('mainpanel');
         this.playbackDateRange = '0';
     }
@@ -98,7 +91,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
 
     showEventLocation(event, method) {
         if (method == 'every') {
-
             let eventGeoLocation = [];
             eventGeoLocation[0] = {
                 latitude: event.latitude,
@@ -127,7 +119,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     sendLinkEmail() {
-
         if (this.expireTimeUnit == 'minutes') {
             let temp = this.expireTime * 60;
             this.expireTime = temp;
@@ -138,7 +129,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
 
         this.unitInfoService.sendShareLocation(this.currentUnit.id, this.expireTime, this.linkedEmail)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-
                 if (res.TrackingXLAPI.DATA[0].result == '1') {
                     alert('Link was sent!');
                     this.currentChannel = 'mainpanel';
@@ -149,7 +139,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     showPositionDialog(option: string) {
-
         if (option == 'direction') {
             const dialogConfig = new MatDialogConfig();
             dialogConfig.panelClass = 'custom-dialog-container';
@@ -157,7 +146,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
             dialogConfig.data = { unit: { id: this.currentUnit.id, name: this.currentUnit.name, latitude: Number(this.currentUnit.latitude), longitude: Number(this.currentUnit.longitude) }, flag: option };
             const dialogRef = this._matDialog.open(AutocompleteDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-
             });
         } else {
             const dialogConfig = new MatDialogConfig();
@@ -191,12 +179,12 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
         }
 
         this.unitInfoService.playbackHistory(params, 'GetTrackIDandName').then(idandname => {
-            if (idandname.responseCode == 100) {
+            if (idandname.responseCode === 100) {
                 // this.unitInfoService.TrackID = res.TrackingXLAPI.DATA[0].id;
                 // this.unitInfoService.TrackName = res
                 this.unitInfoService.playbackHistory(params, 'GetUnitHistory')
                     .then(history => {
-                        if (history.responseCode == 100) {
+                        if (history.responseCode === 100) {
                             this.count = this.count + 1;
                             let color = this.random_rgba();
                             this.unitInfoService.TrackHistoryList.next({

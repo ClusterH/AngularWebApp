@@ -1,0 +1,87 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ 'ROUTEPLANNING.SETSTARTVALUES' | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="startValueForm">
+            <div class="p-field-checkbox pb-12">
+                <p-checkbox [(ngModel)]="isTimeChecked" [ngModelOptions]="{standalone: true}" binary="true"
+                    inputId="time">
+                </p-checkbox>
+                <label for="time" class="ml-8">Set Start and End Time</label>
+            </div>
+            <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
+                <mat-form-field appearance="outline" class="ev_offhourstart_input" floatLabel="always" fxFlex="48">
+                    <mat-label>From</mat-label>
+                    <input matInput [formControl]="startValueForm.controls['from']" type="time"
+                        style="text-align: center; font-size: larger;" [disableControl]="!isTimeChecked">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="48">
+                    <mat-label>To</mat-label>
+                    <input matInput [formControl]="startValueForm.controls['to']" type="time"
+                        style="text-align: center; font-size: larger;" [disableControl]="!isTimeChecked">
+                </mat-form-field>
+            </div>
+            <div class="p-field-checkbox pb-12">
+                <p-checkbox [(ngModel)]="isAddressChecked" [ngModelOptions]="{standalone: true}" binary="true"
+                    inputId="address"></p-checkbox>
+                <label for="address" class="ml-8">Set Start Address</label>
+            </div>
+            <div class="select-address-type mb-12" fxLayout="row" fxLayoutAlign="start center"
+                [hidden]="!isAddressChecked">
+                <div class="p-field-radiobutton ml-12">
+                    <p-radioButton name="address" value="Google Address" [(ngModel)]="addressType"
+                        [ngModelOptions]="{standalone: true}" inputId="type_google">
+                    </p-radioButton>
+                    <label for="type_google" class="ml-4">Address</label>
+                </div>
+                <div class="p-field-radiobutton ml-12">
+                    <p-radioButton name="address" value="POI Address" [(ngModel)]="addressType"
+                        [ngModelOptions]="{standalone: true}" inputId="type_poi">
+                    </p-radioButton>
+                    <label for="type_poi" class="ml-4">POI</label>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center"
+                [ngStyle]="{'display': addressType == 'Google Address'? 'flex': 'none'}">
+                <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="100">
+                    <mat-label>Address</mat-label>
+                    <input matInput [formControl]="startValueForm.controls['google_address']" type="text"
+                        style="text-align: start; font-size: larger;" [disableControl]="!isAddressChecked" #search
+                        autocorrect="off" autocapitalize="off" spellcheck="off">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center"
+                [ngStyle]="{'display': addressType == 'POI Address'? 'flex': 'none'}">
+                <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="100">
+                    <mat-label>POI</mat-label>
+                    <input matInput [formControl]="startValueForm.controls['poi_address']" type="text"
+                        style="text-align: start; font-size: larger;" [disableControl]="!isAddressChecked"
+                        [matAutocomplete]="auto" (keyup)="searchFromPOIList($event)">
+                </mat-form-field>
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let user of userPOIs$ | async" [value]="user.name">
+                        {{user.name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end planning">
+        <button mat-button class="mr-8" (click)="matDialogRef.close()" aria-label="Close" matTooltip="Close">
+            {{ 'ROUTEPLANNING.CLOSE' | translate }}
+        </button>
+        <button mat-button class="save-button accent" (click)="save()" aria-label="SAVE">
+            {{ 'ROUTEPLANNING.SAVE' | translate }}
+        </button>
+    </div>
+</div>

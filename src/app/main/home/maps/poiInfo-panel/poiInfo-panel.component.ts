@@ -78,7 +78,7 @@ export class POIInfoPanelComponent implements OnInit, OnDestroy {
     }
 
     editPOI(): void {
-        console.log('POI Edit');
+
         this.router.navigate(['admin/poi/pois/poi_detail/map'], { queryParams: this.currentPOI });
     }
 

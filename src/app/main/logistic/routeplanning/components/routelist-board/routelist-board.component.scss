@@ -1,0 +1,46 @@
+@import "src/@fuse/scss/fuse";
+
+#boards {
+    width: 100%;
+    height: calc(100vh - 260px);
+    padding-bottom: 52px;
+    justify-content: center;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .board-list {
+        padding: 32px 0;
+        max-height: none !important;
+
+        .board-list-item {
+            min-width: 240px;
+            min-height: 240px;
+            width: 240px;
+            height: 240px;
+            padding: 24px 0;
+            margin: 16px;
+            border-radius: 8px;
+            background: #262a34eb;
+            // background: #2196f3;
+            transition: box-shadow 150ms ease-in;
+            color: #f5f5f5;
+            cursor: pointer;
+
+            &:hover:not(.add-new-board) {
+                @include mat-elevation(8);
+            }
+
+            .board-name {
+                font-weight: 400;
+                font-size: 32px;
+                text-align: center;
+            }
+        }
+        .route-generate {
+            min-width: 360px;
+            min-height: 240px;
+            width: 360px;
+            height: 240px;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<div class="route-header mb-8" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="route-info" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="48">
+        <div class="route-info-group primary-500" fxLayout="row" fxLayoutAlign="center center">{{routeCount}} Routes
+        </div>
+        <div class="route-info-group primary-500" fxLayout="row" fxLayoutAlign="center center">{{routeDistance}} Kms
+        </div>
+        <div class="route-info-group primary-500" fxLayout="column" fxLayoutAlign="start center">
+            <span>{{routeTimeCount}} hrs</span>
+            <span>{{routeTime}}</span>
+        </div>
+        <div class="route-info-group primary-500"> </div>
+    </div>
+    <div class="route-generate-btngroup" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="30">
+        <button pButton pRipple type="button" class="p-button-raised btn-generate btn-generate-route"
+            label="Generate Routes" (click)="moveToGenerateBoard()"></button>
+        <button pButton pRipple type="button" class="p-button-raised  btn-generate btn-save-route"
+            label="Save"></button>
+        <button pButton pRipple type="button" class="p-button-raised  btn-generate btn-release-route"
+            label="Release"></button>
+    </div>
+</div>

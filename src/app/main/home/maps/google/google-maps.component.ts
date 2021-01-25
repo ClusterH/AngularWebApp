@@ -1,7 +1,6 @@
-import { AgmMap, AgmMarker, LatLngBounds, MapsAPILoader, MouseEvent } from '@agm/core';
-import { Component, OnDestroy, OnInit, ViewChild, Input, ChangeDetectionStrategy } from '@angular/core';
+import { AgmMap, LatLngBounds } from '@agm/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
@@ -11,18 +10,14 @@ import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
 import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
 import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
 import { AuthService } from 'app/authentication/services/authentication.service';
-import { RoutesService } from 'app/main/home/maps/services/routes.service';
-import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
-import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
-import { ZonesService } from 'app/main/home/maps/services/zones.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
-import { FilterPanelService } from 'app/main/home/maps/services/searchfilterpanel.service';
-
 import { navigation } from 'app/navigation/navigation';
 import * as _ from 'lodash';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+import { FilterPanelService, RoutesService, UnitInfoService, VehMarkersService, ZonesService } from '../services';
+import { LanguageModel } from '../models';
+import { UserObjectModel } from 'app/sharedModules/models';
 declare const google: any;
 
 @Component({
@@ -32,16 +27,16 @@ declare const google: any;
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDestroy {
-    selectedLanguage: any;
-    languages: any;
-    userObject: any;
+    selectedLanguage: LanguageModel;
+    languages: LanguageModel[];
+    userObject: UserObjectModel;
     horizontalNavbar: boolean;
     rightNavbar: boolean;
     hiddenNavbar: boolean;
-    navigation: any
+    navigation: any;
 
     private _unsubscribeAll: Subject<any>;
-    currentUnit: any;
+    currentUnit: any = {};
     currentOperator: any;
     currentEvents: any;
     currentPOI: any;
@@ -73,7 +68,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     showPOIs: boolean = true;
     showRoutes: boolean = true;
     showFilters: boolean = false;
-    // filterPanToggle: boolean = false;
     selectedCountry: string;
     user: any;
     map: any;
@@ -110,7 +104,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
-
         this._fuseConfigService.config = {
             layout: {
                 toolbar: {
@@ -158,9 +151,9 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
         this.activatedroute.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
             this.routerLinkType = params.get('type');
-            if (this.routerLinkType != ':type') {
+            if (this.routerLinkType != 'main') {
                 this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-                    console.log(this.routerLinkType, data);
+
                     this.currentPOI = data;
                 });
             }
@@ -169,7 +162,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     ngOnInit() {
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
-        if (this.routerLinkType != ':type') {
+        if (this.routerLinkType != 'main') {
             setTimeout(() => {
                 this.clickedMarker(this.currentPOI.id, 'poiInfoPanel');
             }, 500);
@@ -210,6 +203,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
                     this._unitInfoSidebarService.getSidebar(key).toggleOpen();
+                    console.log(this.currentOperator);
                 });
         } else if (key == 'poiInfoPanel') {
             this.unitInfoService.getPOIInfo_v1(id)
@@ -233,7 +227,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     toggleFuseSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
-
 
     clickedMarker(id: any, type: string) {
         this.toggleSidebarOpen(type, id);
@@ -272,7 +265,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         }
         else if (value == "showZones") {
             this.showZones = !this.showZones;
-
             if (this.showZones) {
                 this.zones = Object.assign([], this.tmpZones);
                 this.tmpZones.length = 0;
@@ -295,7 +287,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             }
         }
         else if (value == "showFilters") {
-            // this.showFilters = !this.showFilters;
             this.toggleSidebarOpen('filterPanel');
         }
     }
@@ -322,7 +313,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     unitLocateNow(event: any) {
-        console.log(event);
+
         if (event.isSelected) {
             this.zoom = 16;
         } else {
@@ -343,7 +334,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     showInfoUnit(infoWindow: any, gm: any) {
-        console.log(gm);
+
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
@@ -363,25 +354,21 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     };
 
     polygonCreated($event) {
-
         if (this.polygon) {
             this.polygon.setMap(null);
         }
         this.polygon = $event;
         this.addPolygonChangeEvent(this.polygon);
         google.maps.event.addListener(this.polygon, 'coordinates_changed', function (index, obj) {
-            // Polygon object: yourPolygon
 
         });
     }
 
     getPaths() {
-
         if (this.polygon) {
             const vertices = this.polygon.getPaths().getArray()[0];
             let paths = [];
             vertices.getArray().forEach(function (xy, i) {
-                //
                 let latLng = {
                     lat: xy.lat(),
                     lng: xy.lng()
@@ -397,7 +384,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         var me = polygon,
             isBeingDragged = false,
             triggerCoordinatesChanged = function () {
-                // Broadcast normalized event
                 google.maps.event.trigger(me, 'coordinates_changed');
             };
 
@@ -413,7 +399,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             triggerCoordinatesChanged();
             isBeingDragged = false;
         });
-
         // Or vertices are added to any of the possible paths, or deleted
         var paths = me.getPaths();
         paths.forEach(function (path, i) {
@@ -434,7 +419,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     showEventLocation(event: any) {
         this.eventLocation = event;
         this.isClickedEvent = true;
-
         this.lat = event[0].latitude;
         this.lng = event[0].longitude;
     }
@@ -445,30 +429,22 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     showHideTrackPolyline(event: any) {
-        // this.agmMap.fitBounds('true');
-
-
         if (event.option == 'showhide' || event.option == 'delete') {
             if (event.tracks.length == 0) {
                 this.isTrackUnitHistory = false;
-
                 this.cleanTrackLocation(event.option);
             } else {
-
                 this.isTrackUnitHistory = true;
                 this.trackHistoryPolylines = event.tracks;
             }
         } else if (event.option == 'add') {
             this.trackHistoryPolylines = [];
             this.isTrackUnitHistory = true;
-
             this.trackHistoryPolylines = event.tracks;
-
         }
     }
 
     cleanTrackLocation(option?: any) {
-
         this.isTrackUnitHistory = false;
         if (option == 'delete') {
             this.unitInfoService.TrackHistoryList.next(null);
@@ -478,12 +454,8 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this.lng = -80.2871;
         this.zoom = 12;
         const bounds: LatLngBounds = new google.maps.LatLngBounds();
-        // for (let mm of this.vehmarkers) {
         bounds.extend(new google.maps.LatLng(this.lat, this.lng));
-        // }
-
         this.map.fitBounds(bounds);
-
         let zoomChangeBoundsListener = google.maps.event.addListenerOnce(this.map, 'bounds_changed', function (event) {
             if (this.getZoom()) {
                 this.setZoom(12);
@@ -493,15 +465,12 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     centerTrackLocation(event: any) {
-
         this.isTrackUnitHistory = true;
         if (event.option == 'trackList') {
             const bounds: LatLngBounds = new google.maps.LatLngBounds();
             for (let mm of event.track.historyList) {
                 bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
             }
-
-
             this.map.fitBounds(bounds);
         } else if (event.option == 'trackItem') {
             this.lat = Number(event.track.lat);

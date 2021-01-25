@@ -31,21 +31,12 @@
                     <span>{{entered_report_params.dateto}}</span>
                     <span>{{dataSource.totalLength}}</span>
                 </div>
-
-                <!-- <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    drive_eta
-                </mat-icon> -->
-                <!-- <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    {{ 'USERS.USERS' | translate }}
-                </span> -->
             </div>
             <div fxLayout="row" fxLayoutAlign="start start">
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    picture_as_pdf
-                </mat-icon>
-                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-                    picture_as_pdf
-                </mat-icon>
+                <fa-icon [icon]="faExel" class="logo-icon mr-16" style="font-size: 48px;"
+                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" (click)="exportAsExcel()"></fa-icon>
+                <fa-icon [icon]="faPdf" class="logo-icon mr-16" style="font-size: 48px;"
+                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" (click)="exportAsPDF()"></fa-icon>
             </div>
         </div>
         <!-- CONTENT CARD -->

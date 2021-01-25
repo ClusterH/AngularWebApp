@@ -1,0 +1,81 @@
+<div id="routeplanning" class="page-layout carded fullwidth inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="planning-content center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'ROUTEPLANNING.ROUTEPLANNING' | translate }}
+                </span>
+            </div>
+        </div>
+
+        <div class="content-card" style="width: 100%;">
+            <div class="content">
+                <div class="btn-add-newJob" *ngIf="activatedTabIndex === 0">
+                    <button pButton pRipple type="button" class="p-button-raised btn-add-newjob" label="Add New Job"
+                        icon="pi pi-plus" (click)="addNewJob()"></button>
+                </div>
+                <div class="btn-import-csvfiles" *ngIf="activatedTabIndex === 0">
+                    <button pButton pRipple type="button" class="p-button-raised btn-import-csv" label="Import"
+                        icon="pi pi-external-link" (click)="openDnDDialog()"></button>
+                </div>
+                <p-dialog header="Upload CSV File" [(visible)]="isDisplayDnD" [modal]="true" [style]="{width: '40vw'}"
+                    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+                    <app-drag-drop [confirm]="isDisplayDnD"></app-drag-drop>
+                    <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-check" (click)="closeDialog(true)" label="Yes" class="p-button-text">
+                        </p-button>
+                        <p-button icon="pi pi-times" (click)="closeDialog(false)" label="No"></p-button>
+                    </ng-template>
+                </p-dialog>
+
+                <div class="routeplanning-date">
+                    <label for="planningDate">Choose a Date:&nbsp; </label>
+                    <p-calendar [(ngModel)]="defaultDate" styleClass="p-date-routeplanning" inputId="planningDate"
+                        [showIcon]="true" [readonlyInput]="true" (onSelect)="changeDate()">
+                    </p-calendar>
+                </div>
+                <mat-tab-group #tab [(selectedIndex)]="activatedTabIndex">
+                    <mat-tab label="{{ 'ROUTEPLANNING.JOBS' | translate }} ({{totalJobs}})">
+                        <div class="tab-content" fusePerfectScrollbar fxLayout="column">
+                            <div class="joblist">
+                                <routeplanning-joblist-table (totalJobsEmitter)="countTotalJobs($event)"
+                                    [selectedDate]="defaultDate">
+                                </routeplanning-joblist-table>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{ 'ROUTEPLANNING.DRIVERS' | translate }} ({{totalDrivers}})">
+                        <div class="tab-content" fusePerfectScrollbar fxLayout="column">
+                            <div class="driverlist">
+                                <routeplanning-driverlist-table (totalDriversEmitter)="countTotalDrivers($event)"
+                                    [selectedDate]="defaultDate">
+                                </routeplanning-driverlist-table>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{ 'ROUTEPLANNING.ROUTES' | translate }} ({{totalRoutes}})">
+                        <div class="tab-content p-12" fusePerfectScrollbar fxLayout="column">
+                            <app-routelist-header (moveToGenerateBoardEmitter)="checkGeneratingRoute($event)"
+                                [routeCount]="totalRoutes">
+                            </app-routelist-header>
+                            <app-routelist-board *ngIf="!isGenerateRoute" [totalJobs]="totalJobs"
+                                [totalDrivers]="totalDrivers" (boardClickEmitter)="checkGeneratingRoute($event)">
+                            </app-routelist-board>
+                            <div class="routelist" *ngIf="isGenerateRoute" fxLayout="row">
+                                <app-routelist-table (isLoadedRoutesEmitter)="isLoadedRoutes($event)" fxFlex="60"
+                                    [dataSource]="routeList" [selectedDate]="defaultDate">
+                                </app-routelist-table>
+                                <app-routelist-map fxFlex="40"></app-routelist-map>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

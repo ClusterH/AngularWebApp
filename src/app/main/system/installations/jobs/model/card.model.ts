@@ -13,6 +13,8 @@ export class Card {
     comments: any[];
     activities: any[];
     due: string;
+    customername?: string;
+    customerphonenumber?: string;
 
     /**
      * Constructor
@@ -34,5 +36,7 @@ export class Card {
         this.comments = card.comments || [];
         this.activities = card.activities || [];
         this.due = card.due || new Date();
+        this.customername = card.customername || '';
+        this.customerphonenumber = card.customerphonenumber || '';
     }
 }

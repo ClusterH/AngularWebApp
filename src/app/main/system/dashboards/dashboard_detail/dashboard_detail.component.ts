@@ -54,7 +54,7 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
             this.dashboard = data;
-            console.log(this.dashboard);
+
         });
     }
 
@@ -65,11 +65,11 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
         });
         this.setValues();
         this.dashboardDetailService.getClip_List(this.dashboard.id, 'GetDashboardClips').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             this.dashboardclips_Clist = res.TrackingXLAPI.DATA;
         });
         this.dashboardDetailService.getClip_List(this.dashboard.id, 'GetDashboardUsers').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             this.dashboardusers_Clist = res.TrackingXLAPI.DATA;
         });
         this.dashboard_detail = this.dashboardForm.value;

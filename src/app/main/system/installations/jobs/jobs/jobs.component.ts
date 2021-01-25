@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as $ from 'jquery';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -62,18 +62,6 @@ export class JobsComponent implements OnInit, OnDestroy {
         'createdby',
     ];
 
-    employees = [
-        { name: "employee1" },
-        { name: "employee2" },
-        { name: "employee3" },
-        { name: "employee4" },
-        { name: "employee5" },
-        { name: "employee6" },
-        { name: "employee7" },
-        { name: "employee8" },
-        { name: "employee9" },
-    ]
-
     installers = [];
     installersBoard: any;
 
@@ -95,8 +83,15 @@ export class JobsComponent implements OnInit, OnDestroy {
         private boardService: InstallationService,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
+        this.activatedroute.queryParams.subscribe(params => {
+            if (params.fromBoard == "true") {
+                this.isListView = false;
+            }
+        });
+
         this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).jobs;
         //Load the translations
@@ -130,15 +125,15 @@ export class JobsComponent implements OnInit, OnDestroy {
         this.dataSource = new JobsDataSource(this._adminJobsService);
         this.dataSource.loadJobs(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "installation_TList");
         this._adminJobsService.getDetailClist(0, 10000, '', 'installer_clist').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             this.installers = res.TrackingXLAPI.DATA;
         });
 
         this.boardService.onBoardsChanged
-            .pipe(takeUntil(this._unsubscribeAll)).subscribe(boards => { this.installersBoard = boards; });
-        // this._adminJobsService.getBoards().then(res => {
-        //     this.installersBoard = res;
-        // })
+            .pipe(takeUntil(this._unsubscribeAll)).subscribe(boards => {
+
+                this.installersBoard = boards;
+            });
     }
 
     ngOnDestroy(): void {
@@ -207,7 +202,14 @@ export class JobsComponent implements OnInit, OnDestroy {
         });
 
         this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            this.dataSource.jobsSubject.next(res);
+            if (res) {
+                let deleteJob = this._adminJobsService.jobList.findIndex((deletedJob: any) => deletedJob.id == job.id);
+                if (deleteJob > -1) {
+                    this._adminJobsService.jobList.splice(deleteJob, 1);
+                    this.dataSource.jobsSubject.next(this._adminJobsService.jobList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }
+            }
         });
     }
 
@@ -217,7 +219,7 @@ export class JobsComponent implements OnInit, OnDestroy {
             event.option._setSelected(true);
 
             this._adminJobsService.assignInstallerToJob(job.id, event.option.value).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                console.log(res);
+
                 if (res.TrackingXLAPI.DATA[0].cnt == 1) {
                     const changedJobIndex = this._adminJobsService.jobList.findIndex((changedJob: any) => changedJob.id == job.id);
                     const assignedInstallerInx = this.installers.findIndex(installer => installer.id == event.option.value);
@@ -245,14 +247,12 @@ export class JobsComponent implements OnInit, OnDestroy {
         }
     }
 
-    newBoard(): void {
-        const newBoard = new Board({});
-        this.boardService.createNewBoard(newBoard).then(() => {
-            this.router.navigate(['system/jobs/jobs' + this.boardService.newBoardID + '/' + 'untitled-board']);
-        });
-    }
+    currentBoard(board, type) {
 
-    currentBoard(board) {
-        this.router.navigate(['system/jobs/jobs' + board.id + '/' + board.uri])
+        if (type == 'list') {
+            this.router.navigate(['system/jobs/jobs/' + Number(board.installerid) + '/' + board.installer], { queryParams: { from: 'list' } });
+        } else if (type == 'board') {
+            this.router.navigate(['system/jobs/jobs/' + Number(board.id) + '/' + board.name], { queryParams: { from: 'board' } });
+        }
     }
 }

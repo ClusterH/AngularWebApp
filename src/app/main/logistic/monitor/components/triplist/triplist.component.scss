@@ -1,0 +1,43 @@
+.monitor-tripList {
+    position: relative;
+    overflow: hidden;
+    height: calc(100vh - 146px);
+    background-color: #fff;
+    .p-datatable-monitor {
+        font-size: small;
+        // & > .p-datatable-wrapper {
+        //     height: calc(100vh - 193px);
+        // }
+    }
+}
+
+.command_column {
+    position: relative;
+    .menu_content {
+        width: 130px;
+        // height: 230px;
+        border-radius: 4px;
+        position: absolute;
+        top: 40px;
+        left: 20px;
+        background: #fff;
+        ul {
+            list-style: none;
+            padding: 0 !important;
+            margin: 4px 14px;
+            text-align: start;
+            li {
+                padding-bottom: 0.5rem;
+                padding-top: 0.5rem;
+                font-size: 14px;
+                &.active {
+                    font-weight: bold;
+                }
+                &:hover {
+                    cursor: pointer;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

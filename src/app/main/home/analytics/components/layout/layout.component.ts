@@ -16,7 +16,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     @Input() isEditClips: any = {};
     @Input() widgets: Array<any> = [];
-    // @Input() selectedOption: any = {};
 
     @Output() editedDashboard = new EventEmitter();
     @Output() deleteWidgetId = new EventEmitter();
@@ -177,5 +176,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     resetWidgets() {
         this.widgets = this.widgetsCopy.map(widget => ({ ...widget }));
+    }
+
+    trackByFn(index) {
+        return index;
     }
 }

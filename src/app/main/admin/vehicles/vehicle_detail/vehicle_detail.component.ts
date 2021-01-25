@@ -273,7 +273,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     setValues() {
-
         this.vehicleForm.get('name').setValue(this.vehicle.name);
         this.vehicleForm.get('company').setValue(Number(this.vehicle.companyid));
         this.vehicleForm.get('group').setValue(Number(this.vehicle.groupid));
@@ -387,7 +386,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             let flag = 'goback';
             dialogConfig.disableClose = true;
             dialogConfig.data = { vehicle: "", flag: flag };
-            dialogConfig.disableClose = false;
             const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
                 if (result == 'goback') {

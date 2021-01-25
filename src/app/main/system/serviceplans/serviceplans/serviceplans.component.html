@@ -8,13 +8,11 @@
     <div class="center_table center">
 
         <!-- HEADER -->
-        <div class="header accent"
-             fxLayout="column" fxLayoutAlign="center center"
-             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
 
             <!-- APP TITLE -->
-            <div class="logo mb-24 mb-md-0"
-                 fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta
                 </mat-icon>
@@ -24,7 +22,7 @@
             </div>
             <!-- / APP TITLE -->
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
-                <form class="example-form" fxLayout="row" fxLayoutAlign="start center" >
+                <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
                     <!-- FILTER ITEM -->
                     <mat-label style="min-width: max-content;">{{'SERVICEPLANS.SELECTFIELD' | translate}}:</mat-label>
 
@@ -32,12 +30,13 @@
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'SERVICEPLANS.NAME' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.CARRIERPLAN' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.EVENTTYPES' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.DAYSINHISTORY' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.INCLUDEIGNITION' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.LOCATECOMMAND' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'SERVICEPLANS.DISTANCE' | translate}}</mat-option>
+                            <mat-option value="carrierplan">{{'SERVICEPLANS.CARRIERPLAN' | translate}}</mat-option>
+                            <mat-option value="eventtypes">{{'SERVICEPLANS.EVENTTYPES' | translate}}</mat-option>
+                            <mat-option value="daysinhistory">{{'SERVICEPLANS.DAYSINHISTORY' | translate}}</mat-option>
+                            <mat-option value="includeignition">{{'SERVICEPLANS.INCLUDEIGNITION' | translate}}
+                            </mat-option>
+                            <mat-option value="locatecommand">{{'SERVICEPLANS.LOCATECOMMAND' | translate}}</mat-option>
+                            <mat-option value="distance">{{'SERVICEPLANS.DISTANCE' | translate}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
@@ -45,19 +44,17 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'SERVICEPLANS.SEARCHFORSERVICEPLAN' | translate }}" [(ngModel)] = "filter_string" (keydown.enter) = "filterEvent()">
+                        <input #filter placeholder="{{ 'SERVICEPLANS.SEARCHFORSERVICEPLAN' | translate }}"
+                            [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <button mat-fab
-                    [routerLink]="'/system/serviceplans/serviceplan_detail'"
-                    class="accent  mt-24 mt-md-0"
-                    [disabled]="restrictValue != 3"
-                    (click)="addNewServiceplan()">
-               <mat-icon>add</mat-icon>
+            <button mat-fab [routerLink]="'/system/serviceplans/serviceplan_detail'" class="accent  mt-24 mt-md-0"
+                [disabled]="restrictValue != 3" (click)="addNewServiceplan()">
+                <mat-icon>add</mat-icon>
 
             </button>
             <!-- / ADD BUTTON -->
@@ -66,116 +63,125 @@
         <!-- / HEADER -->
 
         <!-- CONTENT CARD -->
-        <div class="content-card" style="width: 100%; overflow: auto;" >
+        <div class="content-card" style="width: 100%; overflow: auto;">
             <div class="spinner_overlay" *ngIf="dataSource.loading$ | async">
                 <div class="spinner_container">
-                    <mat-spinner
-                        color="accent" 
-                        mode="indeterminate"
-                        diameter="50"
-                        style="margin:0 auto;">
+                    <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
                     </mat-spinner>
                 </div>
             </div>
 
-            <mat-table class="serviceplans-table font-size-10"
-                        #table [dataSource]="dataSource"
-                        matSort matSortActive="id" matSortDirection="asc" matSortDisableClear
-                        [@animateStagger]="{value:'50'}"
-                        fusePerfectScrollbar style="width: 150%;">
+            <mat-table class="serviceplans-table font-size-10" #table [dataSource]="dataSource" matSort
+                matSortActive="id" matSortDirection="asc" matSortDisableClear [@animateStagger]="{value:'50'}"
+                fusePerfectScrollbar style="width: 150%;">
 
                 <!-- ID Column -->
-                <ng-container matColumnDef="id" >
+                <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                     <mat-cell *matCellDef="let serviceplan">
-                        <button (click) = "editShowServiceplanDetail(serviceplan)" [disabled]="restrictValue == '1'" style="background: none; border: none;"><mat-icon class="active-icon s-16 edit_icon" [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon></button>
-                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteServiceplan(serviceplan)">delete</mat-icon>
-                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateServiceplan(serviceplan)">file_copy</mat-icon>
+                        <button (click)="editShowServiceplanDetail(serviceplan)" [disabled]="restrictValue == '1'"
+                            style="background: none; border: none;">
+                            <mat-icon class="active-icon s-16 edit_icon"
+                                [ngClass]="{'disableEditBtn':restrictValue == '1'}" matRipple>edit</mat-icon>
+                        </button>
+                        <mat-icon class="active-icon s-16 delete_icon" (click)="deleteServiceplan(serviceplan)">delete
+                        </mat-icon>
+                        <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateServiceplan(serviceplan)">
+                            file_copy</mat-icon>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.NAME' | translate }}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.NAME' | translate }}
+                    </mat-header-cell>
                     <mat-cell *matCellDef="let serviceplan">
                         <p class="name text-truncate">{{serviceplan.name}}</p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- CarrierPlan Column -->
-                 <ng-container matColumnDef="carrierplan">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CARRIERPLAN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- CarrierPlan Column -->
+                <ng-container matColumnDef="carrierplan">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CARRIERPLAN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="carrierplan text-truncate">
                             {{serviceplan.carrierplan}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- EventTypes Column -->
-                 <ng-container matColumnDef="eventtypes">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.EVENTTYPES' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- EventTypes Column -->
+                <ng-container matColumnDef="eventtypes">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.EVENTTYPES' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="eventtypes text-truncate">
                             {{serviceplan.eventtypes}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- DaysInHistory Column -->
-                 <ng-container matColumnDef="daysinhistory">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DAYSINHISTORY' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- DaysInHistory Column -->
+                <ng-container matColumnDef="daysinhistory">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DAYSINHISTORY' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="daysinhistory text-truncate">
                             {{serviceplan.daysinhistory}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- IncludeIgnition Column -->
-                 <ng-container matColumnDef="includeignition">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.INCLUDEIGNITION' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- IncludeIgnition Column -->
+                <ng-container matColumnDef="includeignition">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.INCLUDEIGNITION' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="includeignition text-truncate">
                             {{serviceplan.includeignition}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- LocateCommand Column -->
-                 <ng-container matColumnDef="locatecommand">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LOCATECOMMAND' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- LocateCommand Column -->
+                <ng-container matColumnDef="locatecommand">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LOCATECOMMAND' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="locatecommand text-truncate">
                             {{serviceplan.locatecommand}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- Distance Column -->
-                 <ng-container matColumnDef="distance">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DISTANCE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- Distance Column -->
+                <ng-container matColumnDef="distance">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DISTANCE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="distance text-truncate">
                             {{serviceplan.distance}}
                         </p>
                     </mat-cell>
                 </ng-container>
-                
+
                 <!-- Created Column -->
                 <ng-container matColumnDef="created">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CREATED' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CREATED' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="created text-truncate">
                             {{serviceplan.created}}
                         </p>
                     </mat-cell>
                 </ng-container>
 
-                 <!-- CreatedByName Column -->
-                 <ng-container matColumnDef="createdbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CREATEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                <!-- CreatedByName Column -->
+                <ng-container matColumnDef="createdbyname">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.CREATEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="created text-truncate">
                             {{serviceplan.createdbyname}}
                         </p>
@@ -184,8 +190,9 @@
 
                 <!-- DeletedWhen Column -->
                 <ng-container matColumnDef="deletedwhen">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DELETEDWHEN' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DELETEDWHEN' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="deletedwhen text-truncate">
                             {{serviceplan.deletedwhen}}
                         </p>
@@ -194,8 +201,9 @@
 
                 <!-- Deleted Column -->
                 <ng-container matColumnDef="deletedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DELETEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.DELETEDBYNAME' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="deletedbyname text-truncate">
                             {{serviceplan.deletedbyname}}
                         </p>
@@ -204,8 +212,9 @@
 
                 <!-- LastModifiedDate Column -->
                 <ng-container matColumnDef="lastmodifieddate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LASTMODIFIEDDATE' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LASTMODIFIEDDATE' | translate }}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="lastmodifieddate text-truncate">
                             {{serviceplan.lastmodifieddate}}
                         </p>
@@ -214,8 +223,9 @@
 
                 <!-- LastModifiedbyname Column -->
                 <ng-container matColumnDef="lastmodifiedbyname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LASTMODIFIEDBYNAME' | translate }}</mat-header-cell>
-                    <mat-cell *matCellDef="let serviceplan" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'SERVICEPLANS.LASTMODIFIEDBYNAME' | translate
+                        }}</mat-header-cell>
+                    <mat-cell *matCellDef="let serviceplan">
                         <p class="lastmodifiedbyname text-truncate">
                             {{serviceplan.lastmodifiedbyname}}
                         </p>
@@ -224,9 +234,8 @@
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
-                <mat-row  *matRowDef="let serviceplan; columns: displayedColumns;"
-                            class="serviceplan font-size-10"
-                            matRipple >
+                <mat-row *matRowDef="let serviceplan; columns: displayedColumns;" class="serviceplan font-size-10"
+                    matRipple>
                 </mat-row>
 
             </mat-table>
@@ -236,24 +245,20 @@
             <div class="page_index">
                 <!-- <form> -->
                 <label>Page&nbsp;:&nbsp;&nbsp;</label>
-                <mat-form-field > 
-                    <input class="index_input"  matInput (keydown.enter) = "navigatePageEvent()" [(ngModel)] = "dataSource.page_index">
+                <mat-form-field>
+                    <input class="index_input" matInput (keydown.enter)="navigatePageEvent()"
+                        [(ngModel)]="dataSource.page_index">
                 </mat-form-field>
                 <label>&nbsp;&nbsp;of&nbsp;&nbsp;{{dataSource.total_page}}</label>
                 <!-- </form> -->
 
             </div>
-            <mat-paginator #paginator
-                            showFirstLastButtons
-                            class="table_paginator"
-                            [length]="dataSource.totalLength"
-                            [pageIndex] = "pageIndex"
-                            [pageSize]="pageSize"
-                            [pageSizeOptions]="pageSizeOptions"
-                            (page) ="pageEvent = $event">
+            <mat-paginator #paginator showFirstLastButtons class="table_paginator" [length]="dataSource.totalLength"
+                [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = $event">
             </mat-paginator>
         </div>
-           
+
         <!-- / CONTENT CARD -->
     </div>
     <!-- / CENTER -->

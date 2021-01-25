@@ -108,7 +108,6 @@ export class InstallersService {
             .set('isactive', installerDetail.isactive.toString())
             .set('deletedby', installerDetail.deletedby.toString())
             .set('deletedwhen', installerDetail.deletedwhen.toString())
-            .set('isactive', installerDetail.isactive.toString())
             .set('method', 'installer_save');
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: header_detail,

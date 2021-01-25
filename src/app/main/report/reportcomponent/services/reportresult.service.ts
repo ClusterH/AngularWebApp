@@ -19,6 +19,7 @@ export class ReportResultService {
             .set('pageindex', (pageindex + 1).toString())
             .set('pagesize', pagesize.toString());
         let report_param = JSON.parse(localStorage.getItem('report_result'));
+
         for (let param in report_param) {
             if (param == 'reportname') {
                 params = params.set('method', report_param[param].toString());

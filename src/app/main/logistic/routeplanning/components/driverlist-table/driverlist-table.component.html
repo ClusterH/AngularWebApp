@@ -1,0 +1,70 @@
+<div id="routeplanning-driverlist" *ngIf="(routePlanningDriverService.loading$ | async)"
+    style="height: calc(100vh - 234px);">
+    <p-table #dt [value]="dataSource$ | async" [(selection)]="selectedDriverList" dataKey="id"
+        styleClass="p-datatable-routecenter" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="['driver']" [autoLayout]="true" [responsive]="true" [resizableColumns]="false"
+        [totalRecords]="totalRecords" paginatorPosition="top" [scrollable]="true" scrollHeight="flex">
+        <ng-template pTemplate="header">
+            <tr style="font-size: 1.3rem;">
+                <th style="width: 7.6rem"></th>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>{{ 'ROUTEPLANNING.DRIVER' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.STARTLOCATION' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.STARTTIME' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.ENDTIME' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.LATITUDE' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.LONGITUDE' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.INCLUDE' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-driver style="overflow-y: auto;">
+            <tr style="font-size: 1.3rem;">
+                <td style="width: 7.6rem">
+                    <mat-icon class="active-icon s-16 edit_icon" (click)="editDriver(driver)">edit
+                    </mat-icon>
+                    <mat-icon class="active-icon s-16 delete_icon" (click)="deleteDriver(driver)">delete
+                    </mat-icon>
+                    <fa-icon *ngIf="driver.include" [icon]="faIncludedIcon"
+                        [ngStyle]="{'color': 'red', 'font-size': 'large' }"
+                        (click)="$event.stopPropagation(); setDriverInclude(driver)"></fa-icon>
+                    <fa-icon *ngIf="!driver.include" [icon]="faExcludedIcon"
+                        [ngStyle]="{'color': 'green',  'font-size': 'large' }"
+                        (click)="$event.stopPropagation(); setDriverInclude(driver)"></fa-icon>
+                </td>
+                <td style="width: 4rem">
+                    <p-tableCheckbox [value]="driver">
+                    </p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of displayedColumns">
+                    {{driver[col]}}
+                </td>
+                <td>{{driver.include}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">{{ 'ROUTEPLANNING.NODETAIL' | translate }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <button pButton pRipple type="button" class="p-button-raised set-start-value" label="Set Starting Values"
+        icon="pi pi-angle-double-left" [disabled]="!selectedDriverList" (click)="setStartValues()"></button>
+    <div class="table-header">
+        <div class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText class="filter_input" type="text"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+        </div>
+    </div>
+</div>
+
+<div class="spinner_overlay" *ngIf="!(routePlanningDriverService.loading$ | async)">
+    <div class="spinner_container">
+        <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+        </mat-spinner>
+    </div>
+</div>

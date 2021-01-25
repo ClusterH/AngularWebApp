@@ -55,7 +55,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
     ) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
-        console.log(this._data);
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(board => {
                 this.board = board;
-                console.log(board);
+
 
                 this.card = this.board.cards[0].find((_card) => {
 
@@ -78,13 +78,13 @@ export class ScrumboardCardDialogComponent implements OnInit, OnDestroy {
                 });
 
                 // this.dateConvert(this.card.due);
-                console.log(this.card);
+
 
                 this.list = this.board.lists.find((_list) => {
                     return this._data.listId == _list.id;
                 });
 
-                console.log(this.list);
+
 
 
 

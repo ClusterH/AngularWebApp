@@ -1,7 +1,7 @@
 <ngx-gridster [options]="gridsterOptions" [draggableOptions]="gridsterDraggableOptions" #gridster class="dashboard">
-    <ngx-gridster-item *ngFor="let widget of widgets; let indx = index" #itemComp [options]="itemOptions"
-        [dragAndDrop]="isEditClips" [resizable]="isEditClips" [(x)]="widget.x" [(y)]="widget.y" [(w)]="widget.w"
-        [(h)]="widget.h" (change)="itemChange($event, gridster)">
+    <ngx-gridster-item *ngFor="let widget of widgets; trackBy: trackByFn; let indx = index" #itemComp
+        [options]="itemOptions" [dragAndDrop]="isEditClips" [resizable]="isEditClips" [(x)]="widget.x" [(y)]="widget.y"
+        [(w)]="widget.w" [(h)]="widget.h" (change)="itemChange($event, gridster)">
         <div class="panel-heading">
             <h4 class="panel-title font-weight-500">{{ widget.clip }}</h4>
             <div class="set-size-control pr-12" *ngIf="isEditClips">
@@ -18,11 +18,8 @@
             </div>
         </div>
         <div class="panel-body">
-            <!-- <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(widget.id)"
-                [selectedOption]="selectedOption"></ng-container> -->
             <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(widget.id)">
             </ng-container>
-            <!-- <button (click)="layoutService.deleteItem(widget)">Delete Item</button> -->
         </div>
     </ngx-gridster-item>
 </ngx-gridster>

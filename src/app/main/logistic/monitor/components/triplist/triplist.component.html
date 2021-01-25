@@ -1,0 +1,56 @@
+<div class="monitor-tripList" *ngIf="(monitorService.loading$ | async)" style="width: 100%;">
+    <p-table #dt [value]="monitor$ | async" [(selection)]="selectedMonitor" dataKey="id"
+        styleClass="p-datatable-monitor" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [autoLayout]="true"
+        [responsive]="true" [resizableColumns]="false" [totalRecords]="totalRecords" paginatorPosition="top"
+        [scrollable]="true" scrollHeight="flex">
+        <ng-template pTemplate="caption">
+            <p-multiSelect [options]="tripStatus" [(ngModel)]="selectedStatus" (onChange)="filterStatus($event.value)"
+                optionLabel="name" [style]="{minWidth: '200px'}" placeholder="Filter By Status">
+            </p-multiSelect>
+            <button pButton pRipple type="button" class="p-button-raised btn-add-newjob ml-12" label="Add Trip"
+                icon="pi pi-plus" (click)="addNewTrip()"></button>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th>{{ 'MONITOR.RISK' | translate }}</th>
+                <th>{{ 'MONITOR.STATUS' | translate }}</th>
+                <th>{{ 'MONITOR.NAME' | translate }}</th>
+                <th>{{ 'MONITOR.UNIT' | translate }}</th>
+                <th>{{ 'MONITOR.OPERATOR' | translate }}</th>
+                <th>{{ 'MONITOR.ORIGIN' | translate }}</th>
+                <th>{{ 'MONITOR.DESTINATION' | translate }}</th>
+                <th>{{ 'MONITOR.ETA' | translate }}</th>
+                <th>{{ 'MONITOR.INROUTE' | translate }}</th>
+                <th>{{ 'MONITOR.ONTIME' | translate }}</th>
+                <th>{{ 'MONITOR.COMMOK' | translate }}</th>
+                <th>{{ 'MONITOR.LASTCONTACT' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-trip>
+            <tr>
+                <td style="text-align: center" class="command_column">
+                    <button type="button" class="show_commandBtn" pButton pRipple icon="pi pi-cog" label=""
+                        (click)="showCommandMenu(trip.id)"></button>
+                    <!-- <p-menu #menu [popup]="true" [model]="commands" appendTo="body">
+                                    </p-menu> -->
+                    <div class="menu_content mat-elevation-z2" *ngIf="trip.isShowCommand === true">
+                        <ul>
+                            <li class="menuitem" (click)="startTrip()">Start Trip</li>
+                            <li class="menuitem" (click)="finishTrip()">Finish Trip</li>
+                            <li class="menuitem" (click)="cancelTrip()">Cancel Trip</li>
+                            <li class="menuitem" (click)="reportContact(trip.id)">Report Contact</li>
+                            <li class="menuitem" (click)="showInMap()">Show In Map</li>
+                            <li class="menuitem" (click)="showHistory()">Show History</li>
+                        </ul>
+                    </div>
+                </td>
+                <td *ngFor="let col of displayedColumns">
+                    {{trip[col]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

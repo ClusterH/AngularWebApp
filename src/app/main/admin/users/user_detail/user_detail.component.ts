@@ -43,6 +43,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     dataSourceTempUnit: UserDetailDataSource;
     dataSourceLanguage: UserDetailDataSource;
 
+    startpageList: any;
+    currentUserStartpage: any;
+
     filter_string: string = '';
     method_string: string = '';
     private _unsubscribeAll: Subject<any>;
@@ -76,7 +79,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(usersEnglish, usersSpanish, usersFrench, usersPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
             this.user = data;
         });
 
@@ -128,10 +130,16 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             lastmodifieddate: [{ value: '', disabled: true }],
             lastmodifiedbyname: [{ value: '', disabled: true }],
             language: [null, Validators.required],
+            startpage: [null, Validators.required],
             filterstring: [null],
         });
-        this.setValues();
-        this.user_detail = this.userForm.value;
+
+        this.userDetailService.getSystemPageClist().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            this.startpageList = res.TrackingXLAPI.DATA;
+            this.setValues();
+            this.user_detail = this.userForm.value;
+        });
+
     }
 
     ngAfterViewInit() {
@@ -254,6 +262,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.userForm.get('tempunit').setValue(Number(this.user.tempunitid));
         this.userForm.get('language').setValue(Number(this.user.languageid));
         this.userForm.get('timezone').setValue(Number(this.user.timezoneid));
+        this.userForm.get('startpage').setValue(Number(this.user.startpageid));
         let created = this.user.created ? new Date(`${this.user.created}`) : '';
         let deletedwhen = this.user.deletedwhen ? new Date(`${this.user.deletedwhen}`) : '';
         let lastmodifieddate = this.user.lastmodifieddate ? new Date(`${this.user.lastmodifieddate}`) : '';
@@ -279,6 +288,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.userDetail.companyid = this.userForm.get('company').value || 0;
         this.userDetail.groupid = this.userForm.get('group').value || 0;
         this.userDetail.languageid = this.userForm.get('language').value || 0;
+        this.userDetail.startpageid = this.userForm.get('startpage').value || 0;
         this.userDetail.userprofileid = this.user.userprofileid || 0;
         this.userDetail.subgroup = this.user.subgroup || 0;
         this.userDetail.isactive = this.user.isactive || true;
@@ -370,5 +380,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     onCompanyChange(event: any) {
         let current_companyID = this.userForm.get('company').value;
         this.dataSourceGroup.loadGroupDetail(0, 10, "", current_companyID, "group_clist");
+    }
+
+    trackByFn(index) {
+        return index;
     }
 }

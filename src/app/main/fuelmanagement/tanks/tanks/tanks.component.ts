@@ -110,4 +110,8 @@ export class TanksComponent implements OnInit, OnDestroy {
     tankDetailEdit(tank: any) {
         this.router.navigate(['fuelmanagement/tanks/tank_detail_edit'], { queryParams: tank });
     }
+
+    trackByFn(index) {
+        return index;
+    }
 }

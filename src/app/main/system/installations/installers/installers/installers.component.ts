@@ -1,27 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { merge, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap, map, takeUntil } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { InstallersService } from 'app/main/system/installations/installers/services/installers.service';
-import { InstallersDataSource } from "app/main/system/installations/installers/services/installers.datasource";
-
-import { InstallerDialogComponent } from "../dialog/dialog.component";
-import { DeleteDialogComponent } from "../deletedialog/deletedialog.component";
-
 import { locale as installersEnglish } from 'app/main/system/installations/installers/i18n/en';
-import { locale as installersSpanish } from 'app/main/system/installations/installers/i18n/sp';
 import { locale as installersFrench } from 'app/main/system/installations/installers/i18n/fr';
 import { locale as installersPortuguese } from 'app/main/system/installations/installers/i18n/pt';
+import { locale as installersSpanish } from 'app/main/system/installations/installers/i18n/sp';
+import { InstallersDataSource } from "app/main/system/installations/installers/services/installers.datasource";
+import { InstallersService } from 'app/main/system/installations/installers/services/installers.service';
+import * as $ from 'jquery';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { DeleteDialogComponent } from "../deletedialog/deletedialog.component";
+import { InstallerDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'system-installers',
@@ -45,7 +40,6 @@ export class InstallersComponent implements OnInit {
     currentInstaller: any;
 
     installer: any;
-
     restrictValue: any;
 
     flag: string = '';
@@ -99,8 +93,6 @@ export class InstallersComponent implements OnInit {
         this.dataSource.loadInstallers(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "installer_TList");
     }
 
-    onRowClicked(installer) { }
-
     selectedFilter() {
         if (this.selected == '') {
             alert("Please choose Field for filter!");
@@ -138,7 +130,6 @@ export class InstallersComponent implements OnInit {
     }
 
     editShowInstallerDetail(installer: any) {
-
         this.dialogRef = this._matDialog.open(InstallerDialogComponent, {
             panelClass: 'installer-dialog',
             disableClose: true,
@@ -167,27 +158,4 @@ export class InstallersComponent implements OnInit {
             this.dataSource.installersSubject.next(res);
         });
     }
-
-    // duplicateInstaller(installer): void
-    // {
-    //     const dialogConfig = new MatDialogConfig();
-    //     this.flag = 'duplicate';
-
-    //     dialogConfig.disableClose = true;
-
-    //     dialogConfig.data = {
-    //         installer, flag: this.flag
-    //     };
-
-    //     const dialogRef = this._matDialog.open(InstallerDialogComponent, dialogConfig);
-
-    //     dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-    //         if ( result )
-    //         {
-    //
-    //         } else {
-    //
-    //         }
-    //     });
-    // }
 }

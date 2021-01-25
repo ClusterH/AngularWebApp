@@ -1,5 +1,4 @@
-export interface ReportDetail
-{
+export interface ReportDetail {
     reportname?: string;
     runondate?: string;
     companyid?: string;
@@ -20,4 +19,5 @@ export interface ReportDetail
     mintemp?: number;
     maxtime?: number;
     mintime?: number;
+    selectedscreen?: string;
 }

@@ -1,0 +1,34 @@
+<div id="monitor" class="page-layout carded fullwidth inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="center_table center">
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    drive_eta
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'MONITOR.MONITOR' | translate }}
+                </span>
+            </div>
+        </div>
+        <div class="spinner_overlay" *ngIf="!(monitorService.loading$ | async)">
+            <div class="spinner_container">
+                <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+                </mat-spinner>
+            </div>
+        </div>
+        <as-split class="split-example ex-percent" unit="percent" (dragEnd)="dragEnd($event)">
+            <as-split-area size="50">
+                <div style="height: calc(100vh - 144px);">
+                    <app-triplist></app-triplist>
+                </div>
+            </as-split-area>
+            <as-split-area size="50">
+                <div style="height: 100%;">
+                    <app-monitormap></app-monitormap>
+                </div>
+            </as-split-area>
+        </as-split>
+    </div>
+</div>

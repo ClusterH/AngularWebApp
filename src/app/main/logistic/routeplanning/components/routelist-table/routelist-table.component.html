@@ -1,0 +1,95 @@
+<div id="routeplanning-routelist" *ngIf="(routePlanningRouteService.loading$ | async)"
+    style="height: calc(100vh - 290px);">
+    <p-table #dt [value]="dataSource" [(selection)]="selectedRouteList" dataKey="id"
+        styleClass="p-datatable-routeplanning" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [autoLayout]="true" [responsive]="true" [resizableColumns]="true" [totalRecords]="totalRecords"
+        paginatorPosition="top" [scrollable]="true" scrollHeight="flex">
+        <ng-template pTemplate="header">
+            <tr style="font-size: 1.3rem;">
+                <th style="width: 11rem"></th>
+                <th style="width: 4rem"></th>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox (click)="isCheckRoute()"></p-tableHeaderCheckbox>
+                </th>
+                <th>{{ 'ROUTEPLANNING.UNIT' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.DRIVER' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.ROUTE' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.FROMTO' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.START' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.DELAY' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-routes let-expanded="expanded">
+            <tr style="font-size: 1.3rem;">
+                <td style="width: 11rem">
+                    <mat-icon class="active-icon s-16 edit_icon" (click)="editRoute(routes)">edit
+                    </mat-icon>
+                    <mat-icon class="active-icon s-16 delete_icon" (click)="deleteRoute(routes)">delete
+                    </mat-icon>
+                    <mat-icon class="active-icon s-16 copy_icon" (click)="duplicateRoute(routes)">file_copy
+                    </mat-icon>
+                </td>
+                <td style="width: 4rem">
+                    <button type="button" pButton pRipple [pRowToggler]="routes"
+                        class="p-button-text p-button-rounded p-button-plain"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+
+                <td style="width: 4rem">
+                    <p-tableCheckbox [value]="routes" (click)="isCheckRoute()">
+                    </p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of displayedColumns">
+                    {{routes[col]}}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-route>
+            <tr>
+                <td colspan="10">
+                    <div class="p-p-3">
+                        <p-table [value]="route.stops" dataKey="id" [autoLayout]="true" [rows]="20"
+                            [showCurrentPageReport]="true" styleClass="p-datatable-detail"
+                            [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true" [responsive]="true"
+                            [resizableColumns]="true"
+                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                            [scrollable]="true" scrollHeight="200px">
+                            <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem"></th>
+                <th>{{ 'ROUTEPLANNING.STOPCLIENT' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.TIME' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.ARRIVED' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.LEAVE' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.DURATION' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.ETA' | translate }}</th>
+                <th>{{ 'ROUTEPLANNING.DELAYDETAIL' | translate }}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-detail>
+            <tr>
+                <td style="width: 4rem"><img src="assets/icons/map_unitClist/locate_now.png"
+                        (click)="centerMapToStop(detail);$event.stopPropagation()"></td>
+                <td *ngFor="let col of displayedColumnsDetail">{{detail[col]}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">{{ 'ROUTEPLANNING.NODETAIL' | translate }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+</div>
+<div class="spinner_overlay" *ngIf="!(routePlanningRouteService.loading$ | async)">
+    <div class="spinner_container">
+        <mat-spinner color="accent" mode="indeterminate" diameter="50" style="margin:0 auto;">
+        </mat-spinner>
+    </div>
+</div>

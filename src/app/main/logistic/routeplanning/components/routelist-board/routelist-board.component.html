@@ -1,0 +1,23 @@
+<div id="boards" class="" fusePerfectScrollbar>
+    <div class="board-list" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="center center"
+        [@animateStagger]="{value:'50'}">
+        <div class="board-list-item" fxLayout="column" fxLayoutAlign="center center"
+            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onClick('jobs')">
+            <div class="board-name">{{totalJobs}}</div>
+            <div class="board-name">JOBS</div>
+            <fa-icon [icon]="faTools" style="font-size: 60px;"></fa-icon>
+        </div>
+        <div class="board-list-item" fxLayout="column" fxLayoutAlign="center center"
+            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onClick('drivers')">
+            <div class="board-name">{{totalDrivers}}</div>
+            <div class="board-name">DRIVERS</div>
+            <fa-icon [icon]="faDrivers" style="font-size: 60px;"></fa-icon>
+        </div>
+        <div class="board-list-item route-generate" fxLayout="column" fxLayoutAlign="center center"
+            [@animate]="{value:'*',params:{y:'100%'}}" (click)="onClick('generate')">
+            <div class="board-name"> </div>
+            <div class="board-name mt-48">GENERATE ></div>
+            <fa-icon [icon]="faCogs" style="font-size: 60px;"></fa-icon>
+        </div>
+    </div>
+</div>

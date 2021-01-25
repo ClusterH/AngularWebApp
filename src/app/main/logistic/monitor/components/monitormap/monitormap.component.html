@@ -1,0 +1,96 @@
+<div class="map-content">
+    <agm-map class="routeMap" #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+        [zoomControl]="false" (mapReady)="onMapReady($event)">
+        <ng-container>
+            <!-- <agm-polyline *ngFor="let rte of selectedMonitor; let i=index" [strokeColor]="rte.strokeColor">
+                <agm-marker #startmarker [latitude]="rte.stop_start[0].latitude"
+                    [longitude]="rte.stop_start[0].longitude" [visible]="true"
+                    [iconUrl]="rte.stop_start[0].arrived? unit_icon_start_green : unit_icon_start_red"
+                    [agmFitBounds]="isRoute">
+                    <agm-info-window #startInfoWindow>
+                        <table class="route_infowindow">
+                            <tr>
+                                <td class="label">Vehicle</td>
+                                <td class="value">{{rte.unit}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Driver</td>
+                                <td class="value">{{rte.driver}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">SchedTime</td>
+                                <td class="value">{{rte.stop_start[0].time}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Arrived</td>
+                                <td class="value">{{rte.stop_start[0].arrived}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Duration</td>
+                                <td class="value">{{rte.stop_start[0].duration}}</td>
+                            </tr>
+                        </table>
+                    </agm-info-window>
+                </agm-marker>
+                <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy" [latitude]="m.latitude"
+                    [longitude]="m.longitude" [visible]="true"
+                    [iconUrl]="m.arrived? unit_icon_arrived : unit_icon_unarrived" [agmFitBounds]="isRoute">
+                    <agm-info-window>
+                        <table class="route_infowindow">
+                            <tr>
+                                <td class="label">Vehicle</td>
+                                <td class="value">{{rte.unit}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Driver</td>
+                                <td class="value">{{rte.driver}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">SchedTime</td>
+                                <td class="value">{{m.time}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Arrived</td>
+                                <td class="value">{{m.arrived}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Duration</td>
+                                <td class="value">{{m.duration}}</td>
+                            </tr>
+                        </table>
+                    </agm-info-window>
+                </agm-marker>
+                <agm-marker #endmarker [latitude]="rte.stop_end[0].latitude" [longitude]="rte.stop_end[0].longitude"
+                    [visible]="true" [iconUrl]="rte.stop_end[0].arrived? unit_icon_end_green : unit_icon_end_red"
+                    [agmFitBounds]="isRoute">
+                    <agm-info-window>
+                        <table class="route_infowindow">
+                            <tr>
+                                <td class="label">Vehicle</td>
+                                <td class="value">{{rte.unit}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Driver</td>
+                                <td class="value">{{rte.driver}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">SchedTime</td>
+                                <td class="value">{{rte.stop_end[0].time}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Arrived</td>
+                                <td class="value">{{rte.stop_end[0].arrived}}</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Duration</td>
+                                <td class="value">{{rte.stop_end[0].duration}}</td>
+                            </tr>
+                        </table>
+                    </agm-info-window>
+                </agm-marker>
+                <agm-polyline-point *ngFor="let pnt of rte.stops" [latitude]="pnt.latitude" [longitude]="pnt.longitude">
+                </agm-polyline-point>
+            </agm-polyline> -->
+        </ng-container>
+    </agm-map>
+</div>

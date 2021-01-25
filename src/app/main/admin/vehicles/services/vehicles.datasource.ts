@@ -26,7 +26,6 @@ export class VehiclesDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll)
             ).subscribe((result: any) => {
-
                 this._adminVehiclesService.vehicleList = result.TrackingXLAPI.DATA;
                 this.vehiclesSubject.next(this._adminVehiclesService.vehicleList);
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;

@@ -53,13 +53,8 @@ export class InstallerDialogComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(installersEnglish, installersSpanish, installersFrench, installersPortuguese);
         this.flag = _data.flag;
-
         if (this.flag == 'edit') {
             this.installer = _data.installerDetail;
-
-
-        } else {
-
         }
         this.filter_string = '';
     }
@@ -236,6 +231,7 @@ export class InstallerDialogComponent implements OnInit {
             alert('Please enter Service Name')
         } else {
             if (this.flagForSaving) {
+
                 this.installersService.saveInstaller(this.installerDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                     if ((res.responseCode == 200) || (res.responseCode == 100)) {
                         alert("Success!");
@@ -253,12 +249,16 @@ export class InstallerDialogComponent implements OnInit {
     getNewvalue() {
         this.installerDetail.id = '0';
         this.installerDetail.name = this.installerForm.get('name').value;
-        this.installerDetail.name = this.installerForm.get('username').value;
-        this.installerDetail.name = this.installerForm.get('password').value;
-        this.installerDetail.name = this.installerForm.get('email').value;
-        this.installerDetail.name = this.installerForm.get('cellphone').value;
+        this.installerDetail.username = this.installerForm.get('username').value;
+        this.installerDetail.password = this.installerForm.get('password').value;
+        this.installerDetail.email = this.installerForm.get('email').value;
+        this.installerDetail.cellphone = this.installerForm.get('cellphone').value;
         this.installerDetail.installcontractorid = this.installerForm.get('installcontractor').value;
         this.installerDetail.carrierid = this.installerForm.get('carrier').value;
+
+        this.installerDetail.isactive = 'true';
+        this.installerDetail.deletedby = '';
+        this.installerDetail.deletedwhen = '';
 
         let clist = this.installersService.unit_clist_item['installcontractor_clist'];
         for (let i = 0; i < clist.length; i++) {

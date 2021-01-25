@@ -21,6 +21,9 @@
         "paths": {
             "@fuse": [
                 "@fuse/"
+            ],
+            "exceljs" :  [
+                "node_modules/exceljs/dist/exceljs.min"
             ]
         }
     },

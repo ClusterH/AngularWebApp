@@ -33,11 +33,12 @@ export class InstallationBoardCardComponent implements OnInit {
      */
     ngOnInit(): void {
         this.board = this._activatedRoute.snapshot.data.board;
+
         this.card = this.board.cards[0].filter((card) => {
             return this.cardId === card.id;
         })[0];
 
-        console.log(this.card);
+
     }
 
     dateFormat(date: any) {

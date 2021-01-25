@@ -5,8 +5,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
-export class InstallationService implements Resolve<any>
-{
+export class InstallationService implements Resolve<any> {
     boards: any[];
     routeParams: any;
     board: any;
@@ -92,7 +91,7 @@ export class InstallationService implements Resolve<any>
             let headers = new HttpHeaders();
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
-                .set('method', "GetBoards");
+                .set('method', "GetInstallationBoards");
             this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
                 headers: headers,
                 params: params
@@ -112,6 +111,19 @@ export class InstallationService implements Resolve<any>
         });
     }
 
+    getInstallationDetail(id: string): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('id', id)
+            .set('method', 'installation_Detail');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+
     /**
      * Add card
      *
@@ -123,128 +135,21 @@ export class InstallationService implements Resolve<any>
         return new Promise((resolve, reject) => {
             this.board.lists.map((list) => {
                 if (list.id === listId) {
-                    let id = 0;
-
-                    let headers = new HttpHeaders();
-                    headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-                    let params = new HttpParams()
-                        .set('id', id.toString())
-                        .set('name', newCard.name)
-                        .set('description', newCard.description)
-                        .set('idattachmentcover', newCard.idattachmentcover)
-                        .set('subscribed', newCard.subscribed.toString())
-                        .set('checkitems', newCard.checkitems.toString())
-                        .set('checkitemschecked', newCard.checkitemschecked.toString())
-                        .set('due', newCard.due.toString())
-                        .set('listid', listId.toString())
-                        .set('boardid', boardId.toString())
-                        .set('method', "boardcard_save");
-                    this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                        headers: headers,
-                        params: params
-                    })
-                        .subscribe((response: any) => {
-                            this.newCardID = response.TrackingXLAPI.DATA[0].id;
-                            newCard.id = this.newCardID;
-                            list.idcards.push(this.newCardID);
-                            if (this.board.cards.length == 0) {
-                                let card_array = [];
-                                card_array.push(newCard);
-                                this.board.cards.push(card_array);
-                            } else {
-                                this.board.cards[0].push(newCard);
-                            }
-                            this.onBoardChanged.next(this.board);
-                            resolve(this.board);
-                        }, reject);
+                    newCard.name = newCard.customername + ':' + newCard.customerphonenumber;
+                    newCard.idmembers = [1];
+                    list.idcards.push(newCard.id);
+                    if (this.board.cards.length == 0) {
+                        let card_array = [];
+                        card_array.push(newCard);
+                        this.board.cards.push(card_array);
+                    } else {
+                        this.board.cards[0].push(newCard);
+                    }
+                    this.onBoardChanged.next(this.board);
+                    resolve(this.board);
                 }
             });
         });
-    }
-
-    /**
-     * Add list
-     *
-     * @param newList
-     * @returns {Promise<any>}
-     */
-    addList(newList, boardid): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let id = 0;
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
-                .set('id', id.toString())
-                .set('name', newList.name)
-                .set('boardid', boardid.toString())
-                .set('method', "boardlist_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: headers,
-                params: params
-            })
-                .subscribe((response: any) => {
-                    newList.id = response.TrackingXLAPI.DATA[0].id;
-                    this.board.lists.push(newList);
-                    this.onBoardChanged.next(this.board);
-                    resolve(this.board);
-                }, reject);
-        });
-    }
-
-    updateList(list, boardid): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
-                .set('id', list.id.toString())
-                .set('name', list.name)
-                .set('boardid', boardid.toString())
-                .set('method', "boardlist_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: headers,
-                params: params
-            })
-                .subscribe((response: any) => {
-                    // this.board.lists.push(list);
-                    this.onBoardChanged.next(this.board);
-                    resolve(this.board);
-                }, reject);
-        });
-    }
-
-    /**
-     * Remove list
-     *
-     * @param listId
-     * @returns {Promise<any>}
-     */
-    removeList(listId): Promise<any> {
-        const list = this.board.lists.find((_list) => {
-            return _list.id === listId;
-        });
-
-        for (const cardId of list.idcards) {
-            this.removeCard(cardId);
-        }
-
-        const index = this.board.lists.indexOf(list);
-        this.board.lists.splice(index, 1);
-        let company_id = 115;
-        // let userid = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA.id;
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
-            .set('id', listId.toString())
-            .set('method', "boardlist_delete");
-        this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-            headers: headers,
-            params: params
-        })
-            .subscribe((response: any) => {
-                // resolve(this.board);
-            });
-
-        return this.updateBoard(this.board);
     }
 
     /**
@@ -284,7 +189,6 @@ export class InstallationService implements Resolve<any>
      * @param newCard
      */
     updateCard(card, listId, boardId): Promise<any> {
-
         this.board.cards.map((_card) => {
             if (_card.id === card.id) {
                 return card;
@@ -330,29 +234,6 @@ export class InstallationService implements Resolve<any>
      * @param board
      * @returns {Promise<any>}
      */
-    createNewBoard(board): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let id = 0;
-            let company_id = 115;
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
-                .set('id', id.toString())
-                .set('name', "UndefinedName")
-                .set('uri', "untitled-board")
-                .set('companyid', company_id.toString())
-                .set('method', "board_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: headers,
-                params: params
-            }).subscribe((response: any) => {
-                this.newBoardID = Number(response.TrackingXLAPI.DATA[0].id);
-                board.id = this.newBoardID;
-                this.board = board;
-                resolve(this.board);
-            }, reject);
-        });
-    }
 
     updateBoard(board: any): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -392,37 +273,13 @@ export class InstallationService implements Resolve<any>
         });
     }
 
-    saveBoardSetting(color, subscribed, cardcoverimages): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
-                .set('boardid', this.board.id.toString())
-                .set('color', color.toString())
-                .set('subscribed', subscribed.toString())
-                .set('cardcoverimages', cardcoverimages.toString())
-                .set('method', "board_settings_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
-                headers: headers,
-                params: params
-            })
-                .subscribe((response: any) => {
-
-                    this.board.settings.color = color;
-                    this.board.settings.subscribed = subscribed;
-                    this.board.settings.cardcoverimages = cardcoverimages;
-                    resolve(this.board);
-                }, reject);
-        });
-    }
-
     cardMove(cardId, listId): void {
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
-            .set('cardid', cardId)
-            .set('listid', listId)
-            .set('method', "boardcard_move");
+            .set('installationid', cardId)
+            .set('statusid', listId)
+            .set('method', "UpdateInstallationStatus");
 
         this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
@@ -657,7 +514,7 @@ export class InstallationService implements Resolve<any>
 }
 
 @Injectable()
-export class BoardResolve implements Resolve<any>
+export class InstallationBoardResolve implements Resolve<any>
 {
     /**
      * Constructor

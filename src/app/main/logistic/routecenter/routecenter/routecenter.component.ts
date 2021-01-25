@@ -39,7 +39,6 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     defaultDate: Date;
     selected = '';
     filter_string: string = '';
-    index_number: number = 1;
     currentUser: any;
     restrictValue: any;
     displayedColumns = ['unit', 'driver', 'route', 'start', 'fromto', 'progress', 'delay'];
@@ -74,7 +73,6 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
         url: 'assets/icons/googlemap/red-marker.png',
         scaledSize: { width: 10, height: 10 },
     }
-
     unit_icon_unauth = {
         url: 'assets/icons/googlemap/green-marker.png',
         scaledSize: { width: 100, height: 100 },
@@ -176,7 +174,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
                 return route;
             });
 
-            console.log(this.dataSource);
+
             if (this.dataSource) {
                 this.totalRecords = this.dataSource.length;
                 setTimeout(() => {
@@ -188,7 +186,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     }
 
     getUnPlannedStops(unitid: number, color: string, date?: string): Promise<any> {
-        console.log(color);
+
         return new Promise((resolve) => {
             const vehTrack = this.routecenterService.getUnPlannedStops(unitid, date, 'GetUnitHistory');
             const unAuth = this.routecenterService.getUnPlannedStops(unitid, date, 'GetUnauthorizedStops');
@@ -231,7 +229,7 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     }
 
     onDateSelect(value) {
-        console.log(value, this.formatDate(value));
+
         this.isRoute = false;
         this.getRoute();
     }

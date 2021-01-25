@@ -15,6 +15,7 @@ export class ReportResultDataSource extends DataSource<any> {
     displayedColumns = [];
     currentCompanyName: string = '';
     currentGroupName: string = '';
+    reportResult: any;
 
     constructor(private reportResultService: ReportResultService) {
         super();
@@ -30,6 +31,7 @@ export class ReportResultDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)), takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 if (result.responseCode == 100) {
+                    this.reportResult = result.TrackingXLAPI.DATA;
                     for (let column in result.TrackingXLAPI.DATA[0]) {
                         if (column == 'companyid') {
                             this.currentCompanyName = JSON.parse(localStorage.getItem('report_result')).companyname;
@@ -43,7 +45,7 @@ export class ReportResultDataSource extends DataSource<any> {
                     this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
                     this.page_index = pageindex + 1;
                     this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
-                } else if ((result.responseCode == 200) || (result.responseCode == 100)) {
+                } else if ((result.responseCode == 200)) {
                     this.totalLength = 0;
                 }
             });

@@ -27,7 +27,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseMaterialColorPickerModule } from '@fuse/components';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
@@ -39,6 +41,9 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GridsterModule } from 'angular-gridster2';
+
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MenuModule } from 'primeng/menu';
 import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 @NgModule({
@@ -74,6 +79,10 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
+        MatAutocompleteModule,
+        NgxMatNativeDateModule,
+        NgxMatDatetimePickerModule,
+        NgxMatTimepickerModule,
         FontAwesomeModule,
         UiSwitchModule,
         NgxMatSelectSearchModule,
@@ -83,6 +92,8 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         NgSelectModule,
         BlockUIModule,
         GridsterModule,
+        MultiSelectModule,
+        MenuModule,
         FuseProgressBarModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,

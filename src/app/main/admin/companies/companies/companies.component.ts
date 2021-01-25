@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,13 +10,13 @@ import { locale as companiesEnglish } from 'app/main/admin/companies/i18n/en';
 import { locale as companiesFrench } from 'app/main/admin/companies/i18n/fr';
 import { locale as companiesPortuguese } from 'app/main/admin/companies/i18n/pt';
 import { locale as companiesSpanish } from 'app/main/admin/companies/i18n/sp';
-import { CompaniesDataSource } from "app/main/admin/companies/services/companies.datasource";
+import { CompaniesDataSource } from 'app/main/admin/companies/services/companies.datasource';
 import { CompaniesService } from 'app/main/admin/companies/services/companies.service';
 import { CompanyDetailService } from 'app/main/admin/companies/services/company_detail.service';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
-import { CourseDialogComponent } from "../dialog/dialog.component";
+import { CourseDialogComponent } from '../dialog/dialog.component';
 
 @Component({
     selector: 'admin-companies',
@@ -25,14 +25,14 @@ import { CourseDialogComponent } from "../dialog/dialog.component";
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None
 })
-export class CompaniesComponent implements OnInit {
+export class CompaniesComponent implements OnInit, OnDestroy {
     dataSource: CompaniesDataSource;
     @Output() pageEvent: PageEvent;
     pageIndex = 0;
     pageSize = 25;
     pageSizeOptions: number[] = [5, 10, 25, 100];
     selected = '';
-    filter_string: string = '';
+    filter_string = '';
     index_number: number = 1;
     company: any;
     restrictValue: any;
@@ -71,7 +71,7 @@ export class CompaniesComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        var node = $("div.page_index");
+        const node = $('div.page_index');
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node);
         this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);

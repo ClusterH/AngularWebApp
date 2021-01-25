@@ -1,17 +1,8 @@
 <div class="list mat-elevation-z1" fxLayout="column">
     <!-- LIST HEADER -->
     <div class="list-header" fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-        <installation-board-edit-list-name fxFlex="1 0 auto" [list]="list"
-            (listNameChanged)="onListNameChanged($event)">
+        <installation-board-edit-list-name fxFlex="1 0 auto" [list]="list">
         </installation-board-edit-list-name>
-        <div fxFlex="0 1 auto">
-            <button mat-icon-button class="list-header-option-button" [matMenuTriggerFor]="listMenu">
-                <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #listMenu="matMenu">
-                <button mat-menu-item (click)="removeList(list.id)">{{ 'BOARD.REMOVELIST' | translate }}</button>
-            </mat-menu>
-        </div>
     </div>
     <!-- / LIST HEADER -->
     <!-- LIST CONTENT -->
@@ -27,7 +18,8 @@
     <!-- / LIST CONTENT -->
     <!-- NEW CARD BUTTON-->
     <div class="list-footer">
-        <installation-board-add-card (cardAdded)="onCardAdd($event)"></installation-board-add-card>
+        <installation-board-add-card (cardAdded)="onCardAdd($event)" [installerName]="{name: board.name, id: board.id}">
+        </installation-board-add-card>
     </div>
     <!-- / NEW CARD BUTTON-->
 </div>

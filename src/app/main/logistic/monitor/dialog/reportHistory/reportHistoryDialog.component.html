@@ -1,0 +1,109 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ 'MONITOR.CONTACTREPORT' | translate }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-28 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="reportContactForm">
+            <div class="" fusePerfectScrollbar fxLayout="column">
+                <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="h2"><span class="mr-24">Date:</span>{{reportDate | date: "mediumDate"}}</label>
+                    <label class="h2"><span class="mr-24">Time:</span>{{reportDate | date: "shortTime"}}</label>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="h3" fxFlex="20">{{ 'MONITOR.TYPE' | translate }}</label>
+                    <mat-form-field fxFlex="78" appearance="outline">
+                        <mat-select class="ev_zone_select" [(value)]="reportType">
+                            <mat-option class="monitor_report_type" value="phone_call">Phone Call</mat-option>
+                            <mat-option class="monitor_report_type" value="text_message">Text Message</mat-option>
+                            <mat-option class="monitor_report_type" value="whats_app">Whats App</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="h3" fxFlex="20">{{ 'MONITOR.UNIT' | translate }}</label>
+                    <mat-form-field fxFlex="78" class="select_list" appearance="outline">
+                        <mat-select (click)="showCompanyList('unit_clist')" formControlName="unit">
+                            <div class="filter_input">
+                                <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                    (keyup)="onKey($event)">
+                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                            </div>
+                            <div style="width: 100%; overflow: auto;">
+                                <mat-table [dataSource]="dataSourceUnit"
+                                    class="unit-table font-size-10 mat-elevation-z8">
+                                    <ng-container matColumnDef="name">
+                                        <td mat-cell *matCellDef="let unit;" style="border: 0px;">
+                                            <mat-option [value]="unit.id">{{unit.name}}</mat-option>
+                                        </td>
+                                    </ng-container>
+                                    <tr class="unit_list" style="height: 15px;" mat-row
+                                        *matRowDef="let row; columns: displayedColumns;">
+                                    </tr>
+                                </mat-table>
+                            </div>
+                            <mat-paginator style=" height: 40px;" #paginatorUnit class="table_paginator_detail"
+                                [length]="dataSourceUnit.totalLength" [pageSize]="10" [hidePageSize]="true"
+                                showFirstLastButtons sticky="true" (click)="unitPagenation(paginatorUnit)">
+                            </mat-paginator>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="h3">{{ 'MONITOR.OPERATOR' | translate }}</label>
+                    <mat-form-field fxFlex="78" class="select_list" appearance="outline">
+                        <mat-select (click)="showCompanyList('operator_clist')" formControlName="operator">
+                            <div class="filter_input">
+                                <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                    (keyup)="onKey($event)">
+                                <mat-icon (click)="clearFilter()">clear</mat-icon>
+                            </div>
+                            <div style="width: 100%; overflow: auto;">
+                                <mat-table [dataSource]="dataSourceOperator"
+                                    class="unit-table font-size-10 mat-elevation-z8">
+                                    <ng-container matColumnDef="name">
+                                        <td mat-cell *matCellDef="let operator;" style="border: 0px;">
+                                            <mat-option [value]="operator.id">{{operator.name}}</mat-option>
+                                        </td>
+                                    </ng-container>
+                                    <tr class="operator_list" style="height: 15px;" mat-row
+                                        *matRowDef="let row; columns: displayedColumns;">
+                                    </tr>
+                                </mat-table>
+                            </div>
+                            <mat-paginator style=" height: 40px;" #paginatorOperator class="table_paginator_detail"
+                                [length]="dataSourceOperator.totalLength" [pageSize]="10" [hidePageSize]="true"
+                                showFirstLastButtons sticky="true" (click)="operatorPagenation(paginatorOperator)">
+                            </mat-paginator>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label class="h3" fxFlex="20">{{ 'MONITOR.CONTACT' | translate }}</label>
+                    <mat-form-field appearance="outline" fxFlex="78">
+                        <input name="contact" formControlName="contact" type="text" matInput>
+                    </mat-form-field>
+                </div>
+                <div class="mt-12" fxLayout="column" fxLayoutAlign="start start">
+                    <label class="h3">{{ 'MONITOR.NOTES' | translate }}</label>
+                    <mat-form-field appearance="outline" class="w-100-p">
+                        <textarea name="notes" formControlName="notes" type="text" matInput></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button class="mr-8" (click)="matDialogRef.close()" aria-label="Close" matTooltip="Close">
+            {{ 'MONITOR.CLOSE' | translate }}
+        </button>
+        <button mat-button class="save-button accent" (click)="save()" [disabled]="reportContactForm.invalid"
+            aria-label="SAVE">
+            {{ 'MONITOR.SAVE' | translate }}
+        </button>
+    </div>
+</div>

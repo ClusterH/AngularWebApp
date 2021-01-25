@@ -45,14 +45,23 @@ export class AuthService {
     }
 
     getUserObject() {
-
-
         let headers = new HttpHeaders();
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let id: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', 'user_Object');
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
+    }
+
+    getSystemPageClist() {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('method', 'SystemPage_CList');
         return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
             headers: headers,
             params: params

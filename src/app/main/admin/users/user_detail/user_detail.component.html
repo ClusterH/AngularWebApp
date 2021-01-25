@@ -1,15 +1,9 @@
 <div id="user_detail" class="page-layout carded fullwidth inner-scroll">
-    <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
-    <!-- / TOP BACKGROUND -->
-    <!-- CENTER -->
     <div class="center">
-        <!-- HEADER -->
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
-            <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
                 <button mat-icon-button class="mr-0 mr-sm-16">
-                    <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/users/users'"> -->
                     <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
                 <div fxLayout="column" fxLayoutAlign="start start"
@@ -25,7 +19,6 @@
                     </div>
                 </div>
             </div>
-            <!-- / APP TITLE -->
             <button mat-raised-button class="save-user-button" *ngIf="pageType ==='new'" (click)="addUser()">
                 <span>{{ 'USERS.ADD' | translate }}</span>
             </button>
@@ -33,19 +26,27 @@
                 <span>{{ 'USERS.SAVE' | translate }}</span>
             </button>
         </div>
-        <!-- / HEADER -->
-        <!-- CONTENT CARD -->
         <div class="content-card">
-            <!-- CONTENT -->
             <div class="content">
                 <form [formGroup]="userForm" class="user w-100-p" fxLayout="column" fxFlex>
                     <mat-tab-group>
                         <mat-tab label="{{ 'USERS.GENERAL' | translate }}">
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
-                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
-                                    <mat-label>{{ 'USERS.NAME' | translate }}</mat-label>
-                                    <input matInput placeholder="Name" name="name" formControlName="name" required>
-                                </mat-form-field>
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'USERS.NAME' | translate }}</mat-label>
+                                        <input matInput placeholder="Name" name="name" formControlName="name" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+                                        <mat-label>{{ 'USERS.STARTPAGE' | translate }}</mat-label>
+                                        <mat-select formControlName="startpage" required>
+                                            <mat-option *ngFor="let item of startpageList; trackBy: trackByFn"
+                                                [value]="item.id">
+                                                {{item.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'USERS.EMAIL' | translate }}</mat-label>

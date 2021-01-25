@@ -10,11 +10,12 @@ import { locale as usersEnglish } from 'app/main/admin/users/i18n/en';
 import { locale as usersFrench } from 'app/main/admin/users/i18n/fr';
 import { locale as usersPortuguese } from 'app/main/admin/users/i18n/pt';
 import { locale as usersSpanish } from 'app/main/admin/users/i18n/sp';
-import { ReportResultDataSource } from "app/main/report/reportcomponent/services/reportresult.datasource";
-import { ReportResultService } from 'app/main/report/reportcomponent/services/reportresult.service';
+import { ReportResultService, ReportResultDataSource, ExcelService, PDFService } from '../services';
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
+import { faFileExcel, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+declare let pdfMake: any;
 
 @Component({
     selector: 'report-reportresult',
@@ -38,6 +39,8 @@ export class ReportResultComponent implements OnInit, OnDestroy {
     user: any;
     flag: string = '';
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    faExel = faFileExcel;
+    faPdf = faFilePdf;
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -46,6 +49,8 @@ export class ReportResultComponent implements OnInit, OnDestroy {
 
     constructor(
         private reportResultService: ReportResultService,
+        private excelService: ExcelService,
+        private pdfService: PDFService,
         public _matDialog: MatDialog,
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -85,7 +90,7 @@ export class ReportResultComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.dataSource = new ReportResultDataSource(this.reportResultService);
         setTimeout(() => {
-            this.dataSource.loadReportResult(this.pageIndex, this.pageSize);
+            this.dataSource.loadReportResult(this.pageIndex, 100000);
         });
     }
 
@@ -97,5 +102,37 @@ export class ReportResultComponent implements OnInit, OnDestroy {
     navigatePageEvent() {
         this.paginator.pageIndex = this.dataSource.page_index - 1;
         this.dataSource.loadReportResult(this.paginator.pageIndex, this.paginator.pageSize);
+    }
+
+    exportAsExcel() {
+        this.excelService.generateExcel(this.docFormat());
+    }
+
+    exportAsPDF() {
+        const documentDefinition = this.pdfService.getDocumentDefinition(this.docFormat());
+        pdfMake.createPdf(documentDefinition).open();
+    }
+
+    docFormat() {
+
+        let data = [];
+        let headers = [];
+        this.dataSource.reportResult.forEach(item => {
+            let row = [];
+            this.dataSource.displayedColumns.map(header => {
+                if (header !== 'companyid' && header !== 'groupid' && header !== 'unitid') {
+                    row.push(item[header]);
+                }
+            })
+            data.push(row);
+        })
+
+        this.dataSource.displayedColumns.map(header => {
+            if (header !== 'companyid' && header !== 'groupid' && header !== 'unitid') {
+                headers.push(header);
+            }
+        })
+
+        return { data: data, headers: headers };
     }
 }

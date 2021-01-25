@@ -20,4 +20,5 @@ export interface UserDetail {
     lastmodifieddate?: Date;
     lastmodifiedby?: number;
     languageid?: number;
+    startpageid?: number;
 }

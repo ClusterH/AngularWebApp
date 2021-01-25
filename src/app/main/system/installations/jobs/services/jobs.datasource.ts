@@ -25,7 +25,7 @@ export class JobsDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll)
             ).subscribe((result: any) => {
-                console.log(result);
+
                 this.jobsSubject.next(result.TrackingXLAPI.DATA);
                 this.jobsService.jobList = result.TrackingXLAPI.DATA;
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
@@ -44,6 +44,7 @@ export class JobsDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll)
             ).subscribe((result: any) => {
+
                 this.jobsSubject.next(result.TrackingXLAPI.DATA);
                 this.jobsService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
                 this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;

@@ -37,7 +37,7 @@ export class ScrumboardBoardCardComponent implements OnInit {
             return this.cardId === card.id;
         })[0];
 
-        console.log(this.card);
+
     }
 
     dateFormat(date: any) {

@@ -130,10 +130,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
             if (res.responseCode == 100) {
                 this.isHideNavList = res.TrackingXLAPI.DATA1[0];
-
                 this.userObjectList = res.TrackingXLAPI.DATA;
-
-
                 localStorage.setItem('restrictValueList', JSON.stringify(this.isHideNavList));
                 localStorage.setItem('userObjectList', JSON.stringify(this.userObjectList));
 
@@ -142,7 +139,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         this._fuseNavigationService.updateNavigationItem(`${item}`, { hidden: true });
                     }
                 }
-                this.router.navigate(['/admin/vehicles/vehicles']);
+                this.moveToStartPage(this.userObjectList[0].startpageid, this.userObjectList[0].startpagevalue);
             }
         });
     }
@@ -152,5 +149,57 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.selectedLanguage = lang;
         // Use the selected language for translations
         this._translateService.use(lang.id);
+    }
+
+    moveToStartPage(id, value) {
+        this.authService.getSystemPageClist().pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
+
+            const startPage = res.TrackingXLAPI.DATA.filter(item => item.id == id);
+
+            // this.router.navigate(['/home/google']);
+            switch (startPage[0].name) {
+                case 'Google Map':
+                    this.router.navigate(['/home/google/main']);
+                    break;
+                case 'OSM Map':
+                    this.router.navigate(['/home/osm']);
+                    break;
+                case 'Dashboard':
+                    this.router.navigate(['/home/analytics']);
+                    break;
+                case 'Fuel Management Tanks':
+                    this.router.navigate(['/fuelmanagement/tanks/tanks']);
+                    break;
+                case 'Fueling Registry':
+                    this.router.navigate(['/fuelmanagement/fuelregistries/fuelregistries']);
+                    break;
+                case 'Installations Jobs':
+                    this.router.navigate(['/system/jobs/jobs']);
+                    break;
+                case 'Job Management Board':
+                    this.router.navigate(['/logistic/scrumboard']);
+                    break;
+                case 'Job Management List':
+                    this.router.navigate(['/logistic/todo']);
+                    break;
+                case 'Maintenance Dashboard':
+                    this.router.navigate(['/logistic/pendings/pendings']);
+                    break;
+                case 'Monitoring':
+                    this.router.navigate(['pages/logistics/monitoring']);
+                    break;
+                case 'Route Center':
+                    this.router.navigate(['/logistic/routecenter/routecenter']);
+                    break;
+                case 'System Dashboard':
+                    this.router.navigate(['/system/dashboards/dashboards']);
+                    break;
+
+                default:
+                    this.router.navigate(['/home/google/main']);
+                    break;
+            }
+        });
+
     }
 }

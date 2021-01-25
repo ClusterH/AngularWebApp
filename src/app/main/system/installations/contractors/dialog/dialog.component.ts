@@ -131,6 +131,12 @@ export class ContractorDialogComponent implements OnInit {
         this.contractorDetail.contactphonenumber = this.contractorForm.get('number').value;
         this.contractorDetail.notificationemail = this.contractorForm.get('email').value;
         this.contractorDetail.notificationcellphone = this.contractorForm.get('noofinstallers').value;
+        this.contractorDetail.carrierid = this.contractorForm.get('carrier').value;
+        this.contractorDetail.isactive = true;
+        this.contractorDetail.deletedby = 0;
+        this.contractorDetail.deletedwhen = '';
+        this.contractorDetail.username = '';
+        this.contractorDetail.password = '';
 
         this.contractorsService.contractorList = this.contractorsService.contractorList.concat(this.contractorDetail);
         this.flagForSaving.next(true);

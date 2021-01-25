@@ -48,6 +48,7 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
     currentTab_widgets: Array<any> = [];
     isNewDashboard: boolean = false;
     isNewClip: boolean = false;
+    defaultDashboardId: number;
 
     @ViewChild(LayoutComponent) layoutComponent: LayoutComponent;
     @ViewChild('tabs', { static: true }) tabs: MatTabGroup;
@@ -66,8 +67,8 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
-        // this.currentTab_widgets = this.widgets.filter(widget => widget.dashboardid == 0);
-        //
+        this.defaultDashboardId = JSON.parse(localStorage.getItem('userObjectList'))[0].startpagevalue;
+
     }
 
     ngOnInit(): void {
@@ -78,11 +79,12 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
             if (res.responseCode == 100) {
                 res.TrackingXLAPI.DATA.sort((a, b) => this.sortByDistance(a.id, b.id));
                 this.dashboard_Clist = res.TrackingXLAPI.DATA;
+                this.activatedTabIndex = (this.defaultDashboardId > 0) ? this.dashboard_Clist.findIndex(item => item.id == this.defaultDashboardId) : 0;
+
 
                 this.temp_dashboard_Clist = this.dashboard_Clist.map(dashboard => ({ ...dashboard }));
                 this._analyticsDashboardService.dashboardClist(0, 10, '', 'dashboardclips_Clist').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                     this.dashboardclips_Clist = res.TrackingXLAPI.DATA;
-
 
                     this.dashboardclips_Clist.sort((a, b) => this.sortByDistance(a.id, b.id));
                     this._analyticsDashboardService.getDashboardClips().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
@@ -110,13 +112,9 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
 
     onChangeToggle(event: any) {
         if (this.isEditClips) return;
-
-        // this.isToggled = !isEmpty(event.value);
-        // if (this.isToggled) {
         this.selectedOption = { 'timeselection': this.selectedTime, 'groupselection': this.selectedGroup };
         this.clipSservice.selectedOption.next(this.selectedOption);
         this.currentTab_widgets.forEach(item => {
-
             switch (item.clip) {
                 case 'StopCompliance':
                     this.clipSservice.clip_mileage('clip_RouteCompliance');
@@ -138,11 +136,9 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
                     break;
             }
         });
-        // }
     }
 
     tabChanged(event?: any): void {
-
         this.currentTab_widgets = [];
         if (!isEmpty(this.widgets)) {
             this.currentTab_widgets = this.widgets.filter(widget => widget.dashboardid === this.dashboard_Clist[this.activatedTabIndex].id);
@@ -158,13 +154,11 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
             name: 'New'
         });
         this.isEditClips = true;
-        // this.activatedTabIndex = this.dashboard_Clist.length - 1;
     }
     editDashboard() {
         this.isEditClips = true;
-        // this.disabled_tab[this.activatedTabIndex] = false;
-        // this.activatedTabIndex = 0;
     }
+
     deleteDashboard(dashboard: any) {
         this._analyticsDashboardService.dashboardDelete(dashboard.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
             if (res.responseCode == 100 || res.responseCode == 200) {
@@ -210,10 +204,7 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
 
     addExistWidget(widgets: any) {
         if (!isEmpty(widgets)) {
-            // this.layoutComponent.widgets = [];
-            // this.currentTab_widgets = this.widgets.filter(widget => widget.dashboardid == this.activatedTabIndex + 1);
             for (let widget of widgets) {
-                //
                 this.layoutComponent.widgets.push(widget);
                 this.layoutService.setDropId(widget.id);
                 this.layoutService.dropItem(widget.clip);
@@ -221,9 +212,7 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         }
     }
     deleteWidget(event: any) {
-
         this.clipSservice.dashboard_clip_delete(event.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-
             if (res.responseCode == 100 || res.responseCode == 200) {
                 this.widgets = this.widgets.filter(item => item.id != event.id);
             }
@@ -231,7 +220,6 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
     }
 
     saveDashboardClips() {
-        // let current_Dashbord = this.dashboard_Clist.filter(item => item.id == this.activatedTabIndex + 1);
         let current_Dashboard = this.dashboard_Clist[this.activatedTabIndex];
         if (this.activatedTabIndex >= this.temp_dashboard_Clist.length) {
             if (!this.isNewClip) {
@@ -247,8 +235,6 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         this._analyticsDashboardService.dashboardSave(current_Dashboard).pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
             if (res.responseCode == 100) {
                 this.currentTab_widgets.forEach((item: any) => {
-
-                    // delete item.id;
                     item.dashboardid = res.TrackingXLAPI.DATA[0].id;
                 });
 
@@ -363,5 +349,9 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         if (a > b) return 1;
         else if (a < b) return -1;
         else return 0;
+    }
+
+    trackByFn(index) {
+        return index;
     }
 }

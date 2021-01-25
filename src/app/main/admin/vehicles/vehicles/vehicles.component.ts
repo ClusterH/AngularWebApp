@@ -26,7 +26,6 @@ import { CourseDialogComponent } from "../dialog/dialog.component";
 })
 export class VehiclesComponent implements OnInit, OnDestroy {
     dataSource: VehiclesDataSource;
-
     @Output()
     pageEvent: PageEvent;
     pageIndex = 0;
@@ -37,8 +36,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     index_number: number = 1;
     currentUser: any;
     vehicle: any;
-    // userConncode: string;
-    // userID: number;
     restrictValue: any;
     flag: string = '';
     displayedColumns = ['id', 'name', 'company', 'group', 'subgroup', 'account', 'operator', 'unittype', 'serviceplan', 'producttype', 'make', 'model', 'isactive', 'timezone', 'created', 'createdbyname', 'deletedwhen', 'deletedbyname', 'lastmodifieddate', 'lastmodifiedbyname'
@@ -59,7 +56,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     ) {
         this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).vehicles;
-        //Load the translations
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
 
         this.pageIndex = 0;
@@ -78,7 +74,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         var node_length = node.length;
         $("div.page_index").remove();
         $("button.mat-paginator-navigation-previous.mat-icon-button.mat-button-base").after(node[node_length - 1]);
-        // when paginator event is invoked, retrieve the related data
         this.sort.sortChange.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.paginator.pageIndex = 0);
         merge(this.sort.sortChange, this.paginator.page)
             .pipe(tap(() => this.dataSource.loadVehicles(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction, this.selected, this.filter_string, "Unit_Tlist")), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
@@ -116,12 +111,10 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
 
     editShowVehicleDetail(vehicle: any) {
-
         this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
     }
 
     deleteVehicle(vehicle: any): void {
-
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
         dialogConfig.disableClose = true;

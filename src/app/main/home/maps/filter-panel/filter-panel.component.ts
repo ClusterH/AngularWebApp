@@ -340,7 +340,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
         } else {
             tempUserPOIsData = this.userPOIsData;
         }
-        console.log(tempUserPOIsData);
+
         this.filterPanelService.loadUserPOIs(tempUserPOIsData);
         this.filterUnits.emit(true);
         setTimeout(() => {
@@ -404,5 +404,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
 
     trackFnUnitType(index, item) {
         return item ? item.id : null;
+    }
+
+    trackByFn(index, item) {
+        return index;
     }
 }

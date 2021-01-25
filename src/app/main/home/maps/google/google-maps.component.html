@@ -107,7 +107,6 @@
             </div>
         </div>
     </mat-toolbar>
-    <!-- CONTENT -->
     <div class="content p-0">
         <div class="spinner_overlay" *ngIf="!(filterPanelService.loading$ | async)">
             <div class="spinner_container">
@@ -136,7 +135,6 @@
                         [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold'}">
                     </agm-marker>
                 </agm-marker-cluster>
-
                 <agm-marker-cluster *ngIf="filterPanelService.userPOI_temp$ | async"
                     [minimumClusterSize]="minClusterSize"
                     imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
@@ -148,7 +146,6 @@
                         [markerDraggable]="m.draggable == 'true'" [visible]="true" [iconUrl]="poi_icon">
                     </agm-marker>
                 </agm-marker-cluster>
-
                 <agm-polyline *ngFor="let rte of routes" [strokeColor]="'blue'">
                     <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
                     </agm-polyline-point>
@@ -157,7 +154,6 @@
                     [strokeOpacity]="0.01" [strokeWeight]="2" [paths]="zones" [zIndex]="1">
                 </agm-polygon>
             </div>
-
             <div *ngIf="isTrackUnitHistory">
                 <agm-polyline *ngFor="let rte of trackHistoryPolylines" [strokeColor]="rte.strokeColor">
                     <agm-polyline-point *ngFor="let pnt of rte.historyList" [latitude]="pnt.lat" [longitude]="pnt.lng"
@@ -167,20 +163,14 @@
             </div>
         </agm-map>
     </div>
-
     <button *ngIf="showFilters" mat-icon-button class="warn mat-elevation-z2 filter-panel-button"
         (click)="toggleSidebarOpen('filterPanel')">
         <mat-icon>layers</mat-icon>
     </button>
     <button *ngIf="isClickedEvent" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
         (click)="cleanEventLocation()">
-        <!-- <img src="assets/images/event_marker_clean.png" width="40" height="40" /> -->
         <mat-icon class="event_clean">location_off</mat-icon>
     </button>
-    <!-- <button *ngIf="isTrackUnitHistory" mat-icon-button class="warn mat-elevation-z2 event-clean-button"
-        (click)="cleanTrackLocation()">
-        <mat-icon class="event_clean">block</mat-icon>
-    </button> -->
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
             (eventLocation)="showEventLocation($event)">

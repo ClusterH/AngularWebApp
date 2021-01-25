@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef, NgZone, } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ViewChild, NgZone } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
 import { AgmDirection } from 'agm-direction';

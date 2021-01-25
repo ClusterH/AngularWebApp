@@ -1,0 +1,101 @@
+@import "src/@fuse/scss/fuse";
+
+logistic-routeplanning {
+    #routeplanning {
+        .top-bg {
+            height: 200px !important;
+
+            @include media-breakpoint("lt-md") {
+                height: 126px !important;
+            }
+        }
+
+        > .planning-content {
+            width: auto !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            background-color: #e4f0ec;
+            > .header {
+                height: 80x !important;
+                min-height: 80px !important;
+                max-height: 80px !important;
+                padding-left: 30px !important;
+                padding-right: 30px !important;
+
+                @include media-breakpoint("lt-md") {
+                    padding: 8px 0;
+                    height: auto !important;
+                    min-height: 80px !important;
+                    max-height: 80px !important;
+                }
+            }
+        }
+        .content-card {
+            position: relative;
+            overflow: hidden;
+            .btn-import-csv {
+                width: 110px;
+                height: 36px;
+                position: absolute;
+                top: 6px;
+                right: 330px;
+                border-radius: 4px;
+                z-index: 3;
+                font-size: 1.4rem;
+            }
+            .btn-add-newjob {
+                width: 128px;
+                height: 36px;
+                position: absolute;
+                top: 6px;
+                right: 460px;
+                border-radius: 4px;
+                z-index: 3;
+                font-size: 1.4rem;
+            }
+            .routeplanning-date {
+                width: 320px;
+                height: 40px;
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                border-radius: 4px;
+                z-index: 3;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                .p-inputtext {
+                    font-size: 1.5rem;
+                }
+            }
+            .routelist {
+                width: 100%;
+                height: calc(100vh - 265px);
+            }
+            .driverlist,
+            .joblist {
+                width: 100%;
+                height: calc(100vh - 195px);
+            }
+        }
+    }
+
+    .spinner_container {
+        position: absolute;
+        top: 50%;
+        left: 30%;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+
+    .spinner_overlay {
+        height: 100vh;
+        width: 100%;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        position: fixed;
+    }
+}

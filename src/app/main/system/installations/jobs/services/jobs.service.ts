@@ -98,7 +98,7 @@ export class JobsService {
             .set('deletedwhen', jobDetail.deletedwhen.toString())
             .set('longitude', jobDetail.longitude.toString())
             .set('latitude', jobDetail.latitude.toString())
-            .set('status', jobDetail.status.toString())
+            .set('statusid', jobDetail.statusid.toString())
             .set('installationjobtypeid', jobDetail.installationjobtypeid.toString())
             .set('description', jobDetail.description.toString())
             .set('devicetypeid', jobDetail.devicetypeid.toString())
@@ -201,7 +201,7 @@ export class JobsService {
                 .subscribe((response: any) => {
                     if (response.responseCode == 100) {
                         this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
-                        console.log(this.boards);
+
 
                         this.onBoardsChanged.next(this.boards);
                         resolve(this.boards);

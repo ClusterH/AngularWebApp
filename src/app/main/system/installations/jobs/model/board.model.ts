@@ -32,11 +32,11 @@ export class Board {
         this.name = board.name || 'Untitled Board';
         this.uri = board.uri || 'untitled-board';
         this.id = board.id || 0;
-        this.settings = board.settings || {
-            color: '',
-            subscribed: true,
-            cardcoverimages: true
-        };
+        // this.settings = board.settings || {
+        //     color: '',
+        //     subscribed: true,
+        //     cardcoverimages: true
+        // };
         this.lists = [];
         this.cards = [];
         this.members = board.members || [];

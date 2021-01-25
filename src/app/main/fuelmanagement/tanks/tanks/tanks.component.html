@@ -56,8 +56,8 @@
             </div>
             <div fxLayout="column" fxLayoutAlign="center">
                 <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
-                    <div class="course" *ngFor="let tank of tanksService.tanks" fxFlex="100" fxFlex.gt-xs="50"
-                        fxFlex.gt-sm="33" [@animate]="{value:'*',params:{y:'100%'}}">
+                    <div class="course" *ngFor="let tank of tanksService.tanks;  trackBy: trackByFn" fxFlex="100"
+                        fxFlex.gt-xs="50" fxFlex.gt-sm="33" [@animate]="{value:'*',params:{y:'100%'}}">
                         <div class="course-content white" fxLayout="column" fxFlex="1 1 auto">
                             <div class="header tank_card_header accent" fxLayout="row" fxLayoutAlign="center center">
                                 <div class="category" fxFlex>
@@ -82,8 +82,8 @@
                                 <div class="last_report w-100-p mt-28" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>{{ 'TANKS.LASTREPORT' | translate }}:
                                             </strong></span></div>
-                                    <div class="w-60-p"><span
-                                            class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss a'}}</span></div>
+                                    <div class="w-60-p"><span class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss
+                                            a'}}</span></div>
                                 </div>
                                 <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>{{tank.volumeunit}}: </strong></span>
