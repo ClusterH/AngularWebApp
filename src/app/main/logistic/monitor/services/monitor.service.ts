@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Trip } from '../model';
 
 @Injectable()
 export class MonitorService {
-    monitor: any[];
     public loadingsubject = new BehaviorSubject<boolean>(false);
     loading$: Observable<boolean> = this.loadingsubject.asObservable();
     public unit_clist_item: any = {};
+    public monitor = new BehaviorSubject<any>([]);
+    monitor$: Observable<any[]> = this.monitor.asObservable();
+
 
     /**
      * Constructor
@@ -55,5 +58,20 @@ export class MonitorService {
                 params: params
             });
         }
+    }
+
+    saveNewTrip(trip: Trip): Observable<any> {
+        let headers = new HttpHeaders();
+        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        let params = new HttpParams()
+            .set('method', 'tripwatch_save');
+        for (let key in trip) {
+            params = params.append(key, trip[key]);
+        }
+
+        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            headers: headers,
+            params: params
+        });
     }
 }

@@ -41,6 +41,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GridsterModule } from 'angular-gridster2';
+import { DndDirective } from './directives/file-dnd/dnd.directive';
 
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MenuModule } from 'primeng/menu';
@@ -48,7 +49,7 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
 
 @NgModule({
     imports: [CommonModule, QuicklinkModule],
-    declarations: [],
+    declarations: [DndDirective],
     exports: [
         CommonModule,
         FormsModule,
@@ -101,7 +102,9 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         FuseDirectivesModule,
         FusePipesModule,
         FuseMaterialColorPickerModule,
+        DndDirective,
     ],
+
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }],
 })
 export class SharedModule { }

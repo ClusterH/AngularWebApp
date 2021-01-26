@@ -1,0 +1,20 @@
+export interface Trip {
+    id?: number,
+    name?: string,
+    unitid?: number,
+    operatorid?: number,
+    risklevelid?: number,
+    origen?: string,
+    destination?: string,
+    eta?: number,
+    inroute?: boolean,
+    ontime?: boolean,
+    commok?: boolean,
+    tripstatusid?: number,
+    lastcontact?: string,
+    fromlatitude?: number,
+    fromlongitude?: number,
+    tolatitude?: number,
+    tolongitude?: number,
+    schedstarttime?: string
+}

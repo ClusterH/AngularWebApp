@@ -57,8 +57,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(monitorEnglish, monitorSpanish, monitorFrench, monitorPortuguese);
 
-
-
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
@@ -94,14 +92,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
     // menuContentManage(event): void {
     //     if (!event.target.matches('.menu_content') && !event.target.matches('.show_commandBtn')) {
-    //         console.log(event);
+    //
 
     //         this.dataSource.map(item => {
     //             item.isShowCommand = false;
     //             return item
     //         });
 
-    //         console.log(this.dataSource);
+    //
     //         setTimeout(() => {
     //             this.monitor$ = of(this.dataSource);
     //         }, 1000)

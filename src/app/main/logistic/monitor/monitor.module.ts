@@ -24,6 +24,7 @@ import { NewTripDialogComponent } from 'app/main/logistic/monitor/dialog/newTrip
 import { SharedModule } from 'app/sharedModules/shared.module';
 import { TriplistComponent } from './components/triplist/triplist.component';
 import { MonitormapComponent } from './components/monitormap/monitormap.component';
+import { MonitorFileDragDropComponent } from './components/drag-drop/drag-drop.component';
 
 const routes = [
     { path: 'monitor', component: MonitorComponent },
@@ -56,7 +57,8 @@ const routes = [
         ReportContactDialogComponent,
         NewTripDialogComponent,
         TriplistComponent,
-        MonitormapComponent
+        MonitormapComponent,
+        MonitorFileDragDropComponent
     ],
     providers: [MonitorService, GoogleMapsAPIWrapper, AgmDirection]
 })

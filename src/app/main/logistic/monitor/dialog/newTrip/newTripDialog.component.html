@@ -23,22 +23,26 @@
                     <label for="pointToPoint" class="ml-8">Point to Point</label>
                 </div>
             </div>
+            <div class="import-path" *ngIf="isImportPath">
+                <app-drag-drop></app-drag-drop>
+            </div>
             <form [formGroup]="newTripForm">
-                <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <mat-form-field fxFlex="100" class="select_list" appearance="outline" floatLabel="always">
+                <div fxLayout="row" fxLayoutAlign="space-between center"
+                    [ngStyle]="{'display': isSelectRoute? 'flex': 'none'}">
+                    <mat-form-field fxFlex="100" class="select_list mt-12" appearance="outline" floatLabel="always">
                         <mat-label>{{ 'MONITOR.ROUTE' | translate }}</mat-label>
-                        <mat-select (click)="showCompanyList('unit_clist')" formControlName="route">
+                        <mat-select (click)="showCompanyList('route_clist')" formControlName="route">
                             <div class="filter_input">
                                 <input matInput formControlName="filterstring" #filter placeholder="Filter"
                                     (keyup)="onKey($event)">
                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                             </div>
                             <div style="width: 100%; overflow: auto;">
-                                <mat-table [dataSource]="dataSourceUnit"
+                                <mat-table [dataSource]="dataSourceRoute"
                                     class="unit-table font-size-10 mat-elevation-z8">
                                     <ng-container matColumnDef="name">
-                                        <td mat-cell *matCellDef="let unit;" style="border: 0px;">
-                                            <mat-option [value]="unit.id">{{unit.name}}</mat-option>
+                                        <td mat-cell *matCellDef="let route;" style="border: 0px;">
+                                            <mat-option [value]="route.id">{{route.name}}</mat-option>
                                         </td>
                                     </ng-container>
                                     <tr class="unit_list" style="height: 15px;" mat-row
@@ -46,15 +50,40 @@
                                     </tr>
                                 </mat-table>
                             </div>
-                            <mat-paginator style=" height: 40px;" #paginatorUnit class="table_paginator_detail"
-                                [length]="dataSourceUnit.totalLength" [pageSize]="10" [hidePageSize]="true"
-                                showFirstLastButtons sticky="true" (click)="unitPagenation(paginatorUnit)">
+                            <mat-paginator style=" height: 40px;" #paginatorRoute class="table_paginator_detail"
+                                [length]="dataSourceRoute.totalLength" [pageSize]="10" [hidePageSize]="true"
+                                showFirstLastButtons sticky="true" (click)="routePagenation(paginatorRoute)">
                             </mat-paginator>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <mat-form-field fxFlex="100" class="select_list" appearance="outline" floatLabel="always">
+                    <mat-form-field fxFlex="100" appearance="outline" class="from-google-autocomplete mt-12"
+                        floatLabel="always" [ngStyle]="{'display': isPOP? 'block': 'none'}">
+                        <mat-label>{{ 'MONITOR.FROM' | translate }}</mat-label>
+                        <input matInput formControlName="google_autocomplete_from" type="text"
+                            style="text-align: start;" #from autocorrect="off" autocapitalize="off" spellcheck="off">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field fxFlex="100" appearance="outline" class="to-google-autocomplete  mt-12"
+                        floatLabel="always" [ngStyle]="{'display': isPOP? 'block': 'none'}">
+                        <mat-label>{{ 'MONITOR.TO' | translate }}</mat-label>
+                        <input matInput formControlName="google_autocomplete_to" type="text" style="text-align: start;"
+                            #to autocorrect="off" autocapitalize="off" spellcheck="off">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field class="mt-12" appearance="outline" floatLabel="always" fxFlex="100">
+                        <mat-label>{{ 'MONITOR.STARTDATE' | translate }}</mat-label>
+                        <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date"
+                            formControlName="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker1></ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field fxFlex="100" class="select_list mt-12" appearance="outline" floatLabel="always">
                         <mat-label>{{ 'MONITOR.UNIT' | translate }}</mat-label>
                         <mat-select (click)="showCompanyList('unit_clist')" formControlName="unit">
                             <div class="filter_input">
@@ -83,7 +112,7 @@
                     </mat-form-field>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <mat-form-field fxFlex="100" class="select_list" appearance="outline" floatLabel="always">
+                    <mat-form-field fxFlex="100" class="select_list mt-12" appearance="outline" floatLabel="always">
                         <mat-label>{{ 'MONITOR.OPERATOR' | translate }}</mat-label>
                         <mat-select (click)="showCompanyList('operator_clist')" formControlName="operator">
                             <div class="filter_input">
@@ -109,6 +138,12 @@
                                 showFirstLastButtons sticky="true" (click)="operatorPagenation(paginatorOperator)">
                             </mat-paginator>
                         </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field fxFlex="100" appearance="outline" class="trip-identifier mt-12" floatLabel="always">
+                        <mat-label>{{ 'MONITOR.TRIPIDENTIFIER' | translate }}</mat-label>
+                        <input matInput formControlName="tripIdentifier" type="text" style="text-align: start;">
                     </mat-form-field>
                 </div>
             </form>

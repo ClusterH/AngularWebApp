@@ -1,5 +1,5 @@
 <div class="monitor-tripList" *ngIf="(monitorService.loading$ | async)" style="width: 100%;">
-    <p-table #dt [value]="monitor$ | async" [(selection)]="selectedMonitor" dataKey="id"
+    <p-table #dt [value]="monitorService.monitor$ | async" [(selection)]="selectedMonitor" dataKey="id"
         styleClass="p-datatable-monitor" [rowHover]="true" [rows]="20" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10,20,30,50]" [paginator]="true"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [autoLayout]="true"
@@ -41,14 +41,14 @@
                             <li class="menuitem" (click)="startTrip()">Start Trip</li>
                             <li class="menuitem" (click)="finishTrip()">Finish Trip</li>
                             <li class="menuitem" (click)="cancelTrip()">Cancel Trip</li>
-                            <li class="menuitem" (click)="reportContact(trip.id)">Report Contact</li>
+                            <li class="menuitem" (click)="reportContact(trip)">Report Contact</li>
                             <li class="menuitem" (click)="showInMap()">Show In Map</li>
                             <li class="menuitem" (click)="showHistory()">Show History</li>
                         </ul>
                     </div>
                 </td>
                 <td *ngFor="let col of displayedColumns">
-                    {{trip[col]}}
+                    {{trip[col] || null}}
                 </td>
             </tr>
         </ng-template>

@@ -66,6 +66,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
+
         this.dataSource.loadVehicles(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 

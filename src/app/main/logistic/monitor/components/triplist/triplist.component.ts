@@ -17,7 +17,6 @@ import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/conf
 })
 export class TriplistComponent implements OnInit {
     dataSource: any[];
-    monitor$: Observable<any[]>;
     selectedMonitor: any[];
     totalRecords: number;
     loading = false;
@@ -73,7 +72,7 @@ export class TriplistComponent implements OnInit {
     getTrips(date?: string) {
         // this.monitorService.loadingsubject.next(false);
         this.monitorService.getMonitor(1, 10, 'name', 'asc', '1,2,3,5', 'tripwatch_TList').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            console.log(res);
+
             this.dataSource = [...res.TrackingXLAPI.DATA];
             this.closeCommandMenu();
 
@@ -93,7 +92,7 @@ export class TriplistComponent implements OnInit {
             return item;
         });
 
-        this.monitor$ = of(this.dataSource);
+        this.monitorService.monitor.next(this.dataSource);
     }
 
     addNewTrip(): void {
@@ -102,19 +101,17 @@ export class TriplistComponent implements OnInit {
         dialogConfig.panelClass = 'newTrip-form-dialog';
         dialogConfig.disableClose = true;
         const dialogRef = this._matDialog.open(NewTripDialogComponent, dialogConfig);
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(vehicle => {
-            if (vehicle) {
-                // this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(trip => {
+            if (trip === 'failed') {
+                alert('Add New Trip Failed');
             }
         });
     }
 
     filterStatus(value): void {
-        console.log(value);
     }
 
     showCommandMenu(id: number): void {
-        console.log(id)
         this.dataSource.map(item => {
             if (item.id === id) {
                 item.isShowCommand = !item.isShowCommand;
@@ -124,32 +121,27 @@ export class TriplistComponent implements OnInit {
 
             return item
         });
-        console.log(this.dataSource);
-        this.monitor$ = of(this.dataSource);
+        this.monitorService.monitor.next(this.dataSource);
     }
 
     startTrip(): void {
-        console.log('startTrip===');
         this.closeCommandMenu();
     }
 
     finishTrip(): void {
-        console.log('finishTrip===');
         this.closeCommandMenu();
     }
 
     cancelTrip(): void {
-        console.log('cancelTrip===');
         this.closeCommandMenu();
     }
 
-    reportContact(tripId: number): void {
-        console.log('Report COntact===');
+    reportContact(trip: any): void {
         this.closeCommandMenu();
         const dialogConfig = new MatDialogConfig();
         dialogConfig.panelClass = 'reportContact-form-dialog';
         dialogConfig.disableClose = true;
-        dialogConfig.data = { tripId: tripId };
+        dialogConfig.data = { trip: trip };
         const dialogRef = this._matDialog.open(ReportContactDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(vehicle => {
             if (vehicle) {
@@ -159,12 +151,12 @@ export class TriplistComponent implements OnInit {
     }
 
     showInMap(): void {
-        console.log('MapShow===');
+
         this.closeCommandMenu();
     }
 
     showHistory(): void {
-        console.log('startHistory===');
+
         this.closeCommandMenu();
     }
 

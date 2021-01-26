@@ -36,7 +36,10 @@ export const locale = {
             "BROWSER": "Browser",
             "SELECTVEHICLE": "Select Vehicle",
             "ROUTE": "Route",
-
+            "FROM": "From",
+            "TO": "To",
+            "STARTDATE": "Start Date",
+            "TRIPIDENTIFIER": "Trip Unique Identifier",
             "NO": "No",
             "YES": "Yes"
         }

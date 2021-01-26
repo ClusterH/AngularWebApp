@@ -22,7 +22,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 })
 
 export class ReportContactDialogComponent implements OnInit, OnDestroy {
-    tripId: number;
+    trip: any;
     reportType = 'phone_call';
     reportContactForm: FormGroup;
     dataSourceUnit: MonitorDataSource;
@@ -47,19 +47,21 @@ export class ReportContactDialogComponent implements OnInit, OnDestroy {
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(monitorEnglish, monitorSpanish, monitorFrench, monitorPortuguese);
-        this.tripId = _data.tripId;
-        console.log(this.tripId);
+        this.trip = _data.trip;
+
     }
 
     ngOnInit() {
         this.dataSourceUnit = new MonitorDataSource(this.monitorService);
         this.dataSourceOperator = new MonitorDataSource(this.monitorService);
-        this.dataSourceUnit.loadClists(0, 10, "", "unit_clist");
-        this.dataSourceOperator.loadClists(0, 10, "", "operator_clist");
+        this.dataSourceUnit.loadClists(0, 10, this.trip.unit, "unit_clist");
+        this.dataSourceOperator.loadClists(0, 10, this.trip.operator, "operator_clist");
 
         this.reportDate = new Date();
 
         this.reportContactForm = this._formBuilder.group({
+            date: [null],
+            time: [null],
             type: [null],
             unit: [null],
             operator: [null],
@@ -144,7 +146,10 @@ export class ReportContactDialogComponent implements OnInit, OnDestroy {
     }
 
     setValue() {
-        // this.reportContactForm.get('cost').setValue(this.attend.cost);
+        this.reportContactForm.get('date').setValue(new Date());
+        this.reportContactForm.get('time').setValue(this.timeFormat(new Date()));
+        this.reportContactForm.get('unit').setValue(this.trip.unitid);
+        this.reportContactForm.get('operator').setValue(this.trip.operatorid);
         // let date = this.attend.performdate ? new Date(`${this.attend.performdate}`) : '';
         // this.reportContactForm.get('performdate').setValue(this.dateFormat(date));
         // this.reportContactForm.get('hour').setValue(this.timeFormat(date));

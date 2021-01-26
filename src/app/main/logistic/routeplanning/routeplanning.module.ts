@@ -25,7 +25,6 @@ import { CsvimporterComponent } from './components/csvimporter/csvimporter.compo
 import { JoblistTableComponent } from './components/joblist-table/joblist-table.component';
 import { DriverlistTableComponent } from './components/driverlist-table/driverlist-table.component';
 import { DragDropComponent } from './components/drag-drop/drag-drop.component';
-import { DndDirective } from './components/drag-drop/directives/dnd.directive';
 import { RoutelistTableComponent } from './components/routelist-table/routelist-table.component';
 import { RoutelistMapComponent } from './components/routelist-map/routelist-map.component';
 import { RoutelistHeaderComponent } from './components/routelist-header/routelist-header.component';
@@ -83,7 +82,6 @@ const routes = [
         DriverlistTableComponent,
         DisableControlDirective,
         DragDropComponent,
-        DndDirective,
         RoutelistTableComponent,
         RoutelistMapComponent,
         RoutelistHeaderComponent,

@@ -11,8 +11,21 @@
         <form [formGroup]="reportContactForm">
             <div class="" fusePerfectScrollbar fxLayout="column">
                 <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
-                    <label class="h2"><span class="mr-24">Date:</span>{{reportDate | date: "mediumDate"}}</label>
-                    <label class="h2"><span class="mr-24">Time:</span>{{reportDate | date: "shortTime"}}</label>
+                    <div fxFlex="50" fxLayout="row" fxLayoutAlign="space-between center">
+                        <label class="h2"><span class="mr-0 w-20-p">Date:</span></label>
+                        <mat-form-field appearance="outline" class="pr-sm-8 w-80-p">
+                            <input matInput [matDatepicker]="date" name="date" formControlName="date">
+                            <mat-datepicker-toggle matSuffix [for]="date">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #date></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" fxLayout="row" fxLayoutAlign="space-between center">
+                        <label class="h2"><span class="mr-0 w-20-p">Time:</span></label>
+                        <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer w-80-p">
+                            <input matInput type="time" value="time" formControlName="time">
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <label class="h3" fxFlex="20">{{ 'MONITOR.TYPE' | translate }}</label>

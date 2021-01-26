@@ -203,7 +203,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
                     this._unitInfoSidebarService.getSidebar(key).toggleOpen();
-                    console.log(this.currentOperator);
+
                 });
         } else if (key == 'poiInfoPanel') {
             this.unitInfoService.getPOIInfo_v1(id)
