@@ -25,7 +25,7 @@ export class UnittypeDetailService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -35,7 +35,7 @@ export class UnittypeDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -56,7 +56,7 @@ export class UnittypeDetailService {
             .set('lastmodifieddate', unittypeDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', unittypeDetail.lastmodifiedby.toString())
             .set('method', 'unittype_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

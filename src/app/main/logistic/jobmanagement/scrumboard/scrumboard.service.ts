@@ -66,7 +66,7 @@ export class ScrumboardService implements Resolve<any>
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
                 .set('method', "GetBoards");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
@@ -93,7 +93,7 @@ export class ScrumboardService implements Resolve<any>
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
                 .set('method', "GetBoards");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
@@ -139,7 +139,7 @@ export class ScrumboardService implements Resolve<any>
                         .set('listid', listId.toString())
                         .set('boardid', boardId.toString())
                         .set('method', "boardcard_save");
-                    this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     })
@@ -178,7 +178,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('name', newList.name)
                 .set('boardid', boardid.toString())
                 .set('method', "boardlist_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
@@ -200,7 +200,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('name', list.name)
                 .set('boardid', boardid.toString())
                 .set('method', "boardlist_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
@@ -236,7 +236,7 @@ export class ScrumboardService implements Resolve<any>
         let params = new HttpParams()
             .set('id', listId.toString())
             .set('method', "boardlist_delete");
-        this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         })
@@ -270,7 +270,7 @@ export class ScrumboardService implements Resolve<any>
         let params = new HttpParams()
             .set('id', cardId.toString())
             .set('method', "boardcard_delete");
-        this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         }).subscribe((response: any) => { });
@@ -308,7 +308,7 @@ export class ScrumboardService implements Resolve<any>
                         .set('listid', listId.toString())
                         .set('boardid', boardId.toString())
                         .set('method', "boardcard_save");
-                    this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     })
@@ -342,7 +342,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('uri', "untitled-board")
                 .set('companyid', company_id.toString())
                 .set('method', "board_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((response: any) => {
@@ -366,7 +366,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('uri', board.uri)
                 .set('companyid', company_id.toString())
                 .set('method', "board_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((response: any) => {
@@ -383,7 +383,7 @@ export class ScrumboardService implements Resolve<any>
             let params = new HttpParams()
                 .set('id', boardId.toString())
                 .set('method', "board_delete");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((response: any) => {
@@ -402,7 +402,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('subscribed', subscribed.toString())
                 .set('cardcoverimages', cardcoverimages.toString())
                 .set('method', "board_settings_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })
@@ -424,7 +424,7 @@ export class ScrumboardService implements Resolve<any>
             .set('listid', listId)
             .set('method', "boardcard_move");
 
-        this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         }).subscribe((res: any) => {
@@ -446,7 +446,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('color', label.color)
                 .set('boardid', boardId.toString())
                 .set('method', "boardlabel_save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -463,7 +463,7 @@ export class ScrumboardService implements Resolve<any>
             let params = new HttpParams()
                 .set('id', labelId)
                 .set('method', "boardlabel_delete");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -481,7 +481,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('labelid', labelId)
                 .set('cardid', cardId)
                 .set('method', "Assign_Label_To_Card");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -498,7 +498,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('labelid', labelId)
                 .set('cardid', cardId)
                 .set('method', "Remove_card_label");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -517,7 +517,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('comtime', comment.time)
                 .set('cardid', cardId)
                 .set('method', "boardcardcomment_Save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -536,7 +536,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('checkitemschecked', checklist.checkitemschecked.toString())
                 .set('cardid', checklist.cardid.toString())
                 .set('method', "boardcardchecklist_Save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -554,7 +554,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('id', id.toString())
                 .set('cardid', cardId.toString())
                 .set('method', "boardcardchecklist_delete");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -574,7 +574,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('checked', checkitem.checked.toString())
                 .set('checklistid', checkitem.checklistid.toString())
                 .set('method', "boardcardcheckitem_Save");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -593,7 +593,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('checklistid', checklistId.toString())
                 .set('cardid', cardId.toString())
                 .set('method', "boardcardcheckitem_delete");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -612,7 +612,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('pagesize', '1000'.toString())
                 .set('companyid', companyid.toString())
                 .set('method', "user_cList");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -629,7 +629,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('userid', carduserId.toString())
                 .set('cardid', cardId.toString())
                 .set('method', "Insert_card_User");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -646,7 +646,7 @@ export class ScrumboardService implements Resolve<any>
                 .set('userid', carduserId.toString())
                 .set('cardid', cardId.toString())
                 .set('method', "delete_card_User");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {

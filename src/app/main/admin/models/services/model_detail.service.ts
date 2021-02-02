@@ -25,7 +25,7 @@ export class ModelDetailService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -35,7 +35,7 @@ export class ModelDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -55,7 +55,7 @@ export class ModelDetailService {
             .set('lastmodifiedby', modelDetail.lastmodifiedby.toString())
             .set('tireconfigurationid', modelDetail.tireconfigurationid.toString())
             .set('method', 'model_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

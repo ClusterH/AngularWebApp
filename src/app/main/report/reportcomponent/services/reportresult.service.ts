@@ -28,7 +28,7 @@ export class ReportResultService {
             }
         }
 
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -48,7 +48,7 @@ export class ReportResultService {
                 params = params.set(`${param}`, report_param[param].toString());
             }
         }
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

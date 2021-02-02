@@ -31,7 +31,7 @@ export class JobsService {
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -43,7 +43,7 @@ export class JobsService {
                 .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -58,7 +58,7 @@ export class JobsService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -68,7 +68,7 @@ export class JobsService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -104,7 +104,7 @@ export class JobsService {
             .set('devicetypeid', jobDetail.devicetypeid.toString())
             .set('notes', jobDetail.notes.toString())
             .set('method', 'installation_Save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -116,7 +116,7 @@ export class JobsService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', "installation_Delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -128,7 +128,7 @@ export class JobsService {
         let params = new HttpParams()
             .set('installationid', id.toString())
             .set('method', "Installationimages_TList");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -150,7 +150,7 @@ export class JobsService {
             "userid": userid
         }
 
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -170,7 +170,7 @@ export class JobsService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: headers,
         });
     }
@@ -182,7 +182,7 @@ export class JobsService {
             .set('installationid', installationid.toString())
             .set('installerid', installerid.toString())
             .set('method', "AssignInstallerToJob");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -194,7 +194,7 @@ export class JobsService {
             headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
             let params = new HttpParams()
                 .set('method', "GetInstallationBoards");
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             })

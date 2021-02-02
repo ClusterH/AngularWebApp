@@ -25,7 +25,7 @@ export class GroupDetailService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -35,7 +35,7 @@ export class GroupDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -61,7 +61,7 @@ export class GroupDetailService {
             .set('lastmodifieddate', groupDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', groupDetail.lastmodifiedby.toString())
             .set('method', 'group_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

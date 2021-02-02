@@ -28,7 +28,7 @@ export class EventDetailService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -38,7 +38,7 @@ export class EventDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -53,7 +53,7 @@ export class EventDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -64,7 +64,7 @@ export class EventDetailService {
                 .set('name', `^${name}^`)
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -83,7 +83,7 @@ export class EventDetailService {
             .set('groupid', groupid.toString())
             .set('eventid', this.current_eventID.toString())
             .set('method', 'Unit_CList');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -101,7 +101,7 @@ export class EventDetailService {
                     .set('groupid', groupid.toString())
                     .set(`${paramIdentity}`, eventid.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -111,7 +111,7 @@ export class EventDetailService {
                     .set('pagesize', pagesize.toString())
                     .set(`${paramIdentity}`, eventid.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -125,7 +125,7 @@ export class EventDetailService {
                     .set(`${paramIdentity}`, eventid.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -136,7 +136,7 @@ export class EventDetailService {
                     .set(`${paramIdentity}`, eventid.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -156,7 +156,7 @@ export class EventDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -173,7 +173,7 @@ export class EventDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -190,7 +190,7 @@ export class EventDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }

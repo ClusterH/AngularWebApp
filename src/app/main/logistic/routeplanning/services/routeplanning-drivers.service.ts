@@ -23,7 +23,7 @@ export class RoutePlanningDriverService {
             .set('orderdirection', orderdirection.toString())
             .set('seldate', seldate.toString())
             .set('method', method.toString());
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -36,7 +36,7 @@ export class RoutePlanningDriverService {
             .set('pageindex', '1')
             .set('pagesize', '1000000')
             .set('method', 'GetUserPOIs');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -54,7 +54,7 @@ export class RoutePlanningDriverService {
             .set('latitude', data.latitude)
             .set('longitude', data.longitude)
             .set('method', 'SetDriverStartTimeAndPlace');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -69,7 +69,7 @@ export class RoutePlanningDriverService {
             .set('include', include.toString())
             .set('seldate', seldate.toString())
             .set('method', "Operator_SetInclude");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -82,7 +82,7 @@ export class RoutePlanningDriverService {
             .set('id', id.toString())
             .set('seldate', seldate.toString())
             .set('method', "Operator_Delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

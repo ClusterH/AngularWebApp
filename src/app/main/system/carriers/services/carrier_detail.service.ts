@@ -34,7 +34,7 @@ export class CarrierDetailService {
             .set('lastmodifieddate', carrierDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', carrierDetail.lastmodifiedby.toString())
             .set('method', 'carrier_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

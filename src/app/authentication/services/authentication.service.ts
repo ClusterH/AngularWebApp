@@ -29,7 +29,7 @@ export class AuthService {
             .set('password', password)
 
         // http://trackingxlapi.polarix.com/AuthenticateUser.ashx?{email:%22polarix@polarixusa.com%22,password:%22f0r3s1ght01!%22}
-        return this._httpClient.get('http://trackingxlapi.polarix.com/AuthenticateUser.ashx', {
+        return this._httpClient.get('AuthenticateUser.ashx', {
             headers: headers,
             params: params
         });
@@ -51,7 +51,7 @@ export class AuthService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', 'user_Object');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -62,7 +62,7 @@ export class AuthService {
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
             .set('method', 'SystemPage_CList');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

@@ -30,7 +30,7 @@ export class TrackPanelService {
 
         }
 
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: this.params
         });

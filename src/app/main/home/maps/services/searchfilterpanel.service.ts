@@ -42,7 +42,7 @@ export class FilterPanelService {
                 .set('name', name.toString())
                 .set('method', method);
         }
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: this.params
         });

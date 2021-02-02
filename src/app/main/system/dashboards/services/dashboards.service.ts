@@ -26,7 +26,7 @@ export class DashboardsService {
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -38,7 +38,7 @@ export class DashboardsService {
                 .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -51,7 +51,7 @@ export class DashboardsService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', "dashboard_delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

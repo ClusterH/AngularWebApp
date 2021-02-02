@@ -28,7 +28,7 @@ export class EventsService {
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -42,7 +42,7 @@ export class EventsService {
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -59,7 +59,7 @@ export class EventsService {
             .set('id', id.toString())
             .set('method', "event_delete");
 
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

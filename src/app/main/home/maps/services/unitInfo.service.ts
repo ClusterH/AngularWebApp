@@ -23,7 +23,7 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('id', unitid.toString())
             .set('method', 'GetUnitInfo_v1');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -35,7 +35,7 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('id', poiid.toString())
             .set('method', 'GetPOIInfo');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -47,7 +47,7 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('id', poiid.toString())
             .set('method', 'GetPOIInfo_V1');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -61,7 +61,7 @@ export class UnitInfoService {
             .set('validitytime', validitytime.toString())
             .set('emailaddress', emailaddress.toString())
             .set('method', 'ShareLocation');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -73,7 +73,7 @@ export class UnitInfoService {
         let params = new HttpParams()
             .set('unitid', unitid.toString())
             .set('method', 'LocateUnit');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -87,7 +87,7 @@ export class UnitInfoService {
             .set('pageindex', pageindex.toString())
             .set('pagesize', pagesize.toString())
             .set('method', 'GetUnitPOIs');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -105,7 +105,7 @@ export class UnitInfoService {
                     .set('datefrom', param.datefrom.toString())
                     .set('dateto', param.dateto.toString())
                     .set('method', method);
-                this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 }).subscribe(res => {
@@ -116,7 +116,7 @@ export class UnitInfoService {
                     .set('unitid', param.unitid.toString())
                     .set('historytype', param.historytype.toString())
                     .set('method', method);
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 }).subscribe(res => {

@@ -28,7 +28,7 @@ export class PrivilegeDetailService {
                     .set('pagesize', pagesize.toString())
                     .set('typeid', this.current_typeID.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -37,7 +37,7 @@ export class PrivilegeDetailService {
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -50,7 +50,7 @@ export class PrivilegeDetailService {
                     .set('typeid', this.current_typeID.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -60,7 +60,7 @@ export class PrivilegeDetailService {
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -77,7 +77,7 @@ export class PrivilegeDetailService {
             .set('typeid', privilegeDetail.typeid.toString())
             .set('objectid', privilegeDetail.objectid.toString())
             .set('method', 'privilege_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

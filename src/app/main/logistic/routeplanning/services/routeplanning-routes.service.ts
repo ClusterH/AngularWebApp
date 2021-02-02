@@ -23,7 +23,7 @@ export class RoutePlanningRouteService {
             .set('orderdirection', orderdirection.toString())
             .set('seldate', seldate)
             .set('method', method.toString());
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -36,7 +36,7 @@ export class RoutePlanningRouteService {
             .set('id', id.toString())
             .set('seldate', seldate)
             .set('method', 'GetPlanningRouteStops');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -50,7 +50,7 @@ export class RoutePlanningRouteService {
                 .set('unitid', unitid.toString())
                 .set('historytype', '3')
                 .set('method', method);
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -59,7 +59,7 @@ export class RoutePlanningRouteService {
                 .set('unitid', unitid.toString())
                 .set('date_time', date_time.toString())
                 .set('method', method);
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -71,7 +71,7 @@ export class RoutePlanningRouteService {
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
             .set('method', "maintenance_dashboard");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -86,7 +86,7 @@ export class RoutePlanningRouteService {
             .set('cost', attend.cost.toString())
             .set('performdate', attend.performdate.toString())
             .set('method', "maintevent_attend");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

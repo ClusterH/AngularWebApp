@@ -24,7 +24,7 @@ export class CommandsService {
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -36,7 +36,7 @@ export class CommandsService {
                 .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -49,7 +49,7 @@ export class CommandsService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', "command_delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

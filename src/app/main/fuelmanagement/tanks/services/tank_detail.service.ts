@@ -25,7 +25,7 @@ export class TankDetailService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -35,7 +35,7 @@ export class TankDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -50,7 +50,7 @@ export class TankDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -61,7 +61,7 @@ export class TankDetailService {
                 .set('name', `^${name}^`)
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -86,7 +86,7 @@ export class TankDetailService {
             .set('hassensor', tankDetail.hassensor.toString())
             .set('capacity', tankDetail.capacity.toString())
             .set('method', 'FuelTank_Save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -99,7 +99,7 @@ export class TankDetailService {
             .set('fromtime', fromtime.toString())
             .set('totime', totime.toString())
             .set('method', 'fueltank_history');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

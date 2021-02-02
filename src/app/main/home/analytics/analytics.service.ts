@@ -52,7 +52,7 @@ export class AnalyticsDashboardService implements Resolve<any>
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method);
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -62,7 +62,7 @@ export class AnalyticsDashboardService implements Resolve<any>
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method);
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -74,7 +74,7 @@ export class AnalyticsDashboardService implements Resolve<any>
         headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let params = new HttpParams()
             .set('method', 'GetDashboardClips');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -90,7 +90,7 @@ export class AnalyticsDashboardService implements Resolve<any>
             .set('timeselection', dashboard.timeselection.toString())
             .set('groupselection', dashboard.groupselection.toString())
             .set('method', 'dashboard_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -101,7 +101,7 @@ export class AnalyticsDashboardService implements Resolve<any>
         let params = new HttpParams()
             .set('id', dashboardid.toString())
             .set('method', 'dashboard_delete');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -119,7 +119,7 @@ export class AnalyticsDashboardService implements Resolve<any>
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }

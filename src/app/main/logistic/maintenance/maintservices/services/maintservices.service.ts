@@ -28,7 +28,7 @@ export class MaintservicesService {
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -40,7 +40,7 @@ export class MaintservicesService {
                 .set('orderdirection', orderdirection.toString())
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -55,7 +55,7 @@ export class MaintservicesService {
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -65,7 +65,7 @@ export class MaintservicesService {
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -80,7 +80,7 @@ export class MaintservicesService {
                 .set('pagesize', pagesize.toString())
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -91,7 +91,7 @@ export class MaintservicesService {
                 .set('name', `^${name}^`)
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: header_detail,
                 params: params_detail
             });
@@ -108,7 +108,7 @@ export class MaintservicesService {
                 .set('pagesize', pagesize.toString())
                 .set(`${paramIdentity}`, serviceid.toString())
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -119,7 +119,7 @@ export class MaintservicesService {
                 .set(`${paramIdentity}`, serviceid.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -135,7 +135,7 @@ export class MaintservicesService {
             .set('groupid', maintserviceDetail.groupid.toString())
             .set('isactive', maintserviceDetail.isactive.toString())
             .set('method', 'maintservice_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -155,7 +155,7 @@ export class MaintservicesService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -172,7 +172,7 @@ export class MaintservicesService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -183,7 +183,7 @@ export class MaintservicesService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', "maintservice_delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

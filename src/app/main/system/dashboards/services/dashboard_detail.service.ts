@@ -27,7 +27,7 @@ export class DashboardDetailService {
             .set('timeselection', dashboardDetail.timeselection.toString())
             .set('groupselection', dashboardDetail.groupselection.toString())
             .set('method', 'dashboard_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -38,7 +38,7 @@ export class DashboardDetailService {
         const params_detail = new HttpParams()
             .set('dashboardid', dashboardid.toString())
             .set('method', method);
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

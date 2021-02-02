@@ -33,7 +33,7 @@ export class PoigroupDetailService {
                         .set('pagesize', pagesize.toString())
                         .set('companyid', this.current_CompanyID.toString())
                         .set('method', method.toString());
-                    return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    return this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
@@ -43,7 +43,7 @@ export class PoigroupDetailService {
                         .set('pagesize', pagesize.toString())
                         .set('poigroupid', this.current_poiGroupID.toString())
                         .set('method', method.toString());
-                    return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    return this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
@@ -53,7 +53,7 @@ export class PoigroupDetailService {
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -67,7 +67,7 @@ export class PoigroupDetailService {
                         .set('name', `^${name}^`)
                         .set('companyid', this.current_CompanyID.toString())
                         .set('method', method.toString());
-                    return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    return this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
@@ -78,7 +78,7 @@ export class PoigroupDetailService {
                         .set('name', `^${name}^`)
                         .set('poigroupid', this.current_poiGroupID.toString())
                         .set('method', method.toString());
-                    return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                    return this._httpClient.get('trackingxlapi.ashx', {
                         headers: headers,
                         params: params
                     });
@@ -89,7 +89,7 @@ export class PoigroupDetailService {
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -111,7 +111,7 @@ export class PoigroupDetailService {
             .set('lastmodifieddate', poigroupDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', poigroupDetail.lastmodifiedby.toString())
             .set('method', 'poigroup_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
@@ -129,7 +129,7 @@ export class PoigroupDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
@@ -146,7 +146,7 @@ export class PoigroupDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('http://trackingxlapi.polarix.com/trackingxlapi.ashx', body, {
+        return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }

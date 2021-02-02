@@ -18,6 +18,11 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
+        const baseURL = 'http://trackingxlapipg.polarix.com/';
+        const request = req.url;
+
+        req = req.clone({ url: `${baseURL}${request}` });
+
         let token: string = localStorage.getItem('current_token') || '';
         if (token.length != 0) {
             let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;

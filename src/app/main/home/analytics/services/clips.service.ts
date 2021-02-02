@@ -25,7 +25,7 @@ export class ClipsService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', 'dashboard_clip_delete');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -42,7 +42,7 @@ export class ClipsService {
                 params.append('groupselection', this.selectedOption.value.groupselection);
             }
 
-            this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             }).subscribe((res: any) => {
@@ -82,7 +82,7 @@ export class ClipsService {
             params.append('timeselection', this.selectedOption.value.timeselection);
             params.append('groupselection', this.selectedOption.value.groupselection);
         }
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -97,7 +97,7 @@ export class ClipsService {
             .set('orderby', orderby.toString())
             .set('orderdirection', orderdirection.toString())
             .set('method', method.toString());
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

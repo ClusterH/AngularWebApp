@@ -24,7 +24,7 @@ export class RoutePlanningJobService {
             .set('orderdirection', orderdirection.toString())
             .set('seldate', seldate.toString())
             .set('method', method.toString());
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -36,7 +36,7 @@ export class RoutePlanningJobService {
         let params = new HttpParams()
             .set('id', id.toString())
             .set('method', "routeplanningjobs_delete");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -60,7 +60,7 @@ export class RoutePlanningJobService {
             .set('address', jobdetail.address.toString())
             .set('description', jobdetail.description.toString())
             .set('method', "routeplanningjobs_Save");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });
@@ -74,7 +74,7 @@ export class RoutePlanningJobService {
             .set('include', include.toString())
             .set('seldate', seldate.toString())
             .set('method', "routeplanningjobs_SetInclude");
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: headers,
             params: params
         });

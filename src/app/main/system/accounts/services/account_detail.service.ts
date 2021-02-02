@@ -27,7 +27,7 @@ export class AccountDetailService {
                     .set('pagesize', pagesize.toString())
                     .set('makeid', this.current_makeID.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -36,7 +36,7 @@ export class AccountDetailService {
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -49,7 +49,7 @@ export class AccountDetailService {
                     .set('makeid', this.current_makeID.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -59,7 +59,7 @@ export class AccountDetailService {
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
-                return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+                return this._httpClient.get('trackingxlapi.ashx', {
                     headers: headers,
                     params: params
                 });
@@ -86,7 +86,7 @@ export class AccountDetailService {
             .set('lastmodifieddate', accountDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', accountDetail.lastmodifiedby.toString())
             .set('method', 'account_save');
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

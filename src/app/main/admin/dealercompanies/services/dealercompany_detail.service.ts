@@ -31,7 +31,7 @@ export class DealercompanyDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -43,7 +43,7 @@ export class DealercompanyDetailService {
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -85,7 +85,7 @@ export class DealercompanyDetailService {
             .set('hasprivatelabel', dealercompanyDetail.hasprivatelabel.toString())
             .set('method', 'dealercompany_save');
 
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });

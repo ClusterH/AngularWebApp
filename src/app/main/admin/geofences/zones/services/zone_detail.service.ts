@@ -33,7 +33,7 @@ export class ZoneDetailService {
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -47,7 +47,7 @@ export class ZoneDetailService {
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
 
-            return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+            return this._httpClient.get('trackingxlapi.ashx', {
                 headers: headers,
                 params: params
             });
@@ -74,7 +74,7 @@ export class ZoneDetailService {
 
 
 
-        return this._httpClient.get('http://trackingxlapi.polarix.com/trackingxlapi.ashx', {
+        return this._httpClient.get('trackingxlapi.ashx', {
             headers: header_detail,
             params: params_detail
         });
