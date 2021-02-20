@@ -21,49 +21,30 @@ export class AuthService {
     }
 
     userLogin(email: string, password: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('email', email)
             .set('password', password)
 
         // http://trackingxlapi.polarix.com/AuthenticateUser.ashx?{email:%22polarix@polarixusa.com%22,password:%22f0r3s1ght01!%22}
         return this._httpClient.get('AuthenticateUser.ashx', {
-            headers: headers,
             params: params
         });
-        // .pipe(map(user => {
-
-        //     if (user) {
-        //         localStorage.setItem('user_info', JSON.stringify(user));
-        //     }
-
-        //     this.currentUserSubject.next(user);
-        //     return user;
-        // }), share());
     }
 
     getUserObject() {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         let id: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('id', id.toString())
             .set('method', 'user_Object');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     getSystemPageClist() {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('method', 'SystemPage_CList');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }

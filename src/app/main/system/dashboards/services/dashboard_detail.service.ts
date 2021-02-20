@@ -18,7 +18,6 @@ export class DashboardDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     saveDashboardDetail(dashboardDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', dashboardDetail.id.toString())
             .set('name', dashboardDetail.name.toString())
@@ -28,18 +27,15 @@ export class DashboardDetailService {
             .set('groupselection', dashboardDetail.groupselection.toString())
             .set('method', 'dashboard_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }
 
     getClip_List(dashboardid, method): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('dashboardid', dashboardid.toString())
             .set('method', method);
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

@@ -11,7 +11,6 @@ export class JobsService {
     boards: any[];
     onBoardsChanged: BehaviorSubject<any>;
 
-
     /**
      * Constructor
      *
@@ -22,21 +21,18 @@ export class JobsService {
     }
 
     getJobs(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterItem == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -44,39 +40,33 @@ export class JobsService {
                 .set(`${filterItem}`, `^${filterString}^`.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getDetailClist(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     saveJob(jobDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', jobDetail.id.toString())
             .set('imei', jobDetail.imei.toString())
@@ -105,42 +95,32 @@ export class JobsService {
             .set('notes', jobDetail.notes.toString())
             .set('method', 'installation_Save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }
 
     deleteJob(id: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('id', id.toString())
             .set('method', "installation_Delete");
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     Installationimages_TList(id: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('installationid', id.toString())
             .set('method', "Installationimages_TList");
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     saveInstallationImages(id: any, images: any): Observable<any> {
-
-        let token: string = localStorage.getItem('current_token') || '';
-        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
-        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-        const header_detail = new HttpHeaders()
-            .append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"))
+        const token: string = localStorage.getItem('current_token') || '';
+        const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         const body = {
             "installationid": id,
             "data": images,
@@ -150,18 +130,13 @@ export class JobsService {
             "userid": userid
         }
 
-        return this._httpClient.post('trackingxlapi.ashx', body, {
-            headers: header_detail,
-        });
+        return this._httpClient.post('trackingxlapi.ashx', body);
     }
 
     deleteInstallationImages(id: any, images: any): Observable<any> {
-
-        let token: string = localStorage.getItem('current_token') || '';
-        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
-        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
+        const token: string = localStorage.getItem('current_token') || '';
+        const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         const body = {
             "installationid": id,
             "data": images,
@@ -170,39 +145,29 @@ export class JobsService {
             "conncode": conncode,
             "userid": userid
         }
-        return this._httpClient.post('trackingxlapi.ashx', body, {
-            headers: headers,
-        });
+        return this._httpClient.post('trackingxlapi.ashx', body);
     }
 
     assignInstallerToJob(installationid, installerid): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('installationid', installationid.toString())
             .set('installerid', installerid.toString())
             .set('method', "AssignInstallerToJob");
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     getBoards(): Promise<any> {
         return new Promise((resolve, reject) => {
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('method', "GetInstallationBoards");
             this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             })
                 .subscribe((response: any) => {
                     if (response.responseCode == 100) {
                         this.boards = JSON.parse(response.TrackingXLAPI.DATA[0].Column1).boards;
-
-
                         this.onBoardsChanged.next(this.boards);
                         resolve(this.boards);
                     }

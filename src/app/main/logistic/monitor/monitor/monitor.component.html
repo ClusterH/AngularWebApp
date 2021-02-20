@@ -19,12 +19,12 @@
             </div>
         </div>
         <as-split class="split-example ex-percent" unit="percent" (dragEnd)="dragEnd($event)">
-            <as-split-area size="50">
+            <as-split-area [size]="50">
                 <div style="height: calc(100vh - 144px);">
                     <app-triplist></app-triplist>
                 </div>
             </as-split-area>
-            <as-split-area size="50">
+            <as-split-area [size]="50">
                 <div style="height: 100%;">
                     <app-monitormap></app-monitormap>
                 </div>

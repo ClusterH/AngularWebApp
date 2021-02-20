@@ -16,15 +16,14 @@ export class MonitorFileDragDropComponent {
      * on file drop handler
      */
     onFileDropped($event) {
-
         this.prepareFilesList($event);
     }
 
     /**
      * handle file from browsing
      */
-    fileBrowseHandler(files) {
-        this.prepareFilesList(files);
+    fileBrowseHandler(event: any) {
+        this.prepareFilesList(event.srcElement.files);
     }
 
     /**
@@ -32,25 +31,20 @@ export class MonitorFileDragDropComponent {
      * @param index (File index)
      */
     deleteFile(index: number, isAll?: boolean, isConfirm?: boolean) {
-
         if (isAll) {
             if (isConfirm) {
                 if (isEmpty(this.files)) {
                     alert('Please upload file first!');
                     return;
                 }
-
-
                 this.files = []
             } else {
                 this.files = [];
             }
         } else {
             if (this.files[index].progress < 100) {
-
                 return;
             }
-
             this.files.splice(index, 1);
         }
     }

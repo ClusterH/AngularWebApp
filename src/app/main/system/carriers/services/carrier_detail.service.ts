@@ -22,7 +22,6 @@ export class CarrierDetailService {
     }
 
     saveCarrierDetail(carrierDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', carrierDetail.id.toString())
             .set('name', carrierDetail.name.toString())
@@ -35,7 +34,6 @@ export class CarrierDetailService {
             .set('lastmodifiedby', carrierDetail.lastmodifiedby.toString())
             .set('method', 'carrier_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

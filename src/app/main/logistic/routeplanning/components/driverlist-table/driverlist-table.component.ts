@@ -65,6 +65,10 @@ export class DriverlistTableComponent implements OnInit {
         this._unsubscribeAll.complete();
     }
 
+    applyFilterGlobal($event, stringVal) {
+        this.table.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+    }
+
     getDriverList(seldate: Date): void {
         this.routePlanningDriverService.loadingsubject.next(false);
         this.routePlanningDriverService.getRoutePlanningDriver(1, 100000, 'driver', 'asc', this.paramDateFormat(seldate), 'routeplanningdrivers_TList').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {

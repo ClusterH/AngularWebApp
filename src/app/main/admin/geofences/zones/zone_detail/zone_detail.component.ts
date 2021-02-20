@@ -1,26 +1,21 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
-import { ZoneDetail } from 'app/main/admin/geofences/zones/model/zone.model';
-import { CourseDialogComponent } from "../dialog/dialog.component";
-
-import { merge, Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
-
+import { MatPaginator } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { ZoneDetailService } from 'app/main/admin/geofences/zones/services/zone_detail.service';
-import { ZoneDetailDataSource } from "app/main/admin/geofences/zones/services/zone_detail.datasource";
-
 import { locale as zonesEnglish } from 'app/main/admin/geofences/zones/i18n/en';
-import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
 import { locale as zonesFrench } from 'app/main/admin/geofences/zones/i18n/fr';
 import { locale as zonesPortuguese } from 'app/main/admin/geofences/zones/i18n/pt';
+import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
+import { ZoneDetail } from 'app/main/admin/geofences/zones/model/zone.model';
+import { ZoneDetailDataSource } from "app/main/admin/geofences/zones/services/zone_detail.datasource";
+import { ZoneDetailService } from 'app/main/admin/geofences/zones/services/zone_detail.service';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
     selector: 'app-zone-detail',
@@ -36,18 +31,12 @@ export class ZoneDetailComponent implements OnInit {
     pageType: string;
     userConncode: string;
     userID: number;
-
     zoneModel_flag: boolean;
-
     zoneForm: FormGroup;
     zoneDetail: ZoneDetail = {};
-
     displayedColumns: string[] = ['name'];
-
     dataSource: ZoneDetailDataSource;
-
     dataSourceCompany: ZoneDetailDataSource;
-
     filter_string: string = '';
     method_string: string = '';
     private _unsubscribeAll: Subject<any>;
@@ -58,35 +47,28 @@ export class ZoneDetailComponent implements OnInit {
     constructor(
         public zoneDetailService: ZoneDetailService,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-
         private _formBuilder: FormBuilder,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(zonesEnglish, zonesSpanish, zonesFrench, zonesPortuguese);
-
-        this.zone = localStorage.getItem("zone_detail") ? JSON.parse(localStorage.getItem("zone_detail")) : '';
-
-
-
-        if (this.zone != '') {
-            this.pageType = 'edit';
-        }
-        else {
-
-
+        this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
+            this.zone = data;
+        });
+        if (isEmpty(this.zone)) {
             this.pageType = 'new';
+        } else {
+            this.pageType = 'edit';
         }
 
         this.filter_string = '';
     }
 
     ngOnInit(): void {
-
         this.dataSourceCompany = new ZoneDetailDataSource(this.zoneDetailService);
-
         this.dataSourceCompany.loadZoneDetail(0, 10, this.zone.company, "company_clist");
-
         this.zoneForm = this._formBuilder.group({
             name: [null, Validators.required],
             company: [null, Validators.required],
@@ -105,17 +87,20 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-
-
         merge(this.paginatorCompany.page)
             .pipe(tap(() => {
                 this.loadZoneDetail("company")
             }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
     }
 
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
     loadZoneDetail(method_string: string) {
         if (method_string == 'company') {
-            this.dataSourceCompany.loadZoneDetail(this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`)
+            this.dataSourceCompany.loadZoneDetail(this.paginatorCompany.pageIndex, this.paginatorCompany.pageSize, this.filter_string, `${method_string}_clist`);
         }
     }
 
@@ -131,11 +116,7 @@ export class ZoneDetailComponent implements OnInit {
         let methodString = item;
         this.method_string = item.split('_')[0];
         let selected_element_id = this.zoneForm.get(`${this.method_string}`).value;
-
-
-
         let clist = this.zoneDetailService.unit_clist_item[methodString];
-
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
                 this.zoneForm.get('filterstring').setValue(clist[i].name);
@@ -148,30 +129,23 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     clearFilter() {
-
         this.filter_string = '';
         this.zoneForm.get('filterstring').setValue(this.filter_string);
-
         this.managePageIndex(this.method_string);
         this.loadZoneDetail(this.method_string);
     }
 
     onKey(event: any) {
         this.filter_string = event.target.value;
-
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-
             this.managePageIndex(this.method_string);
             this.loadZoneDetail(this.method_string);
         }
-
-
     }
 
     setValues() {
         this.zoneForm.get('name').setValue(this.zone.name);
         this.zoneForm.get('company').setValue(this.zone.companyid);
-
         let created = this.zone.created ? new Date(`${this.zone.created}`) : '';
         let deletedwhen = this.zone.deletedwhen ? new Date(`${this.zone.deletedwhen}`) : '';
         let lastmodifieddate = this.zone.lastmodifieddate ? new Date(`${this.zone.lastmodifieddate}`) : '';
@@ -186,9 +160,9 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
-        this.zoneDetail.name = this.zoneForm.get('name').value || '',
-            this.zoneDetail.companyid = this.zoneForm.get('company').value || 0;
-
+        const userID: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        this.zoneDetail.name = this.zoneForm.get('name').value || '';
+        this.zoneDetail.companyid = this.zoneForm.get('company').value || 0;
         this.zoneDetail.isactive = this.zone.isactive || true;
         this.zoneDetail.deletedwhen = this.zone.deletedwhen || '';
         this.zoneDetail.deletedby = this.zone.deletedby || 0;
@@ -198,13 +172,13 @@ export class ZoneDetailComponent implements OnInit {
             this.zoneDetail.created = this.zone.created;
             this.zoneDetail.createdby = this.zone.createdby;
             this.zoneDetail.lastmodifieddate = dateTime;
-            this.zoneDetail.lastmodifiedby = this.userID;
+            this.zoneDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.zoneDetail.id = 0;
             this.zoneDetail.created = dateTime;
-            this.zoneDetail.createdby = this.userID;
+            this.zoneDetail.createdby = userID;
             this.zoneDetail.lastmodifieddate = dateTime;
-            this.zoneDetail.lastmodifiedby = this.userID;
+            this.zoneDetail.lastmodifiedby = userID;
         }
     }
 
@@ -225,17 +199,13 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     saveZone(): void {
-
         let today = new Date().toISOString();
         this.getValues(today, "save");
-
-
         if (this.zoneDetail.name == '') {
             alert('Please enter Detail Name')
         } else {
             this.zoneDetailService.saveZoneDetail(this.zoneDetail)
                 .subscribe((result: any) => {
-
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
                         this.router.navigate(['admin/geofences/zones/zones']);
@@ -262,26 +232,25 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
+        this.filter_string = '';
+        this.zoneForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.zoneForm.value;
+        if (isEqual(this.zone_detail, currentState)) {
+            this.router.navigate(['admin/vehicles/vehicles']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = {
+                zone: "", flag: flag
+            };
 
-        dialogConfig.disableClose = true;
-
-        dialogConfig.data = {
-            zone: "", flag: flag
-        };
-
-        dialogConfig.disableClose = false;
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-            if (result) {
-
-
-            }
-        });
-
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['admin/vehicles/vehicles']);
+                }
+            });
+        }
     }
-
 }

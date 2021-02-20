@@ -28,8 +28,6 @@ export class FilterPanelService {
     }
 
     getFilterPanelClists(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             this.params = new HttpParams()
                 .set('pageindex', pageindex.toString())
@@ -43,7 +41,6 @@ export class FilterPanelService {
                 .set('method', method);
         }
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: this.params
         });
     }

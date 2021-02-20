@@ -2,57 +2,57 @@
 // @ Custom color maps for Fuse
 // -----------------------------------------------------------------------------------------------------
 $fuse-white: (
-    500: white,
-    contrast: (
-        500: $dark-primary-text,
-    ),
+  500: white,
+  contrast: (
+    500: $dark-primary-text,
+  ),
 );
 
 $fuse-black: (
-    500: black,
-    contrast: (
-        500: $light-primary-text,
-    ),
+  500: black,
+  contrast: (
+    500: $light-primary-text,
+  ),
 );
 
 $fuse-navy: (
-    50: #ececee,
-    100: #c5c6cb,
-    200: #9ea1a9,
-    300: #7d818c,
-    400: #5c616f,
-    500: #3c4252,
-    600: #353a48,
-    700: #2d323e,
-    800: #262933,
-    900: #1e2129,
-    A100: #c5c6cb,
-    A200: #9ea1a9,
-    A400: #5c616f,
-    A700: #2d323e,
-    contrast: (
-        50: $dark-primary-text,
-        100: $dark-primary-text,
-        200: $dark-primary-text,
-        300: $light-primary-text,
-        400: $light-primary-text,
-        500: $light-primary-text,
-        600: $light-primary-text,
-        700: $light-primary-text,
-        800: $light-primary-text,
-        900: $light-primary-text,
-        A100: $dark-primary-text,
-        A200: $light-primary-text,
-        A400: $light-primary-text,
-        A700: $light-primary-text,
-    ),
+  50: #ececee,
+  100: #c5c6cb,
+  200: #9ea1a9,
+  300: #7d818c,
+  400: #5c616f,
+  500: #3c4252,
+  600: #353a48,
+  700: #2d323e,
+  800: #262933,
+  900: #1e2129,
+  A100: #c5c6cb,
+  A200: #9ea1a9,
+  A400: #5c616f,
+  A700: #2d323e,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $light-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  ),
 );
 
 // Generate Fuse color classes for custom palettes
 $custom_palettes: (
-    fuse-white: $fuse-white,
-    fuse-black: $fuse-black,
-    fuse-navy: $fuse-navy,
+  fuse-white: $fuse-white,
+  fuse-black: $fuse-black,
+  fuse-navy: $fuse-navy,
 );
 
 @include fuse-color-classes($custom_palettes);
@@ -63,12 +63,12 @@ $custom_palettes: (
 
 // Angular Material typography
 $typography: mat-typography-config(
-    $font-family: "Muli, Helvetica Neue, Arial, sans-serif",
-    $title: mat-typography-level(20px, 32px, 600),
-    $body-2: mat-typography-level(14px, 24px, 600),
-    $button: mat-typography-level(14px, 14px, 600),
-    $input: mat-typography-level(16px, 1.125, 400)
-        // line-height must be unitless !!!,,,,,,,,,,,,,,,,,
+  $font-family: "Muli, Helvetica Neue, Arial, sans-serif",
+  $title: mat-typography-level(20px, 32px, 600),
+  $body-2: mat-typography-level(14px, 24px, 600),
+  $button: mat-typography-level(14px, 14px, 600),
+  $input: mat-typography-level(16px, 1.125, 400)
+    // line-height must be unitless !!!,,,,,,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -166,7 +166,6 @@ $typography: mat-typography-config(
 @import "src/app/main/logistic/maintenance/serviceitems/serviceitems/serviceitems.theme";
 @import "src/app/main/logistic/maintenance/maintservices/maintservices/maintservices.theme";
 @import "src/app/main/logistic/jobmanagement/scrumboard/scrumboard.theme";
-@import "src/app/main/logistic/jobmanagement/todo/todo.theme";
 @import "src/app/main/logistic/routecenter/routecenter/routecenter.theme";
 @import "src/app/main/logistic/routeplanning/routeplanning/routeplanning.theme";
 @import "src/app/main/logistic/monitor/monitor/monitor.theme";
@@ -180,105 +179,104 @@ $typography: mat-typography-config(
 
 // Define a mixin for easier access
 @mixin components-theme($theme) {
-    // Layout components
-    @include chat-panel-theme($theme);
-    @include toolbar-theme($theme);
+  // Layout components
+  @include chat-panel-theme($theme);
+  @include toolbar-theme($theme);
 
-    //Authentication
-    @include login-theme($theme);
-    @include register-theme($theme);
-    @include reset-password-theme($theme);
-    @include forgot-password-theme($theme);
-    @include mail-confirm-theme($theme);
+  //Authentication
+  @include login-theme($theme);
+  @include register-theme($theme);
+  @include reset-password-theme($theme);
+  @include forgot-password-theme($theme);
+  @include mail-confirm-theme($theme);
 
-    //Admin
-    @include admin-vehicles-theme($theme);
-    @include admin-vehicle-theme($theme);
-    @include admin-assets-theme($theme);
-    @include admin-asset-theme($theme);
-    @include admin-users-theme($theme);
-    @include admin-user-theme($theme);
-    @include admin-operators-theme($theme);
-    @include admin-operator-theme($theme);
-    @include admin-makes-theme($theme);
-    @include admin-make-theme($theme);
-    @include admin-models-theme($theme);
-    @include admin-model-theme($theme);
-    @include admin-companies-theme($theme);
-    @include admin-company-theme($theme);
-    @include admin-dealercompanies-theme($theme);
-    @include admin-dealercompany-theme($theme);
-    @include admin-insurancecompanies-theme($theme);
-    @include admin-insurancecompany-theme($theme);
-    @include admin-pois-theme($theme);
-    @include admin-poi-theme($theme);
-    @include admin-poigroups-theme($theme);
-    @include admin-poigroup-theme($theme);
-    @include admin-zones-theme($theme);
-    @include admin-zone-theme($theme);
-    @include admin-zonegroups-theme($theme);
-    @include admin-zonegroup-theme($theme);
-    @include admin-groups-theme($theme);
-    @include admin-group-theme($theme);
-    @include admin-routes-theme($theme);
-    @include admin-route-theme($theme);
-    @include admin-events-theme($theme);
-    @include admin-event-theme($theme);
+  //Admin
+  @include admin-vehicles-theme($theme);
+  @include admin-vehicle-theme($theme);
+  @include admin-assets-theme($theme);
+  @include admin-asset-theme($theme);
+  @include admin-users-theme($theme);
+  @include admin-user-theme($theme);
+  @include admin-operators-theme($theme);
+  @include admin-operator-theme($theme);
+  @include admin-makes-theme($theme);
+  @include admin-make-theme($theme);
+  @include admin-models-theme($theme);
+  @include admin-model-theme($theme);
+  @include admin-companies-theme($theme);
+  @include admin-company-theme($theme);
+  @include admin-dealercompanies-theme($theme);
+  @include admin-dealercompany-theme($theme);
+  @include admin-insurancecompanies-theme($theme);
+  @include admin-insurancecompany-theme($theme);
+  @include admin-pois-theme($theme);
+  @include admin-poi-theme($theme);
+  @include admin-poigroups-theme($theme);
+  @include admin-poigroup-theme($theme);
+  @include admin-zones-theme($theme);
+  @include admin-zone-theme($theme);
+  @include admin-zonegroups-theme($theme);
+  @include admin-zonegroup-theme($theme);
+  @include admin-groups-theme($theme);
+  @include admin-group-theme($theme);
+  @include admin-routes-theme($theme);
+  @include admin-route-theme($theme);
+  @include admin-events-theme($theme);
+  @include admin-event-theme($theme);
 
-    //Report
-    @include report-reportcomponent-theme($theme);
-    @include report-reportresult-theme($theme);
+  //Report
+  @include report-reportcomponent-theme($theme);
+  @include report-reportresult-theme($theme);
 
-    //System
-    @include system-serviceplans-theme($theme);
-    @include system-serviceplan-theme($theme);
-    @include system-unittypes-theme($theme);
-    @include system-unittype-theme($theme);
-    @include system-accounts-theme($theme);
-    @include system-account-theme($theme);
-    @include system-carriers-theme($theme);
-    @include system-carrier-theme($theme);
-    @include system-simcards-theme($theme);
-    @include system-simcard-theme($theme);
-    @include system-devices-theme($theme);
-    @include system-device-theme($theme);
-    @include system-connections-theme($theme);
-    @include system-connection-theme($theme);
-    @include system-commands-theme($theme);
-    @include system-command-theme($theme);
-    @include system-syscommands-theme($theme);
-    @include system-syscommand-theme($theme);
-    @include system-userprofiles-theme($theme);
-    @include system-userprofile-theme($theme);
-    @include system-privileges-theme($theme);
-    @include system-privilege-theme($theme);
-    @include system-dashboards-theme($theme);
-    @include system-dashboard-theme($theme);
-    @include system-devconfigs-theme($theme);
-    @include system-devconfig-theme($theme);
-    @include system-contractors-theme($theme);
-    @include system-installers-theme($theme);
-    @include system-jobs-theme($theme);
+  //System
+  @include system-serviceplans-theme($theme);
+  @include system-serviceplan-theme($theme);
+  @include system-unittypes-theme($theme);
+  @include system-unittype-theme($theme);
+  @include system-accounts-theme($theme);
+  @include system-account-theme($theme);
+  @include system-carriers-theme($theme);
+  @include system-carrier-theme($theme);
+  @include system-simcards-theme($theme);
+  @include system-simcard-theme($theme);
+  @include system-devices-theme($theme);
+  @include system-device-theme($theme);
+  @include system-connections-theme($theme);
+  @include system-connection-theme($theme);
+  @include system-commands-theme($theme);
+  @include system-command-theme($theme);
+  @include system-syscommands-theme($theme);
+  @include system-syscommand-theme($theme);
+  @include system-userprofiles-theme($theme);
+  @include system-userprofile-theme($theme);
+  @include system-privileges-theme($theme);
+  @include system-privilege-theme($theme);
+  @include system-dashboards-theme($theme);
+  @include system-dashboard-theme($theme);
+  @include system-devconfigs-theme($theme);
+  @include system-devconfig-theme($theme);
+  @include system-contractors-theme($theme);
+  @include system-installers-theme($theme);
+  @include system-jobs-theme($theme);
 
-    //Logistic
-    @include logistic-pendings-theme($theme);
-    @include logistic-history-theme($theme);
-    @include logistic-events-theme($theme);
-    @include logistic-event-theme($theme);
-    @include logistic-serviceitems-theme($theme);
-    @include logistic-maintservices-theme($theme);
-    @include logistic-routecenter-theme($theme);
-    @include logistic-routeplanning-theme($theme);
-    @include logistic-monitor-theme($theme);
-    @include scrumboard-theme($theme);
-    @include todo-theme($theme);
+  //Logistic
+  @include logistic-pendings-theme($theme);
+  @include logistic-history-theme($theme);
+  @include logistic-events-theme($theme);
+  @include logistic-event-theme($theme);
+  @include logistic-serviceitems-theme($theme);
+  @include logistic-maintservices-theme($theme);
+  @include logistic-routecenter-theme($theme);
+  @include logistic-routeplanning-theme($theme);
+  @include logistic-monitor-theme($theme);
+  @include scrumboard-theme($theme);
 
-    //Fuel Management
-    @include fuelmanagement-tanks-theme($theme);
-    @include fuelmanagement-tank-theme($theme);
-    @include fuelmanagement-tank-edit-theme($theme);
-    @include fuelmanagement-fuelregistries-theme($theme);
-    @include fuelmanagement-fuelregistry-theme($theme);
+  //Fuel Management
+  @include fuelmanagement-tanks-theme($theme);
+  @include fuelmanagement-tank-theme($theme);
+  @include fuelmanagement-tank-edit-theme($theme);
+  @include fuelmanagement-fuelregistries-theme($theme);
+  @include fuelmanagement-fuelregistry-theme($theme);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -292,31 +290,31 @@ $default-warn-palette: mat-palette($mat-red);
 
 // Create the Material theme object
 $theme: mat-light-theme(
-    $default-primary-palette,
-    $default-accent-palette,
-    $default-warn-palette
+  $default-primary-palette,
+  $default-accent-palette,
+  $default-warn-palette
 );
 
 // Add ".theme-default" class to the body to activate this theme.
 // Class name must start with "theme-" !!!
 body.theme-default {
-    // Create an Angular Material theme from the $theme map
-    @include angular-material-theme($theme);
+  // Create an Angular Material theme from the $theme map
+  @include angular-material-theme($theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($theme);
+  // Apply the theme to the Fuse Core
+  @include fuse-core-theme($theme);
 
-    // Apply the theme to the user components
-    @include components-theme($theme);
+  // Apply the theme to the user components
+  @include components-theme($theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
-    $palettes: (
-        primary: $default-primary-palette,
-        accent: $default-accent-palette,
-        warn: $default-warn-palette,
-    );
+  // Generate Fuse color classes for primary, accent and warn colors
+  $palettes: (
+    primary: $default-primary-palette,
+    accent: $default-accent-palette,
+    warn: $default-warn-palette,
+  );
 
-    @include fuse-color-classes($palettes);
+  @include fuse-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -330,31 +328,31 @@ $yellow-light-theme-warn-palette: mat-palette($mat-red);
 
 // Create the Material theme object
 $yellow-light-theme: mat-light-theme(
-    $yellow-light-theme-primary-palette,
-    $yellow-light-theme-accent-palette,
-    $yellow-light-theme-warn-palette
+  $yellow-light-theme-primary-palette,
+  $yellow-light-theme-accent-palette,
+  $yellow-light-theme-warn-palette
 );
 
 // Add ".theme-yellow-light" class to the body to activate this theme.
 // Class name must start with "theme-" !!!
 body.theme-yellow-light {
-    // Generate the Angular Material theme
-    @include angular-material-theme($yellow-light-theme);
+  // Generate the Angular Material theme
+  @include angular-material-theme($yellow-light-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($yellow-light-theme);
+  // Apply the theme to the Fuse Core
+  @include fuse-core-theme($yellow-light-theme);
 
-    // Apply the theme to the user components
-    @include components-theme($yellow-light-theme);
+  // Apply the theme to the user components
+  @include components-theme($yellow-light-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
-    $palettes: (
-        primary: $yellow-light-theme-primary-palette,
-        accent: $yellow-light-theme-accent-palette,
-        warn: $yellow-light-theme-warn-palette,
-    );
+  // Generate Fuse color classes for primary, accent and warn colors
+  $palettes: (
+    primary: $yellow-light-theme-primary-palette,
+    accent: $yellow-light-theme-accent-palette,
+    warn: $yellow-light-theme-warn-palette,
+  );
 
-    @include fuse-color-classes($palettes);
+  @include fuse-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -368,31 +366,31 @@ $blue-gray-dark-theme-warn-palette: mat-palette($mat-red);
 
 // Create the Material theme object
 $blue-gray-dark-theme: mat-dark-theme(
-    $blue-gray-dark-theme-primary-palette,
-    $blue-gray-dark-theme-accent-palette,
-    $blue-gray-dark-theme-warn-palette
+  $blue-gray-dark-theme-primary-palette,
+  $blue-gray-dark-theme-accent-palette,
+  $blue-gray-dark-theme-warn-palette
 );
 
 // Add ".theme-blue-gray-dark" class to the body to activate this theme.
 // Class name must start with "theme-" !!!
 body.theme-blue-gray-dark {
-    // Generate the Angular Material theme
-    @include angular-material-theme($blue-gray-dark-theme);
+  // Generate the Angular Material theme
+  @include angular-material-theme($blue-gray-dark-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($blue-gray-dark-theme);
+  // Apply the theme to the Fuse Core
+  @include fuse-core-theme($blue-gray-dark-theme);
 
-    // Apply the theme to the user components
-    @include components-theme($blue-gray-dark-theme);
+  // Apply the theme to the user components
+  @include components-theme($blue-gray-dark-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
-    $palettes: (
-        primary: $blue-gray-dark-theme-primary-palette,
-        accent: $blue-gray-dark-theme-accent-palette,
-        warn: $blue-gray-dark-theme-warn-palette,
-    );
+  // Generate Fuse color classes for primary, accent and warn colors
+  $palettes: (
+    primary: $blue-gray-dark-theme-primary-palette,
+    accent: $blue-gray-dark-theme-accent-palette,
+    warn: $blue-gray-dark-theme-warn-palette,
+  );
 
-    @include fuse-color-classes($palettes);
+  @include fuse-color-classes($palettes);
 }
 
 // -----------------------------------------------------------------------------------------------------
@@ -406,29 +404,29 @@ $pink-dark-theme-warn-palette: mat-palette($mat-red);
 
 // Create the Material theme object
 $pink-dark-theme: mat-dark-theme(
-    $pink-dark-theme-primary-palette,
-    $pink-dark-theme-accent-palette,
-    $pink-dark-theme-warn-palette
+  $pink-dark-theme-primary-palette,
+  $pink-dark-theme-accent-palette,
+  $pink-dark-theme-warn-palette
 );
 
 // Add ".theme-pink-dark" class to the body to activate this theme.
 // Class name must start with "theme-" !!!
 body.theme-pink-dark {
-    // Generate the Angular Material theme
-    @include angular-material-theme($pink-dark-theme);
+  // Generate the Angular Material theme
+  @include angular-material-theme($pink-dark-theme);
 
-    // Apply the theme to the Fuse Core
-    @include fuse-core-theme($pink-dark-theme);
+  // Apply the theme to the Fuse Core
+  @include fuse-core-theme($pink-dark-theme);
 
-    // Apply the theme to the user components
-    @include components-theme($pink-dark-theme);
+  // Apply the theme to the user components
+  @include components-theme($pink-dark-theme);
 
-    // Generate Fuse color classes for primary, accent and warn colors
-    $palettes: (
-        primary: $pink-dark-theme-primary-palette,
-        accent: $pink-dark-theme-accent-palette,
-        warn: $pink-dark-theme-warn-palette,
-    );
+  // Generate Fuse color classes for primary, accent and warn colors
+  $palettes: (
+    primary: $pink-dark-theme-primary-palette,
+    accent: $pink-dark-theme-accent-palette,
+    warn: $pink-dark-theme-warn-palette,
+  );
 
-    @include fuse-color-classes($palettes);
+  @include fuse-color-classes($palettes);
 }

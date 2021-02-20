@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false,
-    hmr: false,
-    baseURL: 'trackingxlapi.ashx'
+  production: false,
+  hmr: false,
+  baseURL: 'trackingxlapi.ashx'
 };
 
 /*

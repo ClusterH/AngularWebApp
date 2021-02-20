@@ -60,6 +60,10 @@ export class JoblistTableComponent implements OnInit {
         this._unsubscribeAll.complete();
     }
 
+    applyFilterGlobal($event, stringVal) {
+        this.table.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+    }
+
     getJobList(seldate: Date): void {
         this.routePlanningJobService.loadingsubject.next(false);
         this.routePlanningJobService.getRoutePlanningJob(1, 100000, 'id', 'asc', this.paramDateFormat(seldate), 'routeplanningjobs_TList').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {

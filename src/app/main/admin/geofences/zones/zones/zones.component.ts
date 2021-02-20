@@ -1,27 +1,22 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, Output, Renderer2 } from '@angular/core';
-import { Router } from '@angular/router';
-import * as $ from 'jquery';
+import { Component, ElementRef, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-
-import { merge, Subject } from 'rxjs';
-import { tap, takeUntil } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.service';
-import { ZonesDataSource } from "app/main/admin/geofences/zones/services/zones.datasource";
-import { ZoneDetailService } from 'app/main/admin/geofences/zones/services/zone_detail.service';
-
-import { CourseDialogComponent } from "../dialog/dialog.component";
-
 import { locale as zonesEnglish } from 'app/main/admin/geofences/zones/i18n/en';
-import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
 import { locale as zonesFrench } from 'app/main/admin/geofences/zones/i18n/fr';
 import { locale as zonesPortuguese } from 'app/main/admin/geofences/zones/i18n/pt';
+import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
+import { ZonesDataSource } from "app/main/admin/geofences/zones/services/zones.datasource";
+import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.service';
+import { ZoneDetailService } from 'app/main/admin/geofences/zones/services/zone_detail.service';
+import * as $ from 'jquery';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'admin-zones',
@@ -136,34 +131,25 @@ export class ZonesComponent implements OnInit {
     }
 
     addNewZone() {
-        this.zoneDetailService.zone_detail = '';
-        localStorage.removeItem("zone_detail");
         this.router.navigate(['admin/geofences/zones/zone_detail']);
     }
 
     editShowZoneDetail(zone: any) {
-
-        localStorage.setItem("zone_detail", JSON.stringify(zone));
-
-        this.router.navigate(['admin/geofences/zones/zone_detail']);
+        this.router.navigate(['admin/geofences/zones/zone_detail'], { queryParams: zone });
     }
 
     deleteZone(zone): void {
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
-
         dialogConfig.disableClose = true;
-
         dialogConfig.data = {
             zone, flag: this.flag
         };
 
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 let deleteZone = this._adminZonesService.zoneList.findIndex((deletedzone: any) => deletedzone.id == zone.id);
-
                 if (deleteZone > -1) {
                     this._adminZonesService.zoneList.splice(deleteZone, 1);
                     this.dataSource.zonesSubject.next(this._adminZonesService.zoneList);
@@ -174,22 +160,16 @@ export class ZonesComponent implements OnInit {
     }
 
     duplicateZone(zone: any): void {
-
-
         const dialogConfig = new MatDialogConfig();
         this.flag = 'duplicate';
-
         dialogConfig.disableClose = true;
-
         dialogConfig.data = {
             zone, flag: this.flag
         };
-
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-
+                this.router.navigate(['admin/geofences/zones/zone_detail'], { queryParams: result });
             }
         });
     }

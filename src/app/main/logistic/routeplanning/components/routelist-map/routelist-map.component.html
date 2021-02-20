@@ -32,7 +32,7 @@
                         </table>
                     </agm-info-window>
                 </agm-marker>
-                <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy" [latitude]="m.latitude"
+                <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy: trackByFn" [latitude]="m.latitude"
                     [longitude]="m.longitude" [visible]="true"
                     [iconUrl]="m.arrived? unit_icon_arrived : unit_icon_unarrived" [agmFitBounds]="isRoute">
                     <agm-info-window>

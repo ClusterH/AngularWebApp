@@ -1,5 +1,4 @@
-export interface ZonegroupDetail
-{
+export interface ZonegroupDetail {
     id?: number;
     name?: string;
     companyid?: number;
@@ -13,9 +12,9 @@ export interface ZonegroupDetail
     longitude?: number;
     isactive?: boolean;
     created?: Date;
-    createdby?: number;
+    createdby?: string;
     deletedwhen?: Date;
     deletedby?: number;
     lastmodifieddate?: Date;
-    lastmodifiedby?: number;
+    lastmodifiedby?: string;
 }

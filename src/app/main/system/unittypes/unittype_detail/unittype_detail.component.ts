@@ -155,6 +155,7 @@ export class UnittypeDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
+        const userID: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.unittypeDetail.name = this.unittypeForm.get('name').value || '';
         this.unittypeDetail.producttypeid = this.unittypeForm.get('producttype').value || 0;
         this.unittypeDetail.isactive = this.unittype.isactive || true;
@@ -165,13 +166,13 @@ export class UnittypeDetailComponent implements OnInit {
             this.unittypeDetail.created = this.unittype.created;
             this.unittypeDetail.createdby = this.unittype.createdby;
             this.unittypeDetail.lastmodifieddate = dateTime;
-            this.unittypeDetail.lastmodifiedby = this.userID;
+            this.unittypeDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.unittypeDetail.id = 0;
             this.unittypeDetail.created = dateTime;
-            this.unittypeDetail.createdby = this.userID;
+            this.unittypeDetail.createdby = userID;
             this.unittypeDetail.lastmodifieddate = dateTime;
-            this.unittypeDetail.lastmodifiedby = this.userID;
+            this.unittypeDetail.lastmodifiedby = userID;
         }
     }
 

@@ -16,7 +16,6 @@ export class PDFService {
     constructor() { }
 
     getDocumentDefinition(table) {
-
         // sessionStorage.setItem('resume', JSON.stringify(this.resume));
         this.reportName = '';
         // Excel Title, Header, Data

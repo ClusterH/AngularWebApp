@@ -1,13 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject, OnDestroy } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { Router } from '@angular/router';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.service';
-
 import { locale as zonesEnglish } from 'app/main/admin/geofences/zones/i18n/en';
-import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
 import { locale as zonesFrench } from 'app/main/admin/geofences/zones/i18n/fr';
 import { locale as zonesPortuguese } from 'app/main/admin/geofences/zones/i18n/pt';
+import { locale as zonesSpanish } from 'app/main/admin/geofences/zones/i18n/sp';
+import { ZonesService } from 'app/main/admin/geofences/zones/services/zones.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnInit {
+export class CourseDialogComponent implements OnDestroy {
     private _unsubscribeAll: Subject<any>;
 
     zone: any;
@@ -30,18 +29,20 @@ export class CourseDialogComponent implements OnInit {
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) { zone, flag }
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(zonesEnglish, zonesSpanish, zonesFrench, zonesPortuguese);
 
         this.zone = zone;
         this.flag = flag;
     }
 
-    ngOnInit() {
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     save() {
         if (this.flag == "duplicate") {
-
             this.zone.id = 0;
             this.zone.name = '';
             this.zone.created = '';
@@ -50,12 +51,8 @@ export class CourseDialogComponent implements OnInit {
             this.zone.deletedbyname = '';
             this.zone.lastmodifieddate = '';
             this.zone.lastmodifiedbyname = '';
-
-            localStorage.setItem("zone_detail", JSON.stringify(this.zone));
-
-            this.router.navigate(['admin/geofences/zones/zone_detail']);
+            this.dialogRef.close(this.zone);
         } else if (this.flag == "delete") {
-
             this.zonesService.deleteZone(this.zone.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
@@ -66,21 +63,11 @@ export class CourseDialogComponent implements OnInit {
     }
 
     close() {
-        localStorage.removeItem("zone_detail");
         this.dialogRef.close();
     }
 
     goback() {
-        this.dialogRef.close();
-        localStorage.removeItem("zone_detail");
+        this.dialogRef.close('goback');
 
-        this.router.navigate(['admin/geofences/zones/zones']);
     }
-
-    reloadComponent() {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['admin/geofences/zones/zones']);
-    }
-
 }

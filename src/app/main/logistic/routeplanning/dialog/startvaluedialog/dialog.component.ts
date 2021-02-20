@@ -92,7 +92,6 @@ export class SetStartValuesDialogComponent implements OnInit, OnDestroy {
     }
 
     searchFromPOIList(e: any) {
-
         const filterString = e.target.value;
         const tempPOIs = this.userPOIs.filter(item => item.name.toLowerCase().includes(filterString.toLowerCase()));
         this.userPOIs$ = of(tempPOIs);

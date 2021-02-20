@@ -17,10 +17,8 @@ export class RoutePlanningService {
     constructor(private _httpClient: HttpClient) { }
 
     getRoutePlanning(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterString: string, scheduledate: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (filterString == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -28,11 +26,10 @@ export class RoutePlanningService {
                 .set('scheddate', scheduledate.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
@@ -41,58 +38,47 @@ export class RoutePlanningService {
                 .set('scheddate', scheduledate.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getUnPlannedStops(unitid: number, date_time: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (method == 'GetUnitHistory') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('unitid', unitid.toString())
                 .set('historytype', '3')
                 .set('method', method);
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('unitid', unitid.toString())
                 .set('date_time', date_time.toString())
                 .set('method', method);
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getDashboard(): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('method', "maintenance_dashboard");
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     saveAttend(attend: any): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('id', attend.id.toString())
             .set('action', attend.action.toString())
             .set('cost', attend.cost.toString())
             .set('performdate', attend.performdate.toString())
             .set('method', "maintevent_attend");
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }

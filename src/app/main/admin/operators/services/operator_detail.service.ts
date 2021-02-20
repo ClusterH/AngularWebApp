@@ -18,74 +18,63 @@ export class OperatorDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getGroup(pageindex: number, pagesize: number, name: string, companyid: number, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('companyid', companyid.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('companyid', companyid.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
     GetOperatorImage(id: number): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', id.toString())
             .set('method', 'GetOperatorImage');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }
 
     saveOperatorImage(id: number, filephoto: string): Observable<any> {
-        let token: string = localStorage.getItem('current_token') || '';
-        let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
-        let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const token: string = localStorage.getItem('current_token') || '';
+        const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
 
         const header_detail = new HttpHeaders()
-            .append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"))
             .append("Access-Control-Allow-Origin", "*")
             .append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         const body = {
@@ -96,17 +85,13 @@ export class OperatorDetailService {
             "conncode": conncode,
             "userid": userid
         }
-        const params_detail = new HttpParams()
-            // .set('id', id.toString())
-            // .set('filephoto', filephoto.toString())
-            .set('method', 'SaveOperatorImage');
+
         return this._httpClient.post('trackingxlapi.ashx', body, {
             headers: header_detail,
         });
     }
 
     saveOperatorDetail(operatorDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', operatorDetail.id.toString())
             .set('name', operatorDetail.name.toString())
@@ -124,7 +109,6 @@ export class OperatorDetailService {
             .set('deletedby', operatorDetail.deletedby.toString())
             .set('lastmodifieddate', operatorDetail.lastmodifieddate.toString())
             .set('lastmodifiedby', operatorDetail.lastmodifiedby.toString())
-            // .set('filephoto', operatorDetail.filephoto)
             .set('birthdate', operatorDetail.birthdate.toString())
             .set('sin', operatorDetail.sin.toString())
             .set('hiredate', operatorDetail.hiredate.toString())
@@ -133,9 +117,7 @@ export class OperatorDetailService {
             .set('driverlicensenumber', operatorDetail.driverlicensenumber.toString())
             .set('method', 'operator_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }
-
 }

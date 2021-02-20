@@ -16,98 +16,99 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector   : 'app',
-    templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit, OnDestroy {
-    fuseConfig: any;
-    navigation: any;
-    // Private
-    private _unsubscribeAll: Subject<any>;
-    /**
-     * Constructor
-     *
-     * @param {DOCUMENT} document
-     * @param {FuseConfigService} _fuseConfigService
-     * @param {FuseNavigationService} _fuseNavigationService
-     * @param {FuseSidebarService} _fuseSidebarService
-     * @param {FuseSplashScreenService} _fuseSplashScreenService
-     * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
-     * @param {Platform} _platform
-     * @param {TranslateService} _translateService
-     */
-    constructor(
-        @Inject(DOCUMENT) private document: any,
-        private _fuseConfigService: FuseConfigService,
-        private _fuseNavigationService: FuseNavigationService,
-        private _fuseSidebarService: FuseSidebarService,
-        private _fuseSplashScreenService: FuseSplashScreenService,
-        private _fuseTranslationLoaderService: FuseTranslationLoaderService,
-        private _translateService: TranslateService,
-        private _platform: Platform
-    ) {
-        // Get default navigation
-        this.navigation = navigation;
+  title = 'polarix-tracking-admin';
 
-        // Register the navigation to the service
-        this._fuseNavigationService.register('main', this.navigation);
+  fuseConfig: any;
+  navigation: any;
+  // Private
+  private _unsubscribeAll: Subject<any>;
+  /**
+   * Constructor
+   *
+   * @param {DOCUMENT} document
+   * @param {FuseConfigService} _fuseConfigService
+   * @param {FuseNavigationService} _fuseNavigationService
+   * @param {FuseSidebarService} _fuseSidebarService
+   * @param {FuseSplashScreenService} _fuseSplashScreenService
+   * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
+   * @param {Platform} _platform
+   * @param {TranslateService} _translateService
+   */
+  constructor(
+    @Inject(DOCUMENT) private document: any,
+    private _fuseConfigService: FuseConfigService,
+    private _fuseNavigationService: FuseNavigationService,
+    private _fuseSidebarService: FuseSidebarService,
+    private _fuseSplashScreenService: FuseSplashScreenService,
+    private _fuseTranslationLoaderService: FuseTranslationLoaderService,
+    private _translateService: TranslateService,
+    private _platform: Platform
+  ) {
+    // Get default navigation
+    this.navigation = navigation;
 
-        // Set the main navigation as our current navigation
-        this._fuseNavigationService.setCurrentNavigation('main');
+    // Register the navigation to the service
+    this._fuseNavigationService.register('main', this.navigation);
 
-        // Add languages
-        this._translateService.addLangs(['en', 'sp', 'fr', 'pt']);
+    // Set the main navigation as our current navigation
+    this._fuseNavigationService.setCurrentNavigation('main');
 
-        // Set the default language
-        this._translateService.setDefaultLang('en');
+    // Add languages
+    this._translateService.addLangs(['en', 'sp', 'fr', 'pt']);
 
-        // Set the navigation translations
-        this._fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationSpanish, navigationFrench, navigationPortuguese);
+    // Set the default language
+    this._translateService.setDefaultLang('en');
 
-        // Use a language
-        this._translateService.use('en');
+    // Set the navigation translations
+    this._fuseTranslationLoaderService.loadTranslations(navigationEnglish, navigationSpanish, navigationFrench, navigationPortuguese);
 
-        // Add is-mobile class to the body if the platform is mobile
-        if ( this._platform.ANDROID || this._platform.IOS )
-        {
-            this.document.body.classList.add('is-mobile');
+    // Use a language
+    this._translateService.use('en');
+
+    // Add is-mobile class to the body if the platform is mobile
+    if (this._platform.ANDROID || this._platform.IOS) {
+      this.document.body.classList.add('is-mobile');
+    }
+    // Set the private defaults
+    this._unsubscribeAll = new Subject();
+  }
+
+  ngOnInit(): void {
+    this._fuseConfigService.config
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((config) => {
+        this.fuseConfig = config;
+
+        // Boxed
+        if (this.fuseConfig.layout.width === 'boxed') { this.document.body.classList.add('boxed'); }
+        else {
+          this.document.body.classList.remove('boxed');
         }
-        // Set the private defaults
-        this._unsubscribeAll = new Subject();
-    }
 
-    ngOnInit(): void {
-        this._fuseConfigService.config
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((config) => {
-                this.fuseConfig = config;
+        // Color theme - Use normal for loop for IE11 compatibility
+        for (let i = 0; i < this.document.body.classList.length; i++) {
+          const className = this.document.body.classList[i];
+          if (className.startsWith('theme-')) {
+            this.document.body.classList.remove(className);
+          }
+        }
+        this.document.body.classList.add(this.fuseConfig.colorTheme);
+      });
+  }
 
-                // Boxed
-                if ( this.fuseConfig.layout.width === 'boxed' )
-                { this.document.body.classList.add('boxed');}
-                else {
-                    this.document.body.classList.remove('boxed');
-                }
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
 
-                // Color theme - Use normal for loop for IE11 compatibility
-                for ( let i = 0; i < this.document.body.classList.length; i++ ) {
-                    const className = this.document.body.classList[i];
-                    if ( className.startsWith('theme-') ) {
-                        this.document.body.classList.remove(className);
-                    }
-                }
-                this.document.body.classList.add(this.fuseConfig.colorTheme);
-            });
-    }
-
-    ngOnDestroy(): void {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
-    toggleSidebarOpen(key): void {
-        this._fuseSidebarService.getSidebar(key).toggleOpen();
-    }
+  toggleSidebarOpen(key): void {
+    this._fuseSidebarService.getSidebar(key).toggleOpen();
+  }
 }

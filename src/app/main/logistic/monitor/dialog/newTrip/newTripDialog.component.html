@@ -11,15 +11,15 @@
         <div class="" fusePerfectScrollbar fxLayout="column">
             <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isImportPath" binary="true" inputId="importPath"></p-checkbox>
+                    <p-checkbox [(ngModel)]="isImportPath" [binary]="true" inputId="importPath"></p-checkbox>
                     <label for="importPath" class="ml-8">Import Path</label>
                 </div>
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isSelectRoute" binary="true" inputId="selectRoute"></p-checkbox>
+                    <p-checkbox [(ngModel)]="isSelectRoute" [binary]="true" inputId="selectRoute"></p-checkbox>
                     <label for="selectRoute" class="ml-8">Select Route</label>
                 </div>
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isPOP" binary="true" inputId="pointToPoint"></p-checkbox>
+                    <p-checkbox [(ngModel)]="isPOP" [binary]="true" inputId="pointToPoint"></p-checkbox>
                     <label for="pointToPoint" class="ml-8">Point to Point</label>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                         <mat-label>{{ 'MONITOR.STARTDATE' | translate }}</mat-label>
                         <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date"
                             formControlName="startDate">
-                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker-toggle matSuffix (for)="picker1"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #picker1></ngx-mat-datetime-picker>
                     </mat-form-field>
                 </div>

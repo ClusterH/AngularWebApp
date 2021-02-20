@@ -75,7 +75,7 @@ export class ZonegroupsComponent implements OnInit {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
-
+        this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).geofences;
 
         //Load the translations
@@ -113,6 +113,10 @@ export class ZonegroupsComponent implements OnInit {
     ngOnInit(): void {
         this.dataSource = new ZonegroupsDataSource(this._adminZonegroupsService);
         this.dataSource.loadZonegroups(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Zonegroup_Tlist");
+    }
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     selectedFilter() {

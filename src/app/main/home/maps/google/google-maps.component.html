@@ -132,7 +132,7 @@
                         *ngFor="let m of filterPanelService.vehmarkers_temp$ | async; trackBy: trackedMarker; let i = index"
                         (markerClick)="clickedMarker(m.id, 'unitInfoPanel')" [latitude]="m.lat" [longitude]="m.lng"
                         [markerDraggable]="m.draggable == 'true'" [visible]="true" [iconUrl]="unit_icon"
-                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold'}">
+                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold', fontFamily: 'Muli'}">
                     </agm-marker>
                 </agm-marker-cluster>
                 <agm-marker-cluster *ngIf="filterPanelService.userPOI_temp$ | async"
@@ -142,7 +142,7 @@
                         *ngFor="let m of filterPanelService.userPOI_temp$ | async; trackBy: trackedMarker; let i = index"
                         (markerClick)="clickedMarker(m.id, 'poiInfoPanel')" [latitude]="m.latitude"
                         [longitude]="m.longitude"
-                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold'}"
+                        [label]="{color: '#1e1e1e', text: m.name, fontSize: '14px', fontWeight: 'bold',  fontFamily: 'Muli'}"
                         [markerDraggable]="m.draggable == 'true'" [visible]="true" [iconUrl]="poi_icon">
                     </agm-marker>
                 </agm-marker-cluster>

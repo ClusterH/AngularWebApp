@@ -18,32 +18,27 @@ export class TankDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getGroups(pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
@@ -51,7 +46,6 @@ export class TankDetailService {
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: header_detail,
                 params: params_detail
             });
         } else {
@@ -62,14 +56,12 @@ export class TankDetailService {
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: header_detail,
                 params: params_detail
             });
         }
     }
 
     saveTankDetail(tankDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', tankDetail.id.toString())
             .set('name', tankDetail.name.toString())
@@ -87,20 +79,17 @@ export class TankDetailService {
             .set('capacity', tankDetail.capacity.toString())
             .set('method', 'FuelTank_Save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }
 
     getTankHistory(tankid: number, fromtime: string, totime: string): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('tankid', tankid.toString())
             .set('fromtime', fromtime.toString())
             .set('totime', totime.toString())
             .set('method', 'fueltank_history');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

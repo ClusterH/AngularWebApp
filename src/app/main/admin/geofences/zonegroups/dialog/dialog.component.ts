@@ -24,10 +24,10 @@ export class CourseDialogComponent implements OnDestroy {
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private zonegroupsService: ZonegroupsService,
-
         private dialogRef: MatDialogRef<CourseDialogComponent>,
         @Inject(MAT_DIALOG_DATA) { zonegroup, flag }
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(zonegroupsEnglish, zonegroupsSpanish, zonegroupsFrench, zonegroupsPortuguese);
         this.zonegroup = zonegroup;
         this.flag = flag;

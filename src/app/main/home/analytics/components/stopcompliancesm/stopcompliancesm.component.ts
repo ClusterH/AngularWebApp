@@ -1,15 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
-import { ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
 import { ClipsService } from 'app/main/home/analytics/services/clips.service';
-import { merge, Subject, BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
-
-// const ELEMENT_DATA: PeriodicElement[] = [];
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-stopcompliancesm',

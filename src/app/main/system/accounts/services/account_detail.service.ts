@@ -18,49 +18,43 @@ export class AccountDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             if (method == 'model_clist') {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('makeid', this.current_makeID.toString())
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             } else {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             }
         } else {
             if (method == 'model_clist') {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('makeid', this.current_makeID.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             } else {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             }
@@ -68,7 +62,6 @@ export class AccountDetailService {
     }
 
     saveAccountDetail(accountDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', accountDetail.id.toString())
             .set('name', accountDetail.name.toString())
@@ -87,7 +80,6 @@ export class AccountDetailService {
             .set('lastmodifiedby', accountDetail.lastmodifiedby.toString())
             .set('method', 'account_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

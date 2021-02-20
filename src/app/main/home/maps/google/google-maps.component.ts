@@ -52,7 +52,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     tmpVehmarkers: marker[];
     tmpPOIs: marker[];
     zones: marker[];
-    routes: marker[];
+    routes: any;
     tmpZones: marker[];
     tmpRoutes: marker[];
     zoom: number = 12;
@@ -73,16 +73,16 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     map: any;
     routerLinkType: string = '';
 
-    unit_icon = {
+    unit_icon = `{
         url: 'assets/icons/googlemap/unit-marker.png',
         scaledSize: { width: 33, height: 44 },
         labelOrigin: { x: 15, y: 50 }
-    }
-    poi_icon = {
+    }`
+    poi_icon = `{
         url: 'assets/icons/googlemap/employment.png',
         scaledSize: { width: 33, height: 44 },
         labelOrigin: { x: 15, y: 50 }
-    }
+    }`
 
     @ViewChild('AgmMap') agmMap: AgmMap;
 

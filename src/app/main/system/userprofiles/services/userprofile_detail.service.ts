@@ -18,44 +18,37 @@ export class UserProfileDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     getPrivilegeAccess(userprofileid: number, typeid: number) {
-        const headers = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params = new HttpParams()
             .set('userprofileid', userprofileid.toString())
             .set('typeid', typeid.toString())
             .set('method', 'get_privilege_access');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     saveUserProfileDetail(userprofileDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', userprofileDetail.id.toString())
             .set('name', userprofileDetail.name.toString())
@@ -66,7 +59,6 @@ export class UserProfileDetailService {
             .set('lastmodifieddate', userprofileDetail.lastmodifieddate.toString())
             .set('method', 'userprofile_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

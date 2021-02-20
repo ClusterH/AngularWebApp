@@ -1,5 +1,4 @@
-export interface SimcardDetail
-{
+export interface SimcardDetail {
     id?: number;
     name?: string;
     phonenumber?: string;
@@ -7,9 +6,9 @@ export interface SimcardDetail
     isactive?: boolean;
     timezoneid?: number
     created?: Date;
-    createdby?: number;
+    createdby?: string;
     deletedwhen?: Date;
     deletedby?: number;
     lastmodifieddate?: Date;
-    lastmodifiedby?: number;
+    lastmodifiedby?: string;
 }

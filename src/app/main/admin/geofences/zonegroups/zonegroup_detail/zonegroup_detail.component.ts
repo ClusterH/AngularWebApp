@@ -78,16 +78,13 @@ export class ZonegroupDetailComponent implements OnInit {
         public _matDialog: MatDialog,
         private router: Router,
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(zonegroupsEnglish, zonegroupsSpanish, zonegroupsFrench, zonegroupsPortuguese);
-
         this.zonegroup = localStorage.getItem("zonegroup_detail") ? JSON.parse(localStorage.getItem("zonegroup_detail")) : '';
-
-
         this.userConncode = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
         this.userID = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
 
         if (this.zonegroup != '') {
-
             this.zonegroupDetailService.current_zoneGroupID = this.zonegroup.id;
             this.pageType = 'edit';
         }
@@ -101,7 +98,6 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.dataSourceCompany = new ZonegroupDetailDataSource(this.zonegroupDetailService);
         this.dataSourceIncluded = new ZonegroupDetailDataSource(this.zonegroupDetailService);
         this.dataSourceExcluded = new ZonegroupDetailDataSource(this.zonegroupDetailService);
@@ -131,6 +127,10 @@ export class ZonegroupDetailComponent implements OnInit {
         });
 
         this.setValues();
+    }
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     ngAfterViewInit() {
@@ -273,8 +273,9 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
-        this.zonegroupDetail.name = this.zonegroupForm.get('name').value || '',
-            this.zonegroupDetail.companyid = this.zonegroupForm.get('company').value || 0;
+        const userID: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        this.zonegroupDetail.name = this.zonegroupForm.get('name').value || '';
+        this.zonegroupDetail.companyid = this.zonegroupForm.get('company').value || 0;
 
         this.zonegroupDetail.isactive = this.zonegroup.isactive || true;
         this.zonegroupDetail.deletedwhen = this.zonegroup.deletedwhen || '';
@@ -285,13 +286,13 @@ export class ZonegroupDetailComponent implements OnInit {
             this.zonegroupDetail.created = this.zonegroup.created;
             this.zonegroupDetail.createdby = this.zonegroup.createdby;
             this.zonegroupDetail.lastmodifieddate = dateTime;
-            this.zonegroupDetail.lastmodifiedby = this.userID;
+            this.zonegroupDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.zonegroupDetail.id = 0;
             this.zonegroupDetail.created = dateTime;
-            this.zonegroupDetail.createdby = this.userID;
+            this.zonegroupDetail.createdby = userID;
             this.zonegroupDetail.lastmodifieddate = dateTime;
-            this.zonegroupDetail.lastmodifiedby = this.userID;
+            this.zonegroupDetail.lastmodifiedby = userID;
         }
     }
 

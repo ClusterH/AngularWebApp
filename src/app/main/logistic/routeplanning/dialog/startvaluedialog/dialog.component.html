@@ -11,7 +11,7 @@
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
         <form [formGroup]="startValueForm">
             <div class="p-field-checkbox pb-12">
-                <p-checkbox [(ngModel)]="isTimeChecked" [ngModelOptions]="{standalone: true}" binary="true"
+                <p-checkbox [(ngModel)]="isTimeChecked" [ngModelOptions]="{standalone: true}" [binary]="true"
                     inputId="time">
                 </p-checkbox>
                 <label for="time" class="ml-8">Set Start and End Time</label>
@@ -19,17 +19,17 @@
             <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="center center">
                 <mat-form-field appearance="outline" class="ev_offhourstart_input" floatLabel="always" fxFlex="48">
                     <mat-label>From</mat-label>
-                    <input matInput [formControl]="startValueForm.controls['from']" type="time"
-                        style="text-align: center; font-size: larger;" [disableControl]="!isTimeChecked">
+                    <input matInput formControlName="from" type="time" style="text-align: center; font-size: larger;"
+                        [disableControl]="!isTimeChecked">
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="48">
                     <mat-label>To</mat-label>
-                    <input matInput [formControl]="startValueForm.controls['to']" type="time"
-                        style="text-align: center; font-size: larger;" [disableControl]="!isTimeChecked">
+                    <input matInput formControlName="to" type="time" style="text-align: center; font-size: larger;"
+                        [disableControl]="!isTimeChecked">
                 </mat-form-field>
             </div>
             <div class="p-field-checkbox pb-12">
-                <p-checkbox [(ngModel)]="isAddressChecked" [ngModelOptions]="{standalone: true}" binary="true"
+                <p-checkbox [(ngModel)]="isAddressChecked" [ngModelOptions]="{standalone: true}" [binary]="true"
                     inputId="address"></p-checkbox>
                 <label for="address" class="ml-8">Set Start Address</label>
             </div>
@@ -53,7 +53,7 @@
                 [ngStyle]="{'display': addressType == 'Google Address'? 'flex': 'none'}">
                 <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="100">
                     <mat-label>Address</mat-label>
-                    <input matInput [formControl]="startValueForm.controls['google_address']" type="text"
+                    <input matInput formControlName="google_address" type="text"
                         style="text-align: start; font-size: larger;" [disableControl]="!isAddressChecked" #search
                         autocorrect="off" autocapitalize="off" spellcheck="off">
                 </mat-form-field>
@@ -63,7 +63,7 @@
                 [ngStyle]="{'display': addressType == 'POI Address'? 'flex': 'none'}">
                 <mat-form-field appearance="outline" class="ev_offhourend_input" floatLabel="always" fxFlex="100">
                     <mat-label>POI</mat-label>
-                    <input matInput [formControl]="startValueForm.controls['poi_address']" type="text"
+                    <input matInput formControlName="poi_address" type="text"
                         style="text-align: start; font-size: larger;" [disableControl]="!isAddressChecked"
                         [matAutocomplete]="auto" (keyup)="searchFromPOIList($event)">
                 </mat-form-field>

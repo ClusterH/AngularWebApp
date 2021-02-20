@@ -9,10 +9,8 @@ import { TankDetailEditComponent } from 'app/main/fuelmanagement/tanks/tank_deta
 import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
 import { CourseDialogComponent } from 'app/main/fuelmanagement/tanks/dialog/dialog.component';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-import 'hammerjs';
-import 'chartjs-plugin-zoom';
 import { SharedModule } from 'app/sharedModules/shared.module';
-
+import 'chartjs-plugin-zoom';
 
 const routes = [
     { path: 'tanks', component: TanksComponent },

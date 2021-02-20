@@ -14,12 +14,9 @@ export class VehMarkersService {
     }
 
     getVehMarkers(method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('method', method);
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }

@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
-    hmr: false,
-    baseURL: 'trackingxlapi.ashx'
+  production: true,
+  hmr: false,
+  baseURL: 'trackingxlapi.ashx'
 };

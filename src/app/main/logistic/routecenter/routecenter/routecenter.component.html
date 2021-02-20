@@ -34,7 +34,7 @@
                         <div class="p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText class="filter_input" type="text"
-                                (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+                                (input)="applyFilterGlobal($event, 'contains')" placeholder="Search" />
                         </div>
                     </div>
                 </ng-template>
@@ -142,8 +142,8 @@
                             </table>
                         </agm-info-window>
                     </agm-marker>
-                    <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy" [latitude]="m.latitude"
-                        [longitude]="m.longitude" [visible]="true"
+                    <agm-marker *ngFor="let m of rte.stop_routes; let i=index; trackBy: trackByFn"
+                        [latitude]="m.latitude" [longitude]="m.longitude" [visible]="true"
                         [iconUrl]="m.arrived? unit_icon_arrived : unit_icon_unarrived" [agmFitBounds]="isRoute">
                         <agm-info-window>
                             <table class="route_infowindow">
@@ -295,7 +295,7 @@
         <div class="option-content px-24 py-8 primary-50" fxFlex="1 1 auto" fxLayout="row"
             fxLayoutAlign="center center">
             <div class="p-field-checkbox mx-12">
-                <p-checkbox [(ngModel)]="isVehicleTrack" binary="true" inputId="vt">
+                <p-checkbox [(ngModel)]="isVehicleTrack" [binary]="true" inputId="vt">
                 </p-checkbox>
                 <label for="binary" class="ml-8">Vehicle Track</label>
             </div>
@@ -303,7 +303,7 @@
                 <fa-icon [icon]="faBan" [ngStyle]="{'color': 'red' }"></fa-icon>
             </div>
             <div class="p-field-checkbox mx-12">
-                <p-checkbox [(ngModel)]="isUnAuthorized" binary="true" inputId="ua">
+                <p-checkbox [(ngModel)]="isUnAuthorized" [binary]="true" inputId="ua">
                 </p-checkbox>
                 <label for="binary" class="ml-8">UnAuthorized</label>
             </div>
@@ -311,7 +311,7 @@
                 <fa-icon [icon]="faStopCircle" [ngStyle]="{'color': 'red' }"></fa-icon>
             </div>
             <div class="p-field-checkbox mx-12">
-                <p-checkbox [(ngModel)]="isOffRoute" binary="true" inputId="or">
+                <p-checkbox [(ngModel)]="isOffRoute" [binary]="true" inputId="or">
                 </p-checkbox>
                 <label for="binary" class="ml-8">Off Route</label>
             </div>

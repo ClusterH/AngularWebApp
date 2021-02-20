@@ -33,13 +33,8 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
 import { FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseMaterialColorPickerModule } from '@fuse/components';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { BlockUIModule } from 'ng-block-ui';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { QuicklinkModule } from 'ngx-quicklink';
-import { UiSwitchModule } from 'ngx-ui-switch';
 import { GridsterModule } from 'angular-gridster2';
 import { DndDirective } from './directives/file-dnd/dnd.directive';
 
@@ -85,13 +80,8 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         NgxMatDatetimePickerModule,
         NgxMatTimepickerModule,
         FontAwesomeModule,
-        UiSwitchModule,
-        NgxMatSelectSearchModule,
         QuicklinkModule,
         NgxChartsModule,
-        NgbModule,
-        NgSelectModule,
-        BlockUIModule,
         GridsterModule,
         MultiSelectModule,
         MenuModule,

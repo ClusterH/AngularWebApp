@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterModule } from '@angular/router';
+import { MatDialogModule } from "@angular/material/dialog";
 import { FuseHighlightModule } from '@fuse/components';
 import { TranslateModule } from '@ngx-translate/core';
 import { CourseDialogComponent } from 'app/main/admin/poi/poigroups/dialog/dialog.component';
@@ -23,6 +24,7 @@ const routes = [
         FuseHighlightModule,
         MatMenuModule,
         MatListModule,
+        MatDialogModule,
         SharedModule
     ],
     declarations: [PoigroupsComponent, PoigroupDetailComponent, CourseDialogComponent],

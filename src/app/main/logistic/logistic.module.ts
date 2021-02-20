@@ -8,7 +8,6 @@ const routes = [
     { path: 'serviceitems', loadChildren: () => import('./maintenance/serviceitems/serviceitems.module').then(m => m.ServiceitemsModule) },
     { path: 'maintservices', loadChildren: () => import('./maintenance/maintservices/maintservices.module').then(m => m.MaintservicesModule) },
     { path: 'history', loadChildren: () => import('./maintenance/history/history.module').then(m => m.HistoryModule) },
-    { path: 'todo', loadChildren: () => import('./jobmanagement/todo/todo.module').then(m => m.TodoModule) },
     { path: 'scrumboard', loadChildren: () => import('./jobmanagement/scrumboard/scrumboard.module').then(m => m.ScrumboardModule) },
     { path: 'routecenter', loadChildren: () => import('./routecenter/routecenter.module').then(m => m.RouteCenterModule) },
     { path: 'routeplanning', loadChildren: () => import('./routeplanning/routeplanning.module').then(m => m.RoutePlanningModule) },

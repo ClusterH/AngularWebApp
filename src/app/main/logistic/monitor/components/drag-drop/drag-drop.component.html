@@ -1,5 +1,5 @@
 <div class="container" appDnd (fileDropped)="onFileDropped($event)" *ngIf="files.length === 0">
-    <input type="file" #fileDropRef id="fileDropRef" (change)="fileBrowseHandler($event.srcElement.files)" />
+    <input type="file" #fileDropRef id="fileDropRef" (change)="fileBrowseHandler($event)" />
     <h3>Drag and drop file here</h3>
     <label for="fileDropRef">Browse for file</label>
 </div>

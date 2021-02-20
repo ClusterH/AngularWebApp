@@ -20,22 +20,17 @@ export class ClipsService {
     constructor(private _httpClient: HttpClient) { }
 
     dashboard_clip_delete(id: number): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('id', id.toString())
             .set('method', 'dashboard_clip_delete');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     clip_mileage(method: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            let headers = new HttpHeaders();
-            headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-            let params = new HttpParams()
+            const params = new HttpParams()
                 .set('method', method);
             if (!isEmpty(this.selectedOption.value)) {
                 params.append('timeselection', this.selectedOption.value.timeselection);
@@ -43,10 +38,8 @@ export class ClipsService {
             }
 
             this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             }).subscribe((res: any) => {
-
                 switch (method) {
                     case 'clip_RouteCompliance':
                         this.clip_stopcomplianceChanged.next(res);
@@ -74,31 +67,25 @@ export class ClipsService {
     }
 
     clip_mileageDetail(method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('method', method);
         if (!isEmpty(this.selectedOption.value)) {
             params.append('timeselection', this.selectedOption.value.timeselection);
             params.append('groupselection', this.selectedOption.value.groupselection);
         }
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }
 
     getVehicles(pageindex: number, pagesize: number, orderby: string, orderdirection: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-        let params = new HttpParams()
+        const params = new HttpParams()
             .set('pageindex', (pageindex + 1).toString())
             .set('pagesize', pagesize.toString())
             .set('orderby', orderby.toString())
             .set('orderdirection', orderdirection.toString())
             .set('method', method.toString());
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: headers,
             params: params
         });
     }

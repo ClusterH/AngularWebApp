@@ -20,13 +20,13 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         const baseURL = 'http://trackingxlapipg.polarix.com/';
         const request = req.url;
-
         req = req.clone({ url: `${baseURL}${request}` });
+        req = req.clone({ headers: req.headers.set("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m")) });
 
-        let token: string = localStorage.getItem('current_token') || '';
+        const token: string = localStorage.getItem('current_token') || '';
         if (token.length != 0) {
-            let conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
-            let userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+            const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+            const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
 
             if (req.method == 'GET') {
                 req = req.clone({ params: req.params.set("token", token) });
@@ -37,22 +37,13 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    //
                     if (event.body.responseCode == 211 || event.body.responseCode == 210) {
-                        //
                         localStorage.removeItem('current_token');
                         alert('Your user has signed in from a different device');
                         this.router.navigate(['/login']);
                     } else if (event.body.responseCode == 100) {
-                        //
                         localStorage.setItem('current_token', event.body.token);
                     }
-
-                    // if (event.body.token != '') {
-                    //
-                    //     localStorage.setItem('current_token', event.body.token);
-                    // }
-
                     return event;
                 }
             }));

@@ -157,6 +157,7 @@ export class SimcardDetailComponent implements OnInit {
     }
 
     getValues(dateTime: any, mode: string) {
+        const userID: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
         this.simcardDetail.name = this.simcardForm.get('name').value || '';
         this.simcardDetail.phonenumber = this.simcardForm.get('phonenumber').value || '';
         this.simcardDetail.carrierid = this.simcardForm.get('carrier').value || 0;
@@ -169,13 +170,13 @@ export class SimcardDetailComponent implements OnInit {
             this.simcardDetail.created = this.simcard.created;
             this.simcardDetail.createdby = this.simcard.createdby;
             this.simcardDetail.lastmodifieddate = dateTime;
-            this.simcardDetail.lastmodifiedby = this.userID;
+            this.simcardDetail.lastmodifiedby = userID;
         } else if (mode == "add") {
             this.simcardDetail.id = 0;
             this.simcardDetail.created = dateTime;
-            this.simcardDetail.createdby = this.userID;
+            this.simcardDetail.createdby = userID;
             this.simcardDetail.lastmodifieddate = dateTime;
-            this.simcardDetail.lastmodifiedby = this.userID;
+            this.simcardDetail.lastmodifiedby = userID;
         }
     }
 

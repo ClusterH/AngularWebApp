@@ -21,40 +21,28 @@ export class DealercompanyDetailService {
     }
 
     getDealercompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         if (name == '') {
-            let params = new HttpParams()
-
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('method', method.toString());
-
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         } else {
-            let params = new HttpParams()
-
+            const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('name', `^${name}^`)
                 .set('method', method.toString());
-
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: headers,
                 params: params
             });
         }
     }
 
     saveDealercompanyDetail(dealercompanyDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
-
         const params_detail = new HttpParams()
-
             .set('id', dealercompanyDetail.id.toString())
             .set('name', dealercompanyDetail.name.toString())
             .set('orgno', dealercompanyDetail.orgno.toString())
@@ -84,105 +72,8 @@ export class DealercompanyDetailService {
             .set('webstartlong', dealercompanyDetail.webstartlong.toString())
             .set('hasprivatelabel', dealercompanyDetail.hasprivatelabel.toString())
             .set('method', 'dealercompany_save');
-
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
-
-        // dealercompanyDetail["method"] = "unit_save";
-        // dealercompanyDetail["conncode"] = "PolarixUSA";
-        // dealercompanyDetail["userid"] = "2";
-        // dealercompanyDetail["isactive"] = "true";
-
-        // {
-        //     conncode: conncode.toString(),
-        //     userid: userid.toString(),
-        //     id: dealercompanyDetail.id.toString(),
-        //     name: dealercompanyDetail.name.toString(),
-        //     dealercompanyid: dealercompanyDetail.dealercompanyid.toString(),
-        //     'groupid': dealercompanyDetail.groupid.toString(),
-        //     'subgroup': dealercompanyDetail.subgroup.toString(),
-        //     'operatorid': dealercompanyDetail.operatorid.toString(),
-        //     'accountid': dealercompanyDetail.accountid.toString(),
-        //     'unittypeid': dealercompanyDetail.unittypeid.toString(),
-        //     'serviceplanid': dealercompanyDetail.serviceplanid.toString(),
-        //     'producttypeid': dealercompanyDetail.producttypeid.toString(),
-        //     'makeid': dealercompanyDetail.makeid.toString(),
-        //     'modelid': dealercompanyDetail.modelid.toString(),
-        //     'isactive': dealercompanyDetail.isactive.toString(),
-        //     'timezoneid': dealercompanyDetail.timezoneid.toString(),
-        //     'created': dealercompanyDetail.created.toString(),
-        //     'createdby': dealercompanyDetail.createdby.toString(),
-        //     'deletedwhen': dealercompanyDetail.deletedwhen.toString(),
-        //     'deletedby': dealercompanyDetail.deletedby.toString(),
-        //     'lastmodifieddate': dealercompanyDetail.lastmodifieddate.toString(),
-        //     'lastmodifiedby': dealercompanyDetail.lastmodifiedby.toString(),
-        //     'method': 'unit_save'
-        // }
-        // let objects = JSON.stringify(params_detail);
-        //
-        // alert(objects);
-
-
     }
-
-
-    // getProduct(): Promise<any>
-    // {
-    //     return new Promise((resolve, reject) => {
-    //         if ( this.routeParams.id === 'new' )
-    //         {
-    //
-    //             this.onProductChanged.next(false);
-    //             resolve(false);
-    //         }
-    //         else
-    //         {
-    //
-
-    //             // this._httpClient.get('api/e-commerce-products/' + this.routeParams.id)
-    //             //     .subscribe((response: any) => {
-    //                     this.dealercompany = {
-    //                         id: "735",
-    //                         name: "WAREHOUSE ISUZU-2013-LRG",
-    //                         dealercompanyid: "85",
-    //                         dealercompany: "MIA INSTALLATION",
-    //                         groupid: "260",
-    //                         group: "MIA INSTALLATION",
-    //                         subgroup: "0",
-    //                         accountid: "85",
-    //                         account: "MIA INSTALLATION",
-    //                         operatorid: "0",
-    //                         operator: "",
-    //                         unittypeid: "10",
-    //                         unittype: "TRUCK",
-    //                         serviceplanid: "5",
-    //                         serviceplan: "Asset Rentals",
-    //                         producttypeid: "1",
-    //                         producttype: "Dealercompany",
-    //                         makeid: "28",
-    //                         make: "ISUZU",
-    //                         modelid: "363",
-    //                         model: "CARIBE",
-    //                         isactive: "true",
-    //                         timezoneid: "13",
-    //                         timezone: "(GMT-05:00) Eastern Time (US & Canada)",
-    //                         created: "2014-04-03T18:40:17.473-04:00",
-    //                         createdby: "0",
-    //                         createdbyname: "",
-    //                         deletedwhen: "2018-05-04T09:24:43.58-04:00",
-    //                         deletedby: "2",
-    //                         deletedbyname: "Admins Polarix",
-    //                         lastmodifieddate: "2020-01-13T18:08:03.777-05:00",
-    //                         lastmodifiedby: "260",
-    //                         lastmodifiedbyname: "Carlos Uranga"
-    //                     };
-    //                     this.onProductChanged.next(this.dealercompany);
-    //                     resolve(this.dealercompany);
-    //
-    //                 // }, reject);
-    //         }
-    //     });
-    // }
 }

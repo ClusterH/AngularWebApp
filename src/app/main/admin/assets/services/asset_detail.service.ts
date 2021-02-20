@@ -12,49 +12,43 @@ export class AssetDetailService {
     constructor(private _httpClient: HttpClient) { }
 
     getCompanies(pageindex: number, pagesize: number, name: string, method: string): Observable<any> {
-        let headers = new HttpHeaders();
-        headers = headers.append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             if (method == 'model_clist') {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('makeid', this.current_makeID.toString())
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             } else {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             }
         } else {
             if (method == 'model_clist') {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('makeid', this.current_makeID.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             } else {
-                let params = new HttpParams()
+                const params = new HttpParams()
                     .set('pageindex', (pageindex + 1).toString())
                     .set('pagesize', pagesize.toString())
                     .set('name', `^${name}^`)
                     .set('method', method.toString());
                 return this._httpClient.get('trackingxlapi.ashx', {
-                    headers: headers,
                     params: params
                 });
             }
@@ -62,7 +56,6 @@ export class AssetDetailService {
     }
 
     getGroups(pageindex: number, pagesize: number, name: string, companyid: number): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         if (name == '') {
             const params_detail = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
@@ -70,7 +63,6 @@ export class AssetDetailService {
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: header_detail,
                 params: params_detail
             });
         } else {
@@ -81,14 +73,12 @@ export class AssetDetailService {
                 .set('companyid', companyid.toString())
                 .set('method', 'group_CList');
             return this._httpClient.get('trackingxlapi.ashx', {
-                headers: header_detail,
                 params: params_detail
             });
         }
     }
 
     saveAssetDetail(assetDetail: any = {}): Observable<any> {
-        const header_detail = new HttpHeaders().append("Authorization", "Basic " + btoa("trackingxl:4W.f#jB*[pE.j9m"));
         const params_detail = new HttpParams()
             .set('id', assetDetail.id.toString())
             .set('name', assetDetail.name.toString())
@@ -112,7 +102,6 @@ export class AssetDetailService {
             .set('lastmodifiedby', assetDetail.lastmodifiedby.toString())
             .set('method', 'unit_save');
         return this._httpClient.get('trackingxlapi.ashx', {
-            headers: header_detail,
             params: params_detail
         });
     }

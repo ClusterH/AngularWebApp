@@ -23,8 +23,8 @@ export class DragDropComponent {
     /**
      * handle file from browsing
      */
-    fileBrowseHandler(files) {
-        this.prepareFilesList(files);
+    fileBrowseHandler(event: any) {
+        this.prepareFilesList(event.srcElement.files);
     }
 
     /**
