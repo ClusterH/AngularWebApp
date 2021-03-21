@@ -33,9 +33,9 @@ export class InstallationBoardComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(reportEnglish, reportSpanish, reportFrench, reportPortuguese);
         this._activatedRoute.queryParams.subscribe(params => {
-            if (params.from == "list") {
+            if (params.from === "list") {
                 this.isListView = true;
-            } else if (params.from == 'board') {
+            } else if (params.from === 'board') {
                 this.isListView = false;
             }
         });

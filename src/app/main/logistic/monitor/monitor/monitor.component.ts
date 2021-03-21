@@ -16,7 +16,6 @@ import { Table } from 'primeng/table';
 import { Subject, Observable, of } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-
 @Component({
     selector: 'logistic-monitor',
     templateUrl: './monitor.component.html',
@@ -32,18 +31,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
             mapArea: 50
         }
     }
-
-    currentUser: any;
-    restrictValue: any;
-
     resizedWidthPercent: number = 50;
-    isDrag: boolean = false;
-    isRoute: boolean = false;
-    isVehicleTrack: boolean = false;
-    isUnAuthorized: boolean = false;
-    isOffRoute: boolean = false;
-    unPlannedStopsList: Array<any> = [];
-    dialogRef: any;
+    tripWatchData: any[] = [];
 
     private _unsubscribeAll: Subject<any>;
 
@@ -70,9 +59,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        // window.addEventListener('click', (event) => {
-        //     this.menuContentManage(event);
-        // });
     }
 
     ngAfterViewInit() {
@@ -88,54 +74,11 @@ export class MonitorComponent implements OnInit, OnDestroy {
         this.sizes.percent.mapArea = sizes[1];
     }
 
-
-
-    // menuContentManage(event): void {
-    //     if (!event.target.matches('.menu_content') && !event.target.matches('.show_commandBtn')) {
-    //
-
-    //         this.dataSource.map(item => {
-    //             item.isShowCommand = false;
-    //             return item
-    //         });
-
-    //
-    //         setTimeout(() => {
-    //             this.monitor$ = of(this.dataSource);
-    //         }, 1000)
-    //     }
-    // }
-
-
-    // isCheckRoute() {
-    //     if (isEmpty(this.selectedMonitor)) {
-    //         this.isRoute = false;
-    //         this.isOffRoute = false;
-    //         this.isVehicleTrack = false;
-    //         this.isUnAuthorized = false;
-
-    //         this.lat = 25.7959;
-    //         this.lng = -80.2871;
-    //         this.zoom = 12;
-
-    //         this.boundControl(this.zoom, this.lat, this.lng);
-
-    //         return;
-    //     } else {
-    //         this.isRoute = true;
-    //     }
-    // }
-
-    // onDateSelect(value) {
-
-    //     this.isRoute = false;
-    //     this.getTrips();
-    // }
+    showInMapEmitter(event): void {
+        this.tripWatchData = event;
+    }
 
     formatDate(date) {
         return date.toString().slice(4, 15);
     }
-
-
-
 }

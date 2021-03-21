@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
 import { locale as operatorsEnglish } from 'app/main/admin/operators/i18n/en';
 import { locale as operatorsFrench } from 'app/main/admin/operators/i18n/fr';
 import { locale as operatorsPortuguese } from 'app/main/admin/operators/i18n/pt';

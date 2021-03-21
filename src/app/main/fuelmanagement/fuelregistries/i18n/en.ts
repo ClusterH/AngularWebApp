@@ -10,11 +10,11 @@ export const locale = {
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
-            
+
             "FUELREGISTRYTYPE": "Registry Type",
             "REGISTEREDBY": "Registered By",
             "DATETIME": "Date & Time",
-            "AMOUNT": "Amount",               
+            "AMOUNT": "Amount",
             "COST": "Cost",
             "FROMTANK": "From Tank",
             "TOTANK": "To Tank",
@@ -27,7 +27,7 @@ export const locale = {
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
-            "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
+            "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete this item?",
             "GOBACK_CONFIRM_MESSAGE": "Are you sure you want to discard the changes?",
             "DUPLICATE": "Duplicate",
             "DELETE": "Delete",

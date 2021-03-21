@@ -54,7 +54,7 @@ export class CourseDialogComponent implements OnDestroy {
             this.privilegesService.deletePrivilege(this.privilege.id).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        this.dialogRef.close();
+                        this.dialogRef.close(result);
                     }
                 });
         }

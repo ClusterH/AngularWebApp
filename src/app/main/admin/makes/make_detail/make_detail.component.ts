@@ -61,7 +61,6 @@ export class MakeDetailComponent implements OnInit {
     ngOnInit(): void {
         this.makeForm = this._formBuilder.group({
             name: [null, Validators.required],
-            isactive: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             lastmodifieddate: [{ value: '', disabled: true }],

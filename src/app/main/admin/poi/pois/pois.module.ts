@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from "@angular/material/dialog";
 import { RouterModule } from '@angular/router';
@@ -22,7 +21,6 @@ const routes = [
         FuseSharedModule,
         MatDialogModule,
         TranslateModule,
-        HttpClientModule,
         CommonModule,
         RouterModule.forChild(routes),
         SharedModule

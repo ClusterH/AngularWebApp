@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+//Material
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
@@ -28,8 +29,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+import { MatDatetimepickerModule, MatNativeDatetimeModule } from "@mat-datetimepicker/core";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+//Fuse
 import { FuseConfirmDialogModule, FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule, FuseMaterialColorPickerModule } from '@fuse/components';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { FusePipesModule } from '@fuse/pipes/pipes.module';
@@ -37,10 +43,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { GridsterModule } from 'angular-gridster2';
 import { DndDirective } from './directives/file-dnd/dnd.directive';
-
+//PrimeNg
+import { MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { MenuModule } from 'primeng/menu';
-import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
+import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
     imports: [CommonModule, QuicklinkModule],
@@ -50,9 +58,10 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         FormsModule,
         ReactiveFormsModule,
         FlexLayoutModule,
-        HttpClientModule,
+        //Material
         MatMomentDateModule,
         MatButtonModule,
+        MatButtonToggleModule,
         MatIconModule,
         MatCheckboxModule,
         MatRadioModule,
@@ -76,6 +85,17 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         MatProgressSpinnerModule,
         MatProgressBarModule,
         MatAutocompleteModule,
+        MatDividerModule,
+        MatSlideToggleModule,
+
+        //PrimeNg
+        MultiSelectModule,
+        MenuModule,
+        ToastModule,
+        CalendarModule,
+
+        MatDatetimepickerModule,
+        MatNativeDatetimeModule,
         NgxMatNativeDateModule,
         NgxMatDatetimePickerModule,
         NgxMatTimepickerModule,
@@ -83,8 +103,8 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         QuicklinkModule,
         NgxChartsModule,
         GridsterModule,
-        MultiSelectModule,
-        MenuModule,
+        DndDirective,
+
         FuseProgressBarModule,
         FuseSidebarModule,
         FuseThemeOptionsModule,
@@ -92,9 +112,8 @@ import { HttpConfigInterceptor } from 'app/interceptors/https.interceptor';
         FuseDirectivesModule,
         FusePipesModule,
         FuseMaterialColorPickerModule,
-        DndDirective,
     ],
-
-    providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }],
+    providers: [MessageService]
 })
+
 export class SharedModule { }

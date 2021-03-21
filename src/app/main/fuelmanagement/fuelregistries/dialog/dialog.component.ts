@@ -6,7 +6,6 @@ import { locale as fuelregistriesEnglish } from 'app/main/fuelmanagement/fuelreg
 import { locale as fuelregistriesFrench } from 'app/main/fuelmanagement/fuelregistries/i18n/fr';
 import { locale as fuelregistriesPortuguese } from 'app/main/fuelmanagement/fuelregistries/i18n/pt';
 import { locale as fuelregistriesSpanish } from 'app/main/fuelmanagement/fuelregistries/i18n/sp';
-import { FuelregistriesDataSource } from "app/main/fuelmanagement/fuelregistries/services/fuelregistries.datasource";
 import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,19 +15,19 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: './dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })
-export class CourseDialogComponent implements OnDestroy {
+export class FuelRegisterDialogComponent implements OnDestroy {
     private _unsubscribeAll: Subject<any>;
     fuelregistry: any;
     flag: any;
-    dataSource: FuelregistriesDataSource;
 
     constructor(
         private router: Router,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private fuelregistriesService: FuelregistriesService,
-        private dialogRef: MatDialogRef<CourseDialogComponent>,
+        private dialogRef: MatDialogRef<FuelRegisterDialogComponent>,
         @Inject(MAT_DIALOG_DATA) { fuelregistry, flag }
     ) {
+        this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(fuelregistriesEnglish, fuelregistriesSpanish, fuelregistriesFrench, fuelregistriesPortuguese);
         this.fuelregistry = fuelregistry;
         this.flag = flag;
@@ -45,13 +44,11 @@ export class CourseDialogComponent implements OnDestroy {
             this.fuelregistry.datentime = '';
             this.dialogRef.close();
         } else if (this.flag == "delete") {
-            this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id).pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result: any) => {
-                    if ((result.responseCode == 200) || (result.responseCode == 100)) {
-
-                        this.dialogRef.close(result);
-                    }
-                });
+            this.fuelregistriesService.deleteFuelregistry(this.fuelregistry.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                if ((res.responseCode == 200) || (res.responseCode == 100)) {
+                    this.dialogRef.close(res);
+                }
+            })
         }
     }
 

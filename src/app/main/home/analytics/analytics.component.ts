@@ -68,7 +68,6 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.defaultDashboardId = JSON.parse(localStorage.getItem('userObjectList'))[0].startpagevalue;
-
     }
 
     ngOnInit(): void {
@@ -81,19 +80,15 @@ export class AnalyticsDashboardComponent implements OnInit, OnDestroy {
                 this.dashboard_Clist = res.TrackingXLAPI.DATA;
                 this.activatedTabIndex = (this.defaultDashboardId > 0) ? this.dashboard_Clist.findIndex(item => item.id == this.defaultDashboardId) : 0;
 
-
                 this.temp_dashboard_Clist = this.dashboard_Clist.map(dashboard => ({ ...dashboard }));
                 this._analyticsDashboardService.dashboardClist(0, 10, '', 'dashboardclips_Clist').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                     this.dashboardclips_Clist = res.TrackingXLAPI.DATA;
-
                     this.dashboardclips_Clist.sort((a, b) => this.sortByDistance(a.id, b.id));
                     this._analyticsDashboardService.getDashboardClips().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                         if (res.responseCode == 100) {
                             res.TrackingXLAPI.DATA.sort((a, b) => this.sortByDistance(a.id, b.id));
                             this.widgets = res.TrackingXLAPI.DATA;
-
                             this.temp_widgets = this.widgets.map(widget => ({ ...widget }));
-
                             this.loadingSubject.next(true);
                             setTimeout(() => {
                                 this.tabChanged();

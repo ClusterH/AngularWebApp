@@ -40,6 +40,7 @@ export class FuelregistriesService {
     }
 
     deleteFuelregistry(id: number): Observable<any> {
+
         const params = new HttpParams()
             .set('id', id.toString())
             .set('method', "fuelregistry_delete");

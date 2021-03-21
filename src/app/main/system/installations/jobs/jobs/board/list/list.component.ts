@@ -1,10 +1,11 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 // import { InstallationCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/card/card.component';
 import { JobCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/job/dialog.component';
+import { CardDnDConfirmDialogComponent } from 'app/main/system/installations/jobs/confirmDialog/cardDnDConfirmDialog.component';
 import { Card } from 'app/main/system/installations/jobs/model/card.model';
 import { InstallationService } from '../../../services'
 import { Subject } from 'rxjs';
@@ -14,6 +15,7 @@ import { locale as reportEnglish } from 'app/main/system/installations/jobs/i18n
 import { locale as reportFrench } from 'app/main/system/installations/jobs/i18n/fr';
 import { locale as reportPortuguese } from 'app/main/system/installations/jobs/i18n/pt';
 import { locale as reportSpanish } from 'app/main/system/installations/jobs/i18n/sp';
+import { DroppableDirective } from '@swimlane/ngx-dnd';
 
 @Component({
     selector: 'installation-board-list',
@@ -29,17 +31,13 @@ export class InstallationBoardListComponent implements OnInit, OnDestroy {
     @Input() list;
     @ViewChild(FusePerfectScrollbarDirective)
     listScroll: FusePerfectScrollbarDirective;
+    @ViewChild(DroppableDirective)
+    dnd: DroppableDirective;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     private _unsubscribeAll: Subject<any>;
-    /**
-     * Constructor
-     *
-     * @param {ActivatedRoute} _activatedRoute
-     * @param {InstallationService} _installationService
-     * @param {MatDialog} _matDialog
-     */
+
     constructor(
-        private _activatedRoute: ActivatedRoute,
+        private router: Router,
         private _installationService: InstallationService,
         private _matDialog: MatDialog,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
@@ -135,16 +133,41 @@ export class InstallationBoardListComponent implements OnInit, OnDestroy {
     // }
 
     onDropCard(ev, list): void {
-        this.destinationListId = list.id;
-        this._installationService.draggedCardId
-            .pipe(takeUntil(this._unsubscribeAll)).subscribe(cardId => {
-                this.draggedCardId = cardId;
-            });
 
-        this._installationService.cardMove(this.draggedCardId, this.destinationListId);
+        this.openConfirmDndDialog(list);
     }
 
     onDragCard(ev, cardid, listid): void {
         this._installationService.draggedCardId.next(cardid);
+    }
+
+    openConfirmDndDialog(list) {
+        this.dialogRef = this._matDialog.open(CardDnDConfirmDialogComponent, {
+            panelClass: 'confirm-dnd-dialog',
+            disableClose: true,
+        });
+
+        this.dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res === 'move') {
+                this.destinationListId = list.id;
+                this._installationService.draggedCardId
+                    .pipe(takeUntil(this._unsubscribeAll)).subscribe(cardId => {
+                        this.draggedCardId = cardId;
+                    });
+
+                this._installationService.cardMove(this.draggedCardId, this.destinationListId);
+            } else {
+                window.location.reload();
+                // const currentRoute = this.router.url;
+
+                // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+                //     this.router.navigate([currentRoute]); // navigate to same route
+                // });
+            }
+        })
+    }
+
+    test(event) {
+
     }
 }

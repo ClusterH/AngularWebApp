@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class TanksService {
-    tanks: any[];
+    tankList: any;
     /**
      * Constructor
      *
@@ -40,7 +40,7 @@ export class TanksService {
     deleteTank(id: number): Observable<any> {
         const params = new HttpParams()
             .set('id', id.toString())
-            .set('method', "tank_delete");
+            .set('method', "FuelTank_delete");
         return this._httpClient.get('trackingxlapi.ashx', {
             params: params
         });

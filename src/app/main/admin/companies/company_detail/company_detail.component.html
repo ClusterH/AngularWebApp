@@ -18,10 +18,10 @@
                         {{company.name}}
                     </div>
                     <div class="h2" *ngIf="pageType ==='new'">
-                        {{ 'COMPANIES.NEWCOMPANY' | translate }}
+                        {{ 'COMPANIES.NEWCOMPANY.' + routerLinkValue | translate }}
                     </div>
                     <div class="subtitle secondary-text">
-                        <span>{{ 'COMPANIES.COMPANYDETAIL' | translate }}</span>
+                        <span>{{ 'COMPANIES.COMPANYDETAIL.' + routerLinkValue | translate }}</span>
                     </div>
                 </div>
             </div>
@@ -79,32 +79,8 @@
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'COMPANIES.COMPANYTYPE' | translate }}</mat-label>
-                                        <mat-select formControlName="companytype"
-                                            (click)="showCompanyList('companytype_clist')">
-                                            <div class="filter_company_input">
-                                                <input matInput formControlName="filterstring" #filter
-                                                    placeholder="Filter" (keyup)="onKey($event)">
-                                                <mat-icon (click)="clearFilter()">clear</mat-icon>
-                                            </div>
-                                            <div style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceCompanyType"
-                                                    class="companies-table font-size-10 mat-elevation-z8">
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let companytype" style="border: 0px;">
-                                                            <mat-option style="width: 100%; height: auto; padding: 0px;"
-                                                                [value]="companytype.id">{{companytype.name}}
-                                                            </mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr class="company_list" style="height: 15px; " mat-row
-                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
-                                                </mat-table>
-                                            </div>
-                                            <mat-paginator style=" height: 40px;" #paginatorCompanyType
-                                                class="table_paginator" [length]="dataSourceCompanyType.totalLength"
-                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
-                                            </mat-paginator>
-                                        </mat-select>
+                                        <input matInput placeholder="Company Type" name="companytype"
+                                            formControlName="companytype">
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">

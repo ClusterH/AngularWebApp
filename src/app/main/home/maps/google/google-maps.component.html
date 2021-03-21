@@ -20,25 +20,29 @@
                 <div fxFlex="0 1 auto">
                     <mat-button-toggle-group name="fontStyle" aria-label="Font Style" multiple
                         fxLayoutAlign="start center">
-                        <mat-button-toggle value="showVehicles" #showVehicles (change)="onShowValChange($event.value)"
-                            matTooltip="Show/Hide Vehicles">
+                        <mat-button-toggle value="showVehicles"
+                            (change)="onShowValChange($event.value); showVehicles=$event.source.checked"
+                            [checked]="showVehicles" matTooltip="Show/Hide Vehicles">
                             <mat-icon class="blue-600-fg">directions_car</mat-icon>
                         </mat-button-toggle>
-                        <mat-button-toggle value="showPOIs" (change)="onShowValChange($event.value)"
-                            matTooltip="Show/Hide Points">
+                        <mat-button-toggle value="showPOIs"
+                            (change)="onShowValChange($event.value); showPOIs=$event.source.checked"
+                            [checked]="showPOIs" matTooltip="Show/Hide Points">
                             <mat-icon class="blue-600-fg">place</mat-icon>
                         </mat-button-toggle>
-                        <mat-button-toggle value="showZones" #showZones (change)="onShowValChange($event.value)"
-                            matTooltip="Show/Hide Geofences">
+                        <mat-button-toggle value="showZones"
+                            (change)="onShowValChange($event.value); showZones=$event.source.checked"
+                            [checked]="showZones" matTooltip="Show/Hide Geofences">
                             <mat-icon class="blue-600-fg">center_focus_strong</mat-icon>
                         </mat-button-toggle>
-                        <mat-button-toggle value="showRoutes" #showRoutes (change)="onShowValChange($event.value)"
-                            matTooltip="Show/Hide Routes">
+                        <mat-button-toggle value="showRoutes"
+                            (change)="onShowValChange($event.value); showRoutes=$event.source.checked"
+                            [checked]="showRoutes" matTooltip="Show/Hide Routes">
                             <mat-icon class="blue-600-fg">gesture</mat-icon>
                         </mat-button-toggle>
-                        <mat-button-toggle value="showFilters" #filter [checked]="showFilters"
-                            (change)="showFilters = $event.source.checked; onShowValChange($event.value)"
-                            matTooltip="Show/Hide Filters">
+                        <mat-button-toggle value="showFilters" #filter
+                            (change)="onShowValChange($event.value); showFilters = $event.source.checked"
+                            [checked]="showFilters" matTooltip="Show/Hide Filters">
                             <mat-icon *ngIf="!showFilters" class="blue-600-fg">layers</mat-icon>
                             <mat-icon *ngIf="showFilters" class="blue-600-fg">layers_clear</mat-icon>
                         </mat-button-toggle>
@@ -114,9 +118,18 @@
                 </mat-spinner>
             </div>
         </div>
+
+        <app-mat-fab-button (createNewOptionEmitter)="newOptionEmitter($event)">
+        </app-mat-fab-button>
+        <div *ngIf="createOptionType === 'Create Route'">
+            <app-create-route-option (removeRouteEmitter)="removeRouteEmitter()"
+                (saveRouteEmitter)="saveRouteEmitter($event)">
+            </app-create-route-option>
+        </div>
+
         <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
-            [zoomControl]="false" (mapReady)="onMapReady($event)" [fitBounds]="isTrackUnitHistory"
-            [fullscreenControl]='true' [mapTypeControl]='true'>
+            [zoomControl]="false" [fitBounds]="isTrackUnitHistory" [fullscreenControl]='true' [mapTypeControl]='true'
+            (mapReady)="onMapReady($event)" (mapClick)="addRouteLocations($event)">
             <div *ngIf="isClickedEvent">
                 <agm-overlay *ngFor="let event of eventLocation" [latitude]="event.latitude"
                     [longitude]="event.longitude">
@@ -161,8 +174,15 @@
                     </agm-polyline-point>
                 </agm-polyline>
             </div>
+            <ng-container *ngIf="createOptionType === 'Create Route' && !agmDirectionGeneratorService.isGenerateRoute">
+                <agm-marker *ngFor="let m of agmDirectionGeneratorService.newRouteLocations; let i = index"
+                    [latitude]="m.lat" [longitude]="m.lng" [markerDraggable]="true" [visible]="true"
+                    (dragEnd)="markerDragEnd($event, i)">
+                </agm-marker>
+            </ng-container>
         </agm-map>
     </div>
+
     <button *ngIf="showFilters" mat-icon-button class="warn mat-elevation-z2 filter-panel-button"
         (click)="toggleSidebarOpen('filterPanel')">
         <mat-icon>layers</mat-icon>
@@ -171,6 +191,7 @@
         (click)="cleanEventLocation()">
         <mat-icon class="event_clean">location_off</mat-icon>
     </button>
+
     <unitinfo-sidebar name="unitInfoPanel" class="unitInfoPanel-sidebar" position="right">
         <unitInfo-panel [currentUnit]="currentUnit" [currentOperator]="currentOperator" [currentEvents]="currentEvents"
             (eventLocation)="showEventLocation($event)">
@@ -184,7 +205,7 @@
     <unitinfo-sidebar name="filterPanel" class="filterPanel-sidebar" position="right">
         <filter-panel [unitClist]="unitClist" [poiClist]="poiClist" *ngIf="showFilters"
             (filterPanelCloseEmitter)="filterToggleOff($event)" (unitLocateNowEmitter)="unitLocateNow($event)"
-            (filterUnits)="filterUnits($event)">
+            (filterUnits)="filterUnits($event)" (showVisibleOnlyEmitter)="showVisibleOnlyEmitter($event)">
         </filter-panel>
     </unitinfo-sidebar>
     <unitinfo-sidebar name="trackPanel" class="trackPanel-sidebar w-700" position="right">

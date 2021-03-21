@@ -108,14 +108,14 @@ export class SimcardDetailComponent implements OnInit {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
-        let selected_element_id = this.simcardForm.get(`${this.method_string}`).value;
-        let clist = this.simcardDetailService.unit_clist_item[methodString];
+        const selected_element_id = this.simcardForm.get(`${this.method_string}`).value;
+        const clist = this.simcardDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.simcardForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.simcardForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

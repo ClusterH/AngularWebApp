@@ -29,7 +29,7 @@ export class VehiclesDataSource extends DataSource<any> {
 
                 this.clipService.vehicleList = result.TrackingXLAPI.DATA;
                 this.vehiclesSubject.next(this.clipService.vehicleList);
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

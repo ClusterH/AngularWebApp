@@ -1,23 +1,17 @@
 <div id="userprofile_detail" class="page-layout carded fullwidth inner-scroll">
-
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
     <!-- / TOP BACKGROUND -->
-
     <!-- CENTER -->
     <div class="center">
-
         <!-- HEADER -->
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
-
             <!-- APP TITLE -->
             <div fxLayout="row" fxLayoutAlign="start center">
-
                 <button mat-icon-button class="mr-0 mr-sm-16">
                     <!-- <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin/userprofiles/userprofiles'"> -->
                     <mat-icon (click)="goBackUnit()">arrow_back</mat-icon>
                 </button>
-
                 <div fxLayout="column" fxLayoutAlign="start start"
                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     <div class="h2" *ngIf="pageType ==='edit'">
@@ -32,40 +26,30 @@
                 </div>
             </div>
             <!-- / APP TITLE -->
-
             <button mat-raised-button class="save-userprofile-button" *ngIf="pageType ==='new'"
                 (click)="addUserProfile()">
                 <span>{{ 'USERPROFILES.ADD' | translate }}</span>
             </button>
-
             <button mat-raised-button class="save-userprofile-button" *ngIf="pageType ==='edit'"
                 (click)="saveUserProfile()">
                 <span>{{ 'USERPROFILES.SAVE' | translate }}</span>
             </button>
         </div>
         <!-- / HEADER -->
-
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <!-- CONTENT -->
             <div class="content">
-
                 <form [formGroup]="userprofileForm" class="userprofile w-100-p" fxLayout="column" fxFlex>
-
                     <mat-tab-group>
-
                         <mat-tab label="{{ 'USERPROFILES.GENERAL' | translate }}">
-
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>{{ 'USERPROFILES.NAME' | translate }}</mat-label>
                                     <input matInput placeholder="Name" name="name" formControlName="name" required>
                                 </mat-form-field>
                             </div>
-
                             <div class="tab-content p-24 pt-0" fusePerfectScrollbar fxLayout="column">
-
                                 <mat-form-field appearance="outline" floatLabel="always" class="select_list w-100-p">
                                     <mat-label>{{ 'USERPROFILES.COMPANY' | translate }}</mat-label>
                                     <mat-select (click)="showCompanyList('company_clist')" formControlName="company">
@@ -74,7 +58,6 @@
                                                 (keyup)="onKey($event)">
                                             <mat-icon (click)="clearFilter()">clear</mat-icon>
                                         </div>
-
                                         <div style="width: 100%; overflow: auto;">
                                             <mat-table [dataSource]="dataSourceCompany"
                                                 class="devices-table font-size-10 mat-elevation-z8">
@@ -91,10 +74,8 @@
                                             class="table_paginator_detail" [length]="dataSourceCompany.totalLength"
                                             [pageSize]="10" [hidePageSize]="true" showFirstLastButtons sticky="true">
                                         </mat-paginator>
-
                                     </mat-select>
                                 </mat-form-field>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <fieldset
                                         style=" border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em; margin-bottom: 12px;"
@@ -108,10 +89,8 @@
                                                             label</mat-icon>
                                                         <span class="ml-4">{{module.privilege}}</span>
                                                     </div>
-
                                                     <mat-form-field appearance="outline" floatLabel="always"
                                                         class="w-50-p get_module_access mr-12">
-
                                                         <mat-select class="get_module_access_select"
                                                             [(value)]="module.accesslevel"
                                                             style=" height: 24px; max-height: 24px;"
@@ -120,7 +99,6 @@
                                                                 class="get_module_access_select_option"
                                                                 [value]="restrict">{{restrict}}</mat-option>
                                                         </mat-select>
-
                                                     </mat-form-field>
                                                 </div>
                                             </div>
@@ -140,7 +118,6 @@
                                             </div>
                                         </div>
                                     </fieldset>
-
                                     <fieldset
                                         style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px; padding-right: 0.1em;  margin-bottom: 12px;"
                                         fxFlex="28">
@@ -154,7 +131,6 @@
                                             </div>
                                         </div>
                                     </fieldset>
-
                                     <!-- <fieldset style="border-radius: 4px; border: 1px solid #2423233a;  height: 450px; min-height: 450px; max-height: 450px;" fxFlex="30">
                                         <legend>&nbsp;Commands&nbsp;</legend>
                                         <div class="">
@@ -166,11 +142,8 @@
                                         </div>
                                     </fieldset> -->
                                 </div>
-
                             </div>
-
                         </mat-tab>
-
                         <mat-tab label="{{ 'USERPROFILES.AUDIT' | translate }}">
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
@@ -178,21 +151,18 @@
                                         <mat-label>{{ 'USERPROFILES.CREATED' | translate }}</mat-label>
                                         <input matInput placeholder="Created" name="created" formControlName="created">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'USERPROFILES.CREATEDBYNAME' | translate }}</mat-label>
                                         <input matInput placeholder="CreatedByName" name="createdbyname"
                                             formControlName="createdbyname">
                                     </mat-form-field>
                                 </div>
-
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'USERPROFILES.LASTMODIFIEDDATE' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified Date" name="lastmodifieddate"
                                             formControlName="lastmodifieddate">
                                     </mat-form-field>
-
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                         <mat-label>{{ 'USERPROFILES.LASTMODIFIEDBYNAME' | translate }}</mat-label>
                                         <input matInput placeholder="Last Modified By Name" name="lastmodifiedbyname"
@@ -201,7 +171,6 @@
                                 </div>
                             </div>
                         </mat-tab>
-
                     </mat-tab-group>
                 </form>
             </div>

@@ -54,9 +54,9 @@
                     </mat-spinner>
                 </div>
             </div>
-            <div fxLayout="column" fxLayoutAlign="center">
+            <div fxLayout="column" style="overflow: auto; height: calc(100vh - 175px); place-content: unset;">
                 <div class="courses" fxLayout="row wrap" fxLayoutAlign="start" [@animateStagger]="{value:'50'}">
-                    <div class="course" *ngFor="let tank of tanksService.tanks;  trackBy: trackByFn" fxFlex="100"
+                    <div class="course" *ngFor="let tank of tanksService.tankList;  trackBy: trackByFn" fxFlex="100"
                         fxFlex.gt-xs="50" fxFlex.gt-sm="33" [@animate]="{value:'*',params:{y:'100%'}}">
                         <div class="course-content white" fxLayout="column" fxFlex="1 1 auto">
                             <div class="header tank_card_header accent" fxLayout="row" fxLayoutAlign="center center">
@@ -64,9 +64,13 @@
                                     {{tank.name}}
                                 </div>
                                 <div class="length" fxLayout="row" fxLayoutAlign="center center">
-                                    <mat-icon class="length-icon s-20">description</mat-icon>
-                                    <mat-icon class="length-icon s-20" (click)="tankDetail(tank)">launch</mat-icon>
-                                    <mat-icon class="length-icon s-20" (click)="tankDetailEdit(tank)">edit</mat-icon>
+                                    <mat-icon class="length-icon s-20" matTooltip="Description">description</mat-icon>
+                                    <mat-icon class="length-icon s-20" (click)="tankDetail(tank)"
+                                        matTooltip="Tank Detail">launch</mat-icon>
+                                    <mat-icon class="length-icon s-20" (click)="tankDetailEdit(tank)" matTooltip="Edit">
+                                        edit</mat-icon>
+                                    <mat-icon class="length-icon s-20" (click)="tankDelete(tank)" matTooltip="Delete">
+                                        delete</mat-icon>
                                 </div>
                             </div>
                             <div class="content" fxLayout="column" fxLayoutAlign="center center" fxFlex="1 1 auto">
@@ -82,8 +86,9 @@
                                 <div class="last_report w-100-p mt-28" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>{{ 'TANKS.LASTREPORT' | translate }}:
                                             </strong></span></div>
-                                    <div class="w-60-p"><span class="h3">{{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss
-                                            a'}}</span></div>
+                                    <div class="w-60-p h3">
+                                        {{tank.lastreport | date: 'MM/dd/yyyy, hh:mm:ss a'}}
+                                    </div>
                                 </div>
                                 <div class="last_report w-100-p" fxLayout="row" fxLayoutAlign="start">
                                     <div class="w-30-p"><span class="h3"><strong>{{tank.volumeunit}}: </strong></span>

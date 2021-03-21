@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, OnDestroy, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -13,7 +13,9 @@ import { locale as tanksSpanish } from 'app/main/fuelmanagement/tanks/i18n/sp';
 import { TanksDataSource } from "app/main/fuelmanagement/tanks/services/tanks.datasource";
 import { TanksService } from 'app/main/fuelmanagement/tanks/services/tanks.service';
 import { TankDetailService } from 'app/main/fuelmanagement/tanks/services/tank_detail.service';
+import { CourseDialogComponent } from '../dialog/dialog.component';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'fuelmanagement-tanks',
@@ -31,7 +33,7 @@ export class TanksComponent implements OnInit, OnDestroy {
     pageEvent: PageEvent;
     userObjectList: any;
     pageIndex = 0;
-    pageSize = 1;
+    pageSize = 9;
     selected = '';
     filter_string: string = '';
     index_number: number = 1;
@@ -64,7 +66,7 @@ export class TanksComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     ngOnInit(): void {
         this.dataSource = new TanksDataSource(this.tanksService);
-        this.dataSource.loadTanks(this.currentStep, 1, "id", "asc", this.selected, this.filter_string, "FuelTank_TList");
+        this.dataSource.loadTanks(this.currentStep, 9, "id", "asc", this.selected, this.filter_string, "FuelTank_TList");
     }
 
     ngAfterViewInit() { }
@@ -77,7 +79,7 @@ export class TanksComponent implements OnInit, OnDestroy {
         if (this.selected == '') {
             alert("Please choose Field for filter!");
         } else {
-            this.dataSource.loadTanks(0, 1, 'id', 'asc', this.selected, this.filter_string, "FuelTank_TList");
+            this.dataSource.loadTanks(0, 9, 'id', 'asc', this.selected, this.filter_string, "FuelTank_TList");
             this.currentStep = 0;
         }
     }
@@ -92,7 +94,7 @@ export class TanksComponent implements OnInit, OnDestroy {
             return;
         }
         this.currentStep++;
-        this.dataSource.loadTanks(this.currentStep, 1, 'id', 'asc', this.selected, this.filter_string, "FuelTank_TList");
+        this.dataSource.loadTanks(this.currentStep, 9, 'id', 'asc', this.selected, this.filter_string, "FuelTank_TList");
     }
 
     gotoPreviousStep(): void {
@@ -109,6 +111,24 @@ export class TanksComponent implements OnInit, OnDestroy {
 
     tankDetailEdit(tank: any) {
         this.router.navigate(['fuelmanagement/tanks/tank_detail_edit'], { queryParams: tank });
+    }
+
+    tankDelete(tank: any): void {
+        const dialogConfig = new MatDialogConfig();
+        this.flag = 'delete';
+        dialogConfig.disableClose = true;
+        dialogConfig.data = { tank, flag: this.flag };
+        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+            if (result) {
+                let deleteVehicle = this.tanksService.tankList.findIndex((deletedTank: any) => deletedTank.id === tank.id);
+                if (deleteVehicle > -1) {
+                    this.tanksService.tankList.splice(deleteVehicle, 1);
+                    this.dataSource.tanksSubject.next(this.tanksService.tankList);
+                    this.dataSource.totalLength = this.dataSource.totalLength - 1;
+                }
+            }
+        });
     }
 
     trackByFn(index) {

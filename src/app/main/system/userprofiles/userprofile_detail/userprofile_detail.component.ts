@@ -44,11 +44,13 @@ export class UserProfileDetailComponent implements OnInit {
     get_module_access: any[];
     get_report_access: any[];
     get_command_access: any[];
-    access_restric_list: any = ['Denied', 'Read', 'Edit', 'Full'];
+    access_restric_list = ['Denied', 'Read', 'Edit', 'Full'];
     dataSourceCompany: UserProfileDetailDataSource;
     displayedColumns: string[] = ['name'];
     filter_string: string = '';
     method_string: string = '';
+
+    privilegeAccessArray: any[];
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true }) paginatorCompany: MatPaginator;
@@ -64,8 +66,8 @@ export class UserProfileDetailComponent implements OnInit {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(userprofilesEnglish, userprofilesSpanish, userprofilesFrench, userprofilesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
             this.userprofile = data;
+
         });
 
         if (isEmpty(this.userprofile)) {
@@ -114,7 +116,7 @@ export class UserProfileDetailComponent implements OnInit {
                         for (let report in this.get_report_access) {
                             let report_form = new FormControl('')
                             this.userprofileForm.addControl(this.get_report_access[report].privilege.toString(), report_form);
-                            this.userprofileForm.get(`${this.get_report_access[report].privilege}`).setValue(this.get_report_access[report].accesslevel);
+                            this.userprofileForm.get(`${this.get_report_access[report].privilege}`).setValue(this.get_report_access[report].accesslevel > 0 ? true : false);
                         }
                     } else {
                         alert('No Data Found for Report!');
@@ -125,10 +127,11 @@ export class UserProfileDetailComponent implements OnInit {
                 .subscribe((res: any) => {
                     if (res.responseCode == 100) {
                         this.get_command_access = res.TrackingXLAPI.DATA;
+
                         for (let command in this.get_command_access) {
                             let command_form = new FormControl('')
                             this.userprofileForm.addControl(this.get_command_access[command].privilege.toString(), command_form);
-                            this.userprofileForm.get(`${this.get_command_access[command].privilege}`).setValue(this.get_command_access[command].accesslevel);
+                            this.userprofileForm.get(`${this.get_command_access[command].privilege}`).setValue(this.get_command_access[command].accesslevel > 0 ? true : false);
                         }
                     } else {
                         alert('No Data Found for Command!');
@@ -175,15 +178,15 @@ export class UserProfileDetailComponent implements OnInit {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
-        let selected_element_id = this.userprofileForm.get(`${this.method_string}`).value;
-        let clist = this.userprofileDetailService.unit_clist_item[methodString];
+        const selected_element_id = this.userprofileForm.get(`${this.method_string}`).value;
+        const clist = this.userprofileDetailService.unit_clist_item[methodString];
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.userprofileForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.userprofileForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 
@@ -194,8 +197,8 @@ export class UserProfileDetailComponent implements OnInit {
     setValues() {
         this.userprofileForm.get('name').setValue(this.userprofile.name);
         this.userprofileForm.get('company').setValue(Number(this.userprofile.companyid));
-        let created = this.userprofile.createdwhen ? new Date(`${this.userprofile.createdwhen}`) : '';
-        let lastmodifieddate = this.userprofile.lastmodifieddate ? new Date(`${this.userprofile.lastmodifieddate}`) : '';
+        const created = this.userprofile.createdwhen ? new Date(`${this.userprofile.createdwhen}`) : '';
+        const lastmodifieddate = this.userprofile.lastmodifieddate ? new Date(`${this.userprofile.lastmodifieddate}`) : '';
 
         this.userprofileForm.get('created').setValue(this.dateFormat(created));
         this.userprofileForm.get('createdbyname').setValue(this.userprofile.createdbyname);
@@ -208,6 +211,8 @@ export class UserProfileDetailComponent implements OnInit {
         this.userprofileDetail.name = this.userprofileForm.get('name').value || '';
         this.userprofileDetail.isactive = this.userprofile.isactive || true;
         this.userprofileDetail.companyid = this.userprofileForm.get('company').value || 0;
+
+        this.getPrivilegeAccess();
 
         if (mode == "save") {
             this.userprofileDetail.id = this.userprofile.id;
@@ -222,6 +227,35 @@ export class UserProfileDetailComponent implements OnInit {
             this.userprofileDetail.lastmodifieddate = dateTime;
             this.userprofileDetail.lastmodifiedby = userID;
         }
+    }
+
+    getPrivilegeAccess() {
+        let modulesAccess = [];
+        let reportsAccess = [];
+        let commandsAccess = [];
+        for (let module in this.get_module_access) {
+            modulesAccess.push({
+                userprofileid: this.userprofile.id,
+                privilegeid: this.get_module_access[module].privilegeid,
+                accesslevel: this.access_restric_list.findIndex(item => item === this.userprofileForm.get(`${this.get_module_access[module].privilege}`).value)
+            })
+        }
+        for (let report in this.get_report_access) {
+            reportsAccess.push({
+                userprofileid: this.userprofile.id,
+                privilegeid: this.get_report_access[report].privilegeid,
+                accesslevel: this.userprofileForm.get(`${this.get_report_access[report].privilege}`).value ? 3 : 0
+            })
+        }
+        for (let command in this.get_command_access) {
+            commandsAccess.push({
+                userprofileid: this.userprofile.id,
+                privilegeid: this.get_command_access[command].privilegeid,
+                accesslevel: this.userprofileForm.get(`${this.get_command_access[command].privilege}`).value ? 3 : 0
+            })
+        }
+
+        this.privilegeAccessArray = [...modulesAccess, ...reportsAccess, ...commandsAccess];
     }
 
     dateFormat(date: any) {
@@ -247,8 +281,12 @@ export class UserProfileDetailComponent implements OnInit {
             this.userprofileDetailService.saveUserProfileDetail(this.userprofileDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        alert("Success!");
-                        this.router.navigate(['system/userprofiles/userprofiles']);
+                        console.log(this.privilegeAccessArray);
+                        this.userprofileDetailService.saveAccess(this.privilegeAccessArray).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                            if (res.responseCode === 100) {
+                                this.router.navigate(['system/userprofiles/userprofiles']);
+                            }
+                        });
                     }
                 });
         }

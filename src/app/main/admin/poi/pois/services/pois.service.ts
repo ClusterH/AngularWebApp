@@ -9,12 +9,14 @@ export class PoisService {
 
     getPois(pageindex: number, pagesize: number, orderby: string, orderdirection: string, filterItem: string, filterString: string, method: string): Observable<any> {
         if (filterItem == '') {
+
             const params = new HttpParams()
                 .set('pageindex', (pageindex + 1).toString())
                 .set('pagesize', pagesize.toString())
                 .set('orderby', orderby.toString())
                 .set('orderdirection', orderdirection.toString())
                 .set('method', method.toString());
+
             return this._httpClient.get('trackingxlapi.ashx', {
                 params: params
             });

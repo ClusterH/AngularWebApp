@@ -7,11 +7,11 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
-import { locale as navigationEnglish } from 'app/navigation/i18n/en';
-import { locale as navigationFrench } from 'app/navigation/i18n/fr';
-import { locale as navigationPortuguese } from 'app/navigation/i18n/pt';
-import { locale as navigationSpanish } from 'app/navigation/i18n/sp';
-import { navigation } from 'app/navigation/navigation';
+import { locale as navigationEnglish } from 'app/core/navigation/i18n/en';
+import { locale as navigationFrench } from 'app/core/navigation/i18n/fr';
+import { locale as navigationPortuguese } from 'app/core/navigation/i18n/pt';
+import { locale as navigationSpanish } from 'app/core/navigation/i18n/sp';
+import { navigation } from 'app/core/navigation/navigation';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

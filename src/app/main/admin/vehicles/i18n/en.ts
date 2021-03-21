@@ -2,10 +2,30 @@ export const locale = {
     lang: 'en',
     data: {
         VEHICLES: {
-            "VEHICLES": "Vehicles",
-            "SEARCHFORVEHICLE": "Search for a Vehicle",
-            "NEWVEHICLE": "New Vehicle",
-            "VEHICLEDETAIL": "Vehicle Detail",
+            "VEHICLES": {
+                "Vehicle": "Vehicles",
+                "Person": "Persons",
+                "Cargo": "Cargos",
+                "Asset": "Assets",
+            },
+            "SEARCHFORVEHICLE": {
+                "Vehicle": "Search for a Vehicle",
+                "Person": "Search for a Person",
+                "Cargo": "Search for a Cargo",
+                "Asset": "Search for a Asset",
+            },
+            "NEWVEHICLE": {
+                "Vehicle": "New Vehicle",
+                "Person": "New Person",
+                "Cargo": "New Cargo",
+                "Asset": "New Asset",
+            },
+            "VEHICLEDETAIL": {
+                "Vehicle": "Vehicle Detail",
+                "Person": "Person Detail",
+                "Cargo": "Cargo Detail",
+                "Asset": "Asset Detail",
+            },
             "SELECTFIELD": "Select Field",
             "SAVE": "SAVE",
             "ADD": "ADD",
@@ -34,7 +54,7 @@ export const locale = {
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
-            "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
+            "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete this item?",
             "GOBACK_CONFIRM_MESSAGE": "Are you sure you want to discard the changes?",
             "DUPLICATE": "Duplicate",
             "DELETE": "Delete",

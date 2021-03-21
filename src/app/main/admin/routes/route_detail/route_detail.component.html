@@ -19,6 +19,45 @@
                     </div>
                 </div>
             </div>
+            <fieldset *ngIf="pageType === 'new' && activatedTabIndex === 1"
+                style="border-radius: 4px; border: 1px solid #24232310; padding: 12px;">
+                <legend>&nbsp;Add Stops&nbsp;</legend>
+                <button mat-raised-button class="save-route-button mr-8" *ngIf="pageType ==='new'"
+                    (click)="agmDirectionGeneratorService.isImportStopsFromFile = true"
+                    [disabled]="agmDirectionGeneratorService.isAddStopsOnMap || agmDirectionGeneratorService.newRouteLocations.length < 2">
+                    <span>Import From CSV</span>
+                </button>
+                <button mat-raised-button class="save-route-button" *ngIf="pageType ==='new'" (click)="addStopsOnMap()">
+                    <span>
+                        {{agmDirectionGeneratorService.isAddStopsOnMap? 'Disable Map Clicking' :'Enable Map Clicking'}}
+                    </span>
+                </button>
+                <button mat-raised-button class="save-route-button ml-12" *ngIf="pageType ==='new'"
+                    (click)="removeRoute()">
+                    <span>Remove Route</span>
+                </button>
+            </fieldset>
+
+            <p-dialog header="Upload CSV File" [(visible)]="agmDirectionGeneratorService.isImportStopsFromFile"
+                [modal]="true" [style]="{width: '40vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+                <route-stops-importer (csvfileDataEmitter)="getCSVFileData($event)"></route-stops-importer>
+                <ng-template pTemplate="footer">
+                    <p-button icon="pi pi-check" (click)="closeDialog(true)" label="Yes" class="p-button-text">
+                    </p-button>
+                    <p-button icon="pi pi-times" (click)="closeDialog(false)" label="No"></p-button>
+                </ng-template>
+            </p-dialog>
+
+            <p-dialog header="Remove Route" [(visible)]="isRemoveRouteDialog" [modal]="true" [style]="{width: '40vw'}"
+                [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+                <div class="h3">Do you want to remove current route and create another one?</div>
+                <ng-template pTemplate="footer">
+                    <p-button icon="pi pi-check" (click)="closeConfirmDialog(true)" label="Yes" class="p-button-text">
+                    </p-button>
+                    <p-button icon="pi pi-times" (click)="closeConfirmDialog(false)" label="No"></p-button>
+                </ng-template>
+            </p-dialog>
+
             <button mat-raised-button class="save-route-button" *ngIf="pageType ==='new'" (click)="addRoute()">
                 <span>{{ 'ROUTES.ADD' | translate }}</span>
             </button>
@@ -29,7 +68,7 @@
         <div class="content-card">
             <div class="content">
                 <form [formGroup]="routeForm" class="route w-100-p" fxLayout="column" fxFlex>
-                    <mat-tab-group>
+                    <mat-tab-group [(selectedIndex)]="activatedTabIndex" (selectedTabChange)="tabChanged()">
                         <mat-tab label="{{ 'ROUTES.GENERAL' | translate }}">
                             <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
@@ -46,7 +85,6 @@
                                             <input matInput placeholder="Created" name="created"
                                                 formControlName="created">
                                         </mat-form-field>
-
                                         <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
                                             <mat-label>{{ 'ROUTES.CREATEDBYNAME' | translate }}</mat-label>
                                             <input matInput placeholder="CreatedByName" name="createdbyname"
@@ -68,10 +106,45 @@
                                 </fieldset>
                             </div>
                         </mat-tab>
+                        <mat-tab label="{{ 'ROUTES.MAP' | translate }}">
+                            <div class="map-content">
+                                <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+                                    [disableDefaultUI]="false" [zoomControl]="false" (mapReady)="onMapReady($event)"
+                                    (mapClick)="addRouteLocations($event)" [fullscreenControl]='true'
+                                    [fitBounds]="isLoadedRouteMap">
+                                    <agm-polyline [strokeColor]="'blue'" *ngIf="pageType === 'edit'">
+                                        <agm-polyline-point *ngFor="let pnt of routeMapData" [latitude]="pnt.lat"
+                                            [longitude]="pnt.lng">
+                                        </agm-polyline-point>
+                                    </agm-polyline>
+
+                                    <ng-container
+                                        *ngIf="pageType === 'new' && !agmDirectionGeneratorService.isGenerateRoute">
+                                        <agm-marker
+                                            *ngFor="let m of agmDirectionGeneratorService.newRouteLocations; let i = index"
+                                            [latitude]="m.lat" [longitude]="m.lng" [markerDraggable]="true"
+                                            [visible]="true" (dragEnd)="markerDragEnd($event, i)">
+                                        </agm-marker>
+                                    </ng-container>
+                                </agm-map>
+                                <p-dialog header="Remove This stop?" [(visible)]="isRemoveStopDialog"
+                                    [style]="{width: '40vw'}" [baseZIndex]="10000" [draggable]="false"
+                                    [resizable]="false" [modal]="true">
+                                    <div class="h3">Do you want to remove current stop from the Route?
+                                    </div>
+                                    <ng-template pTemplate="footer">
+                                        <p-button icon="pi pi-check" (click)="closeRMStopDialog(true)" label="Yes"
+                                            class="p-button-text">
+                                        </p-button>
+                                        <p-button icon="pi pi-times" (click)="closeRMStopDialog(false)" label="No">
+                                        </p-button>
+                                    </ng-template>
+                                </p-dialog>
+                            </div>
+                        </mat-tab>
                     </mat-tab-group>
                 </form>
-                <agm-map [disableDefaultUI]="false">
-                </agm-map>
+
             </div>
         </div>
     </div>

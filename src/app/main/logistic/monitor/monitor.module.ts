@@ -13,6 +13,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { AngularSplitModule } from 'angular-split';
 
@@ -47,6 +48,7 @@ const routes = [
         ButtonModule,
         CalendarModule,
         CheckboxModule,
+        RadioButtonModule,
         TranslateModule,
         RouterModule.forChild(routes),
         AngularSplitModule,

@@ -29,7 +29,7 @@ export class ReportDataSource extends DataSource<any> {
                 }
 
                 this.reportSubject.next(result.TrackingXLAPI.DATA);
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -43,7 +43,7 @@ export class ReportDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)), takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
                 this.reportSubject.next(result.TrackingXLAPI.DATA);
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

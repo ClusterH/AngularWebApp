@@ -23,35 +23,35 @@ export class RoutelistMapComponent implements OnInit, OnDestroy {
     isRoute: boolean = false;
     selectedRouteList: Array<any>;
 
-    unit_icon_start_green = `{
+    unit_icon_start_green = {
         url: 'assets/icons/googlemap/play-green.svg',
         scaledSize: { width: 10, height: 10 },
-    }`
-    unit_icon_start_red = `{
+    }
+    unit_icon_start_red = {
         url: 'assets/icons/googlemap/play-red.svg',
         scaledSize: { width: 10, height: 10 },
-    }`
-    unit_icon_end_green = `{
+    }
+    unit_icon_end_green = {
         url: 'assets/icons/googlemap/stop-green.svg',
         scaledSize: { width: 10, height: 10 },
-    }`
-    unit_icon_end_red = `{
+    }
+    unit_icon_end_red = {
         url: 'assets/icons/googlemap/stop-red.svg',
         scaledSize: { width: 10, height: 10 },
-    }`
-    unit_icon_arrived = `{
+    }
+    unit_icon_arrived = {
         url: 'assets/icons/googlemap/green-marker.png',
         scaledSize: { width: 10, height: 10 },
-    }`
-    unit_icon_unarrived = `{
+    }
+    unit_icon_unarrived = {
         url: 'assets/icons/googlemap/red-marker.png',
         scaledSize: { width: 10, height: 10 },
-    }`
+    }
 
-    unit_icon_unauth = `{
+    unit_icon_unauth = {
         url: 'assets/icons/googlemap/green-marker.png',
         scaledSize: { width: 100, height: 100 },
-    }`
+    }
 
     faBan = faBan;
     faThumbtack = faThumbtack;

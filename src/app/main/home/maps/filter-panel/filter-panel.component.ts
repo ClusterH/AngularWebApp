@@ -74,6 +74,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     isCheckedAllUnits: boolean = true;
     isCheckedAllUnitType: boolean = true;
     isCheckedAllPOIs: boolean = true;
+    isCheckedVisibility: boolean = false;
 
     @Input() unitClist: any;
     @Input() poiClist: any;
@@ -81,6 +82,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     @Output() filterPanelCloseEmitter = new EventEmitter<boolean>();
     @Output() unitLocateNowEmitter = new EventEmitter<any>();
     @Output() filterUnits = new EventEmitter<boolean>();
+    @Output() showVisibleOnlyEmitter = new EventEmitter<boolean>();
 
     private _unsubscribeAll: Subject<any>;
 
@@ -124,7 +126,8 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
             return poi;
         });
 
-        this.unitClist_temp = this.unitClist.map(unit => ({ ...unit }));
+        // this.unitClist_temp = this.unitClist.map(unit => ({ ...unit }));
+        this.unitClist_temp = this.unitClist.filter(unit => unit.visible === true);
         this.userPOIs_temp = this.poiClist.map(poi => ({ ...poi }));
     }
 
@@ -260,9 +263,9 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
     onCheckboxChangeUnit(data: any, type: string) {
         if (data.isSelected) {
             if (type == 'unitclistArray') {
-                this.unitclistData.push(this.unitClist_temp.filter(unit => unit.id == data.id)[0]);
+                this.unitclistData.push(this.unitClist_temp.filter(unit => unit.id === data.id)[0]);
             }
-            this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type || (filter.type == type && filter.id != data.id));
+            this.uncheckedFilterOption = this.uncheckedFilterOption.filter(filter => filter.type != type || (filter.type === type && filter.id != data.id));
         } else {
             if (type == 'unitclistArray') {
                 this.unitclistData = this.unitclistData.filter(unit => unit.id != data.id);
@@ -374,7 +377,7 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
             this.unittypeData_temp = this.unittypeData.map(type => ({ ...type }));
             this.unittypepage = 1;
         } else if (this.currentOpenedPanel == 'unitclistArray') {
-            this.unitClist_temp = this.unitClist.map(unit => ({ ...unit }));
+            this.unitClist_temp = this.unitClist.filter(unit => unit.visible === true);
             this.unitclistpage = 1;
         } else if (this.currentOpenedPanel == 'userPOIsArray') {
             this.userPOIs_temp = this.poiClist.map(poi => ({ ...poi }));
@@ -389,13 +392,17 @@ export class FilterPanelComponent implements OnInit, OnDestroy {
                 this.unittypeData_temp = this.unittypeData.filter(unit => unit.name.toLowerCase().includes(this.filter_string));
                 this.unittypepage = 1;
             } else if (this.currentOpenedPanel == 'unitclistArray') {
-                this.unitClist_temp = this.unitClist.filter(unit => unit.name.toLowerCase().includes(this.filter_string));
+                this.unitClist_temp = this.unitClist.filter(unit => unit.name.toLowerCase().includes(this.filter_string) && unit.visible === true);
                 this.unitclistpage = 1;
             } else if (this.currentOpenedPanel == 'userPOIsArray') {
                 this.userPOIs_temp = this.poiClist.filter(poi => poi.name.toLowerCase().includes(this.filter_string));
                 this.unittypepage = 1;
             }
         }
+    }
+
+    switchVisibility(): void {
+        this.showVisibleOnlyEmitter.emit(this.isCheckedVisibility);
     }
 
     trackFnUnitClist(index, item) {

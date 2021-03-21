@@ -11,18 +11,18 @@
     <div class="unitInfo-panel-icon mat-elevation-z8 py-16 px-8 mb-4 w-100-p" fxLayout="row"
         fxLayoutAlign="space-between center">
         <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/share-circle.png"
-            (click)="goOptionPanel('sharelocation')" />
+            (click)="goOptionPanel('sharelocation')" matTooltip="Share Location" />
         <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/street-circle.png"
-            (click)="showPositionDialog('streetview')" />
+            (click)="showPositionDialog('streetview')" matTooltip="StreetView" />
         <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/direction-circle.png"
-            (click)="showPositionDialog('direction')" />
+            (click)="showPositionDialog('direction')" matTooltip="Direction" />
         <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/location-circle.png"
-            (click)="goOptionPanel('locatenow')" />
+            (click)="goOptionPanel('locatenow')" matTooltip="Locate Now" />
         <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/playback-circle.png"
-            (click)="goOptionPanel('playbackhistory')" />
-        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/command-circle.png" />
-        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/convoy-circle.png" />
-        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/graph-circle.png" />
+            (click)="goOptionPanel('playbackhistory')" matTooltip="PlaybackHistory" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/command-circle.png" matTooltip="Command" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/convoy-circle.png" matTooltip="Convoy" />
+        <img class="header-icons" fxFlex="10" src="assets/icons/map_unitInfo/graph-circle.png" matTooltip="Graph" />
     </div>
 
     <mat-accordion *ngIf="currentUnit && currentChannel == 'mainpanel'">

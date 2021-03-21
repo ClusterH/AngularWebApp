@@ -1,12 +1,5 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from "@angular/material/dialog";
 import { FuseSharedModule } from '@fuse/shared.module';
 import { POIInfoPanelComponent } from 'app/main/home/maps/poiInfo-panel/poiInfo-panel.component';
@@ -24,13 +17,6 @@ import { AutocompletePOIDialogComponent } from 'app/main/home/maps/poiInfo-panel
         AutocompletePOIDialogComponent
     ],
     imports: [
-        MatDividerModule,
-        MatListModule,
-        MatSlideToggleModule,
-        MatExpansionModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCheckboxModule,
         MatDialogModule,
         NgxPaginationModule,
         ReactiveFormsModule,

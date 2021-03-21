@@ -3,9 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 
 const routes: Routes = [
-  { path: 'login', loadChildren: () => import('./authentication/login/login.module').then(m => m.LoginModule) },
-  { path: 'forgot-password', loadChildren: () => import('./authentication/forgot-password/forgot-password.module').then(m => m.ForgotPasswordModule) },
-  { path: 'register', loadChildren: () => import('./authentication/register/register.module').then(m => m.RegisterModule) },
+  { path: 'login', loadChildren: () => import('./core/authentication/login/login.module').then(m => m.LoginModule) },
   { path: 'home', loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule) },
   { path: 'admin', loadChildren: () => import('./main/admin/admin.module').then(m => m.AdminModule) },
   { path: 'system', loadChildren: () => import('./main/system/system.module').then(m => m.SystemModule) },

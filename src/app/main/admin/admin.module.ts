@@ -14,11 +14,8 @@ const routes = [
     { path: 'geofences/zones', loadChildren: () => import('./geofences/zones/zones.module').then(m => m.ZonesModule) },
     { path: 'geofences/zonegroups', loadChildren: () => import('./geofences/zonegroups/zonegroups.module').then(m => m.ZonegroupsModule) },
     { path: 'groups', loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule) },
-    { path: 'insurancecompanies', loadChildren: () => import('./insurancecompanies/insurancecompanies.module').then(m => m.InsurancecompaniesModule) },
-    { path: 'dealercompanies', loadChildren: () => import('./dealercompanies/dealercompanies.module').then(m => m.DealercompaniesModule) },
     { path: 'routes', loadChildren: () => import('./routes/routes.module').then(m => m.RoutesModule) },
     { path: 'events', loadChildren: () => import('./events/events.module').then(m => m.EventsModule) },
-    { path: 'assets', loadChildren: () => import('./assets/assets.module').then(m => m.AssetsModule) }
 ];
 
 @NgModule({

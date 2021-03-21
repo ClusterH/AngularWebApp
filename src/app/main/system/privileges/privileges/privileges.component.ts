@@ -94,7 +94,7 @@ export class PrivilegesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new PrivilegesDataSource(this._systemPrivilegesService);
-        this.dataSource.loadPrivileges(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Privilege_Tlist");
+        this.dataSource.loadPrivileges(this.pageIndex, this.pageSize, "name", "asc", this.selected, this.filter_string, "Privilege_Tlist");
     }
 
     ngOnDestroy(): void {

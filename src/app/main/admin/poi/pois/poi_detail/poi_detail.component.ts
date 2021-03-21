@@ -99,7 +99,6 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
             longitude: [null, Validators.required],
             latitude: [null, Validators.required],
             radius: [null, Validators.required],
-            isactive: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             deletedwhen: [{ value: '', disabled: true }],
@@ -168,8 +167,8 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
         let selected_element_id = this.poiForm.get(`${this.method_string}`).value;
         let clist = this.poiDetailService.unit_clist_item[methodString];
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-        this.poiForm.get('filterstring').setValue(clist[currentOptionID].name);
-        this.filter_string = clist[currentOptionID].name;
+        this.poiForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+        this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
         this.managePageIndex(this.method_string);
         this.loadPoiDetail(this.method_string);
     }

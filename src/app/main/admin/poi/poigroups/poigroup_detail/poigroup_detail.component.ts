@@ -153,8 +153,8 @@ export class PoigroupDetailComponent implements OnInit {
         let clist = this.poigroupDetailService.unit_clist_item[methodString];
 
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-        this.poigroupForm.get('filterstring').setValue(clist[currentOptionID].name);
-        this.filter_string = clist[currentOptionID].name;
+        this.poigroupForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+        this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
 
         this.managePageIndex(this.method_string);
         this.loadPoigroupDetail(this.method_string);

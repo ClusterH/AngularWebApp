@@ -6,7 +6,7 @@ import { FuelregistriesComponent } from 'app/main/fuelmanagement/fuelregistries/
 import { FuelregistriesService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistries.service';
 import { FuelregistryDetailComponent } from 'app/main/fuelmanagement/fuelregistries/fuelregistry_detail/fuelregistry_detail.component';
 import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistry_detail.service';
-import { CourseDialogComponent } from 'app/main/fuelmanagement/fuelregistries/dialog/dialog.component';
+import { FuelRegisterDialogComponent } from 'app/main/fuelmanagement/fuelregistries/dialog/dialog.component';
 import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
@@ -24,7 +24,7 @@ const routes = [
     declarations: [
         FuelregistriesComponent,
         FuelregistryDetailComponent,
-        CourseDialogComponent,
+        FuelRegisterDialogComponent,
     ],
     providers: [
         FuelregistriesService, FuelregistryDetailService

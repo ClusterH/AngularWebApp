@@ -225,8 +225,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         let clist = this.eventDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.eventForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.eventForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
         this.managePageIndex(this.method_string);
@@ -876,7 +876,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
                         if (this.pageType == 'new') {
                             this.event_detail.name = this.eventForm.get('name').value;
                             if (this.event_detail.name == '') {
-                                alert('Please enter Detail Name')
+                                alert('Please enter Detail Name');
                             } else {
                                 this.event_detail.method = 'event_save';
                                 this.eventDetailService.saveEventDetail(this.event_detail).pipe(takeUntil(this._unsubscribeAll))

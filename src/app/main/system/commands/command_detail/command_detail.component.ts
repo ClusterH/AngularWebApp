@@ -58,7 +58,6 @@ export class CommandDetailComponent implements OnInit {
     ngOnInit(): void {
         this.commandForm = this._formBuilder.group({
             name: [null, Validators.required],
-            isactive: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             lastmodifieddate: [{ value: '', disabled: true }],

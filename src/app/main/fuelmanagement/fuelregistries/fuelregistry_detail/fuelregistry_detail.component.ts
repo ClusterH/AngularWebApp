@@ -14,7 +14,7 @@ import { FuelregistryDetailDataSource } from "app/main/fuelmanagement/fuelregist
 import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistries/services/fuelregistry_detail.service';
 import { merge, Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
-import { CourseDialogComponent } from "../dialog/dialog.component";
+import { FuelRegisterDialogComponent } from "../dialog/dialog.component";
 import { isEmpty, isEqual } from 'lodash';
 
 @Component({
@@ -156,24 +156,21 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
-
 
         if (this.registrytype == 'vehicle' && this.method_string == 'totank') {
             return;
         } else if (this.registrytype == 'tank' && this.method_string == 'unit') {
             return;
         } else {
-            let selected_element_id = this.fuelregistryForm.get(`${this.method_string}`).value;
-
-            let clist = this._fuelregistryDetailService.unit_clist_item[methodString];
+            const selected_element_id = this.fuelregistryForm.get(`${this.method_string}`).value;
+            const clist = this._fuelregistryDetailService.unit_clist_item[methodString];
 
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
-                    this.fuelregistryForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
+                    this.fuelregistryForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                    this.filter_string = clist[i] ? clist[i].name : '';
                 }
             }
 
@@ -294,7 +291,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
             dialogConfig.disableClose = true;
             dialogConfig.data = { fuelregistry: "", flag: flag };
             dialogConfig.disableClose = false;
-            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            const dialogRef = this._matDialog.open(FuelRegisterDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
                 if (result == 'goback') {
                     this.router.navigate(['fuelmanagement/fuelregistries/fuelregistries']);

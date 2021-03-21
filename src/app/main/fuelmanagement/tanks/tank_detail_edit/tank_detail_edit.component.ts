@@ -165,17 +165,14 @@ export class TankDetailEditComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
+        const selected_element_id = this.tankForm.get(`${this.method_string}`).value;
+        const clist = this.tankDetailService.unit_clist_item[methodString];
+        const currentOptionID = clist.findIndex(item => item.id == selected_element_id);
 
-        let selected_element_id = this.tankForm.get(`${this.method_string}`).value;
-        let clist = this.tankDetailService.unit_clist_item[methodString];
-
-        let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-
-        this.tankForm.get('filterstring').setValue(clist[currentOptionID].name);
-        this.filter_string = clist[currentOptionID].name;
+        this.tankForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+        this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
 
         this.managePageIndex(this.method_string);
         this.loadTankDetail(this.method_string);

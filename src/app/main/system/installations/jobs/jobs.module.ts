@@ -8,6 +8,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { JobsComponent } from 'app/main/system/installations/jobs/jobs/jobs.component';
 import { DeleteDialogComponent } from 'app/main/system/installations/jobs/deletedialog/deletedialog.component';
+import { CardDnDConfirmDialogComponent } from 'app/main/system/installations/jobs/confirmDialog/cardDnDConfirmDialog.component';
 import { JobDialogComponent } from 'app/main/system/installations/jobs/dialog/dialog.component';
 import { JobCardDialogComponent } from 'app/main/system/installations/jobs/jobs/board/dialogs/job/dialog.component';
 import { InstallationBoardAddListComponent } from 'app/main/system/installations/jobs/jobs/board/add-list/add-list.component';
@@ -46,6 +47,7 @@ const routes = [
         JobDialogComponent,
         JobCardDialogComponent,
         DeleteDialogComponent,
+        CardDnDConfirmDialogComponent,
         InstallationBoardComponent,
         InstallationBoardListComponent,
         InstallationBoardCardComponent,

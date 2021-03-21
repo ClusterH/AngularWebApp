@@ -62,4 +62,18 @@ export class UserProfileDetailService {
             params: params_detail
         });
     }
+
+    saveAccess(accessArray: any = []): Observable<any> {
+        const token: string = localStorage.getItem('current_token') || '';
+        const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const body = {
+            "data": accessArray,
+            "method": "save_access",
+            "token": token,
+            "conncode": conncode,
+            "userid": userid
+        }
+        return this._httpClient.post('trackingxlapi.ashx', body);
+    }
 }

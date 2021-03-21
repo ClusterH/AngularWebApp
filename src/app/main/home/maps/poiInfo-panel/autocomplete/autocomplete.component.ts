@@ -220,7 +220,6 @@ export class AutocompletePOIDialogComponent implements OnInit, OnDestroy {
             this.countDisRequest += 1;
             if (this.countDisRequest == 10) {
                 setTimeout(() => {
-
                     directionsService.route({
                         origin,
                         destination,
@@ -228,7 +227,6 @@ export class AutocompletePOIDialogComponent implements OnInit, OnDestroy {
                         optimizeWaypoints: true,
                         travelMode: google.maps.TravelMode.DRIVING
                     }, (response, status) => {
-
                         if (status == 'OK') {
                             distance = response.routes[0].legs[0].distance.value;
                             this.countDisRequest = 0;

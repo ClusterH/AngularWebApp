@@ -12,6 +12,7 @@ const routes = [
     imports: [
         RouterModule.forChild(routes),
         SharedModule
-    ]
+    ],
+    declarations: []
 })
 export class HomeModule { }

@@ -35,7 +35,7 @@ export class EventDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.eventsSubject.next(result.TrackingXLAPI.DATA);
                 this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -52,7 +52,7 @@ export class EventDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.eventsSubject.next(result.TrackingXLAPI.DATA);
                 this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -68,7 +68,7 @@ export class EventDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.eventsSubject.next(result.TrackingXLAPI.DATA);
                 this.currentPage_unit_data = result.TrackingXLAPI.DATA;
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -85,7 +85,7 @@ export class EventDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.eventsSubject.next(result.TrackingXLAPI.DATA);
                 this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -102,7 +102,7 @@ export class EventDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.eventsSubject.next(result.TrackingXLAPI.DATA);
                 this.eventDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -116,9 +116,15 @@ export class EventDetailDataSource extends DataSource<any> {
                 finalize(() => this.loadingSubject.next(false)),
                 takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                this.eventDetailService.eventConditionList = result.TrackingXLAPI.DATA;
-                this.eventsSubject.next(this.eventDetailService.eventConditionList);
-                this.totalLength = this.eventDetailService.eventConditionList.length;
+                if (result.responseCode === 100) {
+                    this.eventDetailService.eventConditionList = result.TrackingXLAPI.DATA;
+                    this.eventsSubject.next(this.eventDetailService.eventConditionList);
+                    this.totalLength = this.eventDetailService.eventConditionList.length;
+                } else {
+                    this.eventDetailService.eventConditionList = [];
+                    this.eventsSubject.next(this.eventDetailService.eventConditionList);
+                    this.totalLength = 0;
+                }
             });
     }
 

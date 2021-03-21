@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
+import { AuthService } from 'app/core/authentication/services/authentication.service';
 import { locale as operatorsEnglish } from 'app/main/admin/operators/i18n/en';
 import { locale as operatorsFrench } from 'app/main/admin/operators/i18n/fr';
 import { locale as operatorsPortuguese } from 'app/main/admin/operators/i18n/pt';
@@ -112,7 +112,6 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
             password: [null, Validators.required],
             phonenumber: [null, Validators.required],
             operatortype: [null, Validators.required],
-            isactive: [null, Validators.required],
             company: [null, Validators.required],
             group: [null, Validators.required],
             subgroup: [null, Validators.required],
@@ -191,8 +190,8 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.operatorForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.operatorForm.get('filterstring').setValue(clist[i]? clist[i].name : '');
+                this.filter_string = clist[i]? clist[i].name : '';
             }
         }
 

@@ -130,17 +130,25 @@ export class EventDetailService {
     }
 
     saveEventDetail(eventDetail: any = {}): Observable<any> {
-        const token: string = localStorage.getItem('current_token') || '';
-        const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
-        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
-        const body = {
-            "data": eventDetail,
-            "method": "maintevent_save",
-            "token": token,
-            "conncode": conncode,
-            "userid": userid
+
+        // const token: string = localStorage.getItem('current_token') || '';
+        // const conncode: string = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].conncode;
+        // const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        // const body = {
+        //     "data": eventDetail,
+        //     "method": "maintevent_save",
+        //     "token": token,
+        //     "conncode": conncode,
+        //     "userid": userid
+        // }
+        let params = new HttpParams();
+        for (let param in eventDetail) {
+            params = params.set(param, eventDetail[param].toString());
         }
-        return this._httpClient.post('trackingxlapi.ashx', body);
+
+        return this._httpClient.get('trackingxlapi.ashx', {
+            params: params
+        });
     }
 
     addMaintServiceToGroup(maintserviceArray: any = []): Observable<any> {

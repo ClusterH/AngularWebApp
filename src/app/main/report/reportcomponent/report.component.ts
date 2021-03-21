@@ -569,8 +569,6 @@ export class ReportComponent implements OnInit, OnDestroy {
         localStorage.setItem('report_result', JSON.stringify(this.entered_report_param));
 
         this.reportResultService.loadReportResult(0, 10000).pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-
-
             if (result.responseCode == 100) {
                 this.reportResult = result.TrackingXLAPI.DATA;
                 this.displayedColumns = [];
@@ -579,7 +577,7 @@ export class ReportComponent implements OnInit, OnDestroy {
                         this.displayedColumns.push(column);
                     }
                 }
-                const totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                const totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 localStorage.setItem('total_length', totalLength.toString());
             } else if ((result.responseCode == 200)) {
                 const totalLength = 0;
@@ -606,7 +604,6 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
 
     docFormat() {
-
         let data = [];
         let headers = [];
         this.reportResult.forEach(item => {

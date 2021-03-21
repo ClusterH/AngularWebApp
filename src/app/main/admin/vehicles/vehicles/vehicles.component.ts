@@ -2,9 +2,8 @@ import { Component, ElementRef, OnInit, OnDestroy, Output, ViewChild, ViewEncaps
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { locale as vehiclesEnglish } from 'app/main/admin/vehicles/i18n/en';
 import { locale as vehiclesFrench } from 'app/main/admin/vehicles/i18n/fr';
@@ -41,7 +40,9 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     displayedColumns = ['id', 'name', 'company', 'group', 'subgroup', 'account', 'operator', 'unittype', 'serviceplan', 'producttype', 'make', 'model', 'isactive', 'timezone', 'created', 'createdbyname', 'deletedwhen', 'deletedbyname', 'lastmodifieddate', 'lastmodifiedbyname'
     ];
 
-    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    routerLinkType: string;
+    routerLinkValue: string;
+
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -52,11 +53,31 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         private _adminVehiclesService: VehiclesService,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).vehicles;
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+
+        this.activatedroute.paramMap.subscribe(params => {
+            this.routerLinkType = params.get('type');
+            switch (this.routerLinkType) {
+                case '1':
+                    this.routerLinkValue = 'Vehicle';
+                    break;
+                case '2':
+                    this.routerLinkValue = 'Person';
+                    break;
+                case '3':
+                    this.routerLinkValue = 'Cargo';
+                    break;
+                case '4':
+                    this.routerLinkValue = 'Asset';
+                    break;
+            }
+
+        });
 
         this.pageIndex = 0;
         this.pageSize = 25;
@@ -66,7 +87,6 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSource = new VehiclesDataSource(this._adminVehiclesService);
-
         this.dataSource.loadVehicles(this.pageIndex, this.pageSize, "id", "asc", this.selected, this.filter_string, "Unit_TList");
     }
 
@@ -108,11 +128,11 @@ export class VehiclesComponent implements OnInit, OnDestroy {
     }
 
     addNewVehicle() {
-        this.router.navigate(['admin/vehicles/vehicle_detail']);
+        this.router.navigate([`admin/vehicles/vehicle_detail/${this.routerLinkType}`]);
     }
 
     editShowVehicleDetail(vehicle: any) {
-        this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
+        this.router.navigate([`admin/vehicles/vehicle_detail/${this.routerLinkType}`], { queryParams: vehicle });
     }
 
     deleteVehicle(vehicle: any): void {
@@ -141,7 +161,7 @@ export class VehiclesComponent implements OnInit, OnDestroy {
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(vehicle => {
             if (vehicle) {
-                this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
+                this.router.navigate([`admin/vehicles/vehicle_detail/${this.routerLinkType}`], { queryParams: vehicle });
             }
         });
     }

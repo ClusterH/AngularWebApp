@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
 import { MonitorService } from 'app/main/logistic/monitor/services/monitor.service';
 import { ReportContactDialogComponent } from '../../dialog/reportHistory/reportHistoryDialog.component';
@@ -30,10 +30,15 @@ export class TriplistComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     isShowNewTrip = false;
 
+    currentTripId: number;
+    currentTrip: any[];
+    isShow: boolean = false;
+
     dialogRef: any;
 
     private _unsubscribeAll: Subject<any>;
     @ViewChild('dt') table: Table;
+    @Output() tripPathEmitter = new EventEmitter();
 
     constructor(
         public monitorService: MonitorService,
@@ -78,6 +83,12 @@ export class TriplistComponent implements OnInit {
 
             if (this.dataSource) {
                 this.totalRecords = this.dataSource.length;
+                this.dataSource.map(trip => {
+                    trip.isShow = false;
+                    trip.isStartTrip = false;
+                    trip.isStartStop = false;
+                    return trip;
+                })
                 setTimeout(() => {
                     this.monitorService.loadingsubject.next(true);
                     this.primengConfig.ripple = true;
@@ -98,7 +109,7 @@ export class TriplistComponent implements OnInit {
     addNewTrip(): void {
         this.closeCommandMenu();
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.panelClass = 'newTrip-form-dialog';
+        dialogConfig.panelClass = 'newTrip-dialog';
         dialogConfig.disableClose = true;
         const dialogRef = this._matDialog.open(NewTripDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(trip => {
@@ -124,16 +135,76 @@ export class TriplistComponent implements OnInit {
         this.monitorService.monitor.next(this.dataSource);
     }
 
-    startTrip(): void {
+    startTrip(tripid): void {
         this.closeCommandMenu();
+        this.monitorService.tripEvent('starttrip', tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode === 100) {
+                const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+                this.dataSource[currentId].isStartTrip = true;
+                this.dataSource[currentId].tripstatus = 'On Route';
+                this.dataSource[currentId].tripstatusid = 2;
+            } else {
+                alert('Failed Start Trip!');
+            }
+        })
     }
 
-    finishTrip(): void {
+    finishTrip(tripid): void {
         this.closeCommandMenu();
+        this.monitorService.tripEvent('finishtrip', tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode === 100) {
+                const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+                this.dataSource[currentId].isStartTrip = false;
+                this.dataSource[currentId].isStartStop = false;
+                this.dataSource[currentId].tripstatus = 'Completed';
+                this.dataSource[currentId].tripstatusid = 5;
+            } else {
+                alert('Failed Finish Trip!');
+            }
+        })
     }
 
-    cancelTrip(): void {
+    cancelTrip(tripid): void {
         this.closeCommandMenu();
+        this.monitorService.tripEvent('canceltrip', tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode === 100) {
+                const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+                this.dataSource[currentId].isStartTrip = false;
+                this.dataSource[currentId].isStartStop = false;
+                this.dataSource[currentId].tripstatus = 'Canceled';
+                this.dataSource[currentId].tripstatusid = 6;
+            } else {
+                alert('Failed Cancel Trip!');
+            }
+        })
+    }
+
+    startStop(tripid): void {
+        this.closeCommandMenu();
+        this.monitorService.tripEvent('starttripstop', tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode === 100) {
+                const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+                this.dataSource[currentId].isStartStop = true;
+                this.dataSource[currentId].tripstatus = 'Stopped';
+                this.dataSource[currentId].tripstatusid = 4;
+            } else {
+                alert('Failed Start Stop!');
+            }
+        })
+    }
+
+    finishStop(tripid): void {
+        this.closeCommandMenu();
+        this.monitorService.tripEvent('finishtripstop', tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res.responseCode === 100) {
+                const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+                this.dataSource[currentId].isStartStop = false;
+                this.dataSource[currentId].tripstatus = 'On Route';
+                this.dataSource[currentId].tripstatusid = 2;
+            } else {
+                alert('Failed Finish Stop!');
+            }
+        })
     }
 
     reportContact(trip: any): void {
@@ -143,20 +214,56 @@ export class TriplistComponent implements OnInit {
         dialogConfig.disableClose = true;
         dialogConfig.data = { trip: trip };
         const dialogRef = this._matDialog.open(ReportContactDialogComponent, dialogConfig);
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(vehicle => {
-            if (vehicle) {
+        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+            if (res) {
                 // this.router.navigate(['admin/vehicles/vehicle_detail'], { queryParams: vehicle });
             }
         });
     }
 
-    showInMap(): void {
-
+    showInMap(tripid: number): void {
         this.closeCommandMenu();
+
+        if (tripid === this.currentTripId) {
+            const currentId = this.dataSource.findIndex(trip => trip.id === tripid);
+            this.dataSource[currentId].isShow = true;
+            this.tripPathEmitter.emit(this.currentTrip);
+        } else {
+            this.monitorService.getTripWatchPath(tripid).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                if (res.responseCode === 100) {
+                    this.currentTripId = tripid;
+                    this.currentTrip = [...res.TrackingXLAPI.DATA];
+                    this.dataSource.map(trip => {
+                        if (trip.id === tripid) {
+                            trip.isShow = true;
+                        } else {
+                            trip.isShow = false;
+                        }
+                        return trip;
+                    });
+
+                    this.tripPathEmitter.emit(res.TrackingXLAPI.DATA);
+                } else {
+                    alert('Failed to get Path');
+                }
+            })
+        }
+    }
+
+    hideInMap(tripid: number): void {
+        this.closeCommandMenu();
+        this.dataSource.map(trip => {
+            if (trip.id === tripid) {
+                trip.isShow = false;
+            }
+
+            return trip;
+        });
+
+        this.tripPathEmitter.emit([]);
     }
 
     showHistory(): void {
-
         this.closeCommandMenu();
     }
 

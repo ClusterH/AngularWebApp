@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from "rxjs/operators";
 
 export class TanksDataSource extends DataSource<any> {
-    private tanksSubject = new BehaviorSubject<any>([]);
+    public tanksSubject = new BehaviorSubject<any>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
     public loading$ = this.loadingSubject.asObservable();
     totalLength: number;
@@ -24,9 +24,10 @@ export class TanksDataSource extends DataSource<any> {
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false)), takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
-                this.tanksSubject.next(result.TrackingXLAPI.DATA);
-                this.tanksService.tanks = result.TrackingXLAPI.DATA;
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.tanksService.tankList = [...result.TrackingXLAPI.DATA];
+
+                this.tanksSubject.next(this.tanksService.tankList);
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

@@ -143,17 +143,17 @@ export class ServiceItemDialogComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         if (this.method_string == 'group' && this.serviceitemForm.get('company').value == '') {
             alert('Please choose company first');
         } else {
-            let selected_element_id = this.serviceitemForm.get(`${this.method_string}`).value;
-            let clist = this.serviceitemsService.unit_clist_item[methodString];
+            const selected_element_id = this.serviceitemForm.get(`${this.method_string}`).value;
+            const clist = this.serviceitemsService.unit_clist_item[methodString];
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
-                    this.serviceitemForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
+                    this.serviceitemForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                    this.filter_string = clist[i] ? clist[i].name : '';
                 }
             }
 

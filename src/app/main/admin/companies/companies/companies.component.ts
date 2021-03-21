@@ -48,6 +48,9 @@ export class CompaniesComponent implements OnInit, OnDestroy {
         'lastmodifiedbyname'
     ];
 
+    routerLinkType: string;
+    routerLinkValue: string;
+
     private _unsubscribeAll: Subject<any>;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -56,14 +59,30 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
     constructor(
         private _adminCompaniesService: CompaniesService,
-        private companyDetailService: CompanyDetailService,
         public _matDialog: MatDialog,
         private router: Router,
+        private activatedroute: ActivatedRoute,
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
         this.restrictValue = JSON.parse(localStorage.getItem('restrictValueList')).companies;
+        this.activatedroute.paramMap.subscribe(params => {
+            this.routerLinkType = params.get('type');
+            switch (this.routerLinkType) {
+                case '1':
+                    this.routerLinkValue = 'Regular';
+                    break;
+                case '2':
+                    this.routerLinkValue = 'Dealer';
+                    break;
+                case '3':
+                    this.routerLinkValue = 'Insurance Company';
+                    break;
+            }
+
+        });
+
         this.pageIndex = 0;
         this.pageSize = 25;
         this.selected = '';
@@ -112,11 +131,11 @@ export class CompaniesComponent implements OnInit, OnDestroy {
     }
 
     addNewCompany() {
-        this.router.navigate(['admin/companies/company_detail']);
+        this.router.navigate([`admin/companies/company_detail/${this.routerLinkType}`]);
     }
 
     editShowCompanyDetail(company: any) {
-        this.router.navigate(['admin/companies/company_detail'], { queryParams: company });
+        this.router.navigate([`admin/companies/company_detail/${this.routerLinkType}`], { queryParams: company });
     }
 
     deleteCompany(company): void {
@@ -145,7 +164,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
         const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
-                this.router.navigate(['admin/companies/company_detail'], { queryParams: company });
+                this.router.navigate([`admin/companies/company_detail/${this.routerLinkType}`], { queryParams: company });
             }
         });
     }

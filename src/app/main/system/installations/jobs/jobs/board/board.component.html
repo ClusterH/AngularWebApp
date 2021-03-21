@@ -7,8 +7,12 @@
                 <div fxLayout="row" fxLayoutAlign="center center" fxFlexOrder="2" fxFlexOrder.gt-xs="1">
                     <button mat-raised-button class="header-boards-button" [routerLink]="['system/jobs/jobs']"
                         [queryParams]="{fromBoard: !isListView}" aria-label="boards button">
-                        <mat-icon class="mr-8">assessment</mat-icon>
-                        <span>{{ 'BOARD.BOARDS' | translate }}</span>
+                        <span *ngIf="isListView" class="py-8" fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon class="mr-8">list_alt</mat-icon> <span>{{ 'BOARD.LISTS' | translate }}</span>
+                        </span>
+                        <span *ngIf="!isListView" class="py-8" fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon class="mr-8">apps</mat-icon> {{ 'BOARD.BOARDS' | translate }}
+                        </span>
                     </button>
                 </div>
                 <!-- / BOARD SELECTION BUTTON -->

@@ -12,6 +12,7 @@ import { locale as eventsPortuguese } from 'app/main/logistic/maintenance/events
 import { locale as eventsSpanish } from 'app/main/logistic/maintenance/events/i18n/sp';
 import { EventDetailDataSource } from "app/main/logistic/maintenance/events/services/event_detail.datasource";
 import { EventDetailService } from 'app/main/logistic/maintenance/events/services/event_detail.service';
+import { constants } from 'buffer';
 import { isEmpty, isEqual } from 'lodash';
 import { merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -212,30 +213,30 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         if (this.pageType == 'new') {
             if (this.method_string == 'group' && (this.eventForm.get('company').value == '' || this.eventForm.get('company').value == undefined)) {
                 alert('Please choose company first');
             } else {
-                let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
-                let clist = this.eventDetailService.unit_clist_item[methodString];
-                for (let i = 0; i < clist.length; i++) {
+                const selected_element_id = this.eventForm.get(`${this.method_string}`).value;
+                const clist = this.eventDetailService.unit_clist_item[methodString];
+                for (let i = 0; i < clist?.length; i++) {
                     if (clist[i].id == selected_element_id) {
-                        this.eventForm.get('filterstring').setValue(clist[i].name);
-                        this.filter_string = clist[i].name;
+                        this.eventForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                        this.filter_string = clist[i] ? clist[i].name : '';
                     }
                 }
                 this.managePageIndex(this.method_string);
                 this.loadEventDetail(this.method_string);
             }
         } else if (this.pageType == 'edit') {
-            let selected_element_id = this.eventForm.get(`${this.method_string}`).value;
-            let clist = this.event.unit_clist_item[methodString];
+            const selected_element_id = this.eventForm.get(`${this.method_string}`).value;
+            const clist = this.event.unit_clist_item[methodString];
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
-                    this.eventForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
+                    this.eventForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                    this.filter_string = clist[i] ? clist[i].name : '';
                 }
             }
 
@@ -449,14 +450,16 @@ export class EventDetailComponent implements OnInit, OnDestroy {
         if (this.event_detail.name == '') {
             alert('Please enter Detail Name')
         } else {
-            this.event_detail.conncode = this.userConncode;
-            this.event_detail.userid = this.userID;
-            // this.event_detail.method = 'maintevent_save';
+            // this.event_detail.conncode = this.userConncode;
+            // this.event_detail.userid = this.userID;
+            this.event_detail.method = 'maintevent_save';
             this.eventDetailService.saveEventDetail(this.event_detail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
                         this.router.navigate(['logistic/events/events']);
+                    } else {
+                        alert("Failed!");
                     }
                 });
         }

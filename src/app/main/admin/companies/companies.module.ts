@@ -10,8 +10,8 @@ import { CompanyDetailService } from 'app/main/admin/companies/services/company_
 import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
-    { path: 'companies', component: CompaniesComponent },
-    { path: 'company_detail', component: CompanyDetailComponent }
+    { path: 'companies/:type', component: CompaniesComponent },
+    { path: 'company_detail/:type', component: CompanyDetailComponent }
 ];
 
 @NgModule({

@@ -44,7 +44,7 @@ export class DevicesService {
     deleteDevice(id: number): Observable<any> {
         const params = new HttpParams()
             .set('id', id.toString())
-            .set('method', "unit_delete");
+            .set('method', "device_delete");
         return this._httpClient.get('trackingxlapi.ashx', {
             params: params
         });

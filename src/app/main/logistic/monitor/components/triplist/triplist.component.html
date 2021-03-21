@@ -33,21 +33,29 @@
             <tr>
                 <td style="text-align: center" class="command_column">
                     <button type="button" class="show_commandBtn" pButton pRipple icon="pi pi-cog" label=""
-                        (click)="showCommandMenu(trip.id)"></button>
-                    <!-- <p-menu #menu [popup]="true" [model]="commands" appendTo="body">
-                                    </p-menu> -->
+                        (click)="showCommandMenu(trip.id)"
+                        [ngClass]="!trip.isShow? 'p-button-primary': 'p-button-danger'">
+                    </button>
                     <div class="menu_content mat-elevation-z2" *ngIf="trip.isShowCommand === true">
                         <ul>
-                            <li class="menuitem" (click)="startTrip()">Start Trip</li>
-                            <li class="menuitem" (click)="finishTrip()">Finish Trip</li>
-                            <li class="menuitem" (click)="cancelTrip()">Cancel Trip</li>
+                            <li class="menuitem" (click)="startTrip(trip.id)" *ngIf="!trip.isStartTrip">Start Trip</li>
+                            <li class="menuitem" (click)="finishTrip(trip.id)" *ngIf="trip.isStartTrip">Finish Trip</li>
+                            <li class="menuitem" (click)="cancelTrip(trip.id)" *ngIf="trip.isStartTrip">Cancel Trip</li>
+                            <li class="menuitem" (click)="startStop(trip.id)"
+                                *ngIf="trip.isStartTrip && !trip.isStartStop">Start Stop</li>
+                            <li class="menuitem" (click)="finishStop(trip.id)"
+                                *ngIf="trip.isStartTrip && trip.isStartStop">Finish Stop</li>
                             <li class="menuitem" (click)="reportContact(trip)">Report Contact</li>
-                            <li class="menuitem" (click)="showInMap()">Show In Map</li>
+                            <li class="menuitem" (click)="showInMap(trip.id)" *ngIf="!trip.isShow">Show In Map</li>
+                            <li class="menuitem" (click)="hideInMap(trip.id)" *ngIf="trip.isShow">Hide In Map</li>
                             <li class="menuitem" (click)="showHistory()">Show History</li>
                         </ul>
                     </div>
+                    <!-- <p-menu #menu [popup]="true" [model]="commands" appendTo="body">
+                                    </p-menu> -->
+
                 </td>
-                <td *ngFor="let col of displayedColumns">
+                <td *ngFor="let col of displayedColumns" style="word-break: break-all;">
                     {{trip[col] || null}}
                 </td>
             </tr>

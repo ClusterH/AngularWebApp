@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-import { AuthService } from 'app/authentication/services/authentication.service';
+import { AuthService } from 'app/core/authentication/services/authentication.service';
 import { locale as groupsEnglish } from 'app/main/admin/groups/i18n/en';
 import { locale as groupsFrench } from 'app/main/admin/groups/i18n/fr';
 import { locale as groupsPortuguese } from 'app/main/admin/groups/i18n/pt';

@@ -30,7 +30,7 @@ export class UnittypeDetailDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.unittypesSubject.next(result.TrackingXLAPI.DATA);
                 this.unittypeDetailService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });

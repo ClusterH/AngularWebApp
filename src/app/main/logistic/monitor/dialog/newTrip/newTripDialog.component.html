@@ -1,34 +1,39 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">{{ 'MONITOR.CONTACTREPORT' | translate }}</span>
+            <span class="title dialog-title">{{ 'MONITOR.NEWTRIP' | translate }}</span>
             <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
-    <div mat-dialog-content class="p-28 pb-0 m-0" fusePerfectScrollbar>
-        <div class="" fusePerfectScrollbar fxLayout="column">
+    <div mat-dialog-content class="p-28 pb-0 m-0">
+        <div class="" fxLayout="column">
             <div class="mb-12" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isImportPath" [binary]="true" inputId="importPath"></p-checkbox>
+                    <p-radioButton [(ngModel)]="selectedOptions" value="imgPath" inputId="importPath"
+                        (onClick)="changeOption('imgPath')"></p-radioButton>
                     <label for="importPath" class="ml-8">Import Path</label>
                 </div>
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isSelectRoute" [binary]="true" inputId="selectRoute"></p-checkbox>
+                    <p-radioButton [(ngModel)]="selectedOptions" value="selectRoute" inputId="selectRoute"
+                        (onClick)="changeOption('selectRoute')">
+                    </p-radioButton>
                     <label for="selectRoute" class="ml-8">Select Route</label>
                 </div>
                 <div class="p-field-checkbox">
-                    <p-checkbox [(ngModel)]="isPOP" [binary]="true" inputId="pointToPoint"></p-checkbox>
+                    <p-radioButton [(ngModel)]="selectedOptions" value="p2p" inputId="pointToPoint"
+                        (onClick)="changeOption('p2p')"></p-radioButton>
                     <label for="pointToPoint" class="ml-8">Point to Point</label>
                 </div>
             </div>
-            <div class="import-path" *ngIf="isImportPath">
-                <app-drag-drop></app-drag-drop>
+
+            <div class="import-path" *ngIf="selectedOptions === 'imgPath'">
+                <app-drag-drop (csvfileDataEmitter)="getCSVFileData($event)"></app-drag-drop>
             </div>
             <form [formGroup]="newTripForm">
                 <div fxLayout="row" fxLayoutAlign="space-between center"
-                    [ngStyle]="{'display': isSelectRoute? 'flex': 'none'}">
+                    [ngStyle]="{'display': selectedOptions === 'selectRoute'? 'flex': 'none'}">
                     <mat-form-field fxFlex="100" class="select_list mt-12" appearance="outline" floatLabel="always">
                         <mat-label>{{ 'MONITOR.ROUTE' | translate }}</mat-label>
                         <mat-select (click)="showCompanyList('route_clist')" formControlName="route">
@@ -59,7 +64,7 @@
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <mat-form-field fxFlex="100" appearance="outline" class="from-google-autocomplete mt-12"
-                        floatLabel="always" [ngStyle]="{'display': isPOP? 'block': 'none'}">
+                        floatLabel="always" [ngStyle]="{'display': selectedOptions === 'p2p'? 'block': 'none'}">
                         <mat-label>{{ 'MONITOR.FROM' | translate }}</mat-label>
                         <input matInput formControlName="google_autocomplete_from" type="text"
                             style="text-align: start;" #from autocorrect="off" autocapitalize="off" spellcheck="off">
@@ -67,19 +72,23 @@
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <mat-form-field fxFlex="100" appearance="outline" class="to-google-autocomplete  mt-12"
-                        floatLabel="always" [ngStyle]="{'display': isPOP? 'block': 'none'}">
+                        floatLabel="always" [ngStyle]="{'display': selectedOptions === 'p2p'? 'block': 'none'}">
                         <mat-label>{{ 'MONITOR.TO' | translate }}</mat-label>
                         <input matInput formControlName="google_autocomplete_to" type="text" style="text-align: start;"
                             #to autocorrect="off" autocapitalize="off" spellcheck="off">
                     </mat-form-field>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100-p">
                     <mat-form-field class="mt-12" appearance="outline" floatLabel="always" fxFlex="100">
                         <mat-label>{{ 'MONITOR.STARTDATE' | translate }}</mat-label>
-                        <input matInput [ngxMatDatetimePicker]="picker1" placeholder="Choose a date"
+                        <!-- <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
                             formControlName="startDate">
-                        <mat-datepicker-toggle matSuffix (for)="picker1"></mat-datepicker-toggle>
-                        <ngx-mat-datetime-picker #picker1></ngx-mat-datetime-picker>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker> -->
+                        <input matInput formControlName="startDate" [matDatetimepicker]="dts" autocomplete="false">
+                        <mat-datetimepicker-toggle [for]="dts" matSuffix></mat-datetimepicker-toggle>
+                        <mat-datetimepicker #dts type="datetime" [openOnFocus]="true" [timeInterval]="5">
+                        </mat-datetimepicker>
                     </mat-form-field>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">

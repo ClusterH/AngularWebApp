@@ -135,17 +135,17 @@ export class PrivilegeDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         if (this.method_string == 'privobject' && !this.privilegeObject_flag) {
             alert("Please select Type first!");
         } else {
-            let selected_element_id = this.privilegeForm.get(`${this.method_string}`).value;
-            let clist = this.privilegeDetailService.unit_clist_item[methodString];
+            const selected_element_id = this.privilegeForm.get(`${this.method_string}`).value;
+            const clist = this.privilegeDetailService.unit_clist_item[methodString];
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
-                    this.privilegeForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
+                    this.privilegeForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                    this.filter_string = clist[i] ? clist[i].name : '';
                 }
             }
         }

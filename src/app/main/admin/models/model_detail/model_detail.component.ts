@@ -72,7 +72,6 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
         this.modelForm = this._formBuilder.group({
             name: [null, Validators.required],
             make: [null, Validators.required],
-            isactive: [null, Validators.required],
             tireconfiguration: [null, Validators.required],
             createdwhen: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
@@ -123,8 +122,8 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
         let clist = this.modelDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.modelForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.modelForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

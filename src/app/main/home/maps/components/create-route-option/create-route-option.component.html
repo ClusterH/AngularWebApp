@@ -1,0 +1,40 @@
+<div class="create-route-option">
+  <div class="option-container p-8">
+    <button mat-raised-button class="save-route-button mr-8"
+      (click)="agmDirectionGeneratorService.isImportStopsFromFile = true"
+      [disabled]="agmDirectionGeneratorService.isAddStopsOnMap || agmDirectionGeneratorService.newRouteLocations.length < 2">
+      <span>Import From CSV</span>
+    </button>
+    <button mat-raised-button class="save-route-button" (click)="addStopsOnMap()">
+      <span>{{agmDirectionGeneratorService.isAddStopsOnMap? 'Disable Map Clicking' :'Enable Map Clicking'}}</span>
+    </button>
+    <button mat-raised-button class="save-route-button ml-8" (click)="removeRoute()"
+      [disabled]="agmDirectionGeneratorService.newRouteLocations.length < 2">
+      <span>Remove Route</span>
+    </button>
+    <button mat-raised-button class="save-route-button ml-8" (click)="saveRoute()"
+      [disabled]="agmDirectionGeneratorService.newRouteLocations.length < 2">
+      <span>Save Route</span>
+    </button>
+  </div>
+</div>
+
+<p-dialog header="Upload CSV File" [(visible)]="agmDirectionGeneratorService.isImportStopsFromFile" [modal]="true"
+  [style]="{width: '40vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <route-stops-importer (csvfileDataEmitter)="getCSVFileData($event)"></route-stops-importer>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="closeDialog(true)" label="Yes" class="p-button-text">
+    </p-button>
+    <p-button icon="pi pi-times" (click)="closeDialog(false)" label="No"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Remove Route" [(visible)]="isRemoveRouteDialog" [modal]="true" [style]="{width: '40vw'}"
+  [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <div class="h3">Do you want to remove current route and create another one?</div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="closeConfirmDialog(true)" label="Yes" class="p-button-text">
+    </p-button>
+    <p-button icon="pi pi-times" (click)="closeConfirmDialog(false)" label="No"></p-button>
+  </ng-template>
+</p-dialog>

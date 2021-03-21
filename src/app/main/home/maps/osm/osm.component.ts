@@ -4,16 +4,16 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { TranslateService } from '@ngx-translate/core';
-import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
-import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
-import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
-import { AuthService } from 'app/authentication/services/authentication.service';
+import { locale as vehiclesEnglish } from 'app/core/authentication/i18n/en';
+import { locale as vehiclesFrench } from 'app/core/authentication/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/core/authentication/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/core/authentication/i18n/sp';
+import { AuthService } from 'app/core/authentication/services/authentication.service';
 import { RoutesService } from 'app/main/home/maps/services/routes.service';
 import { VehMarkersService } from 'app/main/home/maps/services/vehmarkers.service';
 import { UnitInfoService } from 'app/main/home/maps/services/unitInfo.service';
 import { ZonesService } from 'app/main/home/maps/services/zones.service';
-import { navigation } from 'app/navigation/navigation';
+import { navigation } from 'app/core/navigation/navigation';
 import * as _ from 'lodash';
 
 // import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
@@ -325,8 +325,10 @@ export class OpenStreetMapComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.map.clearAllEventListeners;
-        this.map.remove();
+        if (this.map !== undefined || this.map !== null) {
+            this.map.clearAllEventListeners;
+        }
+
     };
 }
 

@@ -10,8 +10,8 @@ import { VehicleDetailComponent } from 'app/main/admin/vehicles/vehicle_detail/v
 import { SharedModule } from 'app/sharedModules/shared.module';
 
 const routes = [
-    { path: 'vehicles', component: VehiclesComponent },
-    { path: 'vehicle_detail', component: VehicleDetailComponent },
+    { path: 'vehicles/:type', component: VehiclesComponent },
+    { path: 'vehicle_detail/:type', component: VehicleDetailComponent },
 ];
 
 @NgModule({

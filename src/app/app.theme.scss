@@ -68,7 +68,7 @@ $typography: mat-typography-config(
   $body-2: mat-typography-level(14px, 24px, 600),
   $button: mat-typography-level(14px, 14px, 600),
   $input: mat-typography-level(16px, 1.125, 400)
-    // line-height must be unitless !!!,,,,,,,,,,,,,,,,,,
+    // line-height must be unitless !!!,,,,,,,,,,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -79,21 +79,15 @@ $typography: mat-typography-config(
 // -----------------------------------------------------------------------------------------------------
 
 // Import app and page component themes here to enable theming for them
-@import "src/app/layout/components/chat-panel/chat-panel.theme";
-@import "src/app/layout/components/toolbar/toolbar.theme";
+@import "src/app/core/layout/components/chat-panel/chat-panel.theme";
+@import "src/app/core/layout/components/toolbar/toolbar.theme";
 
 //Authentication
-@import "src/app/authentication/login/login.theme";
-@import "src/app/authentication/register/register.theme";
-@import "src/app/authentication/reset-password/reset-password.theme";
-@import "src/app/authentication/forgot-password/forgot-password.theme";
-@import "src/app/authentication/mail-confirm/mail-confirm.theme";
+@import "src/app/core/authentication/login/login.theme";
 
 //Admin
 @import "src/app/main/admin/vehicles/vehicles/vehicles.theme";
 @import "src/app/main/admin/vehicles/vehicle_detail/vehicle_detail.theme";
-@import "src/app/main/admin/assets/assets/assets.theme";
-@import "src/app/main/admin/assets/asset_detail/asset_detail.theme";
 @import "src/app/main/admin/users/users/users.theme";
 @import "src/app/main/admin/users/user_detail/user_detail.theme";
 @import "src/app/main/admin/operators/operators/operators.theme";
@@ -104,11 +98,6 @@ $typography: mat-typography-config(
 @import "src/app/main/admin/models/model_detail/model_detail.theme";
 @import "src/app/main/admin/companies/companies/companies.theme";
 @import "src/app/main/admin/companies/company_detail/company_detail.theme";
-@import "src/app/main/admin/dealercompanies/dealercompanies/dealercompanies.theme";
-@import "src/app/main/admin/dealercompanies/dealercompany_detail/dealercompany_detail.theme";
-@import "src/app/main/admin/insurancecompanies/insurancecompanies/insurancecompanies.theme";
-@import "src/app/main/admin/insurancecompanies/insurancecompany_detail/insurancecompany_detail.theme";
-
 @import "src/app/main/admin/poi/pois/pois/pois.theme";
 @import "src/app/main/admin/poi/pois/poi_detail/poi_detail.theme";
 @import "src/app/main/admin/poi/poigroups/poigroups/poigroups.theme";
@@ -185,16 +174,10 @@ $typography: mat-typography-config(
 
   //Authentication
   @include login-theme($theme);
-  @include register-theme($theme);
-  @include reset-password-theme($theme);
-  @include forgot-password-theme($theme);
-  @include mail-confirm-theme($theme);
 
   //Admin
   @include admin-vehicles-theme($theme);
   @include admin-vehicle-theme($theme);
-  @include admin-assets-theme($theme);
-  @include admin-asset-theme($theme);
   @include admin-users-theme($theme);
   @include admin-user-theme($theme);
   @include admin-operators-theme($theme);
@@ -205,10 +188,6 @@ $typography: mat-typography-config(
   @include admin-model-theme($theme);
   @include admin-companies-theme($theme);
   @include admin-company-theme($theme);
-  @include admin-dealercompanies-theme($theme);
-  @include admin-dealercompany-theme($theme);
-  @include admin-insurancecompanies-theme($theme);
-  @include admin-insurancecompany-theme($theme);
   @include admin-pois-theme($theme);
   @include admin-poi-theme($theme);
   @include admin-poigroups-theme($theme);

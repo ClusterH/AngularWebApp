@@ -6,8 +6,9 @@
             <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     drive_eta</mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{
-                    'VEHICLES.VEHICLES' | translate }}</span>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{'VEHICLES.VEHICLES.' + routerLinkValue | translate }}
+                </span>
             </div>
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" style="min-width: 60%;">
                 <form class="example-form" fxLayout="row" fxLayoutAlign="start center">
@@ -32,13 +33,13 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE' | translate }}"
+                        <input #filter placeholder="{{ 'VEHICLES.SEARCHFORVEHICLE.' + routerLinkValue | translate }}"
                             [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
-            <button mat-fab [routerLink]="'/admin/vehicles/vehicle_detail'" class="accent  mt-24 mt-md-0"
-                [disabled]="restrictValue != 3" (click)="addNewVehicle()">
+            <button mat-fab [routerLink]="'/admin/vehicles/vehicle_detail/' + routerLinkType"
+                class="accent  mt-24 mt-md-0" [disabled]="restrictValue != 3" (click)="addNewVehicle()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

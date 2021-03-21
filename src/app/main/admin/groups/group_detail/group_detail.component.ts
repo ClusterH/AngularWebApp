@@ -79,7 +79,6 @@ export class GroupDetailComponent implements OnInit {
             contactname: [null, Validators.required],
             contactphone: [null, Validators.required],
             address: [null, Validators.required],
-            isactive: [null, Validators.required],
             company: [null, Validators.required],
             account: [null, Validators.required],
             created: [{ value: '', disabled: true }],
@@ -134,8 +133,8 @@ export class GroupDetailComponent implements OnInit {
 
         let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
 
-        this.groupForm.get('filterstring').setValue(clist[currentOptionID].name);
-        this.filter_string = clist[currentOptionID].name;
+        this.groupForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+        this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
 
 
         this.managePageIndex(this.method_string);

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation, ViewChild, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatPaginator } from '@angular/material/paginator';
 import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
@@ -11,11 +11,12 @@ import { locale as monitorEnglish } from 'app/main/logistic/monitor/i18n/en';
 import { locale as monitorFrench } from 'app/main/logistic/monitor/i18n/fr';
 import { locale as monitorPortuguese } from 'app/main/logistic/monitor/i18n/pt';
 import { locale as monitorSpanish } from 'app/main/logistic/monitor/i18n/sp';
-import { Trip } from '../../model';
+import { Trip, PointModel } from '../../model';
 import { MonitorService, MonitorDataSource } from '../../services';
 import { BehaviorSubject, Subject, merge } from 'rxjs';
 import { takeUntil, tap, take } from 'rxjs/operators';
-import { result } from 'lodash';
+import { isEmpty } from 'lodash';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'newTrip-form-dialog',
@@ -25,15 +26,19 @@ import { result } from 'lodash';
 })
 
 export class NewTripDialogComponent implements OnInit, OnDestroy {
+    tripIndentifier: string;
     isImportPath = true;
-    isSelectRoute = true;
-    isPOP = true;
+    isSelectRoute = false;
+    isPOP = false;
+    selectedOptions: string = 'imgPath'
     newTripForm: FormGroup;
     dataSourceUnit: MonitorDataSource;
     dataSourceOperator: MonitorDataSource;
     dataSourceRoute: MonitorDataSource;
     displayedColumns: string[] = ['name'];
     tripDetail: Trip = {};
+    pointArray: PointModel[];
+    csvFileData: any[];
     // fromLatitude: number;
     // fromLongitude: number;
     // toLatitude: number;
@@ -58,9 +63,11 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
         private _formBuilder: FormBuilder,
         private mapsAPILoader: MapsAPILoader,
         private ngZone: NgZone,
+        private messageService: MessageService
     ) {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(monitorEnglish, monitorSpanish, monitorFrench, monitorPortuguese);
+        this.tripIndentifier = this.generateTripUniqueId();
     }
 
     ngOnInit() {
@@ -75,40 +82,34 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
 
         this.newTripForm = this._formBuilder.group({
             route: [null],
-            unit: [null],
-            operator: [null],
+            unit: [null, Validators.required],
+            operator: [null, Validators.required],
             filterstring: [null],
             google_autocomplete_from: [null],
             google_autocomplete_to: [null],
-            startDate: [null],
+            startDate: [null, Validators.required],
             tripIdentifier: [null],
         });
 
         this.mapsAPILoader.load().then(() => {
-            let autocomplete_from = new google.maps.places.Autocomplete(this.from.nativeElement);
-            let autocomplete_to = new google.maps.places.Autocomplete(this.to.nativeElement);
+            const autocomplete_from = new google.maps.places.Autocomplete(this.from.nativeElement);
+            const autocomplete_to = new google.maps.places.Autocomplete(this.to.nativeElement);
 
             autocomplete_from.addListener("place_changed", () => {
                 this.ngZone.run(() => {
-                    let place: google.maps.places.PlaceResult = autocomplete_from.getPlace();
-
+                    const place: google.maps.places.PlaceResult = autocomplete_from.getPlace();
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
                     this.tripDetail.fromlatitude = place.geometry.location.lat();
                     this.tripDetail.fromlongitude = place.geometry.location.lng();
                     this.tripDetail.origen = place.formatted_address;
-                    // this.latitude = place.geometry.location.lat();
-                    // this.longitude = place.geometry.location.lng();
-                    // this.jobForm.get('latitude').setValue(Number(this.latitude));
-                    // this.jobForm.get('longitude').setValue(Number(this.longitude));
-                    // this.destPlace = place.formatted_address;
                 });
             });
 
             autocomplete_to.addListener("place_changed", () => {
                 this.ngZone.run(() => {
-                    let place: google.maps.places.PlaceResult = autocomplete_to.getPlace();
+                    const place: google.maps.places.PlaceResult = autocomplete_to.getPlace();
 
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
@@ -127,7 +128,6 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
     ngAfterViewInit() {
         merge(this.paginatorUnit.page)
             .pipe(tap(() => { this.loadClists("unit") }));
-
         merge(this.paginatorOperator.page)
             .pipe(tap(() => { this.loadClists("operator") }));
         merge(this.paginatorRoute.page)
@@ -137,6 +137,73 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    changeOption(option: string) {
+        if (option === 'p2p') {
+            this.newTripForm.get('google_autocomplete_from').setValidators([Validators.required]);
+            this.newTripForm.get('google_autocomplete_to').setValidators([Validators.required]);
+            this.newTripForm.get('route').setValidators(null);
+        } else if (option === 'selectRoute') {
+            this.newTripForm.get('google_autocomplete_from').setValidators(null);
+            this.newTripForm.get('google_autocomplete_to').setValidators(null);
+            this.newTripForm.get('route').setValidators([Validators.required]);
+        } else if (option === 'imgPath') {
+            this.newTripForm.get('google_autocomplete_from').setValidators(null);
+            this.newTripForm.get('google_autocomplete_to').setValidators(null);
+            this.newTripForm.get('route').setValidators(null);
+        }
+
+        this.newTripForm.get('route').updateValueAndValidity();
+        this.newTripForm.get('google_autocomplete_from').updateValueAndValidity();
+        this.newTripForm.get('google_autocomplete_to').updateValueAndValidity();
+
+    }
+
+    calculateRoutes(tripId: number): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let pointArray = [];
+
+            if (this.tripDetail.origen === undefined || this.tripDetail.destination === undefined) {
+                alert('Please Check Origin and Destination');
+            } else {
+                const directionsService = new google.maps.DirectionsService;
+
+                let distance = 0;
+                let duration = 0;
+
+                directionsService.route({
+                    origin: { lat: this.tripDetail.fromlatitude, lng: this.tripDetail.fromlongitude },
+                    destination: { lat: this.tripDetail.tolatitude, lng: this.tripDetail.tolongitude },
+                    waypoints: [],
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, (response, status) => {
+                    this.ngZone.run(() => {
+                        if (status == 'OK') {
+                            response.routes[0].legs[0].steps.map((step, index) => {
+                                pointArray.push({
+                                    tripid: tripId,
+                                    latitude: index === 0 ? step.end_location.lat() : step.start_location.lat(),
+                                    longitude: index == 0 ? step.end_location.lng() : step.start_location.lng()
+                                });
+
+                                if (index === response.routes[0].legs[0].steps.length - 1) {
+                                    resolve(pointArray);
+                                }
+                            })
+
+                            distance = response.routes[0].legs[0].distance.value;
+                            duration = response.routes[0].legs[0].duration.value;
+                        } else {
+                            // this.loadingService.hideLoader();
+                            alert('Distance request failed due to ' + status);
+                        }
+                    });
+                });
+            }
+
+        });
     }
 
     loadClists(method_string: string) {
@@ -164,15 +231,15 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         const selected_element_id = this.newTripForm.get(`${this.method_string}`).value;
         const clist = this.monitorService.unit_clist_item[methodString];
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id === selected_element_id) {
-                this.newTripForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.newTripForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 
@@ -209,6 +276,8 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
 
     setValue() {
         this.newTripForm.get('startDate').setValue(new Date());
+        this.newTripForm.get('tripIdentifier').setValue(this.tripIndentifier);
+
         // this.newTripForm.get('cost').setValue(this.attend.cost);
         // let date = this.attend.performdate ? new Date(`${this.attend.performdate}`) : '';
         // this.newTripForm.get('performdate').setValue(this.dateFormat(date));
@@ -220,7 +289,7 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
         this.tripDetail.name = this.newTripForm.get('tripIdentifier').value;
         this.tripDetail.unitid = this.newTripForm.get('unit').value;
         this.tripDetail.operatorid = this.newTripForm.get('operator').value;
-        this.tripDetail.inroute = this.isSelectRoute;
+        this.tripDetail.inroute = this.selectedOptions === 'selectRoute';
         this.tripDetail.schedstarttime = this.dateFormat(new Date(this.newTripForm.get('startDate').value)) || '';
     }
 
@@ -268,16 +337,68 @@ export class NewTripDialogComponent implements OnInit, OnDestroy {
         return str;
     }
 
+    generateTripUniqueId(): string {
+        const date = new Date();
+        const userid: number = JSON.parse(localStorage.getItem('user_info')).TrackingXLAPI.DATA[0].id;
+        const str = date.getFullYear()
+            + ("00" + (new Date().getMonth() + 1)).slice(-2)
+            + ("00" + date.getDate()).slice(-2)
+            + ("00" + date.getHours()).slice(-2)
+            + ("00" + date.getMinutes()).slice(-2)
+            + ("00" + date.getSeconds()).slice(-2)
+            + '-' + userid;
+        return str;
+    }
+
+    getCSVFileData($event): void {
+        this.csvFileData = $event;
+    }
+
     save() {
         this.getValue();
         setTimeout(() => {
             this.monitorService.saveNewTrip(this.tripDetail).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-                if (res.responseCode === 100 || res.responseCode === 200) {
+                if (res.responseCode === 100) {
                     this.tripDetail.id = res.TrackingXLAPI.DATA[0].id;
+                    if (this.selectedOptions === 'p2p') {
+                        this.calculateRoutes(res.TrackingXLAPI.DATA[0].id).then(res => {
+                            this.pointArray = res;
+                            this.monitorService.setTripPath(this.pointArray).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Trip Path successfully Added!',
+                                    life: 5000,
+                                });
+                            })
+                        })
+                    } else if (this.selectedOptions === "imgPath") {
+                        if (this.csvFileData) {
+                            this.csvFileData.map(data => {
+                                data.tripid = res.TrackingXLAPI.DATA[0].id;
+                                return data;
+                            });
+                            setTimeout(() => {
+                                this.monitorService.setTripPath(this.csvFileData).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+
+                                    this.messageService.add({
+                                        severity: 'success',
+                                        summary: 'Trip Path successfully Added!',
+                                        life: 5000,
+                                    });
+                                })
+                            }, 500);
+                        } else {
+                            alert('Please upload csvfile first!');
+                            return;
+                        }
+                    }
+
                     this.monitorService.monitor$.pipe(take(1), takeUntil(this._unsubscribeAll)).subscribe(res => {
                         const dataSource = [...res, this.tripDetail];
                         this.monitorService.monitor.next(dataSource);
                     });
+
                     this.matDialogRef.close(this.tripDetail);
                 } else {
                     this.matDialogRef.close('failed');

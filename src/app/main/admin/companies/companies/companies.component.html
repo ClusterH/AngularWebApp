@@ -13,7 +13,7 @@
                     drive_eta
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    {{ 'COMPANIES.COMPANIES' | translate }}
+                    {{'COMPANIES.COMPANIES.' + routerLinkValue | translate }}
                 </span>
             </div>
             <!-- / APP TITLE -->
@@ -25,18 +25,6 @@
                         <mat-select [(value)]="selected">
                             <mat-option>None</mat-option>
                             <mat-option value="name">{{'COMPANIES.NAME' | translate}}</mat-option>
-                            <!-- <mat-option value="company">{{'COMPANIES.COMPANY' | translate}}</mat-option>
-                            <mat-option value="group">{{'COMPANIES.GROUP' | translate}}</mat-option>
-                            <mat-option value="subgroup">{{'COMPANIES.SUBGROUP' | translate}}</mat-option>
-                            <mat-option value="account">{{'COMPANIES.ACCOUNT' | translate}}</mat-option>
-                            <mat-option value="operator">{{'COMPANIES.OPERATOR' | translate}}</mat-option>
-                            <mat-option value="unittype">{{'COMPANIES.UNITTYPE' | translate}}</mat-option>
-                            <mat-option value="serviceplan">{{'COMPANIES.SERVICEPLAN' | translate}}</mat-option>
-                            <mat-option value="producttype">{{'COMPANIES.PRODUCTTYPE' | translate}}</mat-option>
-                            <mat-option value="make">{{'COMPANIES.MAKE' | translate}}</mat-option>
-                            <mat-option value="model">{{'COMPANIES.MODEL' | translate}}</mat-option>
-                            <mat-option value="isactive">{{'COMPANIES.ISACTIVE' | translate}}</mat-option>
-                            <mat-option value="timezone">{{'COMPANIES.TIMEZONE' | translate}}</mat-option> -->
                             <mat-option value="created">{{'COMPANIES.CREATED' | translate}}</mat-option>
                             <mat-option value="created">{{'COMPANIES.CREATEDBYNAME' | translate}}</mat-option>
                             <mat-option value="deletedwhen">{{'COMPANIES.DELETEDWHEN' | translate}}</mat-option>
@@ -52,15 +40,15 @@
                 <div class="search-wrapper mx-32 mx-md-0">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input #filter placeholder="{{ 'COMPANIES.SEARCHFORCOMPANY' | translate }}"
+                        <input #filter placeholder="{{ 'COMPANIES.SEARCHFORCOMPANY.' + routerLinkValue | translate }}"
                             [(ngModel)]="filter_string" (keydown.enter)="filterEvent()">
                     </div>
                 </div>
             </div>
             <!-- / SEARCH -->
             <!-- ADD BUTTON -->
-            <button mat-fab [routerLink]="'/admin/companies/company_detail'" class="accent  mt-24 mt-md-0"
-                [disabled]="restrictValue != 3" (click)="addNewCompany()">
+            <button mat-fab [routerLink]="'/admin/companies/company_detail/' + routerLinkType"
+                class="accent  mt-24 mt-md-0" [disabled]="restrictValue != 3" (click)="addNewCompany()">
                 <mat-icon>add</mat-icon>
             </button>
             <!-- / ADD BUTTON -->

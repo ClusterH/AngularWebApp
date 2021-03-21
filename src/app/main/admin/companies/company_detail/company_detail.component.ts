@@ -36,18 +36,18 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     displayedColumns: string[] = ['name'];
     dataSource: CompanyDetailDataSource;
     dataSourceAccount: CompanyDetailDataSource;
-    dataSourceCompanyType: CompanyDetailDataSource;
     dataSourceUserProfile: CompanyDetailDataSource;
     filter_string: string = '';
     method_string: string = '';
+    routerLinkType: string;
+    routerLinkValue: string;
+
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true })
     paginatorCompany: MatPaginator;
     @ViewChild('paginatorAccount', { read: MatPaginator, static: true })
     paginatorAccount: MatPaginator;
-    @ViewChild('paginatorCompanyType', { read: MatPaginator, static: true })
-    paginatorCompanyType: MatPaginator;
     @ViewChild('paginatorUserProfile', { read: MatPaginator, static: true })
     paginatorUserProfile: MatPaginator;
 
@@ -62,9 +62,24 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         this._unsubscribeAll = new Subject();
         this._fuseTranslationLoaderService.loadTranslations(companiesEnglish, companiesSpanish, companiesFrench, companiesPortuguese);
         this.activatedRoute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
             this.company = data;
         });
+        this.activatedRoute.paramMap.subscribe(params => {
+            this.routerLinkType = params.get('type');
+            switch (this.routerLinkType) {
+                case '1':
+                    this.routerLinkValue = 'Regular';
+                    break;
+                case '2':
+                    this.routerLinkValue = 'Dealer';
+                    break;
+                case '3':
+                    this.routerLinkValue = 'Insurance Company';
+                    break;
+            }
+
+        });
+
         if (isEmpty(this.company)) {
             this.pageType = 'new';
         } else {
@@ -76,34 +91,31 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.dataSourceAccount = new CompanyDetailDataSource(this.companyDetailService);
-        this.dataSourceCompanyType = new CompanyDetailDataSource(this.companyDetailService);
         this.dataSourceUserProfile = new CompanyDetailDataSource(this.companyDetailService);
         this.dataSourceAccount.loadCompanyDetail(0, 10, this.company.account, "account_clist");
-        this.dataSourceCompanyType.loadCompanyDetail(0, 10, this.company.companytype, "companytype_clist");
         this.dataSourceUserProfile.loadCompanyDetail(0, 10, this.company.userprofile, "userprofile_clist");
 
         this.companyForm = this._formBuilder.group({
             name: [null, Validators.required],
             account: [null, Validators.required],
             address: [null, Validators.required],
-            logofile: [null, Validators.required],
+            logofile: [null],
             country: [null, Validators.required],
             contactname: [null, Validators.required],
             phone: [null, Validators.required],
             email: [null, Validators.required],
-            comments: [null, Validators.required],
+            comments: [null],
             orgno: [null, Validators.required],
-            companytype: [null, Validators.required],
-            isactive: [null, Validators.required],
-            webstartlat: [null, Validators.required],
-            webstartlong: [null, Validators.required],
+            companytype: [{ value: this.routerLinkValue, disabled: true }],
+            webstartlat: [null],
+            webstartlong: [null],
             userprofile: [null, Validators.required],
             hasprivatelabel: [null, Validators.required],
-            emailserver: [null, Validators.required],
-            emailsender: [null, Validators.required],
-            emailuser: [null, Validators.required],
-            emailpassword: [null, Validators.required],
-            billingnote: [null, Validators.required],
+            emailserver: [null],
+            emailsender: [null],
+            emailuser: [null],
+            emailpassword: [null],
+            billingnote: [null],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             deletedwhen: [{ value: '', disabled: true }],
@@ -120,8 +132,6 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     ngAfterViewInit() {
         merge(this.paginatorAccount.page)
             .pipe(tap(() => { this.loadCompanyDetail("account") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
-        merge(this.paginatorCompanyType.page)
-            .pipe(tap(() => { this.loadCompanyDetail("companytype") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
         merge(this.paginatorUserProfile.page).pipe(
             tap(() => { this.loadCompanyDetail("userprofile") }), takeUntil(this._unsubscribeAll)).subscribe((res: any) => { });
     }
@@ -134,8 +144,6 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     loadCompanyDetail(method_string: string) {
         if (method_string == 'account') {
             this.dataSourceAccount.loadCompanyDetail(this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
-        } else if (method_string == 'companytype') {
-            this.dataSourceCompanyType.loadCompanyDetail(this.paginatorCompanyType.pageIndex, this.paginatorCompanyType.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'userprofile') {
             this.dataSourceUserProfile.loadCompanyDetail(this.paginatorUserProfile.pageIndex, this.paginatorUserProfile.pageSize, this.filter_string, `${method_string}_clist`)
         }
@@ -145,9 +153,6 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         switch (method_string) {
             case 'account':
                 this.paginatorAccount.pageIndex = 0;
-                break;
-            case 'companytype':
-                this.paginatorCompanyType.pageIndex = 0;
                 break;
             case 'userprofile':
                 this.paginatorUserProfile.pageIndex = 0;
@@ -163,8 +168,8 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.companyForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.companyForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 
@@ -173,7 +178,6 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     }
 
     clearFilter() {
-
         this.filter_string = '';
         this.companyForm.get('filterstring').setValue(this.filter_string);
         // this.paginatorCompany.pageIndex = 0;
@@ -194,7 +198,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         this.companyForm.get('name').setValue(this.company.name);
         this.companyForm.get('orgno').setValue(this.company.orgno);
         this.companyForm.get('account').setValue(Number(this.company.accountid));
-        this.companyForm.get('companytype').setValue(Number(this.company.companytypeid));
+        this.companyForm.get('companytype').setValue(this.routerLinkValue);
         this.companyForm.get('userprofile').setValue(Number(this.company.userprofileid));
 
         let created = this.company ? new Date(`${this.company.created}`) : '';
@@ -232,7 +236,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         this.companyDetail.name = this.companyForm.get('name').value || '';
         this.companyDetail.orgno = this.companyForm.get('orgno').value || '';
         this.companyDetail.accountid = this.companyForm.get('account').value || 0;
-        this.companyDetail.companytypeid = this.companyForm.get('companytype').value || 0;
+        this.companyDetail.companytypeid = Number(this.routerLinkType);
         this.companyDetail.userprofileid = this.companyForm.get('userprofile').value || 0;
         this.companyDetail.emailserver = this.companyForm.get('emailserver').value || '';
         this.companyDetail.emailsender = this.companyForm.get('emailsender').value || '';
@@ -294,7 +298,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
-                        this.router.navigate(['admin/companies/companies']);
+                        this.router.navigate([`admin/companies/companies/${this.routerLinkType}`]);
                     }
                 });
         }
@@ -310,7 +314,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
-                        this.router.navigate(['admin/companies/companies']);
+                        this.router.navigate([`admin/companies/companies/${this.routerLinkType}`]);
                     }
                 });
         }
@@ -320,7 +324,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         this.companyForm.get('filterstring').setValue(this.filter_string);
         const currentState = this.companyForm.value;
         if (isEqual(this.company_detail, currentState)) {
-            this.router.navigate(['admin/companies/companies']);
+            this.router.navigate([`admin/companies/companies/${this.routerLinkType}`]);
         } else {
             const dialogConfig = new MatDialogConfig();
             let flag = 'goback';
@@ -332,7 +336,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
             const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
                 if (result == 'goback') {
-                    this.router.navigate(['admin/companies/companies']);
+                    this.router.navigate([`admin/companies/companies/${this.routerLinkType}`]);
                 }
             });
         }

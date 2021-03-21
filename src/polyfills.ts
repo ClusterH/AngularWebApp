@@ -13,7 +13,10 @@
  *
  * Learn more in https://angular.io/guide/browser-support
  */
-
+/***************************************************************************************************
+ * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
+ */
+import '@angular/localize/init';
 /***************************************************************************************************
  * BROWSER POLYFILLS
  */
@@ -28,7 +31,7 @@
  * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
  * Standard animation support in Angular DOES NOT require any polyfills (as of Angular 6.0).
  */
-// import 'web-animations-js';  // Run `npm install --save web-animations-js`.
+import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
 /**
  * By default, zone.js will patch all possible macroTask and DomEvents
@@ -53,7 +56,8 @@
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
-
+// Add global to window, assigning the value of window itself.
+(window as any).global = window;
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */

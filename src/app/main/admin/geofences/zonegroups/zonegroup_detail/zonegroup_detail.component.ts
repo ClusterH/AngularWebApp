@@ -1,28 +1,23 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSelectionListChange } from '@angular/material/list'
-import { ZonegroupDetail } from 'app/main/admin/geofences/zonegroups/model/zonegroup.model';
-import { CourseDialogComponent } from "../dialog/dialog.component";
-
-import { merge, Subject } from 'rxjs';
-import { tap, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-
+import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-
-import { ZonegroupDetailService } from 'app/main/admin/geofences/zonegroups/services/zonegroup_detail.service';
-import { ZonegroupDetailDataSource } from "app/main/admin/geofences/zonegroups/services/zonegroup_detail.datasource";
-
+import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { locale as zonegroupsEnglish } from 'app/main/admin/geofences/zonegroups/i18n/en';
-import { locale as zonegroupsSpanish } from 'app/main/admin/geofences/zonegroups/i18n/sp';
 import { locale as zonegroupsFrench } from 'app/main/admin/geofences/zonegroups/i18n/fr';
 import { locale as zonegroupsPortuguese } from 'app/main/admin/geofences/zonegroups/i18n/pt';
+import { locale as zonegroupsSpanish } from 'app/main/admin/geofences/zonegroups/i18n/sp';
+import { ZonegroupDetail } from 'app/main/admin/geofences/zonegroups/model/zonegroup.model';
+import { ZonegroupDetailDataSource } from "app/main/admin/geofences/zonegroups/services/zonegroup_detail.datasource";
+import { ZonegroupDetailService } from 'app/main/admin/geofences/zonegroups/services/zonegroup_detail.service';
+import { isEqual } from 'lodash';
+import { merge, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { CourseDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'app-zonegroup-detail',
@@ -33,6 +28,7 @@ import { locale as zonegroupsPortuguese } from 'app/main/admin/geofences/zonegro
 })
 
 export class ZonegroupDetailComponent implements OnInit {
+    zonegroup_detail: any;
     public zonegroup: any;
     pageType: string;
     userConncode: string;
@@ -47,7 +43,6 @@ export class ZonegroupDetailComponent implements OnInit {
     ZONEsColumns: string[] = ['id', 'name'];
 
     dataSource: ZonegroupDetailDataSource;
-
     dataSourceCompany: ZonegroupDetailDataSource;
     dataSourceIncluded: ZonegroupDetailDataSource;
     dataSourceExcluded: ZonegroupDetailDataSource;
@@ -115,18 +110,18 @@ export class ZonegroupDetailComponent implements OnInit {
             companyInput: [{ value: '', disabled: true }],
             excludedZONEs: [null, Validators.required],
             includedZONEs: [null, Validators.required],
-
-            isactive: [null, Validators.required],
-            created: [{ value: '', disabled: true }, Validators.required],
-            createdbyname: [{ value: '', disabled: true }, Validators.required],
-            deletedwhen: [{ value: '', disabled: true }, Validators.required],
-            deletedbyname: [{ value: '', disabled: true }, Validators.required],
-            lastmodifieddate: [{ value: '', disabled: true }, Validators.required],
-            lastmodifiedbyname: [{ value: '', disabled: true }, Validators.required],
-            filterstring: [null, Validators.required],
+            created: [{ value: '', disabled: true }],
+            createdbyname: [{ value: '', disabled: true }],
+            deletedwhen: [{ value: '', disabled: true }],
+            deletedbyname: [{ value: '', disabled: true }],
+            lastmodifieddate: [{ value: '', disabled: true }],
+            lastmodifiedbyname: [{ value: '', disabled: true }],
+            filterstring: [null],
         });
 
         this.setValues();
+        this.zonegroup_detail = this.zonegroupForm.value;
+
     }
     ngOnDestroy() {
         this._unsubscribeAll.next();
@@ -187,15 +182,12 @@ export class ZonegroupDetailComponent implements OnInit {
         let methodString = item;
         this.method_string = item.split('_')[0];
         let selected_element_id = this.zonegroupForm.get(`${this.method_string}`).value;
-
-
-
         let clist = this.zonegroupDetailService.unit_clist_item[methodString];
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.zonegroupForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.zonegroupForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 
@@ -204,7 +196,6 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     clearFilter() {
-
         this.filter_string = '';
         this.zonegroupForm.get('filterstring').setValue(this.filter_string);
 
@@ -227,16 +218,10 @@ export class ZonegroupDetailComponent implements OnInit {
     onIncludedFilter(event: any) {
         this.method_string = 'included';
         this.filter_string = event.target.value;
-
-
-
         if (this.filter_string.length >= 3 || this.filter_string == '') {
-
             this.managePageIndex(this.method_string);
             this.loadZonegroupDetail(this.method_string);
         }
-
-
     }
 
     onExcludedFilter(event: any) {
@@ -248,8 +233,6 @@ export class ZonegroupDetailComponent implements OnInit {
             this.managePageIndex(this.method_string);
             this.loadZonegroupDetail(this.method_string);
         }
-
-
     }
 
     setValues() {
@@ -313,14 +296,10 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     saveZonegroup(): void {
-
         let today = new Date().toISOString();
         this.getValues(today, "save");
-
-
         this.zonegroupDetailService.saveZonegroupDetail(this.zonegroupDetail)
             .subscribe((result: any) => {
-
                 if ((result.responseCode == 200) || (result.responseCode == 100)) {
                     alert("Success!");
                     this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
@@ -348,10 +327,7 @@ export class ZonegroupDetailComponent implements OnInit {
 
             this.zonegroupDetailService.saveZonegroupDetail(this.zonegroupDetail)
                 .subscribe((result: any) => {
-
                     if (result.responseCode == 100) {
-
-
                         let addData = [];
                         for (let i = 0; i < this.excludedSelection.selected.length; i++) {
                             addData[i] = {
@@ -360,11 +336,9 @@ export class ZonegroupDetailComponent implements OnInit {
                             }
                         }
 
-
                         this.zonegroupDetailService.addZoneToGroup(addData)
                             .subscribe((res: any) => {
                                 if (res.TrackingXLAPI.DATA) {
-
                                     alert("ZONEGroup added successfully!")
                                     this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
                                 }
@@ -372,7 +346,6 @@ export class ZonegroupDetailComponent implements OnInit {
                     }
                 });
         } else {
-
             let addData = [];
             for (let i = 0; i < this.excludedSelection.selected.length; i++) {
                 addData[i] = {
@@ -381,11 +354,9 @@ export class ZonegroupDetailComponent implements OnInit {
                 }
             }
 
-
             this.zonegroupDetailService.addZoneToGroup(addData)
                 .subscribe((res: any) => {
                     if (res.TrackingXLAPI.DATA) {
-
                         alert("ZONEs added successfully!");
                         this.dataSourceIncluded.loadZonegroupDetail(0, 10, '', "GetGroupIncludedZONEs");
                         this.dataSourceExcluded.loadZonegroupDetail(0, 10, '', "GetGroupExcludedZONEs");
@@ -395,7 +366,6 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     deleteZONEs() {
-
         let deleteData = [];
         for (let i = 0; i < this.includedSelection.selected.length; i++) {
             deleteData[i] = {
@@ -404,11 +374,9 @@ export class ZonegroupDetailComponent implements OnInit {
             }
         }
 
-
         this.zonegroupDetailService.deleteZoneToGroup(deleteData)
             .subscribe((res: any) => {
                 if (res.TrackingXLAPI.DATA) {
-
                     alert("ZONEs deleted successfully!");
                     this.dataSourceIncluded.loadZonegroupDetail(0, 10, '', "GetGroupIncludedZONEs");
                     this.dataSourceExcluded.loadZonegroupDetail(0, 10, '', "GetGroupExcludedZONEs");
@@ -429,10 +397,7 @@ export class ZonegroupDetailComponent implements OnInit {
             if (this.zonegroupDetailService.current_CompanyID == 0) {
                 alert("Please choose company one first!");
                 this.reloadComponent();
-
             } else {
-
-
                 this.dataSourceIncluded.loadZonegroupDetail(0, 10, '', "GetGroupIncludedZONEs");
                 this.dataSourceExcluded.loadZonegroupDetail(0, 10, '', "GetGroupExcludedZONEs");
             }
@@ -440,23 +405,27 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     goBackUnit() {
-        const dialogConfig = new MatDialogConfig();
-        let flag = 'goback';
+        this.filter_string = '';
+        this.zonegroupForm.get('filterstring').setValue(this.filter_string);
+        const currentState = this.zonegroupForm.value;
 
-        dialogConfig.disableClose = true;
+        if (isEqual(this.zonegroup_detail, currentState)) {
+            this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
+        } else {
+            const dialogConfig = new MatDialogConfig();
+            let flag = 'goback';
+            dialogConfig.disableClose = true;
+            dialogConfig.data = {
+                zonegroup: "", flag: flag
+            };
 
-        dialogConfig.data = {
-            zonegroup: "", flag: flag
-        };
-
-        dialogConfig.disableClose = false;
-
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
-
-        dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-
-        });
-
+            const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+            dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
+                if (result == 'goback') {
+                    this.router.navigate(['admin/geofences/zonegroups/zonegroups']);
+                }
+            });
+        }
     }
 
     changeFilter(filter) {

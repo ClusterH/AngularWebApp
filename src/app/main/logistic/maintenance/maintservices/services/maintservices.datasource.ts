@@ -28,7 +28,7 @@ export class MaintservicesDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
                 this.maintservicesService.maintserviceList = result.TrackingXLAPI.DATA;
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -44,7 +44,7 @@ export class MaintservicesDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
                 this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -60,7 +60,7 @@ export class MaintservicesDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
                 this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
                 this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
             });
@@ -76,7 +76,7 @@ export class MaintservicesDataSource extends DataSource<any> {
             .subscribe((result: any) => {
                 this.maintservicesSubject.next(result.TrackingXLAPI.DATA);
                 this.maintservicesService.unit_clist_item[`${method}`] = result.TrackingXLAPI.DATA || [];
-                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].Total) : 0;
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
                 this.page_index = pageindex + 1;
             });
     }

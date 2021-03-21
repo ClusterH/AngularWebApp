@@ -54,9 +54,7 @@ export class RoutesComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
     @ViewChild(MatSort, { static: true }) sort: MatSort;
-
     @ViewChild('filter', { static: true }) filter: ElementRef;
 
     constructor(

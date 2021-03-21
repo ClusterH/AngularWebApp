@@ -5,19 +5,22 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
-import { locale as vehiclesEnglish } from 'app/authentication/i18n/en';
-import { locale as vehiclesFrench } from 'app/authentication/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/authentication/i18n/pt';
-import { locale as vehiclesSpanish } from 'app/authentication/i18n/sp';
-import { AuthService } from 'app/authentication/services/authentication.service';
+import { locale as vehiclesEnglish } from 'app/core/authentication/i18n/en';
+import { locale as vehiclesFrench } from 'app/core/authentication/i18n/fr';
+import { locale as vehiclesPortuguese } from 'app/core/authentication/i18n/pt';
+import { locale as vehiclesSpanish } from 'app/core/authentication/i18n/sp';
+import { AuthService } from 'app/core/authentication/services/authentication.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
-import { navigation } from 'app/navigation/navigation';
+import { navigation } from 'app/core/navigation/navigation';
 import * as _ from 'lodash';
-import { forkJoin, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, Subject } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 import { FilterPanelService, RoutesService, UnitInfoService, VehMarkersService, ZonesService } from '../services';
+import { AgmDirectionGeneratorService } from 'app/sharedModules/services';
+import { MatFabButtonComponent } from '../components/mat-fab-button/mat-fab-button.component';
 import { LanguageModel } from '../models';
 import { UserObjectModel } from 'app/sharedModules/models';
+
 declare const google: any;
 
 @Component({
@@ -41,20 +44,20 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     currentEvents: any;
     currentPOI: any;
     currentPOIEvents: any;
-    lat: number;
-    lng: number;
+    lat: number = 25.7959;
+    lng: number = -80.2871;
     vehmarkers: any = [];
     vehmarkers_temp: any = [];
     userPOIs: any = [];
     userPOIs_temp: any = [];
     unitClist: any = [];
     poiClist: any = [];
-    tmpVehmarkers: marker[];
-    tmpPOIs: marker[];
-    zones: marker[];
+    tmpVehmarkers: Marker[] = [];
+    tmpPOIs: Marker[];
+    zones: Marker[];
     routes: any;
-    tmpZones: marker[];
-    tmpRoutes: marker[];
+    tmpZones: Marker[] = [];
+    tmpRoutes: Marker[] = [];
     zoom: number = 12;
     bounds: any;
     minClusterSize = 2;
@@ -63,6 +66,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     eventLocation: any = [];
     trackHistoryPolylines: any = [];
     polygon: any;
+
     showVehicles: boolean = true;
     showZones: boolean = true;
     showPOIs: boolean = true;
@@ -71,23 +75,40 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     selectedCountry: string;
     user: any;
     map: any;
+    //create New Option section
+    createOptionType: string = 'Anyone';
+    newRouteLocations: Array<Marker> = [];
+    newRouteOrigin: Marker;
+    newRouteDestination: Marker;
+    newRouteStops: any = [];
+    newRouteStopsTemp: any = [];
+    newRoutePath: any = [];
+    isGenerateRoute: boolean = false;
+    isImportStopsFromFile: boolean = false;
+    isAddStopsOnMap: boolean = false;
+    waypointDistance: Array<any> = [];
+    countDisRequest: number = 0;
+    directionDisplayer: any;
+    directionsService: any;
+
     routerLinkType: string = '';
 
-    unit_icon = `{
+    unit_icon = {
         url: 'assets/icons/googlemap/unit-marker.png',
         scaledSize: { width: 33, height: 44 },
         labelOrigin: { x: 15, y: 50 }
-    }`
-    poi_icon = `{
+    }
+    poi_icon = {
         url: 'assets/icons/googlemap/employment.png',
         scaledSize: { width: 33, height: 44 },
         labelOrigin: { x: 15, y: 50 }
-    }`
+    }
 
     @ViewChild('AgmMap') agmMap: AgmMap;
+    @ViewChild(MatFabButtonComponent) fabBtnComponent: MatFabButtonComponent;
 
     constructor(
-        private _adminVehMarkersService: VehMarkersService,
+        private vehMarkersService: VehMarkersService,
         private _adminZonesService: ZonesService,
         private _adminRoutesService: RoutesService,
         private unitInfoService: UnitInfoService,
@@ -98,6 +119,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         private _translateService: TranslateService,
         private _authService: AuthService,
         public filterPanelService: FilterPanelService,
+        public agmDirectionGeneratorService: AgmDirectionGeneratorService,
         private router: Router,
         private activatedroute: ActivatedRoute
     ) {
@@ -123,15 +145,35 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         ];
 
         this.navigation = navigation;
-        this.lat = 25.7959;
-        this.lng = -80.2871;
-        this.zoom = 12;
-        this.tmpVehmarkers = [];
-        this.tmpZones = [];
-        this.tmpRoutes = [];
+        this.activatedroute.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
+            this.routerLinkType = params.get('type');
+            if (this.routerLinkType != 'main') {
+                this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
+                    this.currentPOI = data;
+                });
+            }
+        });
 
-        const vehmarks = this._adminVehMarkersService.getVehMarkers('GetVehicleLocations');
-        const userpois = this._adminVehMarkersService.getVehMarkers('GetUserPOIs');
+        this.startLoadingMapData();
+    }
+
+    ngOnInit() {
+        this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
+        if (this.routerLinkType != 'main') {
+            setTimeout(() => {
+                this.clickedMarker(this.currentPOI.id, 'poiInfoPanel');
+            }, 500);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    startLoadingMapData(): void {
+        const vehmarks = this.vehMarkersService.getVehMarkers('GetVehicleLocations');
+        const userpois = this.vehMarkersService.getVehMarkers('GetUserPOIs');
         const zone = this._adminZonesService.getZones();
         const route = this._adminRoutesService.getRoutes();
 
@@ -148,34 +190,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
             this.poiClist = this.userPOIs.map(poi => ({ ...poi }));
         });
-
-        this.activatedroute.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe(params => {
-            this.routerLinkType = params.get('type');
-            if (this.routerLinkType != 'main') {
-                this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
-
-                    this.currentPOI = data;
-                });
-            }
-        });
-    }
-
-    ngOnInit() {
-        this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
-        if (this.routerLinkType != 'main') {
-            setTimeout(() => {
-                this.clickedMarker(this.currentPOI.id, 'poiInfoPanel');
-            }, 500);
-        }
-    }
-
-    ngAfterViewInit() {
-
-    }
-
-    ngOnDestroy(): void {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
     }
 
     setLanguage(lang): void {
@@ -203,7 +217,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this.currentOperator = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).operator;
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
                     this._unitInfoSidebarService.getSidebar(key).toggleOpen();
-
                 });
         } else if (key == 'poiInfoPanel') {
             this.unitInfoService.getPOIInfo_v1(id)
@@ -291,6 +304,45 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         }
     }
 
+    newOptionEmitter(event: string): void {
+        console.log(event);
+        this.createOptionType = event;
+
+        const optionList = {
+            "showVehicles": this.showVehicles,
+            "showPOIs": this.showPOIs,
+            "showZones": this.showZones,
+            "showRoutes": this.showRoutes,
+        }
+
+        if (event !== 'Anyone') {
+            if (event === 'Create Route') {
+                this.agmDirectionGeneratorService.directionsService = new google.maps.DirectionsService();
+                this.agmDirectionGeneratorService.directionDisplayer = new google.maps.DirectionsRenderer({
+                    draggable: true,
+                    map: this.map
+                });
+
+                google.maps.event.addListener(this.agmDirectionGeneratorService.directionDisplayer, 'directions_changed', () => {
+                    console.log('google change direection===>>>');
+                    this.agmDirectionGeneratorService.onChangeRouteByDragging(this.agmDirectionGeneratorService.directionDisplayer.directions);
+                });
+            }
+            for (let option in optionList) {
+                if (optionList[option]) {
+                    console.log(option);
+                    this.onShowValChange(option);
+                }
+            }
+        } else {
+            for (let option in optionList) {
+                if (!optionList[option]) {
+                    this.onShowValChange(option);
+                }
+            }
+        }
+    }
+
     filterToggleOff(event) {
         this.showFilters = false;
         if (!this.showVehicles) {
@@ -327,6 +379,23 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     }
 
+    showVisibleOnlyEmitter(event: boolean): void {
+        console.log(event);
+        const bounds = this.agmMap.LatLngBounds();
+        console.log(bounds);
+        this.vehmarkers.map(marker => {
+            if (bounds.contains({ lat: marker.lat, lng: marker.lng })) {
+                marker.visible = true;
+            } else {
+                marker.visible = false;
+            }
+
+            return marker;
+        })
+
+        this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
+    }
+
     setVisible(value) {
         for (var i = 0; i < this.vehmarkers.length; i++) {
             this.vehmarkers[i].visible = value;
@@ -334,11 +403,9 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     showInfoUnit(infoWindow: any, gm: any) {
-
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
-
         gm.lastOpen = infoWindow;
         infoWindow.open();
     }
@@ -351,69 +418,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         draggable: true,
         editable: true,
         visible: true
-    };
-
-    polygonCreated($event) {
-        if (this.polygon) {
-            this.polygon.setMap(null);
-        }
-        this.polygon = $event;
-        this.addPolygonChangeEvent(this.polygon);
-        google.maps.event.addListener(this.polygon, 'coordinates_changed', function (index, obj) {
-
-        });
-    }
-
-    getPaths() {
-        if (this.polygon) {
-            const vertices = this.polygon.getPaths().getArray()[0];
-            let paths = [];
-            vertices.getArray().forEach(function (xy, i) {
-                let latLng = {
-                    lat: xy.lat(),
-                    lng: xy.lng()
-                };
-                paths.push(JSON.stringify(latLng));
-            });
-            return paths;
-        }
-        return [];
-    }
-
-    addPolygonChangeEvent(polygon) {
-        var me = polygon,
-            isBeingDragged = false,
-            triggerCoordinatesChanged = function () {
-                google.maps.event.trigger(me, 'coordinates_changed');
-            };
-
-        // If  the overlay is being dragged, set_at gets called repeatedly,
-        // so either we can debounce that or igore while dragging,
-        // ignoring is more efficient
-        google.maps.event.addListener(me, 'dragstart', function () {
-            isBeingDragged = true;
-        });
-
-        // If the overlay is dragged
-        google.maps.event.addListener(me, 'dragend', function () {
-            triggerCoordinatesChanged();
-            isBeingDragged = false;
-        });
-        // Or vertices are added to any of the possible paths, or deleted
-        var paths = me.getPaths();
-        paths.forEach(function (path, i) {
-            google.maps.event.addListener(path, "insert_at", function () {
-                triggerCoordinatesChanged();
-            });
-            google.maps.event.addListener(path, "set_at", function () {
-                if (!isBeingDragged) {
-                    triggerCoordinatesChanged();
-                }
-            });
-            google.maps.event.addListener(path, "remove_at", function () {
-                triggerCoordinatesChanged();
-            });
-        });
     };
 
     showEventLocation(event: any) {
@@ -450,6 +454,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             this.unitInfoService.TrackHistoryList.next(null);
         }
 
+        this.resetFitBound();
+    }
+
+    resetFitBound(): void {
         this.lat = 25.7959;
         this.lng = -80.2871;
         this.zoom = 12;
@@ -478,13 +486,57 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             this.zoom = 12;
         }
     }
+
+    //createNewOption Section
+
+    addRouteLocations(event: any) {
+        if (this.createOptionType !== 'Create Route') {
+            return false;
+        }
+
+        this.agmDirectionGeneratorService.addRouteLocations(event, this.map);
+    }
+
+    markerDragEnd(event: any, index: number): void {
+        this.agmDirectionGeneratorService.newRouteLocations[index] = { ...event.coords };
+    }
+
+    removeRouteEmitter(): void {
+        this.agmDirectionGeneratorService.directionDisplayer.setMap(null);
+        this.newOptionEmitter('Anyone');
+        this.resetFitBound();
+        this.fabBtnComponent.fabButtons[0].isActive = false;
+    }
+
+    saveRouteEmitter(event: number): void {
+        console.log(event);
+        if (event > 0) {
+            this.agmDirectionGeneratorService.newRoutePath.map(path => {
+                path.routeid = event;
+                return path;
+            });
+            setTimeout(() => {
+                this._adminRoutesService.setRoutePath(this.agmDirectionGeneratorService.newRoutePath).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                    if (res.responseCode === 100) {
+                        alert("Success!");
+                        this.agmDirectionGeneratorService.directionDisplayer.setMap(null);
+                        this.newOptionEmitter('Anyone');
+                        this.fabBtnComponent.fabButtons[0].isActive = false;
+                    } else {
+                        alert("Failed to save path");
+                    }
+                })
+            }, 500)
+
+        }
+    }
 }
 
-interface marker {
+interface Marker {
     id?: any;
     lat: number;
     lng: number;
     label?: string;
-    draggable: string;
-    visible: boolean;
+    draggable?: string;
+    visible?: boolean;
 }

@@ -42,7 +42,8 @@ export const locale = {
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
-            "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
+            "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete this item?",
+            "DND_CONFIRM_MESSAGE": "Are you sure you want to change Installer?",
             "GOBACK_CONFIRM_MESSAGE": "Are you sure you want to discard the changes?",
             "DUPLICATE": "Duplicate",
             "DELETE": "Delete",
@@ -52,7 +53,8 @@ export const locale = {
         BOARD: {
             "SCRUMBOARD": "ScrumBoard",
             "ADDNEWBOARD": "Add New Board",
-            "BOARDS": "BOARDS",
+            "BOARDS": "Go To Boards",
+            "LISTS": "Go To List",
             "SETTINGS": "Settings",
             "BOARDCOLOR": "Board Color",
             "CARDCOVERIMAGES": "Card Cover Images",

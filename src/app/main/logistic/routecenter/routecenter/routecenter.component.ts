@@ -49,34 +49,34 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     lng: number;
     zoom: number = 12;
 
-    unit_icon_start_green = `{
+    unit_icon_start_green = {
         url: 'assets/icons/googlemap/play-green.svg',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_start_red = `{
+    };
+    unit_icon_start_red = {
         url: 'assets/icons/googlemap/play-red.svg',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_end_green = `{
+    };
+    unit_icon_end_green = {
         url: 'assets/icons/googlemap/stop-green.svg',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_end_red = `{
+    };
+    unit_icon_end_red = {
         url: 'assets/icons/googlemap/stop-red.svg',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_arrived = `{
+    };
+    unit_icon_arrived = {
         url: 'assets/icons/googlemap/green-marker.png',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_unarrived = `{
+    };
+    unit_icon_unarrived = {
         url: 'assets/icons/googlemap/red-marker.png',
         scaledSize: { width: 10, height: 10 },
-    }`;
-    unit_icon_unauth = `{
+    };
+    unit_icon_unauth = {
         url: 'assets/icons/googlemap/green-marker.png',
         scaledSize: { width: 100, height: 100 },
-    }`;
+    };
 
     faBan = faBan;
     faThumbtack = faThumbtack;
@@ -162,22 +162,23 @@ export class RouteCenterComponent implements OnInit, OnDestroy {
     getRoute(date?: string) {
         this.routecenterService.loadingsubject.next(false);
         this.routecenterService.getRouteCenter(1, 10, 'id', 'asc', '', '', 'GetCurrentRuns').pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
-            this.dataSource = JSON.parse(res.TrackingXLAPI.DATA[0].routes);
-            this.dataSource = this.dataSource.map((route, index) => {
-                route.colorIndex = index;
-                route.stop_start = route.stops.slice(0, 1);
-                route.stop_end = route.stops.slice(-1);
-                route.stop_routes = route.stops.slice(1, -1);
+            if (res.responseCode === 100) {
+                this.dataSource = JSON.parse(res.TrackingXLAPI.DATA[0].routes);
+                this.dataSource = this.dataSource.map((route, index) => {
+                    route.colorIndex = index;
+                    route.stop_start = route.stops.slice(0, 1);
+                    route.stop_end = route.stops.slice(-1);
+                    route.stop_routes = route.stops.slice(1, -1);
 
-                const color_key = Object.keys(this.color)[route.colorIndex];
-                route.strokeColor = this.color[color_key];
+                    const color_key = Object.keys(this.color)[route.colorIndex];
+                    route.strokeColor = this.color[color_key];
 
-                this.getUnPlannedStops(route.id, route.strokeColor, this.formatDate(this.defaultDate)).then(res => {
-                    route.unPlannedStops = res;
+                    this.getUnPlannedStops(route.id, route.strokeColor, this.formatDate(this.defaultDate)).then(res => {
+                        route.unPlannedStops = res;
+                    });
+                    return route;
                 });
-                return route;
-            });
-
+            }
 
             if (this.dataSource) {
                 this.totalRecords = this.dataSource.length;

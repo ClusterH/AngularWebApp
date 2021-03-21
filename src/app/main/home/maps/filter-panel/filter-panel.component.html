@@ -2,6 +2,8 @@
     <div class="filter-panel-header mat-elevation-z12 primary py-16 px-8 mb-12" fxLayout="row"
         fxLayoutAlign="space-between center">
         <div class="panel-title h2 ml-8">Filter Option</div>
+        <mat-slide-toggle class="show-visible-only" [(ngModel)]="isCheckedVisibility" (change)="switchVisibility()"
+            matTooltip="Show Visible Only"></mat-slide-toggle>
         <button mat-icon-button class="toggle-panel-open" (click)="toggleSidebarOpen('filterPanel')">
             <mat-icon class="h4">close</mat-icon>
         </button>

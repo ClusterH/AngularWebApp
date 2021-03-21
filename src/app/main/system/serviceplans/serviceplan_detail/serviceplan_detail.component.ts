@@ -76,7 +76,6 @@ export class ServiceplanDetailComponent implements OnInit {
             includeignition: [null, Validators.required],
             locatecommand: [null, Validators.required],
             distance: [null, Validators.required],
-            isactive: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             deletedwhen: [{ value: '', disabled: true }],
@@ -121,8 +120,8 @@ export class ServiceplanDetailComponent implements OnInit {
         let clist = this.serviceplanDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.serviceplanForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.serviceplanForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

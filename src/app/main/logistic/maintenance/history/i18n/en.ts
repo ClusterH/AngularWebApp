@@ -30,12 +30,12 @@ export const locale = {
             "REGISTER": "Register",
 
             "CLOSE": "Close",
-           
+
             "GENERAL": "General",
             "AUDIT": "Audit",
 
             "DUPLICATE_CONFIRM_MESSAGE": "Are you sure Duplicate?",
-            "DELETE_CONFIRM_MESSAGE": "Are you sure Delete?",
+            "DELETE_CONFIRM_MESSAGE": "Are you sure you want to delete this item?",
             "GOBACK_CONFIRM_MESSAGE": "Are you sure you want to discard the changes?",
             "DUPLICATE": "Duplicate",
             "DELETE": "Delete",

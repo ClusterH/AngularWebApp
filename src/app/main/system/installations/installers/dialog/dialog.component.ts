@@ -172,8 +172,8 @@ export class InstallerDialogComponent implements OnInit {
 
             for (let i = 0; i < clist.length; i++) {
                 if (clist[i].id == selected_element_id) {
-                    this.installerForm.get('filterstring').setValue(clist[i].name);
-                    this.filter_string = clist[i].name;
+                    this.installerForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                    this.filter_string = clist[i] ? clist[i].name : '';
                 }
             }
 

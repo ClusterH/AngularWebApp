@@ -72,7 +72,6 @@ export class ZoneDetailComponent implements OnInit {
         this.zoneForm = this._formBuilder.group({
             name: [null, Validators.required],
             company: [null, Validators.required],
-            isactive: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
             deletedwhen: [{ value: '', disabled: true }],
@@ -119,8 +118,8 @@ export class ZoneDetailComponent implements OnInit {
         let clist = this.zoneDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.zoneForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.zoneForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

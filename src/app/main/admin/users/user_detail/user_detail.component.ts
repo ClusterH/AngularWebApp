@@ -119,7 +119,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             fuelunit: [null, Validators.required],
             weightunit: [null, Validators.required],
             tempunit: [null, Validators.required],
-            isactive: [null, Validators.required],
             company: [null, Validators.required],
             group: [null, Validators.required],
             subgroup: [null, Validators.required],
@@ -221,15 +220,14 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
-        let selected_element_id = this.userForm.get(`${this.method_string}`).value;
-        let clist = this.userDetailService.unit_clist_item[methodString];
-        let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
+        const selected_element_id = this.userForm.get(`${this.method_string}`).value;
+        const clist = this.userDetailService.unit_clist_item[methodString];
+        const currentOptionID = clist.findIndex(item => item.id === selected_element_id);
 
-        this.userForm.get('filterstring').setValue(clist[currentOptionID].name);
-        this.filter_string = clist[currentOptionID].name;
-
+        this.userForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+        this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
 
         this.managePageIndex(this.method_string);
         this.loadUserDetail(this.method_string);

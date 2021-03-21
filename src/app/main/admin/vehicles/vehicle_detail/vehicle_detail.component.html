@@ -17,10 +17,10 @@
                         {{vehicle.name}}
                     </div>
                     <div class="h2" *ngIf="pageType ==='new'">
-                        {{ 'VEHICLES.NEWVEHICLE' | translate }}
+                        {{ 'VEHICLES.NEWVEHICLE.' + routerLinkValue | translate }}
                     </div>
                     <div class="subtitle secondary-text">
-                        <span>{{ 'VEHICLES.VEHICLEDETAIL' | translate }}</span>
+                        <span>{{ 'VEHICLES.VEHICLEDETAIL.' + routerLinkValue | translate }}</span>
                     </div>
                 </div>
             </div>
@@ -224,28 +224,23 @@
                                     </mat-form-field>
                                 </div>
                                 <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between">
-                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30"
+                                        *ngIf="routerLinkType === '1'">
                                         <mat-label>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-label>
-                                        <mat-select formControlName="producttype"
-                                            (click)="showCompanyList('producttype_clist')">
-                                            <div style="width: 100%; overflow: auto;">
-                                                <mat-table [dataSource]="dataSourceProductType"
-                                                    class="vehicles-table font-size-10 mat-elevation-z8">
-                                                    <ng-container matColumnDef="name">
-                                                        <td mat-cell *matCellDef="let producttype" style="border: 0px;">
-                                                            <mat-option style="width: 100%; height: auto; padding: 0px;"
-                                                                [value]="producttype.id">{{producttype.name}}
-                                                            </mat-option>
-                                                        </td>
-                                                    </ng-container>
-                                                    <tr class="company_list" style="height: 15px; " mat-row
-                                                        *matRowDef="let row; columns: displayedColumns;"></tr>
-                                                </mat-table>
-                                            </div>
-                                            <mat-paginator style=" height: 40px;" #paginatorProductType
-                                                class="table_paginator" [length]="dataSourceProductType.totalLength"
-                                                [pageSize]="10" [hidePageSize]="true" showFirstLastButtons>
-                                            </mat-paginator>
+                                        <input matInput placeholder="Product Type" name="producttypeVehicle"
+                                            formControlName="producttypeVehicle" required>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30"
+                                        *ngIf="routerLinkType !== '1'">
+                                        <mat-label>{{ 'VEHICLES.PRODUCTTYPE' | translate }}</mat-label>
+                                        <mat-select matSelect placeholder="Product Type" name="producttypeNoVehicle"
+                                            formControlName="producttypeNoVehicle" [(value)]="routerLinkType">
+                                            <mat-option style="width: 100%; height: auto;" [value]="'2'">
+                                                Cargo</mat-option>
+                                            <mat-option style="width: 100%; height: auto;" [value]="'3'">
+                                                Person</mat-option>
+                                            <mat-option style="width: 100%; height: auto;" [value]="'4'">
+                                                Asset</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">

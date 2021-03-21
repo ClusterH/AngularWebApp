@@ -109,14 +109,14 @@ export class UnittypeDetailComponent implements OnInit {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
-        let selected_element_id = this.unittypeForm.get(`${this.method_string}`).value;
-        let clist = this.unittypeDetailService.unit_clist_item[methodString];
+        const selected_element_id = this.unittypeForm.get(`${this.method_string}`).value;
+        const clist = this.unittypeDetailService.unit_clist_item[methodString];
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.unittypeForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.unittypeForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

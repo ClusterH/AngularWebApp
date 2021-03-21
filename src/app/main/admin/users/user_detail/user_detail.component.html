@@ -70,6 +70,7 @@
                                                     placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
+                                            <mat-option value="0"></mat-option>
                                             <div style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceCompany"
                                                     class="users-table font-size-10 mat-elevation-z8">
@@ -97,6 +98,7 @@
                                                     placeholder="Filter" (keyup)="onKey($event)">
                                                 <mat-icon (click)="clearFilter()">clear</mat-icon>
                                             </div>
+                                            <mat-option value="0"></mat-option>
                                             <div style="width: 100%; overflow: auto;">
                                                 <mat-table [dataSource]="dataSourceGroup"
                                                     class="users-table font-size-10 mat-elevation-z8">

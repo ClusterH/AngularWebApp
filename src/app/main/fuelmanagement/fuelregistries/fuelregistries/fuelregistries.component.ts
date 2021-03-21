@@ -16,7 +16,7 @@ import { FuelregistryDetailService } from 'app/main/fuelmanagement/fuelregistrie
 import * as $ from 'jquery';
 import { merge, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { CourseDialogComponent } from "../dialog/dialog.component";
+import { FuelRegisterDialogComponent } from "../dialog/dialog.component";
 
 @Component({
     selector: 'fuelmanagement-fuelregistries',
@@ -128,19 +128,17 @@ export class FuelregistriesComponent implements OnInit, OnDestroy {
     }
 
     deleteFuelregistry(fuelregistry): void {
+
         const dialogConfig = new MatDialogConfig();
         this.flag = 'delete';
         dialogConfig.disableClose = true;
         dialogConfig.data = { fuelregistry, flag: this.flag };
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+        const dialogRef = this._matDialog.open(FuelRegisterDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
-
             if (result) {
                 let deleteRegistry = this._adminFuelregistriesService.fuelregistryList.findIndex((registry: any) => registry.id == fuelregistry.id);
-
                 if (deleteRegistry > -1) {
                     this._adminFuelregistriesService.fuelregistryList.splice(deleteRegistry, 1);
-
                     this.dataSource.fuelregistriesSubject.next(this._adminFuelregistriesService.fuelregistryList);
                 }
             }
@@ -152,7 +150,7 @@ export class FuelregistriesComponent implements OnInit, OnDestroy {
         this.flag = 'duplicate';
         dialogConfig.disableClose = true;
         dialogConfig.data = { fuelregistry, flag: this.flag };
-        const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
+        const dialogRef = this._matDialog.open(FuelRegisterDialogComponent, dialogConfig);
         dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
             if (result) {
                 this.router.navigate(['fuelmanagement/fuelregistries/fuelregistry_detail'], { queryParams: fuelregistry });

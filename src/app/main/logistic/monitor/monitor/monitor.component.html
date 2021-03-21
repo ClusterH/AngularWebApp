@@ -21,12 +21,12 @@
         <as-split class="split-example ex-percent" unit="percent" (dragEnd)="dragEnd($event)">
             <as-split-area [size]="50">
                 <div style="height: calc(100vh - 144px);">
-                    <app-triplist></app-triplist>
+                    <app-triplist (tripPathEmitter)="showInMapEmitter($event)"></app-triplist>
                 </div>
             </as-split-area>
             <as-split-area [size]="50">
                 <div style="height: 100%;">
-                    <app-monitormap></app-monitormap>
+                    <app-monitormap [tripWatchData]="tripWatchData"></app-monitormap>
                 </div>
             </as-split-area>
         </as-split>

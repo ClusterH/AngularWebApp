@@ -106,15 +106,15 @@ export class ReportContactDialogComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         const selected_element_id = this.reportContactForm.get(`${this.method_string}`).value;
         const clist = this.monitorService.unit_clist_item[methodString];
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id === selected_element_id) {
-                this.reportContactForm.get('filterstring').setValue(clist[i].name);
-                this.filter_string = clist[i].name;
+                this.reportContactForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 

@@ -39,12 +39,13 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     dataSourceOperator: VehicleDetailDataSource;
     dataSourceUnitType: VehicleDetailDataSource;
     dataSourceServicePlan: VehicleDetailDataSource;
-    dataSourceProductType: VehicleDetailDataSource;
     dataSourceMake: VehicleDetailDataSource;
     dataSourceModel: VehicleDetailDataSource;
     dataSourceTimeZone: VehicleDetailDataSource;
     filter_string: string = '';
     method_string: string = '';
+    routerLinkType: string;
+    routerLinkValue: string;
     private _unsubscribeAll: Subject<any>;
 
     @ViewChild(MatPaginator, { static: true }) paginatorCompany: MatPaginator;
@@ -53,7 +54,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     @ViewChild('paginatorOperator', { read: MatPaginator, static: true }) paginatorOperator: MatPaginator;
     @ViewChild('paginatorUnitType', { read: MatPaginator, static: true }) paginatorUnitType: MatPaginator;
     @ViewChild('paginatorServicePlan', { read: MatPaginator, static: true }) paginatorServicePlan: MatPaginator;
-    @ViewChild('paginatorProductType', { read: MatPaginator, static: true }) paginatorProductType: MatPaginator;
     @ViewChild('paginatorMake', { read: MatPaginator, static: true }) paginatorMake: MatPaginator;
     @ViewChild('paginatorModel', { read: MatPaginator }) paginatorModel: MatPaginator;
     @ViewChild('paginatorTimeZone', { read: MatPaginator, static: true }) paginatorTimeZone: MatPaginator;
@@ -70,6 +70,27 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.activatedroute.queryParams.pipe(takeUntil(this._unsubscribeAll)).subscribe(data => {
             this.vehicle = data;
+        });
+
+        this.activatedroute.paramMap.subscribe(params => {
+            this.routerLinkType = params.get('type');
+            switch (this.routerLinkType) {
+                case '1':
+                    this.routerLinkValue = 'Vehicle';
+                    break;
+                case '2':
+                    this.routerLinkValue = 'Cargo';
+                    break;
+                case '3':
+                    this.routerLinkValue = 'Person';
+                    break;
+                case '4':
+                    this.routerLinkValue = 'Asset';
+                    break;
+            }
+
+            console.log(this.routerLinkType, this.routerLinkValue);
+
         });
 
         if (isEmpty(this.vehicle)) {
@@ -93,7 +114,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.dataSourceOperator = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceUnitType = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceServicePlan = new VehicleDetailDataSource(this.vehicleDetailService);
-        this.dataSourceProductType = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceMake = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceModel = new VehicleDetailDataSource(this.vehicleDetailService);
         this.dataSourceTimeZone = new VehicleDetailDataSource(this.vehicleDetailService);
@@ -108,7 +128,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.dataSourceOperator.loadVehicleDetail(0, 10, this.vehicle.operator, "operator_clist");
         this.dataSourceUnitType.loadVehicleDetail(0, 10, this.vehicle.unittype, "unittype_clist");
         this.dataSourceServicePlan.loadVehicleDetail(0, 10, this.vehicle.serviceplan, "serviceplan_clist");
-        this.dataSourceProductType.loadVehicleDetail(0, 10, '', "producttype_clist");
         this.dataSourceMake.loadVehicleDetail(0, 10, this.vehicle.make, "make_clist");
         if (this.vehicleModel_flag) {
             this.dataSourceModel.loadVehicleDetail(0, 10, this.vehicle.model, "model_clist");
@@ -118,15 +137,14 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             name: [null, Validators.required],
             company: [null, Validators.required],
             group: [null, Validators.required],
-            subgroup: [null, Validators.required],
             account: [null, Validators.required],
             operator: [null, Validators.required],
             unittype: [null, Validators.required],
             serviceplan: [null, Validators.required],
-            producttype: [null, Validators.required],
+            producttypeVehicle: [{ value: this.routerLinkType === '1' ? this.routerLinkValue : '', disabled: true }],
+            producttypeNoVehicle: [null, Validators.required],
             make: [null, Validators.required],
             model: [null, Validators.required],
-            isactive: [null, Validators.required],
             timezone: [null, Validators.required],
             created: [{ value: '', disabled: true }],
             createdbyname: [{ value: '', disabled: true }],
@@ -153,8 +171,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             .pipe(tap(() => { this.loadVehicleDetail("unittype"), takeUntil(this._unsubscribeAll) })).subscribe((res: any) => { });
         merge(this.paginatorServicePlan.page)
             .pipe(tap(() => { this.loadVehicleDetail("serviceplan"), takeUntil(this._unsubscribeAll) })).subscribe((res: any) => { });
-        merge(this.paginatorProductType.page)
-            .pipe(tap(() => { this.loadVehicleDetail("producttype"), takeUntil(this._unsubscribeAll) })).subscribe((res: any) => { });
         merge(this.paginatorMake.page)
             .pipe(tap(() => { this.loadVehicleDetail("make"), takeUntil(this._unsubscribeAll) })).subscribe((res: any) => { });
         merge(this.paginatorTimeZone.page)
@@ -180,7 +196,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             } else {
                 this.dataSourceGroup.loadGroupDetail(this.paginatorGroup.pageIndex, this.paginatorGroup.pageSize, this.filter_string, companyid, `${method_string}_clist`)
             }
-        } else if (method_string == 'active') {
+        } else if (method_string == 'account') {
             this.dataSourceAccount.loadVehicleDetail(this.paginatorAccount.pageIndex, this.paginatorAccount.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'operator') {
             this.dataSourceOperator.loadVehicleDetail(this.paginatorOperator.pageIndex, this.paginatorOperator.pageSize, this.filter_string, `${method_string}_clist`)
@@ -188,8 +204,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             this.dataSourceUnitType.loadVehicleDetail(this.paginatorUnitType.pageIndex, this.paginatorUnitType.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'serviceplan') {
             this.dataSourceServicePlan.loadVehicleDetail(this.paginatorServicePlan.pageIndex, this.paginatorServicePlan.pageSize, this.filter_string, `${method_string}_clist`)
-        } else if (method_string == 'producttype') {
-            this.dataSourceProductType.loadVehicleDetail(this.paginatorProductType.pageIndex, this.paginatorProductType.pageSize, "", `${method_string}_clist`)
         } else if (method_string == 'make') {
             this.dataSourceMake.loadVehicleDetail(this.paginatorMake.pageIndex, this.paginatorMake.pageSize, this.filter_string, `${method_string}_clist`)
         } else if (method_string == 'model') {
@@ -219,9 +233,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             case 'serviceplan':
                 this.paginatorServicePlan.pageIndex = 0;
                 break;
-            case 'producttype':
-                this.paginatorProductType.pageIndex = 0;
-                break;
             case 'make':
                 this.paginatorMake.pageIndex = 0;
                 break;
@@ -235,21 +246,17 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     showCompanyList(item: string) {
-
-        let methodString = item;
+        const methodString = item;
         this.method_string = item.split('_')[0];
         if (this.method_string == 'model' && !this.vehicleModel_flag) {
             alert("Please check first Make is selected!");
         } else {
+            const selected_element_id = this.vehicleForm.get(`${this.method_string}`).value;
+            const clist = this.vehicleDetailService.unit_clist_item[methodString];
+            const currentOptionID = clist.findIndex(item => item.id == selected_element_id);
 
-            let selected_element_id = this.vehicleForm.get(`${this.method_string}`).value;
-            let clist = this.vehicleDetailService.unit_clist_item[methodString];
-
-            let currentOptionID = clist.findIndex(item => item.id == selected_element_id);
-
-            this.vehicleForm.get('filterstring').setValue(clist[currentOptionID].name);
-            this.filter_string = clist[currentOptionID].name;
-
+            this.vehicleForm.get('filterstring').setValue(clist[currentOptionID] ? clist[currentOptionID].name : '');
+            this.filter_string = clist[currentOptionID] ? clist[currentOptionID].name : '';
 
             this.managePageIndex(this.method_string);
             this.loadVehicleDetail(this.method_string);
@@ -279,7 +286,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.vehicleForm.get('operator').setValue(Number(this.vehicle.operatorid));
         this.vehicleForm.get('unittype').setValue(Number(this.vehicle.unittypeid));
         this.vehicleForm.get('serviceplan').setValue(Number(this.vehicle.serviceplanid));
-        this.vehicleForm.get('producttype').setValue(Number(this.vehicle.producttypeid));
+        this.vehicleForm.get('producttypeNoVehicle').setValue(Number(this.routerLinkType));
         this.vehicleForm.get('make').setValue(Number(this.vehicle.makeid));
         this.vehicleForm.get('model').setValue(Number(this.vehicle.modelid));
         this.vehicleForm.get('timezone').setValue(Number(this.vehicle.timezoneid));
@@ -304,7 +311,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         this.vehicleDetail.operatorid = this.vehicleForm.get('operator').value || 0;
         this.vehicleDetail.unittypeid = this.vehicleForm.get('unittype').value || 0;
         this.vehicleDetail.serviceplanid = this.vehicleForm.get('serviceplan').value || 0;
-        this.vehicleDetail.producttypeid = this.vehicleForm.get('producttype').value || 0;
+        this.vehicleDetail.producttypeid = this.routerLinkType === '1' ? this.routerLinkType : this.vehicleForm.get('producttype').value;
         this.vehicleDetail.makeid = this.vehicleForm.get('make').value || 0;
         this.vehicleDetail.modelid = this.vehicleForm.get('model').value || 0;
         this.vehicleDetail.timezoneid = this.vehicleForm.get('timezone').value || 0;
@@ -351,7 +358,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
-                        this.router.navigate(['admin/vehicles/vehicles']);
+                        this.router.navigate([`admin/vehicles/vehicles/${this.routerLinkType}`]);
                     }
                 });
         }
@@ -367,7 +374,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
                         alert("Success!");
-                        this.router.navigate(['admin/vehicles/vehicles']);
+                        this.router.navigate([`admin/vehicles/vehicles/${this.routerLinkType}`]);
                     }
                 });
         }
@@ -379,7 +386,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
         const currentState = this.vehicleForm.value;
 
         if (isEqual(this.vehicle_detail, currentState)) {
-            this.router.navigate(['admin/vehicles/vehicles']);
+            this.router.navigate([`admin/vehicles/vehicles/${this.routerLinkType}`]);
         } else {
             const dialogConfig = new MatDialogConfig();
             let flag = 'goback';
@@ -388,7 +395,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
             const dialogRef = this._matDialog.open(CourseDialogComponent, dialogConfig);
             dialogRef.afterClosed().pipe(takeUntil(this._unsubscribeAll)).subscribe(result => {
                 if (result == 'goback') {
-                    this.router.navigate(['admin/vehicles/vehicles']);
+                    this.router.navigate([`admin/vehicles/vehicles/${this.routerLinkType}`]);
                 }
             });
         }
