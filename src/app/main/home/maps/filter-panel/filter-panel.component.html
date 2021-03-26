@@ -39,7 +39,7 @@
                             <span class="ml-24">Name</span>
                         </label>
                     </div>
-                    <div *ngFor="let data of unitClist_temp | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}; trackBy: trackFnUnitClist"
+                    <div *ngFor="let data of vehicleMarkers$ | async | paginate: {id: 'unitclist', itemsPerPage: 10, currentPage: unitclistpage}; trackBy: trackFnUnitClist"
                         class="mb-8 item-panel-body">
                         <label>
                             <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
@@ -249,7 +249,7 @@
                             <span class="ml-24">Name</span>
                         </label>
                     </div>
-                    <div *ngFor="let data of userPOIs_temp | paginate: {id: 'userpoi', itemsPerPage: 10, currentPage: userpoipage}; trackBy: trackFnUnitClist"
+                    <div *ngFor="let data of poiMarkers$ | async | paginate: {id: 'userpoi', itemsPerPage: 10, currentPage: userpoipage}; trackBy: trackFnUnitClist"
                         class="mb-8 item-panel-body">
                         <label>
                             <input type="checkbox" [(ngModel)]="data.isSelected" [value]="data.id"
@@ -296,6 +296,58 @@
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
+
+                <div class="unit-panel-body" [ngStyle]="{'opacity':isFilterPanel ? '0.1' : '1' }">
+                    <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                        <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
+                            [ngModelOptions]="{standalone: true}">
+                        <mat-icon (click)="clearFilter()">clear</mat-icon>
+                    </div>
+                    <div class="check-uncheckAll">
+                        <label>
+                            <input type="checkbox" value="h1" [(ngModel)]="isCheckedAllZones"
+                                [ngModelOptions]="{standalone: true}"
+                                (change)="checkUncheckAllUnit(isCheckedAllZones, 'zonesArray')" />
+                            <span class="ml-24">Name</span>
+                        </label>
+                    </div>
+                    <div *ngFor="let data of zones$ | async | paginate: {id: 'zone', itemsPerPage: 10, currentPage: zonepage}; trackBy: trackFnUnitClist"
+                        class="mb-8 item-panel-body">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="data[0].isSelected" [value]="data[0].name"
+                                (click)="$event.stopPropagation()" [ngModelOptions]="{standalone: true}"
+                                (change)="isAllSelected(data, 'zonesArray')" />
+                        </label>
+                        <!-- <div class="mr-4 unitClist_icon" [class.disabled]="!data.isSelected">
+                            <img src="assets/icons/map_unitClist/locate_now.png"
+                                (click)="onLocatePOINow(data);$event.stopPropagation()">
+                        </div> -->
+                        <span class="mr-12">{{data[0].name}}</span>
+                        <mat-icon class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
+                        </mat-icon>
+                    </div>
+
+                    <pagination-template #pageZone="paginationApi" id="zone" (pageChange)="zonepage = $event">
+                        <div class="custom-pagination">
+                            <div class="pagination-previous" [class.disabled]="pageZone.isFirstPage()">
+                                <span *ngIf="!pageZone.isFirstPage()" (click)="pageZone.previous()">
+                                    &#11164; </span>
+                            </div>
+                            <div class="page-number" *ngFor="let page of pageZone.pages"
+                                [class.current]="pageZone.getCurrent() === page.value">
+                                <span (click)="pageZone.setCurrent(page.value)"
+                                    *ngIf="pageZone.getCurrent() !== page.value">{{ page.label
+                                    }}</span>
+                                <div *ngIf="pageZone.getCurrent() === page.value">
+                                    <span>{{ page.label }}</span>
+                                </div>
+                            </div>
+                            <div class="pagination-next" [class.disabled]="pageZone.isLastPage()">
+                                <span *ngIf="!pageZone.isLastPage()" (click)="pageZone.next()"> &#11166; </span>
+                            </div>
+                        </div>
+                    </pagination-template>
+                </div>
             </mat-expansion-panel>
 
             <!-- Routes panel -->
@@ -307,9 +359,57 @@
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
+
+                <div class="unit-panel-body" [ngStyle]="{'opacity':isFilterPanel ? '0.1' : '1' }">
+                    <div class="search-Input w-90-p mb-16 mr-16 p-4 primary-700-fg">
+                        <input matInput #filter placeholder="Filter" (keyup)="onKey($event)" [(ngModel)]="filter_string"
+                            [ngModelOptions]="{standalone: true}">
+                        <mat-icon (click)="clearFilter()">clear</mat-icon>
+                    </div>
+                    <div class="check-uncheckAll">
+                        <label>
+                            <input type="checkbox" value="h1" [(ngModel)]="isCheckedAllRoutes"
+                                [ngModelOptions]="{standalone: true}"
+                                (change)="checkUncheckAllUnit(isCheckedAllRoutes, 'routesArray')" />
+                            <span class="ml-24">Name</span>
+                        </label>
+                    </div>
+                    <div *ngFor="let data of routes$ | async | paginate: {id: 'route', itemsPerPage: 10, currentPage: routepage}; trackBy: trackFnUnitClist"
+                        class="mb-8 item-panel-body">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="data[0].isSelected" [value]="data[0].name"
+                                (click)="$event.stopPropagation()" [ngModelOptions]="{standalone: true}"
+                                (change)="isAllSelected(data, 'routesArray')" />
+                        </label>
+
+                        <span class="mr-12">{{data[0].name}}</span>
+                        <mat-icon class="mr-4 s-16 unit-menulist-icon">format_list_bulleted
+                        </mat-icon>
+                    </div>
+
+                    <pagination-template #pageRoute="paginationApi" id="route" (pageChange)="routepage = $event">
+                        <div class="custom-pagination">
+                            <div class="pagination-previous" [class.disabled]="pageRoute.isFirstPage()">
+                                <span *ngIf="!pageRoute.isFirstPage()" (click)="pageRoute.previous()">
+                                    &#11164; </span>
+                            </div>
+                            <div class="page-number" *ngFor="let page of pageRoute.pages"
+                                [class.current]="pageRoute.getCurrent() === page.value">
+                                <span (click)="pageRoute.setCurrent(page.value)"
+                                    *ngIf="pageRoute.getCurrent() !== page.value">{{
+                                    page.label
+                                    }}</span>
+                                <div *ngIf="pageRoute.getCurrent() === page.value">
+                                    <span>{{ page.label }}</span>
+                                </div>
+                            </div>
+                            <div class="pagination-next" [class.disabled]="pageRoute.isLastPage()">
+                                <span *ngIf="!pageRoute.isLastPage()" (click)="pageRoute.next()"> &#11166; </span>
+                            </div>
+                        </div>
+                    </pagination-template>
+                </div>
             </mat-expansion-panel>
         </form>
     </mat-accordion>
-
-
 </div>

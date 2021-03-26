@@ -281,7 +281,7 @@ export class UserProfileDetailComponent implements OnInit {
             this.userprofileDetailService.saveUserProfileDetail(this.userprofileDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {
                     if ((result.responseCode == 200) || (result.responseCode == 100)) {
-                        console.log(this.privilegeAccessArray);
+
                         this.userprofileDetailService.saveAccess(this.privilegeAccessArray).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                             if (res.responseCode === 100) {
                                 this.router.navigate(['system/userprofiles/userprofiles']);

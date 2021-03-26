@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-// import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ZoneRouteModel } from '../models';
 
 @Injectable()
 export class RoutesService {
+    public routes = new BehaviorSubject<Array<ZoneRouteModel[]>>([]);
+    public routes$: Observable<Array<ZoneRouteModel[]>> = this.routes.asObservable();
+    public filterRoutes = new BehaviorSubject<Array<ZoneRouteModel[]>>([]);
+    public filterRoutes$: Observable<Array<ZoneRouteModel[]>> = this.filterRoutes.asObservable();
 
     /**
      * Constructor
@@ -46,5 +50,13 @@ export class RoutesService {
             "userid": userid
         }
         return this._httpClient.post('trackingxlapi.ashx', body);
+    }
+
+    updateRoutes(routes: any) {
+        this.routes.next(routes);
+    }
+
+    updateFilterRoutes(routes: any) {
+        this.filterRoutes.next(routes);
     }
 }

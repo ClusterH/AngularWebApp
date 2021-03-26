@@ -18,7 +18,7 @@ import { takeUntil, map } from 'rxjs/operators';
 import { FilterPanelService, RoutesService, UnitInfoService, VehMarkersService, ZonesService } from '../services';
 import { AgmDirectionGeneratorService } from 'app/sharedModules/services';
 import { MatFabButtonComponent } from '../components/mat-fab-button/mat-fab-button.component';
-import { LanguageModel } from '../models';
+import { LanguageModel, VehicleModel, POIModel, ZoneRouteModel } from '../models';
 import { UserObjectModel } from 'app/sharedModules/models';
 
 declare const google: any;
@@ -39,25 +39,18 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     navigation: any;
 
     private _unsubscribeAll: Subject<any>;
-    currentUnit: any = {};
+    currentUnit: VehicleModel;
     currentOperator: any;
     currentEvents: any;
     currentPOI: any;
     currentPOIEvents: any;
     lat: number = 25.7959;
     lng: number = -80.2871;
-    vehmarkers: any = [];
-    vehmarkers_temp: any = [];
-    userPOIs: any = [];
-    userPOIs_temp: any = [];
-    unitClist: any = [];
-    poiClist: any = [];
-    tmpVehmarkers: Marker[] = [];
-    tmpPOIs: Marker[];
-    zones: Marker[];
-    routes: any;
-    tmpZones: Marker[] = [];
-    tmpRoutes: Marker[] = [];
+    vehmarkers: VehicleModel[] = [];
+    userPOIs: POIModel[] = [];
+    zones: Array<ZoneRouteModel[]>;
+    routes: Array<ZoneRouteModel[]>;
+
     zoom: number = 12;
     bounds: any;
     minClusterSize = 2;
@@ -65,7 +58,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     isTrackUnitHistory: boolean = false;
     eventLocation: any = [];
     trackHistoryPolylines: any = [];
-    polygon: any;
 
     showVehicles: boolean = true;
     showZones: boolean = true;
@@ -108,9 +100,9 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     @ViewChild(MatFabButtonComponent) fabBtnComponent: MatFabButtonComponent;
 
     constructor(
-        private vehMarkersService: VehMarkersService,
-        private _adminZonesService: ZonesService,
-        private _adminRoutesService: RoutesService,
+        public vehMarkersService: VehMarkersService,
+        public zonesService: ZonesService,
+        public routesService: RoutesService,
         private unitInfoService: UnitInfoService,
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
@@ -174,21 +166,43 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     startLoadingMapData(): void {
         const vehmarks = this.vehMarkersService.getVehMarkers('GetVehicleLocations');
         const userpois = this.vehMarkersService.getVehMarkers('GetUserPOIs');
-        const zone = this._adminZonesService.getZones();
-        const route = this._adminRoutesService.getRoutes();
+        const zone = this.zonesService.getZones();
+        const route = this.routesService.getRoutes();
 
         forkJoin([vehmarks, userpois, zone, route]).pipe(takeUntil(this._unsubscribeAll)).subscribe(([marker, poi, zone, route]) => {
-            this.vehmarkers = marker.TrackingXLAPI.DATA;
-            this.userPOIs = poi.TrackingXLAPI.DATA;
+            this.vehmarkers = marker.TrackingXLAPI.DATA.slice(0, 10);
+            this.vehmarkers.map(marker => {
+                marker.isSelected = true;
+            });
+            this.vehMarkersService.updateVehicleMarkers(this.vehmarkers.filter(marker => marker.isSelected));
+            this.vehMarkersService.updateFilterMarkers(this.vehmarkers);
+
+            this.userPOIs = poi.TrackingXLAPI.DATA.slice(0, 10);
+            this.userPOIs.map(poi => {
+                poi.isSelected = true;
+            });
+            this.vehMarkersService.updatePoiMarkers(this.userPOIs.filter(marker => marker.isSelected));
+            this.vehMarkersService.updatePoiFilterMarkers(this.userPOIs);
+
             this.zones = JSON.parse("[" + zone.TrackingXLAPI.DATA[0].paths + "]");
+            this.zones.map(zone => {
+                zone.map(path => path.isSelected = true);
+            });
+            this.zonesService.updateZones(this.zones.filter(zone => zone[0].isSelected));
+            this.zonesService.updateFilterZones(this.zones);
+
             this.routes = JSON.parse("[" + route.TrackingXLAPI.DATA[0].paths + "]");
-            this.filterPanelService.loadVehMarkers(this.vehmarkers);
-            this.filterPanelService.loadUserPOIs(this.userPOIs);
+            this.routes.map(route => {
+                route.map(path => path.isSelected = true);
+            });
+            this.routesService.updateRoutes(this.routes.filter(route => route[0].isSelected));
+            this.routesService.updateFilterRoutes(this.routes);
+
+            console.log(this.zones, this.routes);
+
             setTimeout(() => {
                 this.filterPanelService.loadingsubject.next(true);
             }, 500);
-            this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
-            this.poiClist = this.userPOIs.map(poi => ({ ...poi }));
         });
     }
 
@@ -210,7 +224,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     toggleSidebarOpen(key, id?): void {
-        if (key == 'unitInfoPanel') {
+        if (key === 'unitInfoPanel') {
             this.unitInfoService.getUnitInfo(id)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                     this.currentUnit = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).unit;
@@ -218,7 +232,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this.currentEvents = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).events;
                     this._unitInfoSidebarService.getSidebar(key).toggleOpen();
                 });
-        } else if (key == 'poiInfoPanel') {
+        } else if (key === 'poiInfoPanel') {
             this.unitInfoService.getPOIInfo_v1(id)
                 .pipe(takeUntil(this._unsubscribeAll)).subscribe((res: any) => {
                     this.currentPOI = JSON.parse(res.TrackingXLAPI.DATA[0].Column1).poi;
@@ -226,13 +240,24 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                     this._unitInfoSidebarService.getSidebar(key).toggleOpen();
                 });
 
-        } else if (key == 'filterPanel') {
+        } else if (key === 'filterPanel') {
             if (this.showFilters) {
                 this._unitInfoSidebarService.getSidebar(key).toggleOpen();
             } else {
                 this._unitInfoSidebarService.getSidebar(key).close();
+                this.vehmarkers.map(marker => marker.isSelected = true);
+                this.vehMarkersService.updateVehicleMarkers(this.showVehicles ? this.vehmarkers : []);
+
+                this.userPOIs.map(poi => poi.isSelected = true);
+                this.vehMarkersService.updatePoiMarkers(this.showPOIs ? this.userPOIs : []);
+
+                this.zones.map(zone => zone.map(path => path.isSelected = true));
+                this.zonesService.updateZones(this.showZones ? this.zones : []);
+
+                this.routes.map(route => route.map(path => path.isSelected = true));
+                this.routesService.updateRoutes(this.showRoutes ? this.routes : []);
             }
-        } else if (key == 'trackPanel') {
+        } else if (key === 'trackPanel') {
             this._unitInfoSidebarService.getSidebar(key).toggleOpen();
         }
     }
@@ -246,68 +271,54 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     onShowValChange(value) {
-        if (value == "showVehicles") {
+        if (value === "showVehicles") {
             this.filterPanelService.loadingsubject.next(false);
             this.showVehicles = !this.showVehicles;
             if (this.showVehicles) {
-                this.filterPanelService.loadVehMarkers(this.tmpVehmarkers);
-                this.tmpVehmarkers = [];
+                this.vehMarkersService.updateVehicleMarkers(this.vehmarkers.filter(marker => marker.isSelected));
             }
             else {
-                this.tmpVehmarkers = Object.assign([], this.filterPanelService.vehmarkerSubject.value);
-                this.filterPanelService.loadVehMarkers([]);
+                this.vehMarkersService.updateVehicleMarkers([]);
             }
-            setTimeout(() => {
-                this.filterPanelService.loadingsubject.next(true);
-            }, 500);
+
+            this.filterPanelService.loadingsubject.next(true);
         }
-        else if (value == "showPOIs") {
+        else if (value === "showPOIs") {
             this.filterPanelService.loadingsubject.next(false);
             this.showPOIs = !this.showPOIs;
             if (this.showPOIs) {
-                this.filterPanelService.loadUserPOIs(this.tmpPOIs);
-                this.tmpPOIs = [];
+                this.vehMarkersService.updatePoiMarkers(this.userPOIs.filter(poi => poi.isSelected));
             }
             else {
-                this.tmpPOIs = Object.assign([], this.filterPanelService.userPOISubject.value);
-                this.filterPanelService.loadUserPOIs([]);
+                this.vehMarkersService.updatePoiMarkers([]);
             }
-            setTimeout(() => {
-                this.filterPanelService.loadingsubject.next(true);
-            }, 500);
+
+            this.filterPanelService.loadingsubject.next(true);
         }
-        else if (value == "showZones") {
+        else if (value === "showZones") {
             this.showZones = !this.showZones;
             if (this.showZones) {
-                this.zones = Object.assign([], this.tmpZones);
-                this.tmpZones.length = 0;
-            }
-            else {
-                this.tmpZones = Object.assign([], this.zones);
-                this.zones.length = 0;
+                this.zonesService.updateZones(this.zones.filter(zone => zone[0].isSelected));
+            } else {
+                this.zonesService.updateZones([]);
             }
         }
-        else if (value == "showRoutes") {
+        else if (value === "showRoutes") {
             this.showRoutes = !this.showRoutes;
-
             if (this.showRoutes) {
-                this.routes = Object.assign([], this.tmpRoutes);
-                this.tmpRoutes.length = 0;
-            }
-            else {
-                this.tmpRoutes = Object.assign([], this.routes);
-                this.routes.length = 0;
+                this.routesService.updateRoutes(this.routes.filter(route => route[0].isSelected));
+            } else {
+                this.routesService.updateRoutes([]);
             }
         }
-        else if (value == "showFilters") {
+        else if (value === "showFilters") {
+            this.showFilters = !this.showFilters;
             this.toggleSidebarOpen('filterPanel');
         }
     }
 
     newOptionEmitter(event: string): void {
-        console.log(event);
         this.createOptionType = event;
-
         const optionList = {
             "showVehicles": this.showVehicles,
             "showPOIs": this.showPOIs,
@@ -324,13 +335,11 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                 });
 
                 google.maps.event.addListener(this.agmDirectionGeneratorService.directionDisplayer, 'directions_changed', () => {
-                    console.log('google change direection===>>>');
                     this.agmDirectionGeneratorService.onChangeRouteByDragging(this.agmDirectionGeneratorService.directionDisplayer.directions);
                 });
             }
             for (let option in optionList) {
                 if (optionList[option]) {
-                    console.log(option);
                     this.onShowValChange(option);
                 }
             }
@@ -345,27 +354,74 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     filterToggleOff(event) {
         this.showFilters = false;
+        this.vehmarkers.map(marker => marker.isSelected = true);
         if (!this.showVehicles) {
-            this.tmpVehmarkers = Object.assign([], this.filterPanelService.vehmarkerSubject.value);
-            this.filterPanelService.loadVehMarkers([]);
+            this.vehMarkersService.updateVehicleMarkers([]);
         }
+        this.userPOIs.map(poi => poi.isSelected = true);
         if (!this.showPOIs) {
-            this.tmpPOIs = Object.assign([], this.filterPanelService.userPOISubject.value);
-            this.filterPanelService.loadUserPOIs([]);
+            this.vehMarkersService.updatePoiMarkers([]);
         }
+        this.zones.map(zone => zone.map(path => path.isSelected = true));
+        if (!this.showZones) {
+            this.zonesService.updateZones([]);
+        }
+        this.routes.map(route => route.map(path => path.isSelected = true));
+        if (!this.showRoutes) {
+            this.routesService.updateRoutes([]);
+        }
+
         this.lat = 25.7959;
         this.lng = -80.2871;
         this.zoom = 12;
     }
 
-    filterUnits(event: boolean) {
+    filterUnits(event: any) {
         this.lat = 25.7959;
         this.lng = -80.2871;
         this.zoom = 12;
+        if (Object.keys(event)[0] === 'vehicles') {
+            event.vehicles.pipe(takeUntil(this._unsubscribeAll)).subscribe(markers => {
+                this.vehmarkers = [...markers];
+                if (this.showVehicles) {
+                    this.vehMarkersService.updateVehicleMarkers(this.vehmarkers.filter(marker => marker.isSelected));
+                }
+                else {
+                    this.vehMarkersService.updateVehicleMarkers([]);
+                }
+            })
+        } else if (Object.keys(event)[0] === 'pois') {
+            event.pois.pipe(takeUntil(this._unsubscribeAll)).subscribe(pois => {
+                this.userPOIs = [...pois];
+                if (this.showPOIs) {
+                    this.vehMarkersService.updatePoiMarkers(this.userPOIs.filter(poi => poi.isSelected));
+                }
+                else {
+                    this.vehMarkersService.updatePoiMarkers([]);
+                }
+            })
+        } else if (Object.keys(event)[0] === 'zones') {
+            event.zones.pipe(takeUntil(this._unsubscribeAll)).subscribe(zones => {
+                this.zones = [...zones];
+                if (this.showZones) {
+                    this.zonesService.updateZones(this.zones.filter(zone => zone[0].isSelected));
+                } else {
+                    this.zonesService.updateZones([]);
+                }
+            })
+        } else if (Object.keys(event)[0] === 'routes') {
+            event.routes.pipe(takeUntil(this._unsubscribeAll)).subscribe(routes => {
+                this.routes = [...routes];
+                if (this.showRoutes) {
+                    this.routesService.updateRoutes(this.routes.filter(route => route[0].isSelected));
+                } else {
+                    this.routesService.updateRoutes([]);
+                }
+            })
+        }
     }
 
     unitLocateNow(event: any) {
-
         if (event.isSelected) {
             this.zoom = 16;
         } else {
@@ -375,33 +431,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this.lng = event.lng + (0.0000000000100 * Math.random());
     }
 
-    unitInfoToggleOff(event) {
-
-    }
-
-    showVisibleOnlyEmitter(event: boolean): void {
-        console.log(event);
-        const bounds = this.agmMap.LatLngBounds();
-        console.log(bounds);
-        this.vehmarkers.map(marker => {
-            if (bounds.contains({ lat: marker.lat, lng: marker.lng })) {
-                marker.visible = true;
-            } else {
-                marker.visible = false;
-            }
-
-            return marker;
-        })
-
-        this.unitClist = this.vehmarkers.map(unit => ({ ...unit }));
-    }
-
-    setVisible(value) {
-        for (var i = 0; i < this.vehmarkers.length; i++) {
-            this.vehmarkers[i].visible = value;
-        }
-    }
-
     showInfoUnit(infoWindow: any, gm: any) {
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
@@ -409,16 +438,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         gm.lastOpen = infoWindow;
         infoWindow.open();
     }
-
-    options: any = {
-        lat: 33.5362475,
-        lng: -111.9267386,
-        zoom: 10,
-        fillColor: '#DC143C',
-        draggable: true,
-        editable: true,
-        visible: true
-    };
 
     showEventLocation(event: any) {
         this.eventLocation = event;
@@ -509,14 +528,13 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     saveRouteEmitter(event: number): void {
-        console.log(event);
         if (event > 0) {
             this.agmDirectionGeneratorService.newRoutePath.map(path => {
                 path.routeid = event;
                 return path;
             });
             setTimeout(() => {
-                this._adminRoutesService.setRoutePath(this.agmDirectionGeneratorService.newRoutePath).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                this.routesService.setRoutePath(this.agmDirectionGeneratorService.newRoutePath).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                     if (res.responseCode === 100) {
                         alert("Success!");
                         this.agmDirectionGeneratorService.directionDisplayer.setMap(null);

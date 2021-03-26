@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-// import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { ZoneRouteModel } from '../models';
 
 @Injectable()
 export class ZonesService {
+    public zones = new BehaviorSubject<Array<ZoneRouteModel[]>>([]);
+    public zones$: Observable<Array<ZoneRouteModel[]>> = this.zones.asObservable();
+    public filterZones = new BehaviorSubject<Array<ZoneRouteModel[]>>([]);
+    public filterZones$: Observable<Array<ZoneRouteModel[]>> = this.filterZones.asObservable();
+
     /**
      * Constructor
      *
@@ -20,5 +25,13 @@ export class ZonesService {
         return this._httpClient.get('trackingxlapi.ashx', {
             params: params
         });
+    }
+
+    updateZones(zones: any) {
+        this.zones.next(zones);
+    }
+
+    updateFilterZones(zones: any) {
+        this.filterZones.next(zones);
     }
 }

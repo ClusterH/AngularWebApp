@@ -50,7 +50,7 @@ export class MatFabButtonComponent implements OnInit {
   }
 
   createNewOption(option: string): void {
-    console.log(option);
+
     this.onToggleFab();
     this.fabButtons.map(item => {
       if (item.label !== option) {

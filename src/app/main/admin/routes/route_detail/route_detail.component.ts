@@ -158,7 +158,7 @@ export class RouteDetailComponent implements OnInit, OnDestroy {
     getRoute(): void {
         this.routeDetailService.getRoute(this.route.id).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
             this.routeMapData = JSON.parse("[" + res.TrackingXLAPI.DATA[0].paths + "]")[0];
-            console.log(this.routeMapData);
+
         })
     }
 
@@ -254,7 +254,7 @@ export class RouteDetailComponent implements OnInit, OnDestroy {
     }
 
     getCSVFileData(event): void {
-        console.log(event);
+
         this.agmDirectionGeneratorService.newRouteStopsTemp = [...event];
         // for (let waypoint of event) {
         //     this.agmDirectionGeneratorService.newRouteStopsTemp = [...this.agmDirectionGeneratorService.newRouteStopsTemp, ...[waypoint]];

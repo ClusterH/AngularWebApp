@@ -89,7 +89,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
                     break;
             }
 
-            console.log(this.routerLinkType, this.routerLinkValue);
+
 
         });
 
