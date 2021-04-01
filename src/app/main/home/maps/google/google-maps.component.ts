@@ -5,10 +5,10 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 import { TranslateService } from '@ngx-translate/core';
-import { locale as vehiclesEnglish } from 'app/core/authentication/i18n/en';
-import { locale as vehiclesFrench } from 'app/core/authentication/i18n/fr';
-import { locale as vehiclesPortuguese } from 'app/core/authentication/i18n/pt';
-import { locale as vehiclesSpanish } from 'app/core/authentication/i18n/sp';
+import { locale as mapEnglish } from 'app/main/home/maps/i18n/en';
+import { locale as mapFrench } from 'app/main/home/maps/i18n/en';
+import { locale as mapPortuguese } from 'app/main/home/maps/i18n/en';
+import { locale as mapSpanish } from 'app/main/home/maps/i18n/en';
 import { AuthService } from 'app/core/authentication/services/authentication.service';
 import { UnitInfoSidebarService } from 'app/main/home/maps/sidebar/sidebar.service';
 import { navigation } from 'app/core/navigation/navigation';
@@ -64,6 +64,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     showPOIs: boolean = true;
     showRoutes: boolean = true;
     showFilters: boolean = false;
+    disabledOptionList: any = [];
     selectedCountry: string;
     user: any;
     map: any;
@@ -83,6 +84,13 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     directionDisplayer: any;
     directionsService: any;
 
+    geoFencePointsList: any = [];
+
+    pointList: { lat: number; lng: number }[] = [];
+    drawingManager: any;
+    selectedShape: any;
+    selectedArea = 0;
+
     routerLinkType: string = '';
 
     unit_icon = {
@@ -95,6 +103,11 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         scaledSize: { width: 33, height: 44 },
         labelOrigin: { x: 15, y: 50 }
     }
+
+    measure_point_icon = {
+        url: 'assets/icons/googlemap/green-marker.png',
+        scaledSize: { width: 10, height: 10 },
+    };
 
     @ViewChild('AgmMap') agmMap: AgmMap;
     @ViewChild(MatFabButtonComponent) fabBtnComponent: MatFabButtonComponent;
@@ -117,7 +130,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     ) {
         this.userObject = JSON.parse(localStorage.getItem('userObjectList'))[0];
         this._unsubscribeAll = new Subject();
-        this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
+        this._fuseTranslationLoaderService.loadTranslations(mapEnglish, mapSpanish, mapFrench, mapPortuguese);
         this._fuseConfigService.config = {
             layout: {
                 toolbar: {
@@ -197,8 +210,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             });
             this.routesService.updateRoutes(this.routes.filter(route => route[0].isSelected));
             this.routesService.updateFilterRoutes(this.routes);
-
-            console.log(this.zones, this.routes);
 
             setTimeout(() => {
                 this.filterPanelService.loadingsubject.next(true);
@@ -314,41 +325,6 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         else if (value === "showFilters") {
             this.showFilters = !this.showFilters;
             this.toggleSidebarOpen('filterPanel');
-        }
-    }
-
-    newOptionEmitter(event: string): void {
-        this.createOptionType = event;
-        const optionList = {
-            "showVehicles": this.showVehicles,
-            "showPOIs": this.showPOIs,
-            "showZones": this.showZones,
-            "showRoutes": this.showRoutes,
-        }
-
-        if (event !== 'Anyone') {
-            if (event === 'Create Route') {
-                this.agmDirectionGeneratorService.directionsService = new google.maps.DirectionsService();
-                this.agmDirectionGeneratorService.directionDisplayer = new google.maps.DirectionsRenderer({
-                    draggable: true,
-                    map: this.map
-                });
-
-                google.maps.event.addListener(this.agmDirectionGeneratorService.directionDisplayer, 'directions_changed', () => {
-                    this.agmDirectionGeneratorService.onChangeRouteByDragging(this.agmDirectionGeneratorService.directionDisplayer.directions);
-                });
-            }
-            for (let option in optionList) {
-                if (optionList[option]) {
-                    this.onShowValChange(option);
-                }
-            }
-        } else {
-            for (let option in optionList) {
-                if (!optionList[option]) {
-                    this.onShowValChange(option);
-                }
-            }
         }
     }
 
@@ -507,24 +483,106 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     }
 
     //createNewOption Section
-
     addRouteLocations(event: any) {
-        if (this.createOptionType !== 'Create Route') {
+        if (this.createOptionType === 'Create Route') {
+            this.agmDirectionGeneratorService.addRouteLocations(event, this.map);
+        } else if (this.createOptionType === 'Measure Distance') {
+            this.routesService.updateMeasureDistancePointsList(event.coords, this.map);
+        } else if (this.createOptionType === 'Create Geofence') {
+            console.log('Create Geofence===>>>');
+            // this.routesService.updateGeofencePointsList(event.coords);
+        } else {
             return false;
         }
-
-        this.agmDirectionGeneratorService.addRouteLocations(event, this.map);
     }
 
+    newOptionEmitter(event: string): void {
+        this.resetMapOptions();
+        this.createOptionType = event;
+
+        if (event !== 'Anyone') {
+            if (event === 'Create Route') {
+                this.agmDirectionGeneratorService.directionsService = new google.maps.DirectionsService();
+                this.agmDirectionGeneratorService.directionDisplayer = new google.maps.DirectionsRenderer({
+                    draggable: true,
+                    map: this.map
+                });
+
+                google.maps.event.addListener(this.agmDirectionGeneratorService.directionDisplayer, 'directions_changed', () => {
+                    this.agmDirectionGeneratorService.onChangeRouteByDragging(this.agmDirectionGeneratorService.directionDisplayer.directions);
+                });
+            } else if (event === 'Measure Distance') {
+                this.routesService.showDialog = true;
+            } else if (event === 'Create Geofence') {
+                this.initDrawingManager(this.map);
+            }
+
+            const optionList = {
+                "showVehicles": this.showVehicles,
+                "showPOIs": this.showPOIs,
+                "showZones": this.showZones,
+                "showRoutes": this.showRoutes,
+            }
+
+            for (let option in optionList) {
+                if (optionList[option]) {
+                    this.onShowValChange(option);
+                } else {
+                    this.disabledOptionList.push(option);
+                }
+            }
+        } else {
+            this.returnMapState();
+        }
+    }
+
+    resetMapOptions(): void {
+        //Route Option
+        this.removeRouteEmitter();
+        //Zone Option
+        this.selectedShape?.setMap(null);
+        this.drawingManager?.setMap(null);
+        this.selectedArea = 0;
+        this.pointList = [];
+        this.zonesService.zonePointsList = [];
+        //Measurement Option
+        this.routesService.resetMeasurement();
+        this.routesService.showDialog = false;
+    }
+
+    returnMapState(): void {
+        this.createOptionType = 'Anyone';
+        this.disabledOptionList = [...[]];
+        const optionList = {
+            "showVehicles": this.showVehicles,
+            "showPOIs": this.showPOIs,
+            "showZones": this.showZones,
+            "showRoutes": this.showRoutes,
+        }
+
+        for (let option in optionList) {
+            if (!this.disabledOptionList.includes(option)) {
+                this.onShowValChange(option);
+            }
+        }
+
+        this.fabBtnComponent.fabButtons.map(button => {
+            if (button.isActive) {
+                button.isActive = false;
+                return button;
+            }
+        });
+    }
+
+    //Creating Route Section
     markerDragEnd(event: any, index: number): void {
         this.agmDirectionGeneratorService.newRouteLocations[index] = { ...event.coords };
     }
 
     removeRouteEmitter(): void {
-        this.agmDirectionGeneratorService.directionDisplayer.setMap(null);
-        this.newOptionEmitter('Anyone');
         this.resetFitBound();
-        this.fabBtnComponent.fabButtons[0].isActive = false;
+        this.agmDirectionGeneratorService.resetRoutes();
+        // this.resetMapOptions();
     }
 
     saveRouteEmitter(event: number): void {
@@ -537,15 +595,138 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                 this.routesService.setRoutePath(this.agmDirectionGeneratorService.newRoutePath).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
                     if (res.responseCode === 100) {
                         alert("Success!");
-                        this.agmDirectionGeneratorService.directionDisplayer.setMap(null);
-                        this.newOptionEmitter('Anyone');
-                        this.fabBtnComponent.fabButtons[0].isActive = false;
+                        this.agmDirectionGeneratorService.resetRoutes();
+                        this.resetMapOptions();
+                        this.returnMapState();
                     } else {
                         alert("Failed to save path");
                     }
                 })
             }, 500)
+        }
+    }
+    //Measurement Distance, Area Section
+    finishMeasurement(event): void {
+        this.resetMapOptions();
+        this.returnMapState();
+    }
+    //Creating Zone Section
+    removeZoneEmitter(): void {
+        this.deleteSelectedShape();
+    }
 
+    saveZoneEmitter(event: number): void {
+        if (event > 0) {
+            this.zonesService.zonePointsList.map(path => {
+                path.zoneid = event;
+                return path;
+            });
+            setTimeout(() => {
+                this.zonesService.setZonePath(this.zonesService.zonePointsList).pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
+                    if (res.responseCode === 100) {
+                        alert("Success!");
+                        this.selectedShape.setMap(null);
+                        this.selectedArea = 0;
+                        this.pointList = [];
+                        this.zonesService.zonePointsList = [];
+                        this.resetMapOptions();
+                        this.returnMapState();
+                    } else {
+                        alert("Failed to save path");
+                    }
+                })
+            }, 500)
+        }
+    }
+
+    initDrawingManager = (map: any) => {
+        const self = this;
+        const options = {
+            drawingControl: false,
+            drawingControlOptions: {
+                drawingModes: ['polygon'],
+            },
+            polygonOptions: {
+                draggable: false,
+                editable: true,
+                fillColor: 'red',
+                fillOpacity: '0.2',
+                strokeColor: 'red',
+                strokeOpacity: '0.9'
+            },
+            drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        };
+        this.drawingManager = new google.maps.drawing.DrawingManager(options);
+        this.drawingManager.setMap(map);
+        google.maps.event.addListener(
+            this.drawingManager,
+            'overlaycomplete',
+            (event) => {
+                if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+                    const paths = event.overlay.getPaths();
+                    for (let p = 0; p < paths.getLength(); p++) {
+                        google.maps.event.addListener(
+                            paths.getAt(p),
+                            'set_at',
+                            () => {
+                                if (!event.overlay.drag) {
+                                    self.updatePointList(event.overlay.getPath());
+                                }
+                            }
+                        );
+                        google.maps.event.addListener(
+                            paths.getAt(p),
+                            'insert_at',
+                            () => {
+                                self.updatePointList(event.overlay.getPath());
+                            }
+                        );
+                        google.maps.event.addListener(
+                            paths.getAt(p),
+                            'remove_at',
+                            () => {
+                                self.updatePointList(event.overlay.getPath());
+                            }
+                        );
+                    }
+                    self.updatePointList(event.overlay.getPath());
+                    this.selectedShape = event.overlay;
+                    this.selectedShape.type = event.type;
+                }
+                if (event.type !== google.maps.drawing.OverlayType.MARKER) {
+                    // Switch back to non-drawing mode after drawing a shape.
+                    self.drawingManager.setDrawingMode(null);
+                    // To hide:
+                    self.drawingManager.setOptions({
+                        drawingControl: false,
+                    });
+                }
+            }
+        );
+    }
+
+    updatePointList(path) {
+        this.pointList = [];
+        const len = path.getLength();
+        for (let i = 0; i < len; i++) {
+            this.pointList.push(
+                path.getAt(i).toJSON()
+            );
+        }
+        this.selectedArea = google.maps.geometry.spherical.computeArea(
+            path
+        );
+
+        this.zonesService.zonePointsList = [...this.pointList];
+    }
+
+    deleteSelectedShape() {
+        if (this.selectedShape) {
+            this.selectedShape.setMap(null);
+            this.selectedArea = 0;
+            this.pointList = [];
+            // To show:
+            this.initDrawingManager(this.map);
         }
     }
 }

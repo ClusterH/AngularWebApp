@@ -191,7 +191,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
     }
 
     saveAccount(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.accountDetail.name == '') {
             alert('Please enter Detail Name')
@@ -207,7 +207,7 @@ export class AccountDetailComponent implements OnInit, OnDestroy {
     }
 
     addAccount(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.accountDetail.name == '') {
             alert('Please enter Detail Name')

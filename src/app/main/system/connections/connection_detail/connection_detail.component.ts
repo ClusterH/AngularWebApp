@@ -203,7 +203,7 @@ export class ConnectionDetailComponent implements OnInit, OnDestroy {
     }
 
     saveConnection(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.connectionDetail.name == '') {
             alert('Please enter Detail Name')
@@ -219,7 +219,7 @@ export class ConnectionDetailComponent implements OnInit, OnDestroy {
     }
 
     addConnection(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.connectionDetail.name == '') {
             alert('Please enter Detail Name')

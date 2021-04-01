@@ -13,7 +13,9 @@ export const locale = {
             "TO": "To",
             "YES": "Yes",
             "NO": "No",
-            "CLOSE": "Close"
+            "CLOSE": "Close",
+            "CREATEZONE": "Create Zone",
+            "COMPANY": "Company"
         }
     }
 };

@@ -1,0 +1,12 @@
+.measure-panel {
+  width: 383px;
+  position: absolute;
+  right: 64px;
+  bottom: 24px;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 18px;
+  .footer {
+    float: right;
+  }
+}

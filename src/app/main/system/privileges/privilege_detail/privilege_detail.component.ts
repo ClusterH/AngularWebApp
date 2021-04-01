@@ -225,7 +225,7 @@ export class PrivilegeDetailComponent implements OnInit, OnDestroy {
     }
 
     savePrivilege(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.privilegeDetail.name == '') {
             alert('Please enter Detail Name')
@@ -241,7 +241,7 @@ export class PrivilegeDetailComponent implements OnInit, OnDestroy {
     }
 
     addPrivilege(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.privilegeDetail.name == '') {
             alert('Please enter Detail Name')

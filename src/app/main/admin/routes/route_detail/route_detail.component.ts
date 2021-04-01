@@ -277,7 +277,7 @@ export class RouteDetailComponent implements OnInit, OnDestroy {
     }
 
     saveRoute(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.routeDetail.name == '') {
             alert('Please enter Detail Name');
@@ -295,7 +295,7 @@ export class RouteDetailComponent implements OnInit, OnDestroy {
     addRoute(): void {
         this.agmDirectionGeneratorService.addRoute();
 
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.routeDetail.name == '') {
             alert('Please enter Detail Name');

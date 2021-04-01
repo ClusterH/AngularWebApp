@@ -196,7 +196,7 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
     }
 
     saveModel(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.modelDetail.name == '') {
             alert('Please enter Detail Name')
@@ -212,7 +212,7 @@ export class ModelDetailComponent implements OnInit, OnDestroy {
     }
 
     addModel(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.modelDetail.name == '') {
             alert('Please enter Detail Name')

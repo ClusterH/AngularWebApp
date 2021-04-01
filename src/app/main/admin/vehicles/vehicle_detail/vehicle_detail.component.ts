@@ -349,7 +349,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     saveVehicle(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "edit");
         if (this.vehicleDetail.name == '') {
             alert('Please enter Detail Name')
@@ -365,7 +365,7 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
     }
 
     addVehicle(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "new");
         if (this.vehicleDetail.name == '') {
             alert('Please enter Detail Name')

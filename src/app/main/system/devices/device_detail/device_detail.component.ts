@@ -261,7 +261,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
     }
 
     saveDevice(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.deviceDetail.name == '') {
             alert('Please enter Detail Name')
@@ -277,7 +277,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
     }
 
     addDevice(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.deviceDetail.name == '') {
             alert('Please enter Detail Name')

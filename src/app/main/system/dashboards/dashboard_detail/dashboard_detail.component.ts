@@ -94,7 +94,7 @@ export class DashboardDetailComponent implements OnInit, OnDestroy {
     }
 
     saveDashboard(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.dashboardDetail.name == '') {
             alert('Please enter Detail Name')

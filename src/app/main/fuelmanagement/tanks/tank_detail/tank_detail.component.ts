@@ -169,7 +169,7 @@ export class TankDetailComponent implements OnInit, OnDestroy {
     }
 
     saveTank(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')
@@ -184,7 +184,7 @@ export class TankDetailComponent implements OnInit, OnDestroy {
     }
 
     addTank(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.tankDetail.name == '') {
             alert('Please enter Detail Name')

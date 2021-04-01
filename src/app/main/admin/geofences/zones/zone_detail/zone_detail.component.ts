@@ -198,7 +198,7 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     saveZone(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.zoneDetail.name == '') {
             alert('Please enter Detail Name')
@@ -214,7 +214,7 @@ export class ZoneDetailComponent implements OnInit {
     }
 
     addZone(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
 
         if (this.zoneDetail.name == '') {

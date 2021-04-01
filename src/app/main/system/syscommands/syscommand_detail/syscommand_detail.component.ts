@@ -117,7 +117,7 @@ export class SysCommandDetailComponent implements OnInit {
     }
 
     saveSysCommand(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.syscommandDetail.name == '') {
             alert('Please enter Detail Name')
@@ -133,7 +133,7 @@ export class SysCommandDetailComponent implements OnInit {
     }
 
     addSysCommand(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.syscommandDetail.name == '') {
             alert('Please enter Detail Name')

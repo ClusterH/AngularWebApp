@@ -296,7 +296,7 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     saveZonegroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         this.zonegroupDetailService.saveZonegroupDetail(this.zonegroupDetail)
             .subscribe((result: any) => {
@@ -308,7 +308,7 @@ export class ZonegroupDetailComponent implements OnInit {
     }
 
     addZonegroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
 
         this.zonegroupDetailService.saveZonegroupDetail(this.zonegroupDetail)
@@ -322,7 +322,7 @@ export class ZonegroupDetailComponent implements OnInit {
 
     addZONEs() {
         if (this.pageType == 'new' && !this.zonegroup.id) {
-            let today = new Date().toISOString();
+            const today = new Date().toISOString();
             this.getValues(today, "add");
 
             this.zonegroupDetailService.saveZonegroupDetail(this.zonegroupDetail)

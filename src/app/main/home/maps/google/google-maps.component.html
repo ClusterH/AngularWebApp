@@ -127,6 +127,12 @@
             </app-create-route-option>
         </div>
 
+        <div *ngIf="createOptionType === 'Create Geofence'">
+            <app-create-zone-option (removeZoneEmitter)="removeZoneEmitter()"
+                (saveZoneEmitter)="saveZoneEmitter($event)">
+            </app-create-zone-option>
+        </div>
+
         <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
             [zoomControl]="false" [fitBounds]="isTrackUnitHistory" [fullscreenControl]='true' [mapTypeControl]='true'
             (mapReady)="onMapReady($event)" (mapClick)="addRouteLocations($event)">
@@ -161,10 +167,11 @@
                     <agm-polyline-point *ngFor="let pnt of rte" [latitude]="pnt.lat" [longitude]="pnt.lng">
                     </agm-polyline-point>
                 </agm-polyline>
-                <agm-polygon *ngFor="let zone of zonesService.zones$ | async as polygon" [fillColor]="'red'"
-                    [fillOpacity]="0.1" [strokeColor]="'red'" [strokeOpacity]="0.1" [strokeWeight]="2" [paths]="polygon"
-                    [zIndex]="1">
-                </agm-polygon>
+                <ng-container *ngFor="let zone of zonesService.zones$ | async">
+                    <agm-polygon [fillColor]="'red'" [fillOpacity]="0.2" [strokeColor]="'red'" [strokeOpacity]="0.5"
+                        [strokeWeight]="2" [paths]="zone" [zIndex]="1">
+                    </agm-polygon>
+                </ng-container>
             </div>
 
             <div *ngIf="isTrackUnitHistory">
@@ -180,6 +187,31 @@
                     (dragEnd)="markerDragEnd($event, i)">
                 </agm-marker>
             </ng-container>
+            <ng-container *ngIf="createOptionType === 'Measure Distance'">
+                <agm-polyline [strokeColor]="'red'" [strokeOpacity]="0.5">
+                    <agm-polyline-point *ngFor="let pnt of routesService.polyZone" [latitude]="pnt.lat"
+                        [longitude]="pnt.lng" [agmFitBounds]="true">
+                        <agm-overlay *ngFor="let pnt of routesService.polyZone" [latitude]="pnt.lat"
+                            [longitude]="pnt.lng">
+                            <div class="measure_points"><img class="event_marker_img"
+                                    src="assets/icons/googlemap/green-marker.png" height="10" width="10"></div>
+                        </agm-overlay>
+                    </agm-polyline-point>
+                </agm-polyline>
+
+                <ng-container>
+                    <agm-polygon [fillColor]="'red'" [fillOpacity]="0.2" [strokeColor]="'red'" [strokeOpacity]="0.5"
+                        [strokeWeight]="2" [paths]="routesService.polyZone" [zIndex]="1">
+                    </agm-polygon>
+                </ng-container>
+            </ng-container>
+
+            <!-- <ng-container *ngIf="createOptionType === 'Create Geofence'">
+                <agm-polygon [fillColor]="'red'" [fillOpacity]="0.2" [strokeColor]="'red'" [strokeOpacity]="0.9"
+                    [strokeWeight]="2" [paths]="routesService.geoFencePointsList" [zIndex]="1" [editable]="true"
+                    [draggable]="true" (polyPathsChange)="changePolyPath($event)" (polyDragEnd)="changePolyPath($event)"
+                    (polyDrag)="changePolyPath($event)"></agm-polygon>
+            </ng-container> -->
         </agm-map>
     </div>
 
@@ -211,4 +243,7 @@
         <track-panel (centerTrackLocation)="centerTrackLocation($event)" (trackHistory)="showHideTrackPolyline($event)">
         </track-panel>
     </unitinfo-sidebar>
+
+    <app-measure-panel *ngIf="routesService.showDialog" (finishMeasurementEmitter)="finishMeasurement($event)">
+    </app-measure-panel>
 </div>

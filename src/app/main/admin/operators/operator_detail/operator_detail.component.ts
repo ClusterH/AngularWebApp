@@ -190,8 +190,8 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
 
         for (let i = 0; i < clist.length; i++) {
             if (clist[i].id == selected_element_id) {
-                this.operatorForm.get('filterstring').setValue(clist[i]? clist[i].name : '');
-                this.filter_string = clist[i]? clist[i].name : '';
+                this.operatorForm.get('filterstring').setValue(clist[i] ? clist[i].name : '');
+                this.filter_string = clist[i] ? clist[i].name : '';
             }
         }
 
@@ -319,7 +319,7 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
     }
 
     saveOperator(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
 
         if (this.operatorDetail.name == '') {
@@ -343,7 +343,7 @@ export class OperatorDetailComponent implements OnInit, OnDestroy {
     }
 
     addOperator(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.operatorDetail.name == '') {
             alert('Please enter Detail Name')

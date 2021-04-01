@@ -2,152 +2,154 @@
 
 // :host {
 toolbar {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  z-index: 4;
+
+  &.below {
+    z-index: 2;
+  }
+
+  .mat-toolbar {
     position: relative;
-    display: flex;
-    flex: 0 0 auto;
-    z-index: 4;
+    background: inherit !important;
+    color: inherit !important;
+  }
 
-    &.below {
-        z-index: 2;
+  .user-button,
+  .language-button {
+    min-width: 64px;
+    height: 64px;
+
+    @include media-breakpoint("xs") {
+      height: 56px;
     }
+  }
 
-    .mat-toolbar {
-        position: relative;
-        background: inherit !important;
-        color: inherit !important;
+  .toolbar-separator {
+    height: 64px;
+    width: 1px;
+
+    @include media-breakpoint("xs") {
+      height: 56px;
     }
-
-    .user-button,
-    .language-button {
-        min-width: 64px;
-        height: 64px;
-
-        @include media-breakpoint("xs") {
-            height: 56px;
-        }
-    }
-
-    .toolbar-separator {
-        height: 64px;
-        width: 1px;
-
-        @include media-breakpoint("xs") {
-            height: 56px;
-        }
-    }
+  }
 }
 
 .content {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 agm-map {
-    width: 100%;
-    height: 100%;
-    // position: inherit;
+  width: 100%;
+  height: 100%;
+  // position: inherit;
 
-    .event_marker_div {
-        animation: animate 3s linear infinite;
-        border-radius: 50%;
+  .event_marker_div {
+    animation: animate 3s linear infinite;
+    border-radius: 50%;
 
-        .event_marker_img {
-            width: 40px;
-            height: 40px;
-            // background: rgb(37, 39, 153);
-            background: transparent;
-            color: #fff;
-            font-size: 20px;
-            text-align: center;
-            line-height: 40px;
-            animation: spinner 3s linear infinite;
-        }
+    .event_marker_img {
+      width: 40px;
+      height: 40px;
+      // background: rgb(37, 39, 153);
+      background: transparent;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      line-height: 40px;
+      animation: spinner 3s linear infinite;
     }
+  }
+  .measure_points {
+    margin-top: 16px;
+    margin-left: 7px;
+  }
 }
 .spinner_container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    transform: translateX(-50%) translateY(-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
 }
 .spinner_overlay {
-    height: 100vh;
-    width: 100%;
-    z-index: 999999;
-    top: 0;
-    left: 0;
-    position: fixed;
+  height: 100vh;
+  width: 100%;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  position: fixed;
 }
 
 .filter-panel-button,
 .event-clean-button {
-    position: absolute;
-    top: 160px;
-    right: 0;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 0;
-    margin: 0;
-    pointer-events: auto;
-    opacity: 0.9;
-    z-index: 998;
-    mat-icon {
-        animation: rotating 3s linear infinite;
-    }
+  position: absolute;
+  top: 160px;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0;
+  margin: 0;
+  pointer-events: auto;
+  opacity: 0.9;
+  z-index: 998;
+  mat-icon {
+    animation: rotating 3s linear infinite;
+  }
 
-    .event_clean {
-        animation: spinner 3s linear infinite;
-    }
+  .event_clean {
+    animation: spinner 3s linear infinite;
+  }
 
-    &:hover {
-        opacity: 1;
-    }
+  &:hover {
+    opacity: 1;
+  }
 }
 
 @keyframes animate {
-    0% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.7), 0 0 0 0 rgba(255, 0, 64, 0.7);
-    }
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.7), 0 0 0 0 rgba(255, 0, 64, 0.7);
+  }
 
-    40% {
-        box-shadow: 0 0 0 50px rgba(255, 0, 64, 0),
-            0 0 0 0 rgba(255, 0, 64, 0.7);
-    }
+  40% {
+    box-shadow: 0 0 0 50px rgba(255, 0, 64, 0), 0 0 0 0 rgba(255, 0, 64, 0.7);
+  }
 
-    80% {
-        box-shadow: 0 0 0 50px rgba(255, 0, 64, 0),
-            0 0 0 30px rgba(255, 0, 64, 0);
-    }
+  80% {
+    box-shadow: 0 0 0 50px rgba(255, 0, 64, 0), 0 0 0 30px rgba(255, 0, 64, 0);
+  }
 
-    100% {
-        box-shadow: 0 0 0 0 rgba(255, 0, 64, 0), 0 0 0 30px rgba(255, 0, 64, 0);
-    }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 64, 0), 0 0 0 30px rgba(255, 0, 64, 0);
+  }
 
-    // from {
-    //     -moz-transform: rotateY(0deg);
-    //     -ms-transform: rotateY(0deg);
-    //     transform: rotateY(0deg);
-    // }
-    // to {
-    //     -moz-transform: rotateY(-360deg);
-    //     -ms-transform: rotateY(-360deg);
-    //     transform: rotateY(-360deg);
-    // }
+  // from {
+  //     -moz-transform: rotateY(0deg);
+  //     -ms-transform: rotateY(0deg);
+  //     transform: rotateY(0deg);
+  // }
+  // to {
+  //     -moz-transform: rotateY(-360deg);
+  //     -ms-transform: rotateY(-360deg);
+  //     transform: rotateY(-360deg);
+  // }
 }
 
 @keyframes spinner {
-    from {
-        -moz-transform: rotateY(0deg);
-        -ms-transform: rotateY(0deg);
-        transform: rotateY(0deg);
-    }
-    to {
-        -moz-transform: rotateY(-360deg);
-        -ms-transform: rotateY(-360deg);
-        transform: rotateY(-360deg);
-    }
+  from {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  to {
+    -moz-transform: rotateY(-360deg);
+    -ms-transform: rotateY(-360deg);
+    transform: rotateY(-360deg);
+  }
 }

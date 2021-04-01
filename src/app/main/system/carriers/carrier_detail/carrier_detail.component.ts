@@ -132,7 +132,7 @@ export class CarrierDetailComponent implements OnInit {
     }
 
     saveCarrier(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.carrierDetail.name == '') {
             alert('Please enter Detail Name')
@@ -148,7 +148,7 @@ export class CarrierDetailComponent implements OnInit {
     }
 
     addCarrier(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.carrierDetail.name == '') {
             alert('Please enter Detail Name')

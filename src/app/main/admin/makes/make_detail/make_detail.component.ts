@@ -120,7 +120,7 @@ export class MakeDetailComponent implements OnInit {
     }
 
     saveMake(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.makeDetail.name == '') {
             alert('Please enter Detail Name')
@@ -136,7 +136,7 @@ export class MakeDetailComponent implements OnInit {
     }
 
     addMake(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.makeDetail.name == '') {
             alert('Please enter Detail Name')

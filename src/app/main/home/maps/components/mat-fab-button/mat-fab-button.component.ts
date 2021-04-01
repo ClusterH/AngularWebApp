@@ -10,6 +10,11 @@ import { matFabAnimations } from './mat-fab-animation';
 export class MatFabButtonComponent implements OnInit {
   fabButtons = [
     {
+      icon: 'timeline',
+      label: 'Measure Distance',
+      isActive: false
+    },
+    {
       icon: 'gesture',
       label: 'Create Route',
       isActive: false
@@ -50,7 +55,6 @@ export class MatFabButtonComponent implements OnInit {
   }
 
   createNewOption(option: string): void {
-
     this.onToggleFab();
     this.fabButtons.map(item => {
       if (item.label !== option) {

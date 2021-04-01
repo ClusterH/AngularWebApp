@@ -118,7 +118,7 @@ export class CommandDetailComponent implements OnInit {
     }
 
     saveCommand(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.commandDetail.name == '') {
             alert('Please enter Detail Name')
@@ -134,7 +134,7 @@ export class CommandDetailComponent implements OnInit {
     }
 
     addCommand(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.commandDetail.name == '') {
             alert('Please enter Detail Name')

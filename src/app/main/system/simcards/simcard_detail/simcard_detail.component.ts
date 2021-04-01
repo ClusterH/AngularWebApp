@@ -195,7 +195,7 @@ export class SimcardDetailComponent implements OnInit {
     }
 
     saveSimcard(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.simcardDetail.name == '') {
             alert('Please enter Detail Name')
@@ -211,7 +211,7 @@ export class SimcardDetailComponent implements OnInit {
     }
 
     addSimcard(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.simcardDetail.name == '') {
             alert('Please enter Detail Name')

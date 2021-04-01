@@ -1,0 +1,21 @@
+<div class="measure-panel primary">
+  <h2 class="mb-12 mt-0"><strong>Measure Distance</strong></h2>
+  <hr>
+  <h3>Last Point: {{routesService.lastPoint?.lat | number:'1.2-2':'en'}} {{routesService.lastPoint? '/': ''}}
+    {{routesService.lastPoint?.lng |
+    number:'1.2-2':'en'}}</h3>
+  <hr>
+  <h3>Path Distance : {{routesService.totalDistance | number:'1.2-2':'en'}} (km)</h3>
+  <h3>Area : {{routesService.totalArea | number:'1.2-2':'en'}} (&#13218;)</h3>
+  <hr>
+  <div class="footer">
+    <button mat-button class="mr-8" (click)="confirmMeasure(false)" aria-label="Close">
+      <mat-icon class="s-16">cancel</mat-icon> Cancel
+    </button>
+
+    <button mat-button class="save-button accent" (click)="confirmMeasure(true)" aria-label="SAVE">
+      <mat-icon class="s-16">check_circle</mat-icon> Finish Measurement
+    </button>
+  </div>
+
+</div>

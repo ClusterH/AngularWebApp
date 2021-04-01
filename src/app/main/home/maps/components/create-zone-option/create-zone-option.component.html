@@ -1,0 +1,22 @@
+<div class="create-zone-option">
+  <div class="option-container p-8">
+    <button mat-raised-button class="save-route-button" (click)="removeZone()"
+      [disabled]="zonesService.zonePointsList.length <3">
+      <span>Remove Zone</span>
+    </button>
+    <button mat-raised-button class="save-route-button ml-8" (click)="saveZone()"
+      [disabled]="zonesService.zonePointsList.length <3">
+      <span>Save Zone</span>
+    </button>
+  </div>
+</div>
+
+<p-dialog header="Remove Zone" [(visible)]="isRemoveZoneDialog" [modal]="true" [style]="{width: '40vw'}"
+  [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <div class="h3">Do you want to remove current Zone and create another one?</div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="closeConfirmDialog(true)" label="Yes" class="p-button-text">
+    </p-button>
+    <p-button icon="pi pi-times" (click)="closeConfirmDialog(false)" label="No"></p-button>
+  </ng-template>
+</p-dialog>

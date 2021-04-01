@@ -253,7 +253,7 @@ export class DevConfigDetailComponent implements OnInit {
             alert("Please choose command detail!");
         } else {
             if (this.devconfigDetailService.devconfig_id == 0) {
-                let today = new Date().toISOString();
+                const today = new Date().toISOString();
                 this.getValues(today, "add");
                 this.devconfigDetailService.saveDevConfigDetail(this.devconfigDetail).pipe(takeUntil(this._unsubscribeAll))
                     .subscribe((result: any) => {
@@ -320,7 +320,7 @@ export class DevConfigDetailComponent implements OnInit {
     }
 
     saveDevConfig(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.devconfigDetail.name == '') {
             alert('Please enter Detail Name')
@@ -336,7 +336,7 @@ export class DevConfigDetailComponent implements OnInit {
     }
 
     addDevConfig(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.devconfigDetail.name == '') {
             alert('Please enter Detail Name')

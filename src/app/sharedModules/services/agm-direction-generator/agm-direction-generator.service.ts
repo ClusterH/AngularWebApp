@@ -44,7 +44,6 @@ export class AgmDirectionGeneratorService {
   }
 
   drawRouthPath(waypoints): void {
-
     this.directionDisplayer.setMap(this.map);
     this.directionsService.route({
       origin: this.newRouteOrigin,
@@ -58,8 +57,6 @@ export class AgmDirectionGeneratorService {
         this.directionDisplayer.setDirections(response);
         this.newRouteStops = [...waypoints];
         google.maps.event.addListener(this.directionDisplayer, 'directions_changed', () => {
-
-
           this.onChangeRouteByDragging(this.directionDisplayer.directions);
         });
       } else {
@@ -105,7 +102,6 @@ export class AgmDirectionGeneratorService {
             optimizeWaypoints: true,
             travelMode: google.maps.TravelMode.DRIVING
           }, (response, status) => {
-
             if (status == 'OK') {
               distance = response.routes[0].legs[0].distance.value;
               this.countDisRequest = 0;
@@ -173,6 +169,16 @@ export class AgmDirectionGeneratorService {
         alert('Distance request failed due to ' + status);
       }
     });
+  }
+
+  resetRoutes(): void {
+    this.directionDisplayer?.setMap(null);
+    this.newRouteLocations = [...[]];
+    this.newRouteStops = [...[]];
+    this.newRouteOrigin = undefined;
+    this.newRouteDestination = undefined;
+    this.isGenerateRoute = false;
+    this.isAddStopsOnMap = false;
   }
 }
 

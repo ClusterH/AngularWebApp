@@ -191,7 +191,7 @@ export class UnittypeDetailComponent implements OnInit {
     }
 
     saveUnittype(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.unittypeDetail.name == '') {
             alert('Please enter Detail Name')
@@ -207,7 +207,7 @@ export class UnittypeDetailComponent implements OnInit {
     }
 
     addUnittype(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.unittypeDetail.name == '') {
             alert('Please enter Detail Name')

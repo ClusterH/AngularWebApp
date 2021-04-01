@@ -322,7 +322,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     saveUser(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.userDetail.name == '') {
             alert('Please enter Detail Name')
@@ -338,7 +338,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     addUser(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.userDetail.name == '') {
             alert('Please enter Detail Name')

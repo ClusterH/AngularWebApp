@@ -289,7 +289,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     }
 
     saveCompany(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.companyDetail.name == '') {
             alert('Please enter Detail Name')
@@ -305,7 +305,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     }
 
     addCompany(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.companyDetail.name == '') {
             alert('Please enter Detail Name')

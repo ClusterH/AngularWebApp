@@ -196,7 +196,7 @@ export class ServiceplanDetailComponent implements OnInit {
     }
 
     saveServiceplan(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
 
         if (this.serviceplanDetail.name == '') {
@@ -213,7 +213,7 @@ export class ServiceplanDetailComponent implements OnInit {
     }
 
     addServiceplan(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.serviceplanDetail.name == '') {
             alert('Please enter Detail Name')

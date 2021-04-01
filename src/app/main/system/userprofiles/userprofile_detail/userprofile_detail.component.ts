@@ -273,7 +273,7 @@ export class UserProfileDetailComponent implements OnInit {
     }
 
     saveUserProfile(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.userprofileDetail.name == '') {
             alert('Please enter Detail Name')
@@ -293,7 +293,7 @@ export class UserProfileDetailComponent implements OnInit {
     }
 
     addUserProfile(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.userprofileDetail.name == '') {
             alert('Please enter Detail Name.')

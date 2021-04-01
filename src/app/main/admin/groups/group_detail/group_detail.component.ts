@@ -223,7 +223,7 @@ export class GroupDetailComponent implements OnInit {
     }
 
     saveGroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if (this.groupDetail.name == '') {
             alert('Please enter Detail Name')
@@ -238,7 +238,7 @@ export class GroupDetailComponent implements OnInit {
     }
 
     addGroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if (this.groupDetail.name == '') {
             alert('Please enter Detail Name')

@@ -18,7 +18,15 @@ import { POIInfoPanelModule } from 'app/main/home/maps/poiInfo-panel/poiInfo-pan
 import { FilterPanelModule } from 'app/main/home/maps/filter-panel/filter-panel.module';
 import { TrackPanelModule } from 'app/main/home/maps/track-panel/track-panel.module';
 import { DocsComponentsThirdPartyGoogleMapsComponent } from './google-maps.component';
-import { MatFabButtonComponent, CreateRouteOptionComponent, StopsFileDragDropComponent, SaveRouteDialogComponent } from '../components';
+import {
+    MatFabButtonComponent,
+    CreateRouteOptionComponent,
+    StopsFileDragDropComponent,
+    SaveRouteDialogComponent,
+    MeasurePanelComponent,
+    CreateZoneDialogComponent,
+    CreateZoneOptionComponent
+} from '../components';
 
 import { SharedModule } from 'app/sharedModules/shared.module';
 
@@ -32,7 +40,10 @@ const routes = [
         MatFabButtonComponent,
         CreateRouteOptionComponent,
         StopsFileDragDropComponent,
-        SaveRouteDialogComponent
+        SaveRouteDialogComponent,
+        MeasurePanelComponent,
+        CreateZoneDialogComponent,
+        CreateZoneOptionComponent
     ],
     imports: [
         RouterModule.forChild(routes),

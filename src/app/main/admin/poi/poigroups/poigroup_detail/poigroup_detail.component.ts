@@ -249,7 +249,7 @@ export class PoigroupDetailComponent implements OnInit {
     }
 
     savePoigroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         this.poigroupDetailService.savePoigroupDetail(this.poigroupDetail).pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -261,7 +261,7 @@ export class PoigroupDetailComponent implements OnInit {
     }
 
     addPoigroup(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         this.poigroupDetailService.savePoigroupDetail(this.poigroupDetail).pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: any) => {
@@ -274,7 +274,7 @@ export class PoigroupDetailComponent implements OnInit {
 
     addPOIs() {
         if (this.pageType == 'new' && !this.poigroup.id) {
-            let today = new Date().toISOString();
+            const today = new Date().toISOString();
             this.getValues(today, "add");
             this.poigroupDetailService.savePoigroupDetail(this.poigroupDetail).pipe(takeUntil(this._unsubscribeAll))
                 .subscribe((result: any) => {

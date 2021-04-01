@@ -259,7 +259,7 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
     }
 
     savePoi(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         this.poiDetailService.savePoiDetail(this.poiDetail)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {
@@ -275,7 +275,7 @@ export class PoiDetailComponent implements OnInit, OnDestroy {
     }
 
     addPoi(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         this.poiDetailService.savePoiDetail(this.poiDetail)
             .pipe(takeUntil(this._unsubscribeAll)).subscribe((result: any) => {

@@ -241,7 +241,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     savefuelregistry(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "save");
         if ((this.fuelregistryDetail.tounitid == '0' && this.registrytype == 'vehicle') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToUnit or FromTank')
@@ -260,7 +260,7 @@ export class FuelregistryDetailComponent implements OnInit, OnDestroy {
     }
 
     addfuelregistry(): void {
-        let today = new Date().toISOString();
+        const today = new Date().toISOString();
         this.getValues(today, "add");
         if ((this.fuelregistryDetail.tounitid == '0' && this.registrytype == 'vehicle') || this.fuelregistryDetail.fromtankid == '0') {
             alert('Please Choose ToUnit or FromTank')
