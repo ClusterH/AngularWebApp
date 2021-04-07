@@ -31,6 +31,25 @@ export class CompanyDataSource extends DataSource<any> {
             });
     }
 
+    loadGroupList(pageindex: number, pagesize: number, name: string, companyid: string) {
+        if (!name) { name = ''; }
+        this.loadingSubject.next(true);
+        // use pipe operator to chain functions with Observable type
+        this.zonesService.getGroups(pageindex, pagesize, name, companyid)
+            .pipe(
+                catchError(() => of([])),
+                finalize(() => this.loadingSubject.next(false)),
+                takeUntil(this._unsubscribeAll)
+            ).subscribe((result: any) => {
+                this.contractorsSubject.next(result.TrackingXLAPI.DATA);
+                this.zonesService.currentGroupClist = result.TrackingXLAPI.DATA || [];
+                this.totalLength = result.TrackingXLAPI.DATA1 ? Number(result.TrackingXLAPI.DATA1[0].total) : 0;
+                this.page_index = pageindex + 1;
+                this.total_page = Math.floor(this.totalLength % pagesize == 0 ? this.totalLength / pagesize : this.totalLength / pagesize + 1);
+            });
+    }
+
+
     connect(collectionViewer: CollectionViewer): Observable<any[]> {
         return this.contractorsSubject.asObservable();
     }

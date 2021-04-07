@@ -12,9 +12,11 @@ import { takeUntil, tap } from 'rxjs/operators';
 })
 export class CreateRouteOptionComponent implements OnInit, OnDestroy {
   isRemoveRouteDialog: boolean = false;
+  isCancelRouteDialog: boolean = false;
   private _unsubscribeAll: Subject<any>;
 
   @Output() removeRouteEmitter = new EventEmitter();
+  @Output() cancelRouteEmitter = new EventEmitter();
   @Output() saveRouteEmitter = new EventEmitter();
 
   constructor(
@@ -31,7 +33,7 @@ export class CreateRouteOptionComponent implements OnInit, OnDestroy {
     this.agmDirectionGeneratorService.newRoutePath = [];
     this.agmDirectionGeneratorService.isGenerateRoute = false;
     this.agmDirectionGeneratorService.isImportStopsFromFile = false;
-    this.agmDirectionGeneratorService.isAddStopsOnMap = false;
+    this.agmDirectionGeneratorService.isAddStopsOnMap = true;
     this.agmDirectionGeneratorService.waypointDistance = [];
     this.agmDirectionGeneratorService.countDisRequest = 0;
   }
@@ -48,7 +50,7 @@ export class CreateRouteOptionComponent implements OnInit, OnDestroy {
 
     if (isConfirm) {
       this.agmDirectionGeneratorService.generateWayPointList(this.agmDirectionGeneratorService.newRouteStopsTemp).then(res => {
-        this.agmDirectionGeneratorService.newRouteStops = [...res];
+        this.agmDirectionGeneratorService.newRouteStops = [...this.agmDirectionGeneratorService.newRouteStops, ...res];
         this.agmDirectionGeneratorService.drawRouthPath(this.agmDirectionGeneratorService.newRouteStops);
       })
     }
@@ -58,9 +60,10 @@ export class CreateRouteOptionComponent implements OnInit, OnDestroy {
     this.isRemoveRouteDialog = false;
 
     if (isConfirm) {
-      this.agmDirectionGeneratorService.newRouteStops = [...[]];
-      this.agmDirectionGeneratorService.newRouteLocations = [];
-      this.agmDirectionGeneratorService.isGenerateRoute = false;
+      // this.agmDirectionGeneratorService.newRouteStops = [...[]];
+      // this.agmDirectionGeneratorService.newRouteLocations = [];
+      // this.agmDirectionGeneratorService.isGenerateRoute = false;
+      this.agmDirectionGeneratorService.resetRoutes();
 
       this.removeRouteEmitter.emit();
     } else {
@@ -68,8 +71,39 @@ export class CreateRouteOptionComponent implements OnInit, OnDestroy {
     }
   }
 
+  closeCancelConfirmDialog(isConfirm): void {
+    this.isCancelRouteDialog = false;
+
+    if (isConfirm) {
+      // this.agmDirectionGeneratorService.newRouteStops = [...[]];
+      // this.agmDirectionGeneratorService.newRouteLocations = [];
+      // this.agmDirectionGeneratorService.isGenerateRoute = false;
+      this.agmDirectionGeneratorService.resetRoutes();
+      this.cancelRouteEmitter.emit();
+    } else {
+      return;
+    }
+  }
+
   getCSVFileData(event): void {
-    this.agmDirectionGeneratorService.newRouteStopsTemp = [...event];
+    console.log(event);
+    console.log(this.agmDirectionGeneratorService.newRouteOrigin);
+    if (!this.agmDirectionGeneratorService.newRouteOrigin) {
+      this.agmDirectionGeneratorService.newRouteOrigin = event[0].location;
+      this.agmDirectionGeneratorService.newRouteDestination = event[event.length - 1].location;
+      this.agmDirectionGeneratorService.newRouteLocations = [
+        ...this.agmDirectionGeneratorService.newRouteLocations,
+        this.agmDirectionGeneratorService.newRouteOrigin,
+        this.agmDirectionGeneratorService.newRouteDestination
+      ];
+
+      this.agmDirectionGeneratorService.newRouteStopsTemp = event.slice(1, event.length - 1);
+    } else if (!this.agmDirectionGeneratorService.newRouteDestination) {
+      this.agmDirectionGeneratorService.newRouteDestination = event[event.length - 1].location;
+      this.agmDirectionGeneratorService.newRouteStopsTemp = event.slice(0, event.length - 1);
+    } else {
+      this.agmDirectionGeneratorService.newRouteStopsTemp = [...event];
+    }
   }
 
   addStopsOnMap(): void {
@@ -77,6 +111,10 @@ export class CreateRouteOptionComponent implements OnInit, OnDestroy {
     if (this.agmDirectionGeneratorService.isAddStopsOnMap) {
       this.agmDirectionGeneratorService.newRouteStops = [];
     }
+  }
+
+  cancelRoute(): void {
+    this.isCancelRouteDialog = true;
   }
 
   removeRoute(): void {

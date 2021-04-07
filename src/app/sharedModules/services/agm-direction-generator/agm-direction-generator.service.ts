@@ -14,13 +14,14 @@ export class AgmDirectionGeneratorService {
   newRoutePath: any = [];
   isGenerateRoute: boolean = false;
   isImportStopsFromFile: boolean = false;
-  isAddStopsOnMap: boolean = false;
+  isAddStopsOnMap: boolean = true;
   waypointDistance: Array<any> = [];
   countDisRequest: number = 0;
 
   constructor() { }
 
   addRouteLocations(event: any, map: any) {
+    console.log(event);
     this.map = map;
     if (this.newRouteLocations.length === 2) {
       if (this.isAddStopsOnMap) {
@@ -32,9 +33,10 @@ export class AgmDirectionGeneratorService {
       } else { return false; }
     } else {
       this.newRouteLocations.push(event.coords);
+      this.newRouteOrigin = this.newRouteLocations[0];
+      console.log(this.newRouteOrigin);
       if (this.newRouteLocations.length === 2) {
         this.isGenerateRoute = true;
-        this.newRouteOrigin = this.newRouteLocations[0];
         this.newRouteDestination = this.newRouteLocations[1];
         this.drawRouthPath([]);
       } else {
@@ -156,7 +158,7 @@ export class AgmDirectionGeneratorService {
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING
     }, (response, status) => {
-      if (status == 'OK') {
+      if (status === 'OK') {
         const tempPath = response.routes[0].legs[0].steps;
         for (let i = 0; i < tempPath.length; i++) {
           if (i === tempPath.length - 1) {
@@ -175,10 +177,11 @@ export class AgmDirectionGeneratorService {
     this.directionDisplayer?.setMap(null);
     this.newRouteLocations = [...[]];
     this.newRouteStops = [...[]];
+    this.newRouteStopsTemp = [...[]];
     this.newRouteOrigin = undefined;
     this.newRouteDestination = undefined;
     this.isGenerateRoute = false;
-    this.isAddStopsOnMap = false;
+    this.isAddStopsOnMap = true;
   }
 }
 

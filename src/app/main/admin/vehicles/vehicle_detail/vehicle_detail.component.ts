@@ -88,9 +88,6 @@ export class VehicleDetailComponent implements OnInit, OnDestroy {
                     this.routerLinkValue = 'Asset';
                     break;
             }
-
-
-
         });
 
         if (isEmpty(this.vehicle)) {

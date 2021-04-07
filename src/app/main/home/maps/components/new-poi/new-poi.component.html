@@ -1,0 +1,45 @@
+<div class="new-poi-panel">
+  <h2 class="mb-12 mt-0 accent"><strong>New POI</strong></h2>
+
+  <form [formGroup]="newPOIForm" class="vehicle w-100-p" fxLayout="column" fxFlex>
+    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+      <mat-label>{{ 'MAP.NAME' | translate }}</mat-label>
+      <input matInput placeholder="Name" name="name" formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+      <mat-label>{{ 'MAP.ADDRESS' | translate }}</mat-label>
+      <input matInput placeholder="Address" name="address" formControlName="address" required>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+        <mat-label>{{ 'MAP.LATITUDE' | translate }}</mat-label>
+        <input matInput placeholder="Latitude" name="latitude" formControlName="latitude" required>
+      </mat-form-field>
+      <mat-form-field appearance="outline" floatLabel="always" fxFlex="48">
+        <mat-label>{{ 'MAP.LONGITUDE' | translate }}</mat-label>
+        <input matInput placeholder="Longitude" name="longitude" formControlName="longitude" required>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="m-0" fxLayout="row" fxLayoutAlign="end center">
+      <button mat-button class="mr-8 accent" (click)="restart()" aria-label="Restart" matTooltip="Restart">
+        {{ 'MAP.RESTART' | translate }}
+      </button>
+      <button mat-button class="mr-8 accent" (click)="close()" aria-label="Close" matTooltip="Close">
+        {{ 'MAP.CANCEL' | translate }}
+      </button>
+      <button mat-button class="save-button accent" (click)="save()" [disabled]="newPOIForm.invalid" aria-label="SAVE">
+        {{ 'MAP.SAVE' | translate }}
+      </button>
+    </div>
+  </form>
+</div>
+
+<p-dialog header="Remove Zone" [(visible)]="isCancelPOIDialog" [modal]="true" [style]="{width: '40vw'}"
+  [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+  <div class="h3">Are you sure you want to cancel the POI Creation Process?</div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="closeConfirmDialog(true)" label="Yes" class="p-button-text">
+    </p-button>
+    <p-button icon="pi pi-times" (click)="closeConfirmDialog(false)" label="No"></p-button>
+  </ng-template>
+</p-dialog>

@@ -44,7 +44,6 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
         this._fuseTranslationLoaderService.loadTranslations(vehiclesEnglish, vehiclesSpanish, vehiclesFrench, vehiclesPortuguese);
         this.unit = unit;
         this.flag = flag;
-
     }
 
     ngOnInit() {
@@ -65,11 +64,7 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
                 // let temp = this.search.map(res => {
                 //
                 // })
-                let input = document.getElementById('testtttt');
-
-
                 let autocomplete = new google.maps.places.Autocomplete(this.search.nativeElement);
-
 
                 autocomplete.addListener("place_changed", () => {
                     this.ngZone.run(() => {
@@ -95,10 +90,6 @@ export class UnitLinkDialogComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
-    }
-
-    save() {
-
     }
 
     close() { this.dialogRef.close(); }

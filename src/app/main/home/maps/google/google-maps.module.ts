@@ -25,7 +25,8 @@ import {
     SaveRouteDialogComponent,
     MeasurePanelComponent,
     CreateZoneDialogComponent,
-    CreateZoneOptionComponent
+    CreateZoneOptionComponent,
+    NewPoiComponent
 } from '../components';
 
 import { SharedModule } from 'app/sharedModules/shared.module';
@@ -43,7 +44,8 @@ const routes = [
         SaveRouteDialogComponent,
         MeasurePanelComponent,
         CreateZoneDialogComponent,
-        CreateZoneOptionComponent
+        CreateZoneOptionComponent,
+        NewPoiComponent
     ],
     imports: [
         RouterModule.forChild(routes),

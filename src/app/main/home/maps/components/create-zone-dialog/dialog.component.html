@@ -17,7 +17,8 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" floatLabel="always" class="select_list">
                     <mat-label>{{ 'MAP.COMPANY' | translate }}</mat-label>
-                    <mat-select (click)="showCompanyList()" formControlName="company">
+                    <mat-select (click)="showCompanyList('company')" (selectionChange)="onCompanyChange($event)"
+                        formControlName="company">
                         <div class="filter_carrier_input">
                             <input matInput formControlName="filterstring" #filter placeholder="Filter"
                                 (keyup)="onKey($event)">
@@ -38,7 +39,34 @@
                         </div>
                         <mat-paginator style=" height: 40px;" #paginatorCompany class="table_paginator_detail"
                             [length]="dataSourceCompany.totalLength" [pageSize]="10" [hidePageSize]="true"
-                            showFirstLastButtons (click)="carrierPagenation(paginatorCompany)" sticky="true">
+                            showFirstLastButtons (click)="companyPagenation(paginatorCompany)" sticky="true">
+                        </mat-paginator>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" floatLabel="always" class="select_list">
+                    <mat-label>{{ 'MAP.GROUP' | translate }}</mat-label>
+                    <mat-select (click)="showCompanyList('group')" formControlName="group">
+                        <div class="filter_carrier_input">
+                            <input matInput formControlName="filterstring" #filter placeholder="Filter"
+                                (keyup)="onKey($event)">
+                            <mat-icon (click)="clearFilter()">clear</mat-icon>
+                        </div>
+                        <div style="width: 100%; overflow: auto;">
+                            <mat-table [dataSource]="dataSourceGroup"
+                                class="vehicles-table font-size-10 mat-elevation-z8">
+                                <ng-container matColumnDef="name">
+                                    <td mat-cell *matCellDef="let group" style="border: 0px;">
+                                        <mat-option [value]="group.id">{{group.name}}</mat-option>
+                                    </td>
+                                </ng-container>
+                                <tr class="company_list" style="height: 15px;" mat-row
+                                    *matRowDef="let row; columns: displayedColumns;">
+                                </tr>
+                            </mat-table>
+                        </div>
+                        <mat-paginator style=" height: 40px;" #paginatorGroup class="table_paginator_detail"
+                            [length]="dataSourceGroup.totalLength" [pageSize]="10" [hidePageSize]="true"
+                            showFirstLastButtons sticky="true">
                         </mat-paginator>
                     </mat-select>
                 </mat-form-field>

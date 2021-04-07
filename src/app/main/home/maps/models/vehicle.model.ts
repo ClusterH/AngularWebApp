@@ -29,3 +29,13 @@ export interface POIModel {
   producttypeid: number,
   isSelected?: boolean,
 }
+
+export interface NewPOIModel {
+  id?: number,
+  name?: string,
+  address?: string,
+  latitude?: number,
+  longitude?: number,
+  created?: string,
+  createdby?: string
+}

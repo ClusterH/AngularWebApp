@@ -5,3 +5,4 @@ export * from './dialog/dialog.component';
 export * from './measure-panel/measure-panel.component';
 export * from './create-zone-dialog/dialog.component';
 export * from './create-zone-option/create-zone-option.component';
+export * from './new-poi/new-poi.component';

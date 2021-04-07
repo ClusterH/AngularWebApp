@@ -11,7 +11,9 @@ export class ZonesService {
     public filterZones$: Observable<Array<ZoneRouteModel[]>> = this.filterZones.asObservable();
     //Create Zone Secion
     public currentCompanyClist: any = [];
+    public currentGroupClist: any = [];
     public zonePointsList = [];
+    public isStartDrawZone: boolean = false;
 
     /**
      * Constructor
@@ -59,11 +61,35 @@ export class ZonesService {
         }
     }
 
+    getGroups(pageindex: number, pagesize: number, filterString: string, companyid: string): Observable<any> {
+        if (filterString === '') {
+            const params_detail = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('companyid', companyid)
+                .set('method', 'group_CList');
+            return this._httpClient.get('trackingxlapi.ashx', {
+                params: params_detail
+            });
+        } else {
+            const params_detail = new HttpParams()
+                .set('pageindex', (pageindex + 1).toString())
+                .set('pagesize', pagesize.toString())
+                .set('name', `^${filterString}^`)
+                .set('companyid', companyid)
+                .set('method', 'group_CList');
+            return this._httpClient.get('trackingxlapi.ashx', {
+                params: params_detail
+            });
+        }
+    }
+
     saveZoneDetail(zoneDetail: any = {}): Observable<any> {
         const params_detail = new HttpParams()
             .set('id', zoneDetail.id.toString())
             .set('name', zoneDetail.name.toString())
             .set('companyid', zoneDetail.companyid.toString())
+            .set('groupid', zoneDetail.groupid.toString())
             .set('isactive', zoneDetail.isactive.toString())
             .set('created', zoneDetail.created.toString())
             .set('createdby', zoneDetail.createdby.toString())

@@ -18,7 +18,7 @@ import { takeUntil, map } from 'rxjs/operators';
 import { FilterPanelService, RoutesService, UnitInfoService, VehMarkersService, ZonesService } from '../services';
 import { AgmDirectionGeneratorService } from 'app/sharedModules/services';
 import { MatFabButtonComponent } from '../components/mat-fab-button/mat-fab-button.component';
-import { LanguageModel, VehicleModel, POIModel, ZoneRouteModel } from '../models';
+import { LanguageModel, VehicleModel, POIModel, ZoneRouteModel, NewPOIModel } from '../models';
 import { UserObjectModel } from 'app/sharedModules/models';
 
 declare const google: any;
@@ -87,6 +87,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     geoFencePointsList: any = [];
 
     pointList: { lat: number; lng: number }[] = [];
+    isStartCreatePOI: boolean = false;
     drawingManager: any;
     selectedShape: any;
     selectedArea = 0;
@@ -110,7 +111,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     };
 
     @ViewChild('AgmMap') agmMap: AgmMap;
-    @ViewChild(MatFabButtonComponent) fabBtnComponent: MatFabButtonComponent;
+    @ViewChild(MatFabButtonComponent, { static: true }) fabBtnComponent: MatFabButtonComponent;
 
     constructor(
         public vehMarkersService: VehMarkersService,
@@ -489,8 +490,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         } else if (this.createOptionType === 'Measure Distance') {
             this.routesService.updateMeasureDistancePointsList(event.coords, this.map);
         } else if (this.createOptionType === 'Create Geofence') {
-            console.log('Create Geofence===>>>');
-            // this.routesService.updateGeofencePointsList(event.coords);
+            console.log(this.zonesService.isStartDrawZone);
+            this.zonesService.isStartDrawZone = true;
+        } else if (this.createOptionType === 'Create POI') {
+            this.vehMarkersService.updateNewPOILocation(event.coords);
         } else {
             return false;
         }
@@ -511,10 +514,13 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                 google.maps.event.addListener(this.agmDirectionGeneratorService.directionDisplayer, 'directions_changed', () => {
                     this.agmDirectionGeneratorService.onChangeRouteByDragging(this.agmDirectionGeneratorService.directionDisplayer.directions);
                 });
+                this.agmDirectionGeneratorService.isAddStopsOnMap = true;
             } else if (event === 'Measure Distance') {
                 this.routesService.showDialog = true;
             } else if (event === 'Create Geofence') {
                 this.initDrawingManager(this.map);
+            } else if (event === 'Create POI') {
+                this.isStartCreatePOI = true;
             }
 
             const optionList = {
@@ -539,6 +545,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
     resetMapOptions(): void {
         //Route Option
         this.removeRouteEmitter();
+        this.agmDirectionGeneratorService.resetRoutes();
         //Zone Option
         this.selectedShape?.setMap(null);
         this.drawingManager?.setMap(null);
@@ -548,6 +555,10 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         //Measurement Option
         this.routesService.resetMeasurement();
         this.routesService.showDialog = false;
+        //POI Option
+        this.vehMarkersService.newPOILocation.next(undefined);
+        this.vehMarkersService.hasLocation = false;
+        this.isStartCreatePOI = false;
     }
 
     returnMapState(): void {
@@ -581,8 +592,12 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
 
     removeRouteEmitter(): void {
         this.resetFitBound();
-        this.agmDirectionGeneratorService.resetRoutes();
         // this.resetMapOptions();
+    }
+
+    cancelRouteEmitter(): void {
+        this.resetMapOptions();
+        this.returnMapState();
     }
 
     saveRouteEmitter(event: number): void {
@@ -611,6 +626,17 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
         this.returnMapState();
     }
     //Creating Zone Section
+    cancelZoneEmitter(): void {
+        this.selectedShape?.setMap(null);
+        this.selectedArea = 0;
+        this.pointList = [];
+        this.zonesService.zonePointsList = [];
+        this.zonesService.isStartDrawZone = false;
+
+        this.resetMapOptions();
+        this.returnMapState();
+    }
+
     removeZoneEmitter(): void {
         this.deleteSelectedShape();
     }
@@ -629,6 +655,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
                         this.selectedArea = 0;
                         this.pointList = [];
                         this.zonesService.zonePointsList = [];
+                        this.zonesService.isStartDrawZone = false;
                         this.resetMapOptions();
                         this.returnMapState();
                     } else {
@@ -663,6 +690,7 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             'overlaycomplete',
             (event) => {
                 if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+                    console.log('draw-zone');
                     const paths = event.overlay.getPaths();
                     for (let p = 0; p < paths.getLength(); p++) {
                         google.maps.event.addListener(
@@ -725,9 +753,19 @@ export class DocsComponentsThirdPartyGoogleMapsComponent implements OnInit, OnDe
             this.selectedShape.setMap(null);
             this.selectedArea = 0;
             this.pointList = [];
+            this.zonesService.isStartDrawZone = false;
+            this.zonesService.zonePointsList = [];
             // To show:
             this.initDrawingManager(this.map);
         }
+    }
+
+    //Create New POI
+    createNewPOIEmitter(event: boolean): void {
+        this.isStartCreatePOI = false;
+
+        this.resetMapOptions();
+        this.returnMapState();
     }
 }
 

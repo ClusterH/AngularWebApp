@@ -180,8 +180,6 @@ export class UnitInfoPanelComponent implements OnInit, OnDestroy {
 
         this.unitInfoService.playbackHistory(params, 'GetTrackIDandName').then(idandname => {
             if (idandname.responseCode === 100) {
-                // this.unitInfoService.TrackID = res.TrackingXLAPI.DATA[0].id;
-                // this.unitInfoService.TrackName = res
                 this.unitInfoService.playbackHistory(params, 'GetUnitHistory')
                     .then(history => {
                         if (history.responseCode === 100) {

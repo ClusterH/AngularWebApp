@@ -15,7 +15,11 @@ export const locale = {
             "NO": "No",
             "CLOSE": "Close",
             "CREATEZONE": "Create Zone",
-            "COMPANY": "Company"
+            "COMPANY": "Company",
+            "RESTART": "Restart",
+            "ADDRESS": "Address",
+            "LATITUDE": "Latitude",
+            "LONGITUDE": "Longitude"
         }
     }
 };

@@ -107,7 +107,6 @@ export class RoutesService {
 
     //create Geofence
     updateGeofencePointsList(point: any): void {
-        console.log('updatePoints ===>>>', point);
         this.geoFencePointsList = [...this.geoFencePointsList, ...[point]];
     }
 }

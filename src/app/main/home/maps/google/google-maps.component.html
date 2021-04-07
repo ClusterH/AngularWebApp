@@ -123,12 +123,12 @@
         </app-mat-fab-button>
         <div *ngIf="createOptionType === 'Create Route'">
             <app-create-route-option (removeRouteEmitter)="removeRouteEmitter()"
-                (saveRouteEmitter)="saveRouteEmitter($event)">
+                (cancelRouteEmitter)="cancelRouteEmitter()" (saveRouteEmitter)="saveRouteEmitter($event)">
             </app-create-route-option>
         </div>
 
         <div *ngIf="createOptionType === 'Create Geofence'">
-            <app-create-zone-option (removeZoneEmitter)="removeZoneEmitter()"
+            <app-create-zone-option (cancelZoneEmitter)="cancelZoneEmitter()" (removeZoneEmitter)="removeZoneEmitter()"
                 (saveZoneEmitter)="saveZoneEmitter($event)">
             </app-create-zone-option>
         </div>
@@ -206,12 +206,13 @@
                 </ng-container>
             </ng-container>
 
-            <!-- <ng-container *ngIf="createOptionType === 'Create Geofence'">
-                <agm-polygon [fillColor]="'red'" [fillOpacity]="0.2" [strokeColor]="'red'" [strokeOpacity]="0.9"
-                    [strokeWeight]="2" [paths]="routesService.geoFencePointsList" [zIndex]="1" [editable]="true"
-                    [draggable]="true" (polyPathsChange)="changePolyPath($event)" (polyDragEnd)="changePolyPath($event)"
-                    (polyDrag)="changePolyPath($event)"></agm-polygon>
-            </ng-container> -->
+            <ng-container *ngIf="createOptionType === 'Create POI'">
+                <ng-container *ngIf="(vehMarkersService.newPOILocation$ | async) as newPOILocation">
+                    <agm-marker [latitude]="newPOILocation?.latitude" [longitude]="newPOILocation?.longitude"
+                        [markerDraggable]="true" [visible]="true">
+                    </agm-marker>
+                </ng-container>
+            </ng-container>
         </agm-map>
     </div>
 
@@ -246,4 +247,11 @@
 
     <app-measure-panel *ngIf="routesService.showDialog" (finishMeasurementEmitter)="finishMeasurement($event)">
     </app-measure-panel>
+
+    <ng-container *ngIf="vehMarkersService.hasLocation">
+        <app-new-poi (createNePOIEmitter)="createNewPOIEmitter($event)"></app-new-poi>
+    </ng-container>
+    <div *ngIf="isStartCreatePOI" class="creat-poi-container">
+        <div class="title-create-poi p-8 h2">Click on Map</div>
+    </div>
 </div>

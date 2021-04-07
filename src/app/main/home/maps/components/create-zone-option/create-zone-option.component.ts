@@ -13,8 +13,10 @@ import { ZonesService } from '../../services';
 })
 export class CreateZoneOptionComponent implements OnInit, OnDestroy {
   isRemoveZoneDialog: boolean = false;
+  isCancelZoneDialog: boolean = false;
   private _unsubscribeAll: Subject<any>;
 
+  @Output() cancelZoneEmitter = new EventEmitter();
   @Output() removeZoneEmitter = new EventEmitter();
   @Output() saveZoneEmitter = new EventEmitter();
 
@@ -41,6 +43,20 @@ export class CreateZoneOptionComponent implements OnInit, OnDestroy {
     } else {
       return;
     }
+  }
+
+  closeCancelConfirmDialog(isConfirm): void {
+    this.isCancelZoneDialog = false
+
+    if (isConfirm) {
+      this.cancelZoneEmitter.emit();
+    } else {
+      return;
+    }
+  }
+
+  cancelZone(): void {
+    this.isCancelZoneDialog = true;
   }
 
   removeZone(): void {
